@@ -131,9 +131,6 @@ public class OldFileDifferencer extends FileDifferencer {
                     satd.addAll(
                             updatedComments.stream()
                                     .map(nc -> {
-                                        // If the comment that was added is similar enough to the old comment
-                                        // we can infer that the comment was changed
-                                        if( SimilarityUtil.commentsAreSimilar(oldComment, nc) ) {
                                             // If the new comment is still SATD, then the instance is changed
                                             if( this.detector.isSATD(nc.getComment()) ) {
                                                 return new SATDInstance(
@@ -150,15 +147,6 @@ public class OldFileDifferencer extends FileDifferencer {
                                                         new SATDInstanceInFile(diffEntry.getNewPath(), nc),
                                                         SATDInstance.SATDResolution.SATD_REMOVED);
                                             }
-
-                                        } else {
-                                            // We know the comment was removed, and the one that was added
-                                            // was a different comment
-                                            return new SATDInstance(
-                                                    new SATDInstanceInFile(diffEntry.getOldPath(), oldComment),
-                                                    new SATDInstanceInFile(diffEntry.getNewPath(), new NullGroupedComment()),
-                                                    SATDInstance.SATDResolution.SATD_REMOVED);
-                                        }
                                     })
                                     .collect(Collectors.toList())
                     );
