@@ -1,5 +1,6 @@
 package edu.rit.se;
 
+import edu.rit.se.csv_html_creater.csvhtml_creater;
 import edu.rit.se.satd.SATDMiner;
 import edu.rit.se.satd.comment.IgnorableWords;
 import edu.rit.se.satd.detector.SATDDetectorImpl;
@@ -105,9 +106,11 @@ public class Main {
 
                     OutputWriter writer = new MySQLOutputWriter(dbPropsFile);
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
+                    csvhtml_creater csvHtmlCreater= new csvhtml_creater(dbPropsFile);
 
                     writer.close();
                     miner.cleanRepo();
+
                 }
             }
         } catch (ParseException e) {
