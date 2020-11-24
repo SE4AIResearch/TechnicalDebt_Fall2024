@@ -1,4 +1,4 @@
-package edu.rit.se.csv_html_creater;
+package edu.rit.se.csv_html_creator;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -12,13 +12,13 @@ import java.io.*;
 import java.sql.*;
 import java.util.Properties;
 
-public class csvhtml_creater {
+public class csvhtml_creator {
     private final String dbURI;
     private final String user;
     private final String pass;
     private final String dir="reports";
 
-    public csvhtml_creater(String propertiesPath) throws IOException, SQLException {
+    public csvhtml_creator(String propertiesPath) throws IOException, SQLException {
         System.out.println("Create csv file report...");
         boolean success = (new File(dir)).mkdirs();
         boolean His = (new File(dir+"/html")).mkdirs();
