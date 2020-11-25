@@ -152,7 +152,6 @@ public class csvhtml_creator {
         bw.write("</table>");
         bw.write("</body></html>");
         bw.close();
-        Desktop.getDesktop().browse(f.toURI());
         System.out.print("Done!");
 
     }
