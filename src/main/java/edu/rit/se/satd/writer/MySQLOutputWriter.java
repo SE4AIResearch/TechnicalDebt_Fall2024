@@ -4,9 +4,6 @@ import edu.rit.se.git.model.CommitMetaData;
 import edu.rit.se.satd.comment.model.GroupedComment;
 import edu.rit.se.satd.model.SATDDifference;
 import edu.rit.se.satd.model.SATDInstance;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-
 import java.io.*;
 import java.sql.*;
 import java.util.Calendar;
@@ -28,7 +25,6 @@ public class MySQLOutputWriter implements OutputWriter {
     private final String pass;
 
     private final ScheduledThreadPoolExecutor finalWriteExecutor;
-    private int numbering =1;
 
 
     public MySQLOutputWriter(String propertiesPath) throws IOException {
