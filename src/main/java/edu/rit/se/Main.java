@@ -1,6 +1,8 @@
 package edu.rit.se;
 
 import edu.rit.se.satd.SATDMiner;
+import edu.rit.se.satd.api.AzureModel;
+import edu.rit.se.satd.refactoring.RefactoringMiner;
 import edu.rit.se.satd.comment.IgnorableWords;
 import edu.rit.se.satd.detector.SATDDetectorImpl;
 import edu.rit.se.satd.mining.diff.CommitToCommitDiff;
@@ -11,14 +13,10 @@ import org.apache.commons.cli.*;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 
 public class Main {
-
     private static final String ARG_NAME_DB_PROPS = "d";
     private static final String ARG_NAME_REPOS_FILE = "r";
     private static final String ARG_NAME_GH_USERNAME = "u";
@@ -30,7 +28,6 @@ public class Main {
     private static final String PROJECT_NAME_CLI = "satd-analyzer";
 
     public static void main(String[] args) throws Exception {
-
         Options options = getOptions();
 
         try {
@@ -83,7 +80,6 @@ public class Main {
             // Read the supplied repos from the file
             final File inFile = new File(reposFile);
             final Scanner inFileReader = new Scanner(inFile);
-
             // Find the SATD in each supplied repository
             while (inFileReader.hasNext()) {
 
@@ -102,9 +98,12 @@ public class Main {
                     if (cmd.hasOption(ARG_NAME_GH_PASSWORD)) {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
-
                     OutputWriter writer = new MySQLOutputWriter(dbPropsFile);
+
+
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
+                    AzureModel.classiffySATD(writer, repoEntry[0] );
+                    RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
 
                     writer.close();
                     miner.cleanRepo();
