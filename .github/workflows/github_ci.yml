@@ -54,5 +54,3 @@ jobs:
            java -jar target/satd-analyzer-jar-with-all-dependencies.jar -r test_repo.csv -d mySQL.properties
            echo "Number of SATDS: "
            mysql --host 127.0.0.1 --user=user --database=satd --port 3306 --password=root -e "SELECT count(f_id) FROM SATDInFile"
-
-
