@@ -9,3 +9,4 @@ repos.txt
 sql/*.cs
 satd-analyzer.iml
 mySQL_personal.properties
+.DS_Store

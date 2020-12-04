@@ -107,12 +107,14 @@ public class Main {
                     AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
                   
-                    csvhtml_creator csvHtmlCreater= new csvhtml_creator(dbPropsFile);
 
                     writer.close();
                     miner.cleanRepo();
 
                 }
+
+                csvhtml_creator csvHtmlCreater= new csvhtml_creator(dbPropsFile);
+
             }
         } catch (ParseException e) {
             System.err.println(e.getLocalizedMessage());
