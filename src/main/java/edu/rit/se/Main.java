@@ -1,5 +1,6 @@
 package edu.rit.se;
 
+import edu.rit.se.csv_html_creator.csvhtml_creator;
 import edu.rit.se.satd.SATDMiner;
 import edu.rit.se.satd.api.AzureModel;
 import edu.rit.se.satd.refactoring.RefactoringMiner;
@@ -102,12 +103,18 @@ public class Main {
 
 
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
+                  
                     AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
+                  
 
                     writer.close();
                     miner.cleanRepo();
+
                 }
+
+                csvhtml_creator csvHtmlCreater= new csvhtml_creator(dbPropsFile);
+
             }
         } catch (ParseException e) {
             System.err.println(e.getLocalizedMessage());

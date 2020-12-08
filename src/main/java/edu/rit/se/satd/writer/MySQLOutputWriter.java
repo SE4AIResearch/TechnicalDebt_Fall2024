@@ -8,13 +8,12 @@ import edu.rit.se.satd.refactoring.model.RefInstance;
 import edu.rit.se.satd.refactoring.model.RefactoringHistory;
 import edu.rit.se.satd.refactoring.model.SatdRemoval;
 import org.checkerframework.checker.units.qual.A;
-
 import java.io.*;
-
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
 
 public class MySQLOutputWriter implements OutputWriter {
 
@@ -79,6 +78,8 @@ public class MySQLOutputWriter implements OutputWriter {
                         final int newFileId = this.getSATDInFileId(asyncConn, satdInstance, false);
                         this.getSATDInstanceId(asyncConn, satdInstance, newCommitId, oldCommitId, newFileId, oldFileId, projectId);
                     }
+
+
                 } catch (SQLException e) {
                     throw new UncheckedIOException(new IOException(e));
                 } finally {
@@ -90,6 +91,7 @@ public class MySQLOutputWriter implements OutputWriter {
                 }
             });
             finalWriteExecutor.schedule(writeLastAsync, 100, TimeUnit.MILLISECONDS);
+
 
         } catch (SQLException e) {
             // Issues with SQL will be wrapped in an IOException to maintain interface consistency
@@ -103,6 +105,7 @@ public class MySQLOutputWriter implements OutputWriter {
                 }
             }
         }
+
     }
 
     /**
@@ -434,6 +437,7 @@ public class MySQLOutputWriter implements OutputWriter {
         queryStmt.setInt(3, oldFileId); // first_file
         queryStmt.setInt(4, newFileId); // second_file
         final ResultSet res = queryStmt.executeQuery();
+
         if( res.next() ) {
             // Return the result if one was found
             return res.getInt(1);
@@ -453,6 +457,10 @@ public class MySQLOutputWriter implements OutputWriter {
             updateStmt.setInt(7, projectId); // p_id
             updateStmt.setInt(8, satdInstance.getParentId()); // parent_instance_id
             updateStmt.executeUpdate();
+
+
+
+
             final ResultSet updateRes = updateStmt.getGeneratedKeys();
             if (updateRes.next()) {
                 return updateRes.getInt(1);
@@ -510,6 +518,7 @@ public class MySQLOutputWriter implements OutputWriter {
     private static String shortenStringToLength(String str, int length) {
         return str.substring(0, Math.min(str.length(), length));
     }
+
 
     @Override
     public void close() {
