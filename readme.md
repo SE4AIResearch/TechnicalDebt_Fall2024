@@ -29,7 +29,7 @@ If building the tool from source:
 
 #### Additional info
 - A video tutorial on how to run the tool can be found here 
-- A docker image with all the required libraries and set up is prepared and available here. 
+- A docker image with all the required libraries, the tool as well as a complete environment is prepared and available [here](https://hub.docker.com/r/mihalbsh/satdbailiff). 
 You can use that in case you dont have an environment with java,mysql etc
 
 <a name="build"></a>
@@ -76,11 +76,9 @@ is the hash of the commit where the mining starts (**Not required**. If no start
 
 Example of csv
 
-| | |  |
-| --------------- | --- | ---- |
-| https://github.com/apache/log4j | , | 94eff9a041300970516ea866f8f0420d1cc75355 |
-| https://github.com/apache/tomcat | , | |
+https://github.com/apache/log4j , 94eff9a041300970516ea866f8f0420d1cc75355
 
+https://github.com/apache/tomcat , 
 
 
 #### Running the .JAR
