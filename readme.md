@@ -28,6 +28,7 @@ If building the tool from source:
 * Maven 3
 
 #### Additional info
+- Satd bailiff jar file v1.2 can be found [here](https://github.com/smilevo/SATDBailiff/releases/download/1.2/satd-analyzer-jar-with-all-dependencies.jar)
 - A video tutorial on how to run the tool can be found here 
 - A docker image with all the required libraries, the tool as well as a complete environment is prepared and available [here](https://hub.docker.com/r/mihalbsh/satdbailiff). 
 You can use that in case you dont have an environment with java,mysql etc
