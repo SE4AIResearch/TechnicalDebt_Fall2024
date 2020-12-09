@@ -28,7 +28,7 @@ If building the tool from source:
 * Maven 3
 
 
-<sub>*If you are using openjdk then version 11 is required as javafx.uti is missing from openjdk8 <sub>
+<sub>*If you are using openjdk then version 11 is required as javafx.util is missing from openjdk8 <sub>
 
 #### Additional info
 - Satd bailiff jar file v1.2 can be found [here](https://github.com/smilevo/SATDBailiff/releases/download/1.2/satd-analyzer-jar-with-all-dependencies.jar)
