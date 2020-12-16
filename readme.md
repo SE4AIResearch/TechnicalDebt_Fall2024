@@ -33,6 +33,7 @@ If building the tool from source:
 #### Additional info
 - Satd bailiff jar file v1.2 can be found [here](https://github.com/smilevo/SATDBailiff/releases/download/1.2/satd-analyzer-jar-with-all-dependencies.jar)
 - A video tutorial on how to build and run the tool can be found [here](https://www.youtube.com/watch?v=DDzZOX1Vil4&feature=youtu.be) 
+- A video tutorial on how to run the tool through docker can be found [here](https://www.youtube.com/watch?v=T5H_uAqwipQ&feature=youtu.be). Please also read the docker readme file. Link below 
 - A docker image with all the required libraries, the tool as well as a complete environment is prepared and available [here](https://hub.docker.com/r/mihalbsh/satdbailiff). 
 You can use that in case you dont have an environment with java,mysql etc
 
