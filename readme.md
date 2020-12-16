@@ -76,7 +76,7 @@ be ignored. (Use your own mysql credentials and/or settings)
 
 #### Select Projects 
 The repositories of the projects to be analyzed must be included in a `CSV file`. The first value is the url of the github repository and the second value
-is the hash of the commit where the mining starts (**Not required**. If no starting point given all of the commits are going to be analyzed from first commit to last). 
+is the hash of the commit where the mining ends (**Not required**. If no starting point given all of the commits are going to be analyzed from first commit to last). 
 
 Example of csv
 
