@@ -32,6 +32,7 @@ public class csvhtml_creator {
         String commit_hash = "";
         String author_name="";
         String satd_instance_id;
+        String containing_method;
 
 
         final Properties properties = new Properties();
@@ -74,8 +75,9 @@ public class csvhtml_creator {
                 commit_hash =    commentsResults.getString("resolution_commit");
                 author_name =    commentsResults.getString("author_name");
                 satd_instance_id=commentsResults.getString("satd_instance_id");
+                containing_method=commentsResults.getString("v2_method");
                 csvPrinter.printRecord(satd_id,satd_instance_id,
-                        project, author_name,commit_hash,old_comment, new_comment, resolution);
+                        project, author_name,commit_hash,old_comment, new_comment, resolution, containing_method);
                 csvPrinter.flush();
             }catch (Exception e){
 
@@ -98,7 +100,7 @@ public class csvhtml_creator {
             FileWriter csvWriter = new FileWriter(dir+"/SATD report.csv",true);
             csvPrinter = new CSVPrinter(csvWriter,
                     CSVFormat.DEFAULT.withHeader("satd id","satd instance",
-                            "project","committer name","Commit Hash","old comment","New Comment","resolution"));
+                            "project","committer name","Commit Hash","old comment","New Comment","resolution", "Containing Method"));
         }else {
             FileWriter csvWriter = new FileWriter(dir+"/SATD_final.csv",true);
             csvPrinter = new CSVPrinter(csvWriter, CSVFormat.DEFAULT);
@@ -126,7 +128,7 @@ public class csvhtml_creator {
                 " <th>satd instance id</th> " +
                 " <th>project</th> " +
                 "<th>committer name </th> " +
-                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> </tr>");
+                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th></tr>");
 
 
 
@@ -144,8 +146,9 @@ public class csvhtml_creator {
                         + "</td> <td>" + record.get(5)
                         + "</td> <td>" + record.get(6)
                         + "</td> <td>" + record.get(7)
+                        + "</td> <td>" + record.get(8)
                         + "</td> </tr>");
-                commentHistoryHtml(record.get(0),record.get(1),record.get(2),record.get(3),record.get(4),record.get(5),record.get(6),record.get(7));
+                commentHistoryHtml(record.get(0),record.get(1),record.get(2),record.get(3),record.get(4),record.get(5),record.get(6),record.get(7),record.get(8));
             }
 
         }
@@ -155,7 +158,7 @@ public class csvhtml_creator {
         System.out.print("Done!");
 
     }
-    private void commentHistoryHtml(String s, String s1, String s2, String s3, String s4, String s5, String s6, String s7) throws IOException {
+    private void commentHistoryHtml(String s, String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8) throws IOException {
 
 
         File f = new File(dir+"/html/"+s1+".html");
@@ -170,6 +173,7 @@ public class csvhtml_creator {
                     + "</td> <td>" + s5
                     + "</td> <td>" + s6
                     + "</td> <td>" + s7
+                    + "</td> <td>" + s8
                     + "</td> </tr>";
 
             doc.select("table").append(newComment);
@@ -195,7 +199,7 @@ public class csvhtml_creator {
                     " <th>satd instance id</th> " +
                     " <th>project</th> " +
                     "<th>committer name </th> " +
-                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> </tr>");
+                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th> </tr>");
 
 
             bw.write("<tr><td>" + s +
@@ -206,6 +210,7 @@ public class csvhtml_creator {
                     + "</td> <td>" + s5
                     + "</td> <td>" + s6
                     + "</td> <td>" + s7
+                    + "</td> <td>" + s8
                     + "</td> </tr>");
 
 
