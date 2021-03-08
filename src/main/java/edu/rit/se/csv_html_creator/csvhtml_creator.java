@@ -7,6 +7,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.*;
 import java.io.*;
 import java.sql.*;
@@ -16,12 +18,18 @@ public class csvhtml_creator {
     private final String dbURI;
     private final String user;
     private final String pass;
-    private final String dir="reports";
+    private String folderName = "";
 
     public csvhtml_creator(String propertiesPath) throws IOException, SQLException {
         System.out.println("Create csv file report...");
-        boolean success = (new File(dir)).mkdirs();
-        boolean His = (new File(dir+"/html")).mkdirs();
+
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
+        String creationDate = formatter.format(currentDate);
+        setFolderName("reports-" + creationDate);
+
+        boolean success = (new File(folderName)).mkdirs();
+        boolean His = (new File(folderName + "/html")).mkdirs();
 
 
         String old_comment;
@@ -86,23 +94,22 @@ public class csvhtml_creator {
 
         commentsResults.close();
         comments.close();
-        System.out.print("Done!");
+        System.out.println("Done!");
         createHtml();
 
     }
 
-
     private CSVPrinter csvInitializer() throws IOException {
         System.out.println("Create HTML report...");
-        File csv = new File(dir+"/SATD report.csv");
+        File csv = new File(folderName + "/SATD report.csv");
         CSVPrinter csvPrinter = null;
         if (!csv.exists()){
-            FileWriter csvWriter = new FileWriter(dir+"/SATD report.csv",true);
+            FileWriter csvWriter = new FileWriter(folderName + "/SATD report.csv",true);
             csvPrinter = new CSVPrinter(csvWriter,
                     CSVFormat.DEFAULT.withHeader("satd id","satd instance",
                             "project","committer name","Commit Hash","old comment","New Comment","resolution", "Containing Method"));
         }else {
-            FileWriter csvWriter = new FileWriter(dir+"/SATD_final.csv",true);
+            FileWriter csvWriter = new FileWriter(folderName + "/SATD_final.csv",true);
             csvPrinter = new CSVPrinter(csvWriter, CSVFormat.DEFAULT);
         }
         return csvPrinter;
@@ -110,9 +117,9 @@ public class csvhtml_creator {
     }
 
     public void createHtml() throws IOException {
-        FileReader reader = new FileReader(dir+"/SATD report.csv");
+        FileReader reader = new FileReader(folderName + "/SATD report.csv");
         Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(reader);
-        File f = new File(dir+"/SATD report.html");
+        File f = new File(folderName + "/SATD report.html");
         BufferedWriter bw = new BufferedWriter(new FileWriter(f));
         bw.write("<html><head>\n" +
                 "<style> table, th, td {\n" +
@@ -155,13 +162,14 @@ public class csvhtml_creator {
         bw.write("</table>");
         bw.write("</body></html>");
         bw.close();
-        System.out.print("Done!");
+        System.out.println("Done!");
+        System.out.println("Results available at folder: " + folderName);
 
     }
     private void commentHistoryHtml(String s, String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8) throws IOException {
 
 
-        File f = new File(dir+"/html/"+s1+".html");
+        File f = new File(folderName+"/html/"+s1+".html");
         if(f.exists()){
             Document doc = Jsoup.parse(f, "UTF-8", "");
             Elements span = doc.children();
@@ -179,7 +187,7 @@ public class csvhtml_creator {
             doc.select("table").append(newComment);
             String html = doc.html();
             BufferedWriter htmlWriter =
-                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dir+"/html/"+s1+".html"), "UTF-8"));
+                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folderName+"/html/"+s1+".html"), "UTF-8"));
             htmlWriter.write(html);
             htmlWriter.close();
 
@@ -220,4 +228,11 @@ public class csvhtml_creator {
         }
     }
 
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
+    public String getFolderName() {
+        return folderName;
+    }
 }
