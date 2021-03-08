@@ -51,6 +51,8 @@ public class GroupedComment implements Comparable {
     private int containingMethodDeclarationLineStart = -1;
     @Getter
     private int containingMethodDeclarationLineEnd = -1;
+    @Getter
+    private String methodBody = UNKNOWN;
 
     public static final String TYPE_COMMENTED_SOURCE = "CommentedSource";
     public static final String TYPE_BLOCK = "Block";
@@ -78,7 +80,8 @@ public class GroupedComment implements Comparable {
                 this.containingClassDeclarationLineEnd,
                 this.containingMethod,
                 this.containingMethodDeclarationLineStart,
-                this.containingMethodDeclarationLineEnd);
+                this.containingMethodDeclarationLineEnd,
+                this.methodBody);
     }
 
     /**
@@ -219,6 +222,18 @@ public class GroupedComment implements Comparable {
                             .getRange().get().begin.line;
                     newComment.containingMethodDeclarationLineEnd = curMethod.asMethodDeclaration()
                             .getRange().get().end.line;
+                    String methodBody = String.valueOf(curMethod.getBody());
+
+                    if (methodBody != UNKNOWN) {
+                        String methodDeclaration = curMethod.getDeclarationAsString();
+                        // This is to remove the `Optional[{...}]` wrapper from the method body.
+                        String cleanMethodBody = methodBody.substring(9, methodBody.length() - 1);
+
+                        newComment.methodBody = methodDeclaration + " " + cleanMethodBody;
+                    } else {
+                        newComment.methodBody = methodBody;
+                    }
+
                     break;
                 }
                 lastMethodEnd = curMethod.getRange().get().end.line;
