@@ -89,6 +89,13 @@ public class csvhtml_creator {
                 containing_method=commentsResults.getString("v2_method");
                 method_declaration=commentsResults.getString("method_declaration");
                 method_body=commentsResults.getString("method_body");
+
+                // This piece of code is to fix the inverted method body and method declaration issue.
+                if (!isMethodDeclaration(method_declaration, containing_method)) {
+                    method_declaration = commentsResults.getString("method_body");
+                    method_body = commentsResults.getString("method_declaration");
+                }
+
                 csvPrinter.printRecord(satd_id,satd_instance_id,
                         project, author_name,commit_hash,old_comment, new_comment, resolution, containing_method, method_declaration, method_body);
                 csvPrinter.flush();
@@ -104,6 +111,18 @@ public class csvhtml_creator {
 
     }
 
+    public static boolean isMethodDeclaration(String rawDeclaration, String methodSignature) {
+        String lowerCaseDeclaration = rawDeclaration.toLowerCase().trim();
+
+        return lowerCaseDeclaration.startsWith("public ")
+                || lowerCaseDeclaration.startsWith("protected ")
+                || lowerCaseDeclaration.startsWith("private ")
+                || lowerCaseDeclaration.startsWith("static ")
+                || lowerCaseDeclaration.startsWith("void ")
+                // In case no access modifier is being used.
+                || (!methodSignature.isEmpty() && rawDeclaration.startsWith(methodSignature.trim().substring(0, methodSignature.trim().indexOf("("))));
+    }
+
     private CSVPrinter csvInitializer() throws IOException {
         System.out.println("Create HTML report...");
         File csv = new File(folderName + "/SATD report.csv");
@@ -112,7 +131,7 @@ public class csvhtml_creator {
             FileWriter csvWriter = new FileWriter(folderName + "/SATD report.csv",true);
             csvPrinter = new CSVPrinter(csvWriter,
                     CSVFormat.DEFAULT.withHeader("satd id","satd instance",
-                            "project","committer name","Commit Hash","old comment","New Comment","resolution", "Containing Method", "Method Declaration", "Method Body"));
+                            "project","committer name","Commit Hash","old comment","New Comment","resolution", "Method Signature", "Method Declaration", "Method Body"));
         }else {
             FileWriter csvWriter = new FileWriter(folderName + "/SATD_final.csv",true);
             csvPrinter = new CSVPrinter(csvWriter, CSVFormat.DEFAULT);
@@ -140,7 +159,7 @@ public class csvhtml_creator {
                 " <th>satd instance id</th> " +
                 " <th>project</th> " +
                 "<th>committer name </th> " +
-                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th><th>Method Declaration</th><th>Method Body</th></tr>");
+                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th><th>Method Declaration</th><th>Method Body</th></tr>");
 
 
 
@@ -216,7 +235,7 @@ public class csvhtml_creator {
                     " <th>satd instance id</th> " +
                     " <th>project</th> " +
                     "<th>committer name </th> " +
-                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th> <th>Method Declaration</th> <th>Method Body</th> </tr>");
+                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr>");
 
 
             bw.write("<tr><td>" + s +
