@@ -225,23 +225,17 @@ public class GroupedComment implements Comparable {
                             .getRange().get().begin.line;
                     newComment.containingMethodDeclarationLineEnd = curMethod.asMethodDeclaration()
                             .getRange().get().end.line;
+
+//                  CODE ADDED TO EXTRACT METHOD BODY AND DECLARATION
                     String methodBody = String.valueOf(curMethod.getBody());
                     String stringMethodDeclaration = curMethod.getDeclarationAsString();
 
-                    if (!methodBody.isEmpty()) {
-                        // This is to remove the `Optional[{...}]` wrapper from the method body.
-                        String cleanMethodBody = methodBody.substring(10, methodBody.length() - 2);
-
-                        newComment.methodBody = cleanMethodBody;
-                    } else {
-                        newComment.methodBody = UNKNOWN;
-                    }
-
-                    if (!stringMethodDeclaration.isEmpty()) {
-                        newComment.methodDeclaration = stringMethodDeclaration;
-                    } else {
-                        newComment.methodDeclaration = UNKNOWN;
-                    }
+                    newComment.methodBody = methodBody.isEmpty()
+                            ? UNKNOWN
+                            : methodBody.substring(10, methodBody.length() - 2);
+                    newComment.methodDeclaration = stringMethodDeclaration.isEmpty()
+                            ? UNKNOWN
+                            : stringMethodDeclaration;
 
                     break;
                 }
