@@ -53,6 +53,8 @@ public class GroupedComment implements Comparable {
     private int containingMethodDeclarationLineEnd = -1;
     @Getter
     private String methodBody = UNKNOWN;
+    @Getter
+    private String methodDeclaration = UNKNOWN;
 
     public static final String TYPE_COMMENTED_SOURCE = "CommentedSource";
     public static final String TYPE_BLOCK = "Block";
@@ -81,6 +83,7 @@ public class GroupedComment implements Comparable {
                 this.containingMethod,
                 this.containingMethodDeclarationLineStart,
                 this.containingMethodDeclarationLineEnd,
+                this.methodDeclaration,
                 this.methodBody);
     }
 
@@ -223,15 +226,21 @@ public class GroupedComment implements Comparable {
                     newComment.containingMethodDeclarationLineEnd = curMethod.asMethodDeclaration()
                             .getRange().get().end.line;
                     String methodBody = String.valueOf(curMethod.getBody());
+                    String stringMethodDeclaration = curMethod.getDeclarationAsString();
 
-                    if (methodBody != UNKNOWN) {
-                        String methodDeclaration = curMethod.getDeclarationAsString();
+                    if (!methodBody.isEmpty()) {
                         // This is to remove the `Optional[{...}]` wrapper from the method body.
-                        String cleanMethodBody = methodBody.substring(9, methodBody.length() - 1);
+                        String cleanMethodBody = methodBody.substring(10, methodBody.length() - 2);
 
-                        newComment.methodBody = methodDeclaration + " " + cleanMethodBody;
+                        newComment.methodBody = cleanMethodBody;
                     } else {
-                        newComment.methodBody = methodBody;
+                        newComment.methodBody = UNKNOWN;
+                    }
+
+                    if (!stringMethodDeclaration.isEmpty()) {
+                        newComment.methodDeclaration = stringMethodDeclaration;
+                    } else {
+                        newComment.methodDeclaration = UNKNOWN;
                     }
 
                     break;

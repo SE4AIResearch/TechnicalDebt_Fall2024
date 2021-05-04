@@ -42,6 +42,7 @@ public class csvhtml_creator {
         String satd_instance_id;
         String containing_method;
         String method_body;
+        String method_declaration;
 
         final Properties properties = new Properties();
         properties.load(new FileInputStream(new File(propertiesPath)));
@@ -65,6 +66,7 @@ public class csvhtml_creator {
                 " SecondCommit.author_date as v2_author_date, SecondFile.f_path as v2_path," +
                 " SecondFile.containing_class as v2_class," +
                 " SecondFile.containing_method as v2_method," +
+                " SecondFile.method_declaration as method_declaration," +
                 " SecondFile.method_body as method_body," +
                 " SecondFile.f_comment as v2_comment " +
                 "FROM satd.SATD INNER JOIN satd.SATDInFile as FirstFile ON SATD.first_file = FirstFile.f_id INNER JOIN satd.SATDInFile as SecondFile ON SATD.second_file = SecondFile.f_id INNER JOIN satd.Commits as FirstCommit ON SATD.first_commit = FirstCommit.commit_hash  AND SATD.p_id = FirstCommit.p_id INNER JOIN satd.Commits as SecondCommit ON SATD.second_commit = SecondCommit.commit_hash AND SATD.p_id = SecondCommit.p_id INNER JOIN satd.Projects ON SATD.p_id=Projects.p_id ORDER BY satd_id DESC;");
@@ -85,9 +87,10 @@ public class csvhtml_creator {
                 author_name =    commentsResults.getString("author_name");
                 satd_instance_id=commentsResults.getString("satd_instance_id");
                 containing_method=commentsResults.getString("v2_method");
+                method_declaration=commentsResults.getString("method_declaration");
                 method_body=commentsResults.getString("method_body");
                 csvPrinter.printRecord(satd_id,satd_instance_id,
-                        project, author_name,commit_hash,old_comment, new_comment, resolution, containing_method, method_body);
+                        project, author_name,commit_hash,old_comment, new_comment, resolution, containing_method, method_declaration, method_body);
                 csvPrinter.flush();
             }catch (Exception e){
 
@@ -109,7 +112,7 @@ public class csvhtml_creator {
             FileWriter csvWriter = new FileWriter(folderName + "/SATD report.csv",true);
             csvPrinter = new CSVPrinter(csvWriter,
                     CSVFormat.DEFAULT.withHeader("satd id","satd instance",
-                            "project","committer name","Commit Hash","old comment","New Comment","resolution", "Containing Method", "Method Body"));
+                            "project","committer name","Commit Hash","old comment","New Comment","resolution", "Containing Method", "Method Declaration", "Method Body"));
         }else {
             FileWriter csvWriter = new FileWriter(folderName + "/SATD_final.csv",true);
             csvPrinter = new CSVPrinter(csvWriter, CSVFormat.DEFAULT);
@@ -137,7 +140,7 @@ public class csvhtml_creator {
                 " <th>satd instance id</th> " +
                 " <th>project</th> " +
                 "<th>committer name </th> " +
-                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th><th>Method Body</th></tr>");
+                "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th><th>Method Declaration</th><th>Method Body</th></tr>");
 
 
 
@@ -157,8 +160,9 @@ public class csvhtml_creator {
                         + "</td> <td>" + record.get(7)
                         + "</td> <td>" + record.get(8)
                         + "</td> <td>" + record.get(9)
+                        + "</td> <td>" + record.get(10)
                         + "</td> </tr>");
-                commentHistoryHtml(record.get(0),record.get(1),record.get(2),record.get(3),record.get(4),record.get(5),record.get(6),record.get(7),record.get(8),record.get(9));
+                commentHistoryHtml(record.get(0),record.get(1),record.get(2),record.get(3),record.get(4),record.get(5),record.get(6),record.get(7),record.get(8),record.get(9), record.get(10));
             }
 
         }
@@ -169,7 +173,7 @@ public class csvhtml_creator {
         System.out.println("Results available at folder: " + folderName);
 
     }
-    private void commentHistoryHtml(String s, String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8, String s9) throws IOException {
+    private void commentHistoryHtml(String s, String s1, String s2, String s3, String s4, String s5, String s6, String s7, String s8, String s9, String s10) throws IOException {
 
 
         File f = new File(folderName+"/html/"+s1+".html");
@@ -186,6 +190,7 @@ public class csvhtml_creator {
                     + "</td> <td>" + s7
                     + "</td> <td>" + s8
                     + "</td> <td>" + s9
+                    + "</td> <td>" + s10
                     + "</td> </tr>";
 
             doc.select("table").append(newComment);
@@ -211,7 +216,7 @@ public class csvhtml_creator {
                     " <th>satd instance id</th> " +
                     " <th>project</th> " +
                     "<th>committer name </th> " +
-                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th> <th>Method Body</th> </tr>");
+                    "<th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Containing Method</th> <th>Method Declaration</th> <th>Method Body</th> </tr>");
 
 
             bw.write("<tr><td>" + s +
@@ -224,6 +229,7 @@ public class csvhtml_creator {
                     + "</td> <td>" + s7
                     + "</td> <td>" + s8
                     + "</td> <td>" + s9
+                    + "</td> <td>" + s10
                     + "</td> </tr>");
 
 

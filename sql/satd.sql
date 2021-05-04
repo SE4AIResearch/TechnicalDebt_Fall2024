@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS satd.SATDInFile (
     end_line INT,
     containing_class VARCHAR(512),
     containing_method VARCHAR(512),
+    method_declaration longtext,
+    method_body longtext,
     `type` varchar(45) DEFAULT NULL,
     PRIMARY KEY (f_id)
 );
