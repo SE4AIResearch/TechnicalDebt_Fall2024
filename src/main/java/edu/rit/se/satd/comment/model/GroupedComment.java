@@ -51,6 +51,10 @@ public class GroupedComment implements Comparable {
     private int containingMethodDeclarationLineStart = -1;
     @Getter
     private int containingMethodDeclarationLineEnd = -1;
+    @Getter
+    private String methodBody = UNKNOWN;
+    @Getter
+    private String methodDeclaration = UNKNOWN;
 
     public static final String TYPE_COMMENTED_SOURCE = "CommentedSource";
     public static final String TYPE_BLOCK = "Block";
@@ -78,7 +82,9 @@ public class GroupedComment implements Comparable {
                 this.containingClassDeclarationLineEnd,
                 this.containingMethod,
                 this.containingMethodDeclarationLineStart,
-                this.containingMethodDeclarationLineEnd);
+                this.containingMethodDeclarationLineEnd,
+                this.methodDeclaration,
+                this.methodBody);
     }
 
     /**
@@ -219,6 +225,18 @@ public class GroupedComment implements Comparable {
                             .getRange().get().begin.line;
                     newComment.containingMethodDeclarationLineEnd = curMethod.asMethodDeclaration()
                             .getRange().get().end.line;
+
+//                  CODE ADDED TO EXTRACT METHOD BODY AND DECLARATION
+                    String methodBody = String.valueOf(curMethod.getBody());
+                    String stringMethodDeclaration = curMethod.getDeclarationAsString();
+
+                    newComment.methodBody = methodBody.isEmpty()
+                            ? UNKNOWN
+                            : methodBody.substring(10, methodBody.length() - 2);
+                    newComment.methodDeclaration = stringMethodDeclaration.isEmpty()
+                            ? UNKNOWN
+                            : stringMethodDeclaration;
+
                     break;
                 }
                 lastMethodEnd = curMethod.getRange().get().end.line;
