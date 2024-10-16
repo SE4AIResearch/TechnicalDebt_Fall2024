@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3685</td> <td>-1422650065</td><td>apache/camel</td><td>Claus Ibsen</td><td>1408333526d7d5c8d66879a7ff6425be702439f3</td> <td>None</td> <td>TODO: should be base path and a lot more</td> <td>SATD_ADDED</td> <td>read(RestDefinition)</td> <td>public Swagger read(RestDefinition rest)</td> <td>
+    Swagger swagger = new Swagger();
+    List<VerbDefinition> verbs = new ArrayList<>(rest.getVerbs());
+    // must sort the verbs by uri so we group them together when an uri has multiple operations
+    Collections.sort(verbs, new VerbOrdering());
+    // used during gathering of apis
+    List<Path> paths = new ArrayList<>();
+    String basePath = rest.getPath();
+    for (VerbDefinition verb : verbs) {
+        // TODO: should be base path and a lot more
+        // the method must be in lower case
+        String method = verb.asVerb().toLowerCase(Locale.US);
+        String opPath = getPath(basePath, verb.getUri());
+        Operation op = new Operation();
+        Path path = swagger.getPath(opPath);
+        if (path == null) {
+            path = new Path();
+            paths.add(path);
+        }
+        path = path.set(method, op);
+        if (verb.getConsumes() != null) {
+            op.consumes(verb.getConsumes());
+        }
+        if (verb.getProduces() != null) {
+            op.produces(verb.getProduces());
+        }
+        if (verb.getDescriptionText() != null) {
+            op.summary(verb.getDescriptionText());
+        }
+        // add path
+        swagger.path(opPath, path);
+    }
+    return swagger;
+</td> </tr></table></body></html>

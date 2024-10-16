@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2553</td> <td>-1422650683</td><td>apache/camel</td><td>Claus Ibsen</td><td>da271e41335212ff591272c9cfd2900c21206e4c</td> <td>None</td> <td>okay we give up its a poison message</td> <td>SATD_ADDED</td> <td>handleError(Exchange)</td> <td>public String handleError(Exchange exchange)</td> <td>
+    // store a property on the exchange with the number of total attempts
+    int attempts = exchange.getProperty("attempts", 0, int.class);
+    attempts++;
+    exchange.setProperty("attempts", attempts);
+    // we want to retry at most 4 times
+    if (attempts <= 4) {
+        return "seda:retry";
+    } else {
+        // okay we give up its a poison message
+        return "log:giveup";
+    }
+</td> </tr></table></body></html>

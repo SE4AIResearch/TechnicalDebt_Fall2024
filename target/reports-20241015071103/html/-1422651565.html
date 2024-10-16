@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>875</td> <td>-1422651565</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>c332db0423096385d797ffc1a9788bb3cbaa3774</td> <td>None</td> <td>TODO need to shutdown the server</td> <td>SATD_ADDED</td> <td>tearDown()</td> <td>protected void tearDown() throws Exception</td> <td>
+    // TODO need to shutdown the server
+    super.tearDown();
+    // server.stop();
+    // bus.shutdown(false);
+    BusFactory.setDefaultBus(null);
+</td> </tr></table></body></html>

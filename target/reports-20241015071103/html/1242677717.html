@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4153</td> 
+     <td>1242677717</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>086e1d5961d21dbbc9dfd70b8205fdc43faeba40</td> 
+     <td>Oh well, its not a c3p0 pooled connection. Too bad its not standardized how \"good applications cleanup\".</td> 
+     <td>Oh well, its not a c3p0 pooled connection.</td> 
+     <td>SATD_REMOVED</td> 
+     <td>closeDataSource(DataSource)</td> 
+     <td>private void closeDataSource(final DataSource ds)</td> 
+     <td> try { Class<!--?--> type = Class.forName("org.apache.commons.dbcp.BasicDataSource"); if (type.isInstance(ds)) { type.getMethod("close").invoke(ds); return; } } catch (Throwable bad) { // Oh well, its not a Commons DBCP pooled connection. } try { Class<!--?--> type = Class.forName("com.mchange.v2.c3p0.DataSources"); if (type.isInstance(ds)) { type.getMethod("destroy", DataSource.class).invoke(null, ds); return; } } catch (Throwable bad) { // Oh well, its not a c3p0 pooled connection. } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4126</td> 
+     <td>1242677717</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>b9e93f7ad5639dd15ee480c5e38fb60cd6c9d8b8</td> 
+     <td>Oh well, its not a c3p0 pooled connection. Too bad its not standardized how \"good applications cleanup\".</td> 
+     <td>Oh well, its not a c3p0 pooled connection. Too bad its not standardized how \"good applications cleanup\".</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>closeDataSource(DataSource)</td> 
+     <td>private void closeDataSource(final DataSource ds)</td> 
+     <td> try { final Class<!--?--> type = Class.forName("com.mchange.v2.c3p0.DataSources"); if (type.isInstance(ds)) { type.getMethod("destroy", DataSource.class).invoke(null, ds); return; } } catch (Throwable bad) { // Oh well, its not a c3p0 pooled connection. Too bad its // not standardized how "good applications cleanup". } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4120</td> 
+     <td>1242677717</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>c9b29a963c773d125db9f5744e934764826a5dcb</td> 
+     <td>Oh well, its not a c3p0 pooled connection. Too bad its not standardized how \"good applications cleanup\".</td> 
+     <td>Oh well, its not a c3p0 pooled connection. Too bad its not standardized how \"good applications cleanup\".</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>closeDataSource(DataSource)</td> 
+     <td>private void closeDataSource(final DataSource ds)</td> 
+     <td> try { final Class<!--?--> type = Class.forName("com.mchange.v2.c3p0.DataSources"); if (type.isInstance(ds)) { type.getMethod("destroy", DataSource.class).invoke(null, ds); return; } } catch (Throwable bad) { // Oh well, its not a c3p0 pooled connection. Too bad its // not standardized how "good applications cleanup". } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

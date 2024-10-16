@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5271</td> <td>-1009652451</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>our target rate is in terms of the maximum number of sample splits,
+but we accept the possibility of sampling additional splits to hit
+the target sample keyset</td> <td>SATD_ADDED</td> <td>printUsage()</td> <td> static int printUsage()</td> <td>
+    System.out.println("sampler -r <reduces>\n" + "      [-inFormat <input format class>]\n" + "      [-keyClass <map input & output key class>]\n" + "      [-splitRandom <double pcnt> <numSamples> <maxsplits> | " + "             // Sample from random splits at random (general)\n" + "       -splitSample <numSamples> <maxsplits> | " + "             // Sample from first records in splits (random data)\n" + "       -splitInterval <double pcnt> <maxsplits>]" + "             // Sample from splits at intervals (sorted data)");
+    System.out.println("Default sampler: -splitRandom 0.1 10000 10");
+    ToolRunner.printGenericCommandUsage(System.out);
+    return -1;
+</td> </tr></table></body></html>

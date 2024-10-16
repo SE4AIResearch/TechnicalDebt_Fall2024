@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>635</td> 
+     <td>-1422651692</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>7fd60493e4a4caee42824cdc9c90d4ad0b98c927</td> 
+     <td>TODO: add unit test for this new property and add it to wiki documentation should we process all messages or only unseen messages</td> 
+     <td>should we process all messages or only unseen messages</td> 
+     <td>SATD_REMOVED</td> 
+     <td>poll()</td> 
+     <td>protected void poll() throws Exception</td> 
+     <td> ensureFolderIsOpen(); try { int count = folder.getMessageCount(); if (count &gt; 0) { Message[] messages; // should we process all messages or only unseen messages if (endpoint.getConfiguration().isProcessOnlyUnseenMessages()) { messages = folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false)); } else { messages = folder.getMessages(); } MessageCountEvent event = new MessageCountEvent(folder, MessageCountEvent.ADDED, true, messages); messagesAdded(event); } else if (count == -1) { throw new MessagingException("Folder: " + folder.getFullName() + " is closed"); } } finally { // need to ensure we release resources if (folder.isOpen()) { folder.close(true); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>634</td> 
+     <td>-1422651692</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>2c0473f5595b795b403adc5a567076a813f239db</td> 
+     <td>None</td> 
+     <td>TODO: add unit test for this new property and add it to wiki documentation should we process all messages or only unseen messages</td> 
+     <td>SATD_ADDED</td> 
+     <td>poll()</td> 
+     <td>protected void poll() throws Exception</td> 
+     <td> ensureFolderIsOpen(); try { int count = folder.getMessageCount(); if (count &gt; 0) { Message[] messages; // TODO: add unit test for this new property and add it to wiki documentation // should we process all messages or only unseen messages if (endpoint.getConfiguration().isProcessOnlyUnseenMessages()) { messages = folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false)); } else { messages = folder.getMessages(); } MessageCountEvent event = new MessageCountEvent(folder, MessageCountEvent.ADDED, true, messages); messagesAdded(event); } else if (count == -1) { throw new MessagingException("Folder: " + folder.getFullName() + " is closed"); } } finally { // need to ensure we release resources if (folder.isOpen()) { folder.close(true); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

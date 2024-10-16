@@ -1,0 +1,87 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4670</td> 
+     <td>1242677902</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>David Pursehouse</td> 
+     <td>22e43cc82355a3bef6e575539cda165aaec81b28</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>emailReviewers(Change, List<patchsetapproval>
+        ) 
+      </patchsetapproval></td> 
+     <td>private void emailReviewers(Change change, List<patchsetapproval>
+        added) throws OrmException, EmailException 
+      </patchsetapproval></td> 
+     <td> if (added.isEmpty()) { return; } // Email the reviewers // // The user knows they added themselves, don't bother emailing them. List<account.id>
+        toMail = Lists.newArrayListWithCapacity(added.size()); for (PatchSetApproval psa : added) { if (!psa.getAccountId().equals(currentUser.getAccountId())) { toMail.add(psa.getAccountId()); } } if (!toMail.isEmpty()) { try { AddReviewerSender cm = addReviewerSenderFactory.create(change); cm.setFrom(currentUser.getAccountId()); cm.addReviewers(toMail); cm.send(); } catch (Exception err) { log.error("Cannot send email to new reviewers of change " + change.getId(), err); } } 
+      </account.id></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4614</td> 
+     <td>1242677902</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>dc264431f7604616c2237847df23d96836949460</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>postAdd(Change, List<patchsetapproval>
+        ) 
+      </patchsetapproval></td> 
+     <td>private void postAdd(Change change, List<patchsetapproval>
+        added) throws OrmException, EmailException 
+      </patchsetapproval></td> 
+     <td> if (added.isEmpty()) { return; } // Execute hook for added reviewers // PatchSet patchSet = dbProvider.get().patchSets().get(change.currentPatchSetId()); for (PatchSetApproval psa : added) { Account account = accountCache.get(psa.getAccountId()).getAccount(); hooks.doReviewerAddedHook(change, account, patchSet, dbProvider.get()); } // Email the reviewers // // The user knows they added themselves, don't bother emailing them. List<account.id>
+        toMail = Lists.newArrayListWithCapacity(added.size()); for (PatchSetApproval psa : added) { if (!psa.getAccountId().equals(currentUser.getAccountId())) { toMail.add(psa.getAccountId()); } } if (!added.isEmpty()) { try { AddReviewerSender cm = addReviewerSenderFactory.create(change); cm.setFrom(currentUser.getAccountId()); cm.addReviewers(toMail); cm.send(); } catch (Exception err) { log.error("Cannot send email to new reviewers of change " + change.getId(), err); } } 
+      </account.id></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4449</td> 
+     <td>1242677902</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>675879a7331c56bd3f3013d225d9292de70f0999</td> 
+     <td>None</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>SATD_ADDED</td> 
+     <td>postAdd(Change, PostResult)</td> 
+     <td>private void postAdd(Change change, PostResult result) throws OrmException, EmailException</td> 
+     <td> if (result.reviewers.isEmpty()) { return; } // Execute hook for added reviewers // PatchSet patchSet = db.get().patchSets().get(change.currentPatchSetId()); for (AccountInfo info : result.reviewers) { Account account = accountCache.get(info._id).getAccount(); hooks.doReviewerAddedHook(change, account, patchSet, db.get()); } // Email the reviewers // // The user knows they added themselves, don't bother emailing them. List<account.id>
+        added = Lists.newArrayListWithCapacity(result.reviewers.size()); for (AccountInfo info : result.reviewers) { if (!info._id.equals(currentUser.getAccountId())) { added.add(info._id); } } if (!added.isEmpty()) { AddReviewerSender cm; cm = addReviewerSenderFactory.create(change); cm.setFrom(currentUser.getAccountId()); cm.addReviewers(added); cm.send(); } 
+      </account.id></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

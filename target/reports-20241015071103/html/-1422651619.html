@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>766</td> <td>-1422651619</td><td>apache/camel</td><td>Claus Ibsen</td><td>d7e04880e7c7967574d039d060740ff1cbeb27a2</td> <td>maybe the full directory already exsits</td> <td>maybe the full directory already exsits</td> <td>SATD_MOVED_FILE</td> <td>buildDirectory(ChannelSftp, String)</td> <td>public static boolean buildDirectory(ChannelSftp sftpClient, String dirName) throws IOException, SftpException</td> <td>
+    String originalDirectory = sftpClient.pwd();
+    boolean success = false;
+    try {
+        // maybe the full directory already exsits
+        try {
+            sftpClient.cd(dirName);
+            success = true;
+        } catch (SftpException e) {
+        // ignore, we could not change directory so try to create it instead
+        }
+        if (!success) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Trying to build remote directory: " + dirName);
+            }
+            try {
+                sftpClient.mkdir(dirName);
+                success = true;
+            } catch (SftpException e) {
+                // we are here if the server side doesn't create intermediate folders
+                // so create the folder one by one
+                success = buildDirectoryChunks(sftpClient, dirName);
+            }
+        }
+    } finally {
+        // change back to original directory
+        sftpClient.cd(originalDirectory);
+    }
+    return success;
+</td> </tr></table></body></html>

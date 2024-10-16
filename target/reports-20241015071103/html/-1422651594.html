@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>810</td> <td>-1422651594</td><td>apache/camel</td><td>Claus Ibsen</td><td>9d23b5af7188f0f36944311105ce9069b1c7efb5</td> <td>None</td> <td>set the location of the exploded webapp where WEB-INF is located
+this is a nice feature of Jetty where we can point to src/main/webapp</td> <td>SATD_ADDED</td> <td>startJetty()</td> <td>private void startJetty() throws Exception</td> <td>
+    // create an embedded Jetty server
+    server = new Server();
+    // add a listener on port 8080 on localhost (127.0.0.1)
+    Connector connector = new SelectChannelConnector();
+    connector.setPort(8080);
+    connector.setHost("127.0.0.1");
+    server.addConnector(connector);
+    // add our web context path
+    WebAppContext wac = new WebAppContext();
+    wac.setContextPath("/unittest");
+    // set the location of the exploded webapp where WEB-INF is located
+    // this is a nice feature of Jetty where we can point to src/main/webapp
+    wac.setWar("./src/main/webapp");
+    server.setHandler(wac);
+    // then start Jetty
+    server.setStopAtShutdown(true);
+    server.start();
+</td> </tr></table></body></html>

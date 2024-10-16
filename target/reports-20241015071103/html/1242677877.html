@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4413</td> <td>1242677877</td><td>GerritCodeReview/gerrit</td><td>Sasa Zivkov</td><td>2dbd6786a7e289cac7f08a2a056806d96eb9118a</td> <td>None</td> <td>Should never occur for a well written rule</td> <td>SATD_ADDED</td> <td>processResults(ListTerm, Term)</td> <td>protected void processResults(ListTerm results, Term submitRule) throws Exception</td> <td>
+    @SuppressWarnings("unchecked")
+    List<SubmitRecord> res = getChangeControl().resultsToSubmitRecord(submitRule, results.toJava());
+    if (res.isEmpty()) {
+        // Should never occur for a well written rule
+        Change c = getChange();
+        stderr.print("Submit rule " + submitRule + " for change " + c.getChangeId() + " of " + c.getProject().get() + " has no solution");
+        return;
+    }
+    for (SubmitRecord r : res) {
+        if (format.isJson()) {
+            SubmitRecordAttribute submitRecord = new SubmitRecordAttribute();
+            submitRecord.status = r.status.name();
+            List<SubmitLabelAttribute> submitLabels = new LinkedList<SubmitLabelAttribute>();
+            for (SubmitRecord.Label l : r.labels) {
+                SubmitLabelAttribute label = new SubmitLabelAttribute();
+                label.label = l.label;
+                label.status = l.status.name();
+                if (l.appliedBy != null) {
+                    Account a = accountCache.get(l.appliedBy).getAccount();
+                    label.by = new AccountAttribute();
+                    label.by.email = a.getPreferredEmail();
+                    label.by.name = a.getFullName();
+                    label.by.username = a.getUserName();
+                }
+                submitLabels.add(label);
+            }
+            submitRecord.labels = submitLabels;
+            format.newGson().toJson(submitRecord, new TypeToken<SubmitRecordAttribute>() {
+            }.getType(), stdout);
+            stdout.print('\n');
+        } else {
+            for (SubmitRecord.Label l : r.labels) {
+                stdout.print(l.label + ": " + l.status);
+                if (l.appliedBy != null) {
+                    AccountInfo a = new AccountInfo(accountCache.get(l.appliedBy).getAccount());
+                    stdout.print(" by " + a.getNameEmail(anonymousCowardName));
+                }
+                stdout.print('\n');
+            }
+            stdout.print("\n" + r.status.name() + "\n");
+        }
+    }
+</td> </tr></table></body></html>

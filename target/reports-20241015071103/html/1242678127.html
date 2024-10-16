@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4925</td> <td>1242678127</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>8fac6e1cbf6420079e8d76132abf3358ff471b93</td> <td>None</td> <td>TODO(dborowitz): Pre-BatchUpdate behavior wrote the merged message on
+the old patch set ID, so that's what we do here. I don't think this
+was intentional, and it should be changed.</td> <td>SATD_ADDED</td> <td>message(ChangeContext, String)</td> <td>private ChangeMessage message(ChangeContext ctx, String body)</td> <td>
+    String uuid;
+    try {
+        uuid = ChangeUtil.messageUUID(ctx.getDb());
+    } catch (OrmException e) {
+        return null;
+    }
+    ChangeMessage m = new ChangeMessage(new ChangeMessage.Key(ctx.getChange().getId(), uuid), // TODO(dborowitz): Pre-BatchUpdate behavior wrote the merged message on
+    // the old patch set ID, so that's what we do here. I don't think this
+    // was intentional, and it should be changed.
+    null, ctx.getWhen(), toMerge.change().currentPatchSetId());
+    m.setMessage(body);
+    return m;
+</td> </tr></table></body></html>

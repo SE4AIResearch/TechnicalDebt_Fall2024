@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4164</td> <td>1242677738</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>f127957799cc081468b409a405075f6960df4fab</td> <td>No canonical URL configured? Maybe we can get a reasonable
+guess from the incoming HTTP request, if we are currently
+inside of an HTTP request scope.
+</td> <td>No canonical URL configured? Maybe we can get a reasonable
+guess from the incoming HTTP request, if we are currently
+inside of an HTTP request scope.
+</td> <td>SATD_MOVED_FILE</td> <td>get()</td> <td>public String get()</td> <td>
+    String canonicalUrl = super.get();
+    if (canonicalUrl != null) {
+        return canonicalUrl;
+    }
+    if (requestProvider != null) {
+        // No canonical URL configured? Maybe we can get a reasonable
+        // guess from the incoming HTTP request, if we are currently
+        // inside of an HTTP request scope.
+        // 
+        final HttpServletRequest req;
+        try {
+            req = requestProvider.get();
+        } catch (ProvisionException noWeb) {
+            if (noWeb.getCause() instanceof OutOfScopeException) {
+                // We can't obtain the request as we are not inside of
+                // an HTTP request scope. Callers must handle null.
+                // 
+                return null;
+            } else {
+                throw noWeb;
+            }
+        }
+        final StringBuffer url = req.getRequestURL();
+        url.setLength(url.length() - req.getServletPath().length());
+        if (url.charAt(url.length() - 1) != '/') {
+            url.append('/');
+        }
+        return url.toString();
+    }
+    // We have no way of guessing our HTTP url.
+    // 
+    return null;
+</td> </tr></table></body></html>

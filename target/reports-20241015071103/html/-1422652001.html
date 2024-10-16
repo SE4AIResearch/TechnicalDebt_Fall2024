@@ -1,0 +1,60 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>219</td> 
+     <td>-1422652001</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO how do we choose a format?</td> 
+     <td>TODO how do we choose a format?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>extractBodyFromCxf(CxfExchange, Message)</td> 
+     <td>public Object extractBodyFromCxf(CxfExchange exchange, Message message)</td> 
+     <td> // TODO how do we choose a format? return getBody(message); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>53</td> 
+     <td>-1422652001</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>a58f02a2b088767414a4745a666561f50ce0b579</td> 
+     <td>None</td> 
+     <td>TODO how do we choose a format?</td> 
+     <td>SATD_ADDED</td> 
+     <td>extractBodyFromCxf(CxfExchange, Message)</td> 
+     <td>public Object extractBodyFromCxf(CxfExchange exchange, Message message)</td> 
+     <td> // TODO how do we choose a format? Set<class>
+       <!--?-->&gt; contentFormats = message.getContentFormats(); for (Class<!--?--> contentFormat : contentFormats) { Object answer = message.get(contentFormat); if (answer != null) { return answer; } } return null; 
+      </class></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

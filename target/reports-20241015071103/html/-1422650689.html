@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2540</td> 
+     <td>-1422650689</td>
+     <td>apache/camel</td>
+     <td>Moulliard Charles</td>
+     <td>0094821289160a7448ae3521eae881226c9509cd</td> 
+     <td>TODO Do we have to call connect(consumer) or setConsumer on the Consumer endpoint</td> 
+     <td>TODO - chm - 25/05 Why do we have to do a setConsumer on the Servlet ?</td> 
+     <td>SATD_CHANGED</td> 
+     <td>addServlet(NodeSynchronization, WebsocketConsumer, String)</td> 
+     <td>protected WebsocketComponentServlet addServlet(NodeSynchronization sync, WebsocketConsumer consumer, String remaining) throws Exception</td> 
+     <td> // Get Connector from one of the Jetty Instances to add WebSocket Servlet WebsocketEndpoint endpoint = consumer.getEndpoint(); WebsocketComponent component = endpoint.getComponent(); String key = getConnectorKey(endpoint); ConnectorRef connectorRef = component.getConnectors().get(key); WebsocketComponentServlet servlet; if (connectorRef != null) { String pathSpec = createPathSpec(remaining); servlet = servlets.get(pathSpec); if (servlet == null) { // Retrieve Context ServletContextHandler context = (ServletContextHandler) connectorRef.server.getHandler(); servlet = createServlet(sync, pathSpec, servlets, context); connectorRef.servlet = servlet; servlets.put(pathSpec, servlet); LOG.debug("WebSocket servlet added for the following path : " + pathSpec + ", to the Jetty Server : " + key); } if (consumer != null) { if (servlet.getConsumer() == null) { // TODO - chm - 25/05 // Why do we have to do a setConsumer on the Servlet ? servlet.setConsumer(consumer); } } return servlet; } else { throw new Exception("Jetty instance has not been retrieved for : " + key); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2537</td> 
+     <td>-1422650689</td>
+     <td>apache/camel</td>
+     <td>Christian Mueller</td>
+     <td>c13c776b87aa69b601613c65f8d9f0b343d07a84</td> 
+     <td>None</td> 
+     <td>TODO Do we have to call connect(consumer) or setConsumer on the Consumer endpoint</td> 
+     <td>SATD_ADDED</td> 
+     <td>addServlet(NodeSynchronization, WebsocketConsumer, String)</td> 
+     <td>protected WebsocketComponentServlet addServlet(NodeSynchronization sync, WebsocketConsumer consumer, String remaining)</td> 
+     <td> String pathSpec = createPathSpec(remaining); WebsocketComponentServlet servlet = servlets.get(pathSpec); if (servlet == null) { servlet = createServlet(sync, pathSpec, servlets, context); } if (servlet.getConsumer() == null &amp;&amp; consumer != null) { // TODO Do we have to call connect(consumer) or setConsumer on the Consumer endpoint servlet.setConsumer(consumer); } return servlet; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

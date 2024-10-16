@@ -1,0 +1,84 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2899</td> 
+     <td>-1422651072</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>65170906077b6d7af0c777200bff1385920f42d5</td> 
+     <td>do special preparation for some concepts such as interceptors and policies this is needed as JAXB does not build exactly the same model definition as Spring DSL would do using route builders. So we have here a little custom code to fix the JAXB gaps</td> 
+     <td>and add the routes</td> 
+     <td>SATD_REMOVED</td> 
+     <td>setupRoutes()</td> 
+     <td>protected void setupRoutes() throws Exception</td> 
+     <td> if (routesSetupDone.compareAndSet(false, true)) { LOG.debug("Setting up routes"); // must init route refs before we prepare the routes below initRouteRefs(); // do special preparation for some concepts such as interceptors and policies // this is needed as JAXB does not build exactly the same model definition as Spring DSL would do // using route builders. So we have here a little custom code to fix the JAXB gaps prepareRoutes(); // and add the routes getContext().addRouteDefinitions(getRoutes()); LOG.debug("Found JAXB created routes: {}", getRoutes()); findRouteBuilders(); installRoutes(); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1866</td> 
+     <td>-1422651072</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>69b644cee878e1380e5e241abdc55ae8acd1da55</td> 
+     <td>do special preparation for some concepts such as interceptors and policies this is needed as JAXB does not build exactly the same model definition as Spring DSL would do using route builders. So we have here a little custom code to fix the JAXB gaps</td> 
+     <td>do special preparation for some concepts such as interceptors and policies this is needed as JAXB does not build exactly the same model definition as Spring DSL would do using route builders. So we have here a little custom code to fix the JAXB gaps</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>afterPropertiesSet()</td> 
+     <td>public void afterPropertiesSet() throws Exception</td> 
+     <td> if (ObjectHelper.isEmpty(getId())) { throw new IllegalArgumentException("Id must be set"); } if (getProperties() != null) { getContext().setProperties(getProperties().asMap()); } // set the resolvers first PackageScanClassResolver packageResolver = getBeanForType(PackageScanClassResolver.class); if (packageResolver != null) { LOG.info("Using custom PackageScanClassResolver: " + packageResolver); getContext().setPackageScanClassResolver(packageResolver); } ClassResolver classResolver = getBeanForType(ClassResolver.class); if (classResolver != null) { LOG.info("Using custom ClassResolver: " + classResolver); getContext().setClassResolver(classResolver); } FactoryFinderResolver factoryFinderResolver = getBeanForType(FactoryFinderResolver.class); if (factoryFinderResolver != null) { LOG.info("Using custom FactoryFinderResolver: " + factoryFinderResolver); getContext().setFactoryFinderResolver(factoryFinderResolver); } ExecutorServiceStrategy executorServiceStrategy = getBeanForType(ExecutorServiceStrategy.class); if (executorServiceStrategy != null) { LOG.info("Using custom ExecutorServiceStrategy: " + executorServiceStrategy); getContext().setExecutorServiceStrategy(executorServiceStrategy); } // set the custom registry if defined initCustomRegistry(getContext()); // setup property placeholder so we got it as early as possible initPropertyPlaceholder(); // setup JMX agent at first initJMXAgent(); Tracer tracer = getBeanForType(Tracer.class); if (tracer != null) { // use formatter if there is a TraceFormatter bean defined TraceFormatter formatter = getBeanForType(TraceFormatter.class); if (formatter != null) { tracer.setFormatter(formatter); } LOG.info("Using custom Tracer: " + tracer); getContext().addInterceptStrategy(tracer); } HandleFault handleFault = getBeanForType(HandleFault.class); if (handleFault != null) { LOG.info("Using custom HandleFault: " + handleFault); getContext().addInterceptStrategy(handleFault); } Delayer delayer = getBeanForType(Delayer.class); if (delayer != null) { LOG.info("Using custom Delayer: " + delayer); getContext().addInterceptStrategy(delayer); } InflightRepository inflightRepository = getBeanForType(InflightRepository.class); if (delayer != null) { LOG.info("Using custom InflightRepository: " + inflightRepository); getContext().setInflightRepository(inflightRepository); } ManagementStrategy managementStrategy = getBeanForType(ManagementStrategy.class); if (managementStrategy != null) { LOG.info("Using custom ManagementStrategy: " + managementStrategy); getContext().setManagementStrategy(managementStrategy); } EventFactory eventFactory = getBeanForType(EventFactory.class); if (eventFactory != null) { LOG.info("Using custom EventFactory: " + eventFactory); getContext().getManagementStrategy().setEventFactory(eventFactory); } // set the event notifier strategies if defined Map<string, eventnotifier>
+        eventNotifiers = getContext().getRegistry().lookupByType(EventNotifier.class); if (eventNotifiers != null &amp;&amp; !eventNotifiers.isEmpty()) { for (String id : eventNotifiers.keySet()) { EventNotifier notifier = eventNotifiers.get(id); // do not add if already added, for instance a tracer that is also an InterceptStrategy class if (!getContext().getManagementStrategy().getEventNotifiers().contains(notifier)) { LOG.info("Using custom EventNotifier with id: " + id + " and implementation: " + notifier); getContext().getManagementStrategy().addEventNotifier(notifier); } } } ShutdownStrategy shutdownStrategy = getBeanForType(ShutdownStrategy.class); if (shutdownStrategy != null) { LOG.info("Using custom ShutdownStrategy: " + shutdownStrategy); getContext().setShutdownStrategy(shutdownStrategy); } // add global interceptors Map
+       <string, interceptstrategy>
+         interceptStrategies = getContext().getRegistry().lookupByType(InterceptStrategy.class); if (interceptStrategies != null &amp;&amp; !interceptStrategies.isEmpty()) { for (String id : interceptStrategies.keySet()) { InterceptStrategy strategy = interceptStrategies.get(id); // do not add if already added, for instance a tracer that is also an InterceptStrategy class if (!getContext().getInterceptStrategies().contains(strategy)) { LOG.info("Using custom InterceptStrategy with id: " + id + " and implementation: " + strategy); getContext().addInterceptStrategy(strategy); } } } // set the lifecycle strategy if defined Map
+        <string, lifecyclestrategy>
+          lifecycleStrategies = getContext().getRegistry().lookupByType(LifecycleStrategy.class); if (lifecycleStrategies != null &amp;&amp; !lifecycleStrategies.isEmpty()) { for (String id : lifecycleStrategies.keySet()) { LifecycleStrategy strategy = lifecycleStrategies.get(id); // do not add if already added, for instance a tracer that is also an InterceptStrategy class if (!getContext().getLifecycleStrategies().contains(strategy)) { LOG.info("Using custom LifecycleStrategy with id: " + id + " and implementation: " + strategy); getContext().addLifecycleStrategy(strategy); } } } // set the default thread pool profile if defined initThreadPoolProfiles(getContext()); // Set the application context and camelContext for the beanPostProcessor initBeanPostProcessor(getContext()); initCamelContext(getContext()); // must init route refs before we prepare the routes below initRouteRefs(); // do special preparation for some concepts such as interceptors and policies // this is needed as JAXB does not build exactly the same model definition as Spring DSL would do // using route builders. So we have here a little custom code to fix the JAXB gaps for (RouteDefinition route : getRoutes()) { // abstracts is the cross cutting concerns List
+         <processordefinition>
+           abstracts = new ArrayList
+          <processordefinition>
+           (); // upper is the cross cutting concerns such as interceptors, error handlers etc List
+           <processordefinition>
+             upper = new ArrayList
+            <processordefinition>
+             (); // lower is the regular route List
+             <processordefinition>
+               lower = new ArrayList
+              <processordefinition>
+               (); prepareRouteForInit(route, abstracts, lower); // toAsync should fix up itself at first initToAsync(lower); // interceptors should be first for the cross cutting concerns initInterceptors(route, upper); // then on completion initOnCompletions(abstracts, upper); // then transactions initTransacted(abstracts, lower); // then on exception initOnExceptions(abstracts, upper); // rebuild route as upper + lower route.clearOutput(); route.getOutputs().addAll(upper); route.getOutputs().addAll(lower); // configure parents initParent(route); } if (getDataFormats() != null) { getContext().setDataFormats(getDataFormats().asMap()); } // lets force any lazy creation getContext().addRouteDefinitions(getRoutes()); if (LOG.isDebugEnabled()) { LOG.debug("Found JAXB created routes: " + getRoutes()); } findRouteBuilders(); installRoutes(); 
+              </processordefinition>
+             </processordefinition>
+            </processordefinition>
+           </processordefinition>
+          </processordefinition>
+         </processordefinition>
+        </string,>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5527</td> <td>-1009652199</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>add the correction factor of 234 as the input split is also streamed</td> <td>SATD_ADDED</td> <td>runWordCount(MiniMRCluster, JobConf)</td> <td>public static void runWordCount(MiniMRCluster mr, JobConf jobConf) throws IOException</td> <td>
+    LOG.info("runWordCount");
+    // Run a word count example
+    // Keeping tasks that match this pattern
+    String pattern = TaskAttemptID.getTaskAttemptIDsPattern(null, null, TaskType.MAP, 1, null);
+    jobConf.setKeepTaskFilesPattern(pattern);
+    TestResult result;
+    final Path inDir = new Path("./wc/input");
+    final Path outDir = new Path("./wc/output");
+    String input = "The quick brown fox\nhas many silly\nred fox sox\n";
+    result = launchWordCount(jobConf, inDir, outDir, input, 3, 1);
+    assertEquals("The\t1\nbrown\t1\nfox\t2\nhas\t1\nmany\t1\n" + "quick\t1\nred\t1\nsilly\t1\nsox\t1\n", result.output);
+    JobID jobid = result.job.getID();
+    TaskAttemptID taskid = new TaskAttemptID(new TaskID(jobid, TaskType.MAP, 1), 0);
+    String userName = UserGroupInformation.getLoginUser().getUserName();
+    checkTaskDirectories(mr, userName, new String[] { jobid.toString() }, new String[] { taskid.toString() });
+    // test with maps=0
+    jobConf = mr.createJobConf();
+    input = "owen is oom";
+    result = launchWordCount(jobConf, inDir, outDir, input, 0, 1);
+    assertEquals("is\t1\noom\t1\nowen\t1\n", result.output);
+    Counters counters = result.job.getCounters();
+    long hdfsRead = counters.findCounter(Task.FILESYSTEM_COUNTER_GROUP, Task.getFileSystemCounterNames("hdfs")[0]).getCounter();
+    long hdfsWrite = counters.findCounter(Task.FILESYSTEM_COUNTER_GROUP, Task.getFileSystemCounterNames("hdfs")[1]).getCounter();
+    long rawSplitBytesRead = counters.findCounter(TaskCounter.SPLIT_RAW_BYTES).getCounter();
+    assertEquals(result.output.length(), hdfsWrite);
+    // add the correction factor of 234 as the input split is also streamed
+    assertEquals(input.length() + rawSplitBytesRead, hdfsRead);
+    // Run a job with input and output going to localfs even though the
+    // default fs is hdfs.
+    {
+        FileSystem localfs = FileSystem.getLocal(jobConf);
+        String TEST_ROOT_DIR = new File(System.getProperty("test.build.data", "/tmp")).toString().replace(' ', '+');
+        Path localIn = localfs.makeQualified(new Path(TEST_ROOT_DIR + "/local/in"));
+        Path localOut = localfs.makeQualified(new Path(TEST_ROOT_DIR + "/local/out"));
+        result = launchWordCount(jobConf, localIn, localOut, "all your base belong to us", 1, 1);
+        assertEquals("all\t1\nbase\t1\nbelong\t1\nto\t1\nus\t1\nyour\t1\n", result.output);
+        assertTrue("outputs on localfs", localfs.exists(localOut));
+    }
+</td> </tr></table></body></html>

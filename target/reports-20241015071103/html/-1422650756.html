@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3493</td> 
+     <td>-1422650756</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testProxy()</td> 
+     <td>public void testProxy() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(2000); String reply = template.requestBody("jetty:http://0.0.0.0:" + port1 + "/foo", "World", String.class); assertEquals("Bye World", reply); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2421</td> 
+     <td>-1422650756</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7ae2614b91e3f9fa566df1aab833bcdb0c8f31c9</td> 
+     <td>None</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>SATD_ADDED</td> 
+     <td>testProxy()</td> 
+     <td>public void testProxy() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(2000); String reply = template.requestBody("jetty:http://0.0.0.0:" + port1 + "/foo", "World", String.class); assertEquals("Bye World", reply); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

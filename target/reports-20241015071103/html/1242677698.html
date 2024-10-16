@@ -1,0 +1,164 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4076</td> <td>1242677698</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>d94b19ce54b1077fd4571d16e5736cbb801bf2f2</td> <td>None</td> <td>Actually, we have too much context in this hunk.
+</td> <td>SATD_ADDED</td> <td>run(ReviewDb)</td> <td>public SideBySidePatchDetail run(final ReviewDb db) throws OrmException, Failure</td> <td>
+    init(db);
+    final FileHeader fh;
+    final int fileCount;
+    int maxLine = 0;
+    try {
+        fh = file.getFileHeader();
+        if (fh.getHunks().isEmpty()) {
+            throw new Failure(new CorruptEntityException(patchKey));
+        }
+        fileCount = file.getFileCount();
+        for (int i = 0; i < fileCount; i++) {
+            maxLine = Math.max(maxLine, file.getLineCount(i));
+        }
+    } catch (CorruptEntityException e) {
+        throw new Failure(e);
+    } catch (NoSuchEntityException e) {
+        throw new Failure(e);
+    } catch (IOException e) {
+        throw new Failure(e);
+    } catch (NoDifferencesException e) {
+        throw new Failure(e);
+    }
+    final ArrayList<List<SideBySideLine>> lines = new ArrayList<List<SideBySideLine>>();
+    if (fh instanceof CombinedFileHeader) {
+        for (final CombinedHunkHeader h : ((CombinedFileHeader) fh).getHunks()) {
+        }
+    } else {
+        final int wantContext = getContextSetting();
+        for (final HunkHeader h : fh.getHunks()) {
+            int oldLine = h.getOldImage().getStartLine();
+            int newLine = h.getNewStartLine();
+            final int leadingContext = leadingContext(h);
+            final byte[] buf = h.getBuffer();
+            final int hunkEnd = h.getEndOffset();
+            int ptr = h.getStartOffset();
+            int eol = nextLF(buf, ptr);
+            if (wantContext == WHOLE_FILE_CONTEXT) {
+                // Cover any gaps between the last line we added and the next line.
+                // 
+                expandContext(lines, oldLine, newLine, Integer.MAX_VALUE);
+            } else if (leadingContext < wantContext) {
+                // Not enough context is inherit in the patch. Expand it out.
+                // 
+                expandContext(lines, oldLine, newLine, wantContext - leadingContext);
+            } else if (leadingContext > wantContext) {
+                // Actually, we have too much context in this hunk.
+                // 
+                int extra = leadingContext - wantContext;
+                SCAN: for (ptr = eol; ptr < hunkEnd && 0 < extra; ptr = eol) {
+                    eol = nextLF(buf, ptr);
+                    switch(buf[ptr]) {
+                        case ' ':
+                        case '\n':
+                            extra--;
+                            oldLine++;
+                            newLine++;
+                            continue;
+                        default:
+                            break SCAN;
+                    }
+                }
+            }
+            SCAN: for (ptr = eol; ptr < hunkEnd; ptr = eol) {
+                eol = nextLF(buf, ptr);
+                final SideBySideLine o, n;
+                switch(buf[ptr]) {
+                    case ' ':
+                    case '\n':
+                        {
+                            final String text = decode(Constants.CHARSET, buf, ptr + 1, eol);
+                            o = new SideBySideLine(oldLine, SideBySideLine.Type.EQUAL, text);
+                            n = new SideBySideLine(newLine, SideBySideLine.Type.EQUAL, text);
+                            oldLine++;
+                            newLine++;
+                            break;
+                        }
+                    case '-':
+                        {
+                            final String text = decode(Constants.CHARSET, buf, ptr + 1, eol);
+                            o = new SideBySideLine(oldLine, SideBySideLine.Type.DELETE, text);
+                            n = null;
+                            oldLine++;
+                            break;
+                        }
+                    case '+':
+                        {
+                            final String text = decode(Constants.CHARSET, buf, ptr + 1, eol);
+                            o = null;
+                            n = new SideBySideLine(newLine, SideBySideLine.Type.INSERT, text);
+                            newLine++;
+                            // Attempt to insert this line backwards where it matches as a
+                            // replacement for a prior deletion. Typically the delete is
+                            // presented first in the patch, then the addition, so we only
+                            // need to backtrack here.
+                            // 
+                            int p = lines.size();
+                            while (0 < p && lines.get(p - 1).get(1) == null) {
+                                p--;
+                            }
+                            if (0 < p && p < lines.size() && lines.get(p).get(1) == null) {
+                                lines.get(p).set(1, n);
+                                continue;
+                            }
+                            break;
+                        }
+                    case '\\':
+                        continue;
+                    default:
+                        break SCAN;
+                }
+                lines.add(Arrays.asList(new SideBySideLine[] { o, n }));
+            }
+            final int trailingContext = trailingContext(lines);
+            if (wantContext == WHOLE_FILE_CONTEXT) {
+            // Don't do anything here.  The next hunk will copy in whatever it
+            // requires, or we'll handle it below if this is the last hunk.
+            // 
+            } else if (trailingContext < wantContext) {
+                // We don't have enough context.  Add more.
+                // 
+                final int extra = wantContext - trailingContext;
+                expandContext(lines, oldLine + extra, newLine + extra, extra);
+            } else if (trailingContext > wantContext) {
+                // We copied in too many lines of context.  Drop them off the tail
+                // end of the collection.
+                // 
+                int toRemove = trailingContext - wantContext;
+                while (toRemove-- > 0) {
+                    lines.remove(lines.size() - 1);
+                }
+            }
+        }
+        if (wantContext == WHOLE_FILE_CONTEXT) {
+            // User wants the full file, expand the context to the end.
+            // 
+            expandContext(lines, maxLine + 1, maxLine + 1, Integer.MAX_VALUE);
+        }
+    }
+    for (final List<SideBySideLine> p : lines) {
+        for (int i = 0; i < fileCount; i++) {
+            final SideBySideLine line = p.get(i);
+            if (line != null) {
+                addComments(line, published, i, line.getLineNumber());
+                if (drafted != null) {
+                    addComments(line, drafted, i, line.getLineNumber());
+                }
+            }
+        }
+    }
+    final SideBySidePatchDetail d;
+    d = new SideBySidePatchDetail(patch, accountInfo.create());
+    d.setLines(fileCount, maxLine, lines);
+    d.setHistory(history(db));
+    return d;
+</td> </tr></table></body></html>

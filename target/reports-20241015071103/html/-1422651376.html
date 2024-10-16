@@ -1,0 +1,69 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1310</td> 
+     <td>-1422651376</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>6fab045b0fb1805ff6fac5e67d1c29c8829dda4d</td> 
+     <td>TODO: reduce the complex of this code when we overhaul the intercept from</td> 
+     <td>add as first output so intercept is handled before the acutal route and that gives us the needed head start to init and be able to intercept all the remaining processing steps</td> 
+     <td>SATD_REMOVED</td> 
+     <td>initInterceptors(RouteDefinition)</td> 
+     <td>private void initInterceptors(RouteDefinition route)</td> 
+     <td> // configure intercept for (InterceptDefinition intercept : getIntercepts()) { intercept.afterPropertiesSet(); // add as first output so intercept is handled before the acutal route and that gives // us the needed head start to init and be able to intercept all the remaining processing steps route.getOutputs().add(0, intercept); } // configure intercept from for (InterceptFromDefinition intercept : getInterceptFroms()) { // should we only apply interceptor for a given endpoint uri boolean match = true; if (intercept.getUri() != null) { match = false; for (FromDefinition input : route.getInputs()) { if (input.getUri().equals(intercept.getUri())) { match = true; break; } } } if (match) { // add as first output so intercept is handled before the acutal route and that gives // us the needed head start to init and be able to intercept all the remaining processing steps route.getOutputs().add(0, intercept); } } // configure intercept send to endpoint for (InterceptSendToEndpointDefinition intercept : getInterceptSendToEndpoints()) { // special intercept for intercepting sending to an endpoint // init interceptor by letting it proxy the real endpoint // add the interceptor but we must do some pre configuration beforehand intercept.afterPropertiesSet(); // replace proceed with the rest of the route try { intercept.proxyEndpoint(getContext()); } catch (Exception e) { throw ObjectHelper.wrapRuntimeCamelException(e); } route.addOutput(intercept); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1301</td> 
+     <td>-1422651376</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>c05e6f76336f085aaa4e851df6b40316d9183c4c</td> 
+     <td>None</td> 
+     <td>TODO: reduce the complex of this code when we overhaul the intercept from</td> 
+     <td>SATD_ADDED</td> 
+     <td>initInterceptors(RouteDefinition)</td> 
+     <td>private void initInterceptors(RouteDefinition route)</td> 
+     <td> // configure intercept for (InterceptDefinition intercept : getIntercepts()) { intercept.afterPropertiesSet(); // add as first output so intercept is handled before the acutal route and that gives // us the needed head start to init and be able to intercept all the remaining processing steps route.getOutputs().add(0, intercept); } // configure intercept from for (InterceptFromDefinition intercept : getInterceptFroms()) { // should we only apply interceptor for a given endpoint uri boolean match = true; if (intercept.getUri() != null) { match = false; for (FromDefinition input : route.getInputs()) { if (input.getUri().equals(intercept.getUri())) { match = true; break; } } } if (match) { // TODO: reduce the complex of this code when we overhaul the intercept from List<processordefinition>
+       <!--?-->&gt; outputs = new ArrayList
+       <processordefinition>
+        <!--?-->&gt;(); List
+        <processordefinition>
+         <!--?-->&gt; exceptionHandlers = new ArrayList
+         <processordefinition>
+          <!--?-->&gt;(); for (ProcessorDefinition output : route.getOutputs()) { if (output instanceof OnExceptionDefinition) { exceptionHandlers.add(output); } else { outputs.add(output); } } // clearing the outputs route.clearOutput(); // add exception handlers as top children route.getOutputs().addAll(exceptionHandlers); // add the interceptor but we must do some pre configuration beforehand intercept.afterPropertiesSet(); InterceptFromDefinition proxy = intercept.createProxy(); route.addOutput(proxy); route.pushBlock(proxy.getProceed()); // if there is a proceed in the interceptor proxy then we should add // the current outputs to out route so we will proceed and continue to route to them ProceedDefinition proceed = ProcessorDefinitionHelper.findFirstTypeInOutputs(proxy.getOutputs(), ProceedDefinition.class); if (proceed != null) { proceed.getOutputs().addAll(outputs); } } } // configure intercept send to endpoint for (InterceptSendToEndpointDefinition intercept : getInterceptSendToEndpoints()) { // special intercept for intercepting sending to an endpoint // init interceptor by letting it proxy the real endpoint // add the interceptor but we must do some pre configuration beforehand intercept.afterPropertiesSet(); // replace proceed with the rest of the route try { intercept.proxyEndpoint(getContext()); } catch (Exception e) { throw ObjectHelper.wrapRuntimeCamelException(e); } route.addOutput(intercept); } 
+         </processordefinition>
+        </processordefinition>
+       </processordefinition>
+      </processordefinition></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

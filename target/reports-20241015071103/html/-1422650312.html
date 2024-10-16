@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3149</td> <td>-1422650312</td><td>apache/camel</td><td>Willem Jiang</td><td>b0b7c4cdbf78a8f154691c012f977a25fe449b5a</td> <td>None</td> <td>Convert two dotted decimal addresses to a single xxx.xxx.xxx.xxx/yy format
+by counting the 1-bit population in the mask address. (It may be better to count
+NBITS-#trailing zeroes for this case)</td> <td>SATD_ADDED</td> <td>toCidrNotation(String, String)</td> <td>private String toCidrNotation(String addr, String mask)</td> <td>
+    return addr + "/" + pop(toInteger(mask));
+</td> </tr></table></body></html>

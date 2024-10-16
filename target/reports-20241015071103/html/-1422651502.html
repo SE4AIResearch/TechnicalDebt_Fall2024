@@ -1,0 +1,119 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1800</td> 
+     <td>-1422651502</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>184850cf76b7050366a320923879571662f6eb14</td> 
+     <td>None</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> // http client can be configured from URI options HttpClientParams clientParams = new HttpClientParams(); IntrospectionSupport.setProperties(clientParams, parameters, "httpClient."); // validate that we could resolve all httpClient. parameters as this component is lenient validateParameters(uri, parameters, "httpClient."); configureParameters(parameters); // should we use an exception for failed error codes? Boolean throwExceptionOnFailure = getAndRemoveParameter(parameters, "throwExceptionOnFailure", Boolean.class); Boolean bridgeEndpoint = getAndRemoveParameter(parameters, "bridgeEndpoint", Boolean.class); Boolean matchOnUriPrefix = Boolean.parseBoolean(getAndRemoveParameter(parameters, "matchOnUriPrefix", String.class)); // restructure uri to be based on the parameters left as we dont want to include the Camel internal options URI httpUri = URISupport.createRemainingURI(new URI(uri), CastUtils.cast(parameters)); uri = httpUri.toString(); // validate http uri that end-user did not duplicate the http part that can be a common error String part = httpUri.getSchemeSpecificPart(); if (part != null) { part = part.toLowerCase(); if (part.startsWith("//http//") || part.startsWith("//https//")) { throw new ResolveEndpointFailedException(uri, "The uri part is not configured correctly. You have duplicated the http(s) protocol."); } } HttpEndpoint endpoint = new HttpEndpoint(uri, this, httpUri, clientParams, httpConnectionManager, httpClientConfigurer); if (httpBinding != null) { endpoint.setBinding(httpBinding); } setEndpointHeaderFilterStrategy(endpoint); if (throwExceptionOnFailure != null) { endpoint.setThrowExceptionOnFailure(throwExceptionOnFailure); } if (bridgeEndpoint != null) { endpoint.setBridgeEndpoint(bridgeEndpoint); } if (matchOnUriPrefix != null) { endpoint.setMatchOnUriPrefix(matchOnUriPrefix); } setProperties(endpoint, parameters); return endpoint; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1799</td> 
+     <td>-1422651502</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>9b4dbbb553e2ee759212741d6630b3c64cc92d1a</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> // http client can be configured from URI options HttpParams clientParams = configureHttpParams(parameters); // must extract well known parameters before we create the endpoint HttpBinding binding = resolveAndRemoveReferenceParameter(parameters, "httpBindingRef", HttpBinding.class); Boolean throwExceptionOnFailure = getAndRemoveParameter(parameters, "throwExceptionOnFailure", Boolean.class); Boolean bridgeEndpoint = getAndRemoveParameter(parameters, "bridgeEndpoint", Boolean.class); Boolean matchOnUriPrefix = getAndRemoveParameter(parameters, "matchOnUriPrefix", Boolean.class); // validate that we could resolve all httpClient. parameters as this component is lenient validateParameters(uri, parameters, "httpClient."); // create the configurer to use for this endpoint HttpClientConfigurer configurer = createHttpClientConfigurer(parameters); // restructure uri to be based on the parameters left as we dont want to include the Camel internal options URI httpUri = URISupport.createRemainingURI(new URI(uri), CastUtils.cast(parameters)); uri = httpUri.toString(); // validate http uri that end-user did not duplicate the http part that can be a common error String part = httpUri.getSchemeSpecificPart(); if (part != null) { part = part.toLowerCase(); if (part.startsWith("//http//") || part.startsWith("//https//")) { throw new ResolveEndpointFailedException(uri, "The uri part is not configured correctly. You have duplicated the http(s) protocol."); } } // register port on schema registry boolean secure = isSecureConnection(uri); int port = getPort(httpUri); registerPort(secure, port); // create the endpoint HttpEndpoint endpoint = new HttpEndpoint(uri, this, httpUri, clientParams, clientConnectionManager, configurer); setEndpointHeaderFilterStrategy(endpoint); // prefer to use endpoint configured over component configured if (binding == null) { // fallback to component configured binding = getHttpBinding(); } if (binding != null) { endpoint.setBinding(binding); } // should we use an exception for failed error codes? if (throwExceptionOnFailure != null) { endpoint.setThrowExceptionOnFailure(throwExceptionOnFailure); } if (bridgeEndpoint != null) { endpoint.setBridgeEndpoint(bridgeEndpoint); } if (matchOnUriPrefix != null) { endpoint.setMatchOnUriPrefix(matchOnUriPrefix); } setProperties(endpoint, parameters); return endpoint; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1796</td> 
+     <td>-1422651502</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>e168eaf2246fa3b4b03e5ade7d5356410c1c3d12</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> // http client can be configured from URI options HttpParams clientParams = configureHttpParams(parameters); // must extract well known parameters before we create the endpoint HttpBinding binding = resolveAndRemoveReferenceParameter(parameters, "httpBindingRef", HttpBinding.class); Boolean throwExceptionOnFailure = getAndRemoveParameter(parameters, "throwExceptionOnFailure", Boolean.class); Boolean bridgeEndpoint = getAndRemoveParameter(parameters, "bridgeEndpoint", Boolean.class); Boolean matchOnUriPrefix = getAndRemoveParameter(parameters, "matchOnUriPrefix", Boolean.class); // validate that we could resolve all httpClient. parameters as this component is lenient validateParameters(uri, parameters, "httpClient."); // create the configurer to use for this endpoint HttpClientConfigurer configurer = createHttpClientConfigurer(parameters); // restructure uri to be based on the parameters left as we dont want to include the Camel internal options URI httpUri = URISupport.createRemainingURI(new URI(uri), CastUtils.cast(parameters)); uri = httpUri.toString(); // validate http uri that end-user did not duplicate the http part that can be a common error String part = httpUri.getSchemeSpecificPart(); if (part != null) { part = part.toLowerCase(); if (part.startsWith("//http//") || part.startsWith("//https//")) { throw new ResolveEndpointFailedException(uri, "The uri part is not configured correctly. You have duplicated the http(s) protocol."); } } // register port on schema registry boolean secure = isSecureConnection(uri); int port = getPort(httpUri); registerPort(secure, port); // create the endpoint HttpEndpoint endpoint = new HttpEndpoint(uri, this, httpUri, clientParams, clientConnectionManager, configurer); setEndpointHeaderFilterStrategy(endpoint); // prefer to use endpoint configured over component configured if (binding == null) { // fallback to component configured binding = getHttpBinding(); } if (binding != null) { endpoint.setBinding(binding); } // should we use an exception for failed error codes? if (throwExceptionOnFailure != null) { endpoint.setThrowExceptionOnFailure(throwExceptionOnFailure); } if (bridgeEndpoint != null) { endpoint.setBridgeEndpoint(bridgeEndpoint); } if (matchOnUriPrefix != null) { endpoint.setMatchOnUriPrefix(matchOnUriPrefix); } setProperties(endpoint, parameters); return endpoint; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1638</td> 
+     <td>-1422651502</td> 
+     <td>apache/camel</td> 
+     <td>Jonathan Anstey</td> 
+     <td>25760d40249d453fda1bf76ff08718a06ed264bc</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> // http client can be configured from URI options HttpClientParams clientParams = new HttpClientParams(); IntrospectionSupport.setProperties(clientParams, parameters, "httpClient."); // validate that we could resolve all httpClient. parameters as this component is lenient validateParameters(uri, parameters, "httpClient."); configureParameters(parameters); // should we use an exception for failed error codes? Boolean throwExceptionOnFailure = getAndRemoveParameter(parameters, "throwExceptionOnFailure", Boolean.class); Boolean bridgeEndpoint = getAndRemoveParameter(parameters, "bridgeEndpoint", Boolean.class); Boolean matchOnUriPrefix = Boolean.parseBoolean(getAndRemoveParameter(parameters, "matchOnUriPrefix", String.class)); // restructure uri to be based on the parameters left as we dont want to include the Camel internal options URI httpUri = URISupport.createRemainingURI(new URI(uri), CastUtils.cast(parameters)); uri = httpUri.toString(); // validate http uri that end-user did not duplicate the http part that can be a common error String part = httpUri.getSchemeSpecificPart(); if (part != null) { part = part.toLowerCase(); if (part.startsWith("//http//") || part.startsWith("//https//")) { throw new ResolveEndpointFailedException(uri, "The uri part is not configured correctly. You have duplicated the http(s) protocol."); } } HttpEndpoint endpoint = new HttpEndpoint(uri, this, httpUri, clientParams, httpConnectionManager, httpClientConfigurer); if (httpBinding != null) { endpoint.setBinding(httpBinding); } setEndpointHeaderFilterStrategy(endpoint); if (throwExceptionOnFailure != null) { endpoint.setThrowExceptionOnFailure(throwExceptionOnFailure); } if (bridgeEndpoint != null) { endpoint.setBridgeEndpoint(bridgeEndpoint); } if (matchOnUriPrefix != null) { endpoint.setMatchOnUriPrefix(matchOnUriPrefix); } setProperties(endpoint, parameters); return endpoint; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1030</td> 
+     <td>-1422651502</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>852f26a1b2801c62e6286e207a8bcabb7dc19256</td> 
+     <td>None</td> 
+     <td>validate that we could resolve all httpClient. parameters as this component is lenient</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(String, String, Map)</td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map parameters) throws Exception</td> 
+     <td> // http client can be configured from URI options HttpClientParams clientParams = new HttpClientParams(); IntrospectionSupport.setProperties(clientParams, parameters, "httpClient."); // validate that we could resolve all httpClient. parameters as this component is lenient validateUnknownParameters(uri, parameters, "httpClient."); configureParameters(parameters); // restructure uri to be based on the parameters left as we dont want to include the Camel internal options URI httpUri = URISupport.createRemainingURI(new URI(uri), parameters); uri = httpUri.toString(); // validate http uri that end-user did not duplicate the http part that can be a common error String part = httpUri.getSchemeSpecificPart(); if (part != null) { part = part.toLowerCase(); if (part.startsWith("//http//") || part.startsWith("//https//")) { throw new ResolveEndpointFailedException(uri, "The uri part is not configured correctly. You have duplicated the http(s) protocol."); } } HttpEndpoint endpoint = new HttpEndpoint(uri, this, httpUri, clientParams, httpConnectionManager, httpClientConfigurer); if (httpBinding != null) { endpoint.setBinding(httpBinding); } return endpoint; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

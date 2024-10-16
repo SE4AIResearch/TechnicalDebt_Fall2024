@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>675</td> 
+     <td>-1422651673</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>c7ad8ba6008aad2044f8af82c5c8439e384f504c</td> 
+     <td>TODO we need to find other way to instrument the route. below codes adding wrap the processor with all the processors which are already wrapped by the InstrumentationInterceptStrategy</td> 
+     <td>TODO we need to find other way to instrument the route. Below codes will wrap the interceptor (route instrumentation processor) to the each processors which are already wrapped by the InstrumentationInterceptStrategy, And the router couter will be increased when the processors process the exchange</td> 
+     <td>SATD_REMOVED</td> 
+     <td>onRouteContextCreate(RouteContext)</td> 
+     <td>public void onRouteContextCreate(RouteContext routeContext)</td> 
+     <td> // Create a map (ProcessorType -&gt; PerformanceCounter) // to be passed to InstrumentationInterceptStrategy. Map<processortype, performancecounter>
+        counterMap = new HashMap
+       <processortype, performancecounter>
+        (); // Each processor in a route will have its own performance counter // The performance counter are MBeans that we register with MBeanServer. // These performance counter will be embedded // to InstrumentationProcessor and wrap the appropriate processor // by InstrumentationInterceptStrategy. RouteType route = routeContext.getRoute(); for (ProcessorType processor : route.getOutputs()) { PerformanceCounter pc = new PerformanceCounter(); try { agent.register(pc, getNamingStrategy().getObjectName(routeContext, processor)); } catch (JMException e) { LOG.warn("Could not register Counter MBean", e); } counterMap.put(processor, pc); } routeContext.addInterceptStrategy(new InstrumentationInterceptStrategy(counterMap)); // TODO we need to find other way to instrument the route. // Below codes will wrap the interceptor (route instrumentation processor) to // the each processors which are already wrapped by the InstrumentationInterceptStrategy, // And the router couter will be increased when the processors process the exchange /* // Add an InstrumentationProcessor at the beginning of each route and // set up the interceptorMap for onRoutesAdd() method to register the // ManagedRoute MBeans. RouteType routeType = routeContext.getRoute(); if (routeType.getInputs() != null &amp;&amp; !routeType.getInputs().isEmpty()) { if (routeType.getInputs().size() &gt; 1) { LOG.warn("Add InstrumentationProcessor to first input only."); } Endpoint endpoint = routeType.getInputs().get(0).getEndpoint(); InstrumentationProcessor processor = new InstrumentationProcessor(); routeType.addInterceptor(processor); interceptorMap.put(endpoint, processor); }*/ 
+       </processortype,>
+      </processortype,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>668</td> 
+     <td>-1422651673</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>dfa9b54b6d722119a1846ba8567a2657dfdebcd2</td> 
+     <td>None</td> 
+     <td>TODO we need to find other way to instrument the route. below codes adding wrap the processor with all the processors which are already wrapped by the InstrumentationInterceptStrategy</td> 
+     <td>SATD_ADDED</td> 
+     <td>onRouteContextCreate(RouteContext)</td> 
+     <td>public void onRouteContextCreate(RouteContext routeContext)</td> 
+     <td> // Create a map (ProcessorType -&gt; PerformanceCounter) // to be passed to InstrumentationInterceptStrategy. Map<processortype, performancecounter>
+        counterMap = new HashMap
+       <processortype, performancecounter>
+        (); // Each processor in a route will have its own performance counter // The performance counter are MBeans that we register with MBeanServer. // These performance counter will be embedded // to InstrumentationProcessor and wrap the appropriate processor // by InstrumentationInterceptStrategy. RouteType route = routeContext.getRoute(); for (ProcessorType processor : route.getOutputs()) { PerformanceCounter pc = new PerformanceCounter(); try { agent.register(pc, getNamingStrategy().getObjectName(routeContext, processor)); } catch (JMException e) { LOG.warn("Could not register Counter MBean", e); } counterMap.put(processor, pc); } routeContext.addInterceptStrategy(new InstrumentationInterceptStrategy(counterMap)); // TODO we need to find other way to instrument the route. // below codes adding wrap the processor with all the processors which are already wrapped // by the InstrumentationInterceptStrategy /* // Add an InstrumentationProcessor at the beginning of each route and // set up the interceptorMap for onRoutesAdd() method to register the // ManagedRoute MBeans. RouteType routeType = routeContext.getRoute(); if (routeType.getInputs() != null &amp;&amp; !routeType.getInputs().isEmpty()) { if (routeType.getInputs().size() &gt; 1) { LOG.warn("Add InstrumentationProcessor to first input only."); } Endpoint endpoint = routeType.getInputs().get(0).getEndpoint(); InstrumentationProcessor processor = new InstrumentationProcessor(); routeType.addInterceptor(processor); interceptorMap.put(endpoint, processor); }*/ 
+       </processortype,>
+      </processortype,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3974</td> <td>1242677658</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>a1c167f20ab5e53f927d2680022311b55e1a9dc0</td> <td>None</td> <td>TODO log accounts with duplicate emails</td> <td>SATD_ADDED</td> <td>keysFor(SchemaFactory<ReviewDb>, String)</td> <td>public static List<AccountSshKey> keysFor(final SchemaFactory<ReviewDb> rdf, final String username)</td> <td>
+    synchronized (keys) {
+        final List<AccountSshKey> r = keys.get(username);
+        if (r != null) {
+            return r;
+        }
+    }
+    List<AccountSshKey> kl;
+    try {
+        final ReviewDb db = rdf.open();
+        try {
+            final List<Account> matches = db.accounts().byPreferredEmail(username).toList();
+            if (matches.isEmpty()) {
+                return Collections.<AccountSshKey>emptyList();
+            } else if (matches.size() > 1) {
+                // TODO log accounts with duplicate emails
+                return Collections.<AccountSshKey>emptyList();
+            }
+            kl = db.accountSshKeys().byAccount(matches.get(0).getId()).toList();
+        } finally {
+            db.close();
+        }
+    } catch (OrmException err) {
+        // TODO log database query error
+        return Collections.<AccountSshKey>emptyList();
+    }
+    kl = Collections.unmodifiableList(kl);
+    synchronized (keys) {
+        keys.put(username, kl);
+    }
+    return kl;
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3020</td> 
+     <td>-1422650502</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>01d587525f937b3135791f1c1d100909b245382a</td> 
+     <td>build answer accordingly to whether namespaces should be inherited or not REVISIT should skip the prefixes that are declared within the child itself.</td> 
+     <td>build answer accordingly to whether namespaces should be inherited or not</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createIterator(InputStream, String)</td> 
+     <td>protected Iterator<!--?--> createIterator(InputStream in, String charset)</td> 
+     <td> XMLTokenIterator iterator = new XMLTokenIterator(tagToken, inheritNamespaceToken, in, charset); iterator.init(); return iterator; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2858</td> 
+     <td>-1422650502</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>da163b70e5180ebb0386146f1e0abb9d73ca4ae7</td> 
+     <td>None</td> 
+     <td>build answer accordingly to whether namespaces should be inherited or not REVISIT should skip the prefixes that are declared within the child itself.</td> 
+     <td>SATD_ADDED</td> 
+     <td>getNext(boolean)</td> 
+     <td> String getNext(boolean first)</td> 
+     <td> // initialize inherited namespaces on first if (first &amp;&amp; inheritNamespaceToken != null) { rootTokenNamespaces = getNamespacesFromNamespaceToken(scanner.findWithinHorizon(inheritNamespaceTokenPattern, 0)); } String next = scanner.findWithinHorizon(tagTokenPattern, 0); if (next == null) { return null; } // build answer accordingly to whether namespaces should be inherited or not // REVISIT should skip the prefixes that are declared within the child itself. if (inheritNamespaceToken != null &amp;&amp; rootTokenNamespaces != null) { String head = ObjectHelper.before(next, "&gt;"); boolean empty = false; if (head.endsWith("/")) { head = head.substring(0, head.length() - 1); empty = true; } StringBuilder sb = new StringBuilder(); // append root namespaces to local start token // grab the text String tail = ObjectHelper.after(next, "&gt;"); // build result with inherited namespaces next = sb.append(head).append(rootTokenNamespaces).append(empty ? "/&gt;" : "&gt;").append(tail).toString(); } return next; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

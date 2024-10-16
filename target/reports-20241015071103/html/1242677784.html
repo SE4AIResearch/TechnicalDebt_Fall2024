@@ -1,0 +1,72 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4253</td> <td>1242677784</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>75afdfdc843b7dfb4c9dc2676e162b21d7df7684</td> <td>None</td> <td>TODO Support per-branch READ access.</td> <td>SATD_ADDED</td> <td>call()</td> <td>public ProjectDetail call() throws NoSuchProjectException, OrmException, NoSuchGroupException, InvalidNameException</td> <td>
+    final ProjectControl projectControl = projectControlFactory.ownerFor(projectName);
+    final ApprovalType at = approvalTypes.getApprovalType(categoryId);
+    if (at == null || at.getValue(min) == null || at.getValue(max) == null) {
+        throw new IllegalArgumentException("Invalid category " + categoryId + " or range " + min + ".." + max);
+    }
+    String refPattern = this.refPattern;
+    if (refPattern == null || refPattern.isEmpty()) {
+        if (categoryId.equals(ApprovalCategory.SUBMIT) || categoryId.equals(ApprovalCategory.PUSH_HEAD)) {
+            // Explicitly related to a branch head.
+            refPattern = "refs/heads/*";
+        } else if (!at.getCategory().isAction()) {
+            // Non actions are approval votes on a change, assume these apply
+            // to branch heads only.
+            refPattern = "refs/heads/*";
+        } else if (categoryId.equals(ApprovalCategory.PUSH_TAG)) {
+            // Explicitly related to the tag namespace.
+            refPattern = "refs/tags/*";
+        } else if (categoryId.equals(ApprovalCategory.READ) || categoryId.equals(ApprovalCategory.OWN)) {
+            // Currently these are project-wide rights, so apply that way.
+            refPattern = "refs/*";
+        } else {
+            // Assume project wide for the default.
+            refPattern = "refs/*";
+        }
+    }
+    while (refPattern.startsWith("/")) {
+        refPattern = refPattern.substring(1);
+    }
+    if (!refPattern.startsWith(Constants.R_REFS)) {
+        refPattern = Constants.R_HEADS + refPattern;
+    }
+    if (refPattern.endsWith("/*")) {
+        final String prefix = refPattern.substring(0, refPattern.length() - 2);
+        if (!Repository.isValidRefName(prefix)) {
+            throw new InvalidNameException();
+        }
+    } else {
+        if (!Repository.isValidRefName(refPattern)) {
+            throw new InvalidNameException();
+        }
+    }
+    // TODO Support per-branch READ access.
+    if (ApprovalCategory.READ.equals(categoryId) && !refPattern.equals("refs/*")) {
+        throw new UnsupportedOperationException("READ on " + refPattern + " not yet supported.");
+    }
+    final AccountGroup group = groupCache.get(groupName);
+    if (group == null) {
+        throw new NoSuchGroupException(groupName);
+    }
+    final RefRight.Key key = new RefRight.Key(projectName, new RefRight.RefPattern(refPattern), categoryId, group.getId());
+    RefRight rr = db.refRights().get(key);
+    if (rr == null) {
+        rr = new RefRight(key);
+        rr.setMinValue(min);
+        rr.setMaxValue(max);
+        db.refRights().insert(Collections.singleton(rr));
+    } else {
+        rr.setMinValue(min);
+        rr.setMaxValue(max);
+        db.refRights().update(Collections.singleton(rr));
+    }
+    projectCache.evict(projectControl.getProject());
+    return projectDetailFactory.create(projectName).call();
+</td> </tr></table></body></html>

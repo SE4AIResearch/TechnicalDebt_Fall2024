@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2948</td> 
+     <td>-1422650479</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>07bc39c29c6649899f8f375ba02c6eabf97a0564</td> 
+     <td>we're done so let's properly close the application contexts</td> 
+     <td>we're done so let's properly close the application contexts, but stop the second app before the first one so that the quartz scheduler running inside it can properly be shutdown</td> 
+     <td>SATD_REMOVED</td> 
+     <td>testQuartzPersistentStoreRestart()</td> 
+     <td>public void testQuartzPersistentStoreRestart() throws Exception</td> 
+     <td> // load spring app AbstractXmlApplicationContext app = new ClassPathXmlApplicationContext("org/apache/camel/component/quartz2/SpringQuartzPersistentStoreTest.xml"); app.start(); CamelContext camel = app.getBean("camelContext", CamelContext.class); assertNotNull(camel); MockEndpoint mock = camel.getEndpoint("mock:result", MockEndpoint.class); mock.expectedMinimumMessageCount(2); mock.assertIsSatisfied(); app.stop(); log.info("Restarting ..."); log.info("Restarting ..."); log.info("Restarting ..."); // NOTE: // To test a restart where the app has crashed, then you can in QuartzEndpoint // in the doShutdown method, then remove the following code line // deleteTrigger(getTrigger()); // then when we restart then there is old stale data which QuartzComponent // is supposed to handle and start again // load spring app AbstractXmlApplicationContext app2 = new ClassPathXmlApplicationContext("org/apache/camel/component/quartz2/SpringQuartzPersistentStoreRestartTest.xml"); app2.start(); CamelContext camel2 = app2.getBean("camelContext", CamelContext.class); assertNotNull(camel2); MockEndpoint mock2 = camel2.getEndpoint("mock:result", MockEndpoint.class); mock2.expectedMinimumMessageCount(2); mock2.assertIsSatisfied(); app2.stop(); // we're done so let's properly close the application contexts, but stop // the second app before the first one so that the quartz scheduler running // inside it can properly be shutdown app2.close(); app.close(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2906</td> 
+     <td>-1422650479</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>e429d7c019f4cebd82ee4c42f7a16c4bebfb8222</td> 
+     <td>None</td> 
+     <td>we're done so let's properly close the application contexts</td> 
+     <td>SATD_ADDED</td> 
+     <td>testQuartzPersistentStoreRestart()</td> 
+     <td>public void testQuartzPersistentStoreRestart() throws Exception</td> 
+     <td> // load spring app AbstractXmlApplicationContext app = new ClassPathXmlApplicationContext("org/apache/camel/component/quartz2/SpringQuartzPersistentStoreTest.xml"); app.start(); CamelContext camel = app.getBean("camelContext", CamelContext.class); assertNotNull(camel); MockEndpoint mock = camel.getEndpoint("mock:result", MockEndpoint.class); mock.expectedMinimumMessageCount(2); mock.assertIsSatisfied(); app.stop(); log.info("Restarting ..."); log.info("Restarting ..."); log.info("Restarting ..."); // NOTE: // To test a restart where the app has crashed, then you can in QuartzEndpoint // in the doShutdown method, then remove the following code line // deleteTrigger(getTrigger()); // then when we restart then there is old stale data which QuartzComponent // is supposed to handle and start again // load spring app AbstractXmlApplicationContext app2 = new ClassPathXmlApplicationContext("org/apache/camel/component/quartz2/SpringQuartzPersistentStoreRestartTest.xml"); app2.start(); CamelContext camel2 = app2.getBean("camelContext", CamelContext.class); assertNotNull(camel2); MockEndpoint mock2 = camel2.getEndpoint("mock:result", MockEndpoint.class); mock2.expectedMinimumMessageCount(2); mock2.assertIsSatisfied(); app2.stop(); // we're done so let's properly close the application contexts app.close(); app2.close(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2672</td> <td>-1422650615</td><td>apache/camel</td><td>Claus Ibsen</td><td>aafec85863dea3bf8a758b6fea0f78ea6251ce4a</td> <td>None</td> <td>TODO we may want to try avoid the dependency on JNDI classes
+for better operation in GAE?</td> <td>SATD_ADDED</td> <td>provideObjectFromNamedBindingOrJndi(TypeLiteral<?>, String)</td> <td>protected Object provideObjectFromNamedBindingOrJndi(TypeLiteral<?> requiredType, String name)</td> <td>
+    Binding<?> binding = Injectors.getBinding(injector, Key.get(requiredType, Names.named(name)));
+    if (binding != null) {
+        return binding.getProvider().get();
+    }
+    // TODO we may want to try avoid the dependency on JNDI classes
+    // for better operation in GAE?
+    try {
+        if (context == null) {
+            context = new InitialContext();
+        }
+        return context.lookup(name);
+    } catch (NamingException e) {
+        throw new ProvisionException("Failed to find name '" + name + "' in JNDI. Cause: " + e, e);
+    }
+</td> </tr></table></body></html>

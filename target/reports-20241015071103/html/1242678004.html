@@ -1,0 +1,33 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4662</td> <td>1242678004</td><td>GerritCodeReview/gerrit</td><td>David Ostrovsky</td><td>a570dbfb06570696f91d9136ee43d9a26ce339e7</td> <td>None</td> <td>TODO(davido): This should happen in the same BatchRefUpdate.</td> <td>SATD_ADDED</td> <td>publish(ChangeEdit)</td> <td>public void publish(ChangeEdit edit) throws AuthException, NoSuchChangeException, IOException, InvalidChangeOperationException, OrmException, ResourceConflictException</td> <td>
+    Change change = edit.getChange();
+    Repository repo = gitManager.openRepository(change.getProject());
+    try {
+        RevWalk rw = new RevWalk(repo);
+        ObjectInserter inserter = repo.newObjectInserter();
+        try {
+            RevCommit editCommit = rw.parseCommit(edit.getRef().getObjectId());
+            if (editCommit == null) {
+                throw new NoSuchChangeException(change.getId());
+            }
+            PatchSet basePatchSet = getBasePatchSet(edit, editCommit);
+            if (!basePatchSet.getId().equals(change.currentPatchSetId())) {
+                throw new ResourceConflictException("only edit for current patch set can be published");
+            }
+            insertPatchSet(edit, change, repo, rw, basePatchSet, squashEdit(repo, rw, inserter, editCommit, basePatchSet));
+        } finally {
+            inserter.release();
+            rw.release();
+        }
+        // TODO(davido): This should happen in the same BatchRefUpdate.
+        deleteRef(repo, edit);
+    } finally {
+        repo.close();
+    }
+</td> </tr></table></body></html>

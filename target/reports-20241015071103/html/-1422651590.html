@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>819</td> <td>-1422651590</td><td>apache/camel</td><td>Claus Ibsen</td><td>0a7458148693c7c114a17eeecaeb5f71bd61886b</td> <td>None</td> <td>TODO: See CAMEL-585</td> <td>SATD_ADDED</td> <td>xxxtestSendError()</td> <td>public void xxxtestSendError() throws Exception</td> <td>
+    // TODO: See CAMEL-585
+    Object out = template.requestBody("activemq:queue:error", "Hello World");
+    assertEquals("Damm", out);
+</td> </tr></table></body></html>

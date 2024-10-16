@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3897</td> <td>-1422649935</td><td>apache/camel</td><td>Daniel Kulp</td><td>701651e9f3b318ccb4b8a8872c1e8e989fcf3ffd</td> <td>None</td> <td>TODO: use a proper CreationalContext...</td> <td>SATD_ADDED</td> <td>evaluate()</td> <td>public void evaluate() throws Throwable</td> <td>
+    BeanManager manager = context.getBeanManager();
+    Type[] types = method.getMethod().getGenericParameterTypes();
+    Object[] parameters = new Object[types.length];
+    for (int i = 0; i < types.length; i++) {
+        // TODO: use a proper CreationalContext...
+        parameters[i] = manager.getInjectableReference(new FrameworkMethodInjectionPoint(method.getMethod(), i, manager), manager.createCreationalContext(null));
+    }
+    method.invokeExplosively(test, parameters);
+</td> </tr></table></body></html>

@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1239</td> <td>-1422651411</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>a4e7f76960b87983d3522afc1a322dd6958f002f</td> <td>None</td> <td>TODO: Routes are temporary disabled until the code in InstrumentationLifecycleStrategy is fixed</td> <td>SATD_ADDED</td> <td>testQueryMbeans()</td> <td>public void testQueryMbeans() throws Exception</td> <td>
+    // TODO: Routes are temporary disabled until the code in InstrumentationLifecycleStrategy is fixed
+    // assertEquals(1, mbsc.queryNames(new ObjectName("org.apache.camel" + ":type=routes,*"), null).size());
+    assertEquals(1, mbsc.queryNames(new ObjectName("org.apache.camel" + ":type=processors,*"), null).size());
+</td> </tr></table></body></html>

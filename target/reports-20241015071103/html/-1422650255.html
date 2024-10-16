@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3239</td> <td>-1422650255</td><td>apache/camel</td><td>Jonathan Anstey</td><td>301153bb55afc839ca71e81254fc1c11cf07a6fe</td> <td>None</td> <td>TODO provide parameter values for patch</td> <td>SATD_ADDED</td> <td>testPatch()</td> <td>public void testPatch() throws Exception</td> <td>
+    final Map<String, Object> headers = new HashMap<String, Object>();
+    // parameter type is String
+    headers.put("CamelGoogleDrive.fileId", null);
+    // parameter type is String
+    headers.put("CamelGoogleDrive.revisionId", null);
+    // parameter type is com.google.api.services.drive.model.Revision
+    headers.put("CamelGoogleDrive.content", null);
+    final com.google.api.services.drive.Drive.Revisions.Patch result = requestBodyAndHeaders("direct://PATCH", null, headers);
+    assertNotNull("patch result", result);
+    LOG.debug("patch: " + result);
+</td> </tr></table></body></html>

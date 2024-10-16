@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2437</td> 
+     <td>-1422650913</td> 
+     <td>apache/camel</td> 
+     <td>J. Daniel Kulp</td> 
+     <td>db2cc43134f7e788d0b15bbbf9762f69cd0218c8</td> 
+     <td>receive purchase orders, lets process it in some way then send an invoice to our invoice endpoint</td> 
+     <td>we received purchase orders, so let's process it in some way then send an invoice to our invoice endpoint</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createRegistry()</td> 
+     <td>protected JndiRegistry createRegistry() throws Exception</td> 
+     <td> JndiRegistry registry = super.createRegistry(); // let's create our black box as a Camel context and a set of routes DefaultCamelContext blackBox = new DefaultCamelContext(registry); blackBox.setName("blackBox"); blackBox.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { // we received purchase orders, so let's process it in some way then // send an invoice to our invoice endpoint from("direct:purchaseOrder").setHeader("received").constant("true").to("direct:invoice"); } }); blackBox.start(); registry.bind("accounts", blackBox); return registry; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2188</td> 
+     <td>-1422650913</td> 
+     <td>apache/camel</td> 
+     <td>Christian Mueller</td> 
+     <td>c270665282b23a9251bb5ec26fe71f3da1fd950a</td> 
+     <td>receive purchase orders, lets process it in some way then send an invoice to our invoice endpoint</td> 
+     <td>receive purchase orders, lets process it in some way then send an invoice to our invoice endpoint</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createRegistry()</td> 
+     <td>protected JndiRegistry createRegistry() throws Exception</td> 
+     <td> JndiRegistry registry = super.createRegistry(); // lets create our black box as a camel context and a set of routes DefaultCamelContext blackBox = new DefaultCamelContext(registry); blackBox.setName("blackBox"); blackBox.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { // receive purchase orders, lets process it in some way then // send an invoice to our invoice endpoint from("direct:purchaseOrder").setHeader("received").constant("true").to("direct:invoice"); } }); blackBox.start(); registry.bind("accounts", blackBox); return registry; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2163</td> 
+     <td>-1422650913</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>44362d07e350795e5ae4bf09adc4515b1300058f</td> 
+     <td>None</td> 
+     <td>receive purchase orders, lets process it in some way then send an invoice to our invoice endpoint</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRegistry()</td> 
+     <td>protected JndiRegistry createRegistry() throws Exception</td> 
+     <td> JndiRegistry registry = super.createRegistry(); // lets create our black box as a camel context and a set of routes DefaultCamelContext blackBox = new DefaultCamelContext(registry); blackBox.setName("blackBox"); blackBox.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { // receive purchase orders, lets process it in some way then send an invoice // to our invoice endpoint from("direct:purchaseOrder").setHeader("received").constant("true").to("direct:invoice"); } }); blackBox.start(); registry.bind("accounts", blackBox); return registry; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

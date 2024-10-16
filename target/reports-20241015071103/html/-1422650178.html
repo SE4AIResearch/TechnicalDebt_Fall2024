@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3403</td> <td>-1422650178</td><td>apache/camel</td><td>Willem Jiang</td><td>5b3826ea53111bba65c7a6238e1378927cfb1897</td> <td>None</td> <td>TODO Manage the read preference</td> <td>SATD_ADDED</td> <td>doCommand(Exchange)</td> <td>protected void doCommand(Exchange exchange) throws Exception</td> <td>
+    DBObject result = null;
+    DB db = calculateDb(exchange);
+    DBObject cmdObj = exchange.getIn().getMandatoryBody(DBObject.class);
+    // TODO Manage the read preference
+    result = db.command(cmdObj);
+    Message responseMessage = prepareResponseMessage(exchange, MongoDbOperation.command);
+    responseMessage.setBody(result);
+</td> </tr></table></body></html>

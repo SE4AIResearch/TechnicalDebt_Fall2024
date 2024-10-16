@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2061</td> <td>-1422650970</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>f89ecd4b63573eb30753e5a42aac18d45ae6b56b</td> <td>None</td> <td>maybe from is already the type we want</td> <td>SATD_ADDED</td> <td>convertTo(Class<?>, Exchange, Object, TypeConverterRegistry)</td> <td>public static Object convertTo(Class<?> type, Exchange exchange, Object value, TypeConverterRegistry registry)</td> <td>
+    // use a fallback type converter so we can convert the embedded body if the value is GenericFile
+    if (GenericFile.class.isAssignableFrom(value.getClass())) {
+        GenericFile file = (GenericFile) value;
+        Class<?> from = file.getBody().getClass();
+        // maybe from is already the type we want
+        if (from.isAssignableFrom(type)) {
+            return file.getBody();
+        }
+        // no then try to lookup a type converter
+        TypeConverter tc = registry.lookup(type, from);
+        if (tc != null) {
+            Object body = file.getBody();
+            return tc.convertTo(type, exchange, body);
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

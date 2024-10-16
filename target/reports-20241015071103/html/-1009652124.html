@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5590</td> <td>-1009652124</td><td>apache/hadoop</td><td>Eli Collins</td><td>7e1e4bf50fa83083e762fc267b5215d606a64c3e</td> <td>None</td> <td>Only need todo this once</td> <td>SATD_ADDED</td> <td>compress(byte[], int, int)</td> <td>public synchronized int compress(byte[] b, int off, int len) throws IOException</td> <td>
+    if (b == null) {
+        throw new NullPointerException();
+    }
+    if (off < 0 || len < 0 || off > b.length - len) {
+        throw new ArrayIndexOutOfBoundsException();
+    }
+    if (finished || outBuf.position() == 0) {
+        finished = true;
+        return 0;
+    }
+    // Only need todo this once
+    if (compressedBuf.position() == 0) {
+        try {
+            outBuf.limit(outBuf.position());
+            outBuf.rewind();
+            int lim = Snappy.compress(outBuf, compressedBuf);
+            compressedBuf.limit(lim);
+            compressedBuf.rewind();
+        } catch (SnappyException e) {
+            throw new IOException(e);
+        }
+    }
+    int n = (compressedBuf.limit() - compressedBuf.position()) > len ? len : (compressedBuf.limit() - compressedBuf.position());
+    if (n == 0) {
+        finished = true;
+        return 0;
+    }
+    compressedBuf.get(b, off, n);
+    bytesWritten += n;
+    // Set 'finished' if snappy has consumed all user-data
+    if (compressedBuf.position() == compressedBuf.limit()) {
+        finished = true;
+        outBuf.limit(outBuf.capacity());
+        outBuf.rewind();
+        compressedBuf.limit(compressedBuf.capacity());
+        compressedBuf.rewind();
+    }
+    return n;
+</td> </tr></table></body></html>

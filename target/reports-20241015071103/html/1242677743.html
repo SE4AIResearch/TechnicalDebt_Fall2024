@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4205</td> <td>1242677743</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>No canonical URL configured? Maybe we can get a reasonable
+guess from the incoming HTTP request, if we are currently
+inside of an HTTP request scope.
+</td> <td>SATD_ADDED</td> <td>get()</td> <td>public String get()</td> <td>
+    String canonicalUrl = super.get();
+    if (canonicalUrl != null) {
+        return canonicalUrl;
+    }
+    if (requestProvider != null) {
+        // No canonical URL configured? Maybe we can get a reasonable
+        // guess from the incoming HTTP request, if we are currently
+        // inside of an HTTP request scope.
+        // 
+        final HttpServletRequest req;
+        try {
+            req = requestProvider.get();
+        } catch (ProvisionException noWeb) {
+            if (noWeb.getCause() instanceof OutOfScopeException) {
+                // We can't obtain the request as we are not inside of
+                // an HTTP request scope. Callers must handle null.
+                // 
+                return null;
+            } else {
+                throw noWeb;
+            }
+        }
+        final StringBuffer url = req.getRequestURL();
+        url.setLength(url.length() - req.getServletPath().length());
+        if (url.charAt(url.length() - 1) != '/') {
+            url.append('/');
+        }
+        return url.toString();
+    }
+    // We have no way of guessing our HTTP url.
+    // 
+    return null;
+</td> </tr></table></body></html>

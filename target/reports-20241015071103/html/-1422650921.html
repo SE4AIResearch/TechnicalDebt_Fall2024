@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2148</td> <td>-1422650921</td><td>apache/camel</td><td>Claus Ibsen</td><td>fd3732cc05de27053eaafb92ca15d4149ee33ea1</td> <td>None</td> <td>TODO: simple is @deprecated and should be removed in Camel 2.7 when we upgrade to Spring 3</td> <td>SATD_ADDED</td> <td>chooseMessageListenerContainerImplementation(JmsEndpoint)</td> <td>public AbstractMessageListenerContainer chooseMessageListenerContainerImplementation(JmsEndpoint endpoint)</td> <td>
+    switch(consumerType) {
+        case Simple:
+            // TODO: simple is @deprecated and should be removed in Camel 2.7 when we upgrade to Spring 3
+            return new SimpleMessageListenerContainer();
+        case Default:
+            return new JmsMessageListenerContainer(endpoint);
+        default:
+            throw new IllegalArgumentException("Unknown consumer type: " + consumerType);
+    }
+</td> </tr></table></body></html>

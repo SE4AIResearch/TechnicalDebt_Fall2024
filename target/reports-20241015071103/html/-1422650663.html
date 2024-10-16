@@ -1,0 +1,118 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2979</td> 
+     <td>-1422650663</td> 
+     <td>apache/camel</td> 
+     <td>Antoine Sabot-Durand</td> 
+     <td>0a241dd992188e78e0f2ddf6fdad7ed91c34d7a8</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget<!--?-->)</td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget<!--?--> event)</td> 
+     <td> final InjectionTarget injectionTarget = event.getInjectionTarget(); AnnotatedType annotatedType = event.getAnnotatedType(); final Class<object> beanClass = annotatedType.getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = injectionTarget.toString(); ContextName contextName = annotatedType.getAnnotation(ContextName.class); final BeanAdapter adapter = createBeanAdapter(beanClass, contextName); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(CamelExtension.this, instance, beanName); } }; event.setInjectionTarget(newTarget); } </object></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2597</td> 
+     <td>-1422650663</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>ba4e484b62a3a599d2789737229a37260fa396e5</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget<object>)</object></td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget<object> event)</object></td> 
+     <td> final InjectionTarget<object> injectionTarget = event.getInjectionTarget(); AnnotatedType<object> annotatedType = event.getAnnotatedType(); final Class<object> beanClass = annotatedType.getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = injectionTarget.toString(); ContextName contextName = annotatedType.getAnnotation(ContextName.class); final BeanAdapter adapter = createBeanAdapter(beanClass, contextName); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(CamelExtension.this, instance, beanName); } }; event.setInjectionTarget(newTarget); } </object></object></object></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2594</td> 
+     <td>-1422650663</td> 
+     <td>apache/camel</td> 
+     <td>Christian Mueller</td> 
+     <td>f3a6e865a59b91aad525732ef17c4a870657640e</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget<object>)</object></td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget<object> event)</object></td> 
+     <td> final InjectionTarget<object> injectionTarget = event.getInjectionTarget(); AnnotatedType<object> annotatedType = event.getAnnotatedType(); final Class<object> beanClass = annotatedType.getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = injectionTarget.toString(); ContextName contextName = annotatedType.getAnnotation(ContextName.class); final BeanAdapter adapter = createBeanAdapter(beanClass, contextName); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(CamelExtension.this, instance, beanName); } }; event.setInjectionTarget(newTarget); } </object></object></object></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2592</td> 
+     <td>-1422650663</td> 
+     <td>apache/camel</td> 
+     <td>Babak Vahdat</td> 
+     <td>1d60d2619ba364232b98a151f5692c1062d8e2da</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget)</td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget event)</td> 
+     <td> final InjectionTarget injectionTarget = event.getInjectionTarget(); final Class beanClass = event.getAnnotatedType().getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = event.getInjectionTarget().toString(); final BeanAdapter adapter = createBeanAdapter(beanClass); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(CamelExtension.this, instance, beanName); } }; event.setInjectionTarget(newTarget); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2591</td> 
+     <td>-1422650663</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>512e3d78e5d723036ac4fef4021b6f49620afb88</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget<object>)</object></td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget<object> event)</object></td> 
+     <td> final InjectionTarget<object> injectionTarget = event.getInjectionTarget(); final Class<!--?--> beanClass = event.getAnnotatedType().getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = event.getInjectionTarget().toString(); final BeanAdapter adapter = createBeanAdapter(beanClass); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(getPostProcessor(), instance, beanName); } }; event.setInjectionTarget(newTarget); } </object></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2584</td> 
+     <td>-1422650663</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>ebc488ee663b32e05733d53604c11f1bcccbd5cc</td> 
+     <td>None</td> 
+     <td>TODO this is a bit of a hack - what should the bean name be?</td> 
+     <td>SATD_ADDED</td> 
+     <td>onInjectionTarget(ProcessInjectionTarget)</td> 
+     <td>public void onInjectionTarget(@Observes ProcessInjectionTarget event)</td> 
+     <td> final InjectionTarget injectionTarget = event.getInjectionTarget(); final Class beanClass = event.getAnnotatedType().getJavaClass(); // TODO this is a bit of a hack - what should the bean name be? final String beanName = event.getInjectionTarget().toString(); final BeanAdapter adapter = createBeanAdapter(beanClass); if (!adapter.isEmpty()) { DelegateInjectionTarget newTarget = new DelegateInjectionTarget(injectionTarget) { @Override public void postConstruct(Object instance) { super.postConstruct(instance); // now lets do the post instruct to inject our Camel injections adapter.inject(getPostProcessor(), instance, beanName); } }; event.setInjectionTarget(newTarget); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

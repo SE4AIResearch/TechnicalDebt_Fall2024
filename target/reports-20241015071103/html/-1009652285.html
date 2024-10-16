@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5441</td> <td>-1009652285</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>enable input decompression
+TODO replace with mapInputBytes and hdfsBytesRead</td> <td>SATD_ADDED</td> <td>configureCompressionEmulation(Configuration, Configuration)</td> <td> static void configureCompressionEmulation(Configuration source, Configuration target)</td> <td>
+    // enable output compression
+    target.setBoolean(FileOutputFormat.COMPRESS, source.getBoolean(FileOutputFormat.COMPRESS, false));
+    // set the job output compression codec
+    String jobOutputCompressionCodec = source.get(FileOutputFormat.COMPRESS_CODEC);
+    if (jobOutputCompressionCodec != null) {
+        target.set(FileOutputFormat.COMPRESS_CODEC, jobOutputCompressionCodec);
+    }
+    // set the job output compression type
+    String jobOutputCompressionType = source.get(FileOutputFormat.COMPRESS_TYPE);
+    if (jobOutputCompressionType != null) {
+        target.set(FileOutputFormat.COMPRESS_TYPE, jobOutputCompressionType);
+    }
+    // enable map output compression
+    target.setBoolean(MRJobConfig.MAP_OUTPUT_COMPRESS, source.getBoolean(MRJobConfig.MAP_OUTPUT_COMPRESS, false));
+    // set the map output compression codecs
+    String mapOutputCompressionCodec = source.get(MRJobConfig.MAP_OUTPUT_COMPRESS_CODEC);
+    if (mapOutputCompressionCodec != null) {
+        target.set(MRJobConfig.MAP_OUTPUT_COMPRESS_CODEC, mapOutputCompressionCodec);
+    }
+    // enable input decompression
+    // TODO replace with mapInputBytes and hdfsBytesRead
+    Path[] inputs = org.apache.hadoop.mapred.FileInputFormat.getInputPaths(new JobConf(source));
+    boolean needsCompressedInput = false;
+    CompressionCodecFactory compressionCodecs = new CompressionCodecFactory(source);
+    for (Path input : inputs) {
+        CompressionCodec codec = compressionCodecs.getCodec(input);
+        if (codec != null) {
+            needsCompressedInput = true;
+        }
+    }
+    setInputCompressionEmulationEnabled(target, needsCompressedInput);
+</td> </tr></table></body></html>

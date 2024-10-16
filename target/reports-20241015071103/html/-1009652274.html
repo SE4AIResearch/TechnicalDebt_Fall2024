@@ -1,0 +1,56 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5452</td> <td>-1009652274</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Stop and start the tracker. The tracker should come up nicely</td> <td>SATD_ADDED</td> <td>testHistoryInitWithCorruptFiles()</td> <td>public void testHistoryInitWithCorruptFiles() throws IOException</td> <td>
+    MiniMRCluster mr = null;
+    try {
+        JobConf conf = new JobConf();
+        Path historyDir = new Path(System.getProperty("test.build.data", "."), "history");
+        conf.set(JTConfig.JT_JOBHISTORY_LOCATION, historyDir.toString());
+        conf.setUser("user");
+        FileSystem localFs = FileSystem.getLocal(conf);
+        // there may be some stale files, clean them
+        if (localFs.exists(historyDir)) {
+            boolean deleted = localFs.delete(historyDir, true);
+            LOG.info(historyDir + " deleted " + deleted);
+        }
+        // Start the cluster, create a history file
+        mr = new MiniMRCluster(0, "file:///", 3, null, null, conf);
+        JobTracker jt = mr.getJobTrackerRunner().getJobTracker();
+        JobHistory jh = jt.getJobHistory();
+        final JobID jobId = JobID.forName("job_200809171136_0001");
+        jh.setupEventWriter(jobId, conf);
+        Map<JobACL, AccessControlList> jobACLs = new HashMap<JobACL, AccessControlList>();
+        JobSubmittedEvent jse = new JobSubmittedEvent(jobId, "job", "user", 12345, "path", jobACLs, "default");
+        jh.logEvent(jse, jobId);
+        jh.closeWriter(jobId);
+        // Corrupt the history file. User RawLocalFileSystem so that we
+        // do keep the original CRC file intact.
+        String historyFileName = jobId.toString() + "_" + "user";
+        Path historyFilePath = new Path(historyDir.toString(), historyFileName);
+        RawLocalFileSystem fs = (RawLocalFileSystem) FileSystem.getLocal(conf).getRaw();
+        FSDataOutputStream out = fs.create(historyFilePath, true);
+        byte[] corruptData = new byte[32];
+        new Random().nextBytes(corruptData);
+        out.write(corruptData, 0, 32);
+        out.close();
+        // Stop and start the tracker. The tracker should come up nicely
+        mr.stopJobTracker();
+        mr.startJobTracker();
+        jt = mr.getJobTrackerRunner().getJobTracker();
+        assertNotNull("JobTracker did not come up", jt);
+        jh = jt.getJobHistory();
+        assertNotNull("JobHistory did not get initialized correctly", jh);
+        // Only the done folder should remain in the history directory
+        assertEquals("Files in logDir did not move to DONE folder", 1, historyDir.getFileSystem(conf).listStatus(historyDir).length);
+    } finally {
+        if (mr != null) {
+            cleanupLocalFiles(mr);
+            mr.shutdown();
+        }
+    }
+</td> </tr></table></body></html>

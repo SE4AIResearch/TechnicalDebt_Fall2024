@@ -1,0 +1,58 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1150</td> <td>-1422651455</td><td>apache/camel</td><td>Claus Ibsen</td><td>6eb0401239e0bd56bd92bfe1cb6e07241f7f5c76</td> <td>None</td> <td>TODO: We need a better solution to traverse a route than using reflection</td> <td>SATD_ADDED</td> <td>findProceesorInRoute(Processor, Class<T>)</td> <td>private T findProceesorInRoute(Processor route, Class<T> type)</td> <td>
+    if (route == null) {
+        return null;
+    }
+    if (type.isInstance(route)) {
+        return type.cast(route);
+    }
+    try {
+        Method m = route.getClass().getMethod("getProcessor");
+        Processor child = (Processor) ObjectHelper.invokeMethod(m, route);
+        // look its children
+        return findProceesorInRoute(child, type);
+    } catch (NoSuchMethodException e) {
+    // ignore
+    }
+    try {
+        Method m = route.getClass().getMethod("getProcessors");
+        // look its children
+        Collection<Processor> children = (Collection<Processor>) ObjectHelper.invokeMethod(m, route);
+        for (Processor child : children) {
+            T out = findProceesorInRoute(child, type);
+            if (out != null) {
+                return out;
+            }
+        }
+    } catch (NoSuchMethodException e) {
+    // ignore
+    }
+    try {
+        Method m = route.getClass().getMethod("getFilters");
+        // look its children
+        List<FilterProcessor> children = (List<FilterProcessor>) ObjectHelper.invokeMethod(m, route);
+        for (Processor child : children) {
+            T out = findProceesorInRoute(child, type);
+            if (out != null) {
+                return out;
+            }
+        }
+    } catch (NoSuchMethodException e) {
+    // ignore
+    }
+    try {
+        Method m = route.getClass().getMethod("getOtherwise");
+        Processor child = (Processor) ObjectHelper.invokeMethod(m, route);
+        // look its children
+        return findProceesorInRoute(child, type);
+    } catch (NoSuchMethodException e) {
+    // ignore
+    }
+    return null;
+</td> </tr></table></body></html>

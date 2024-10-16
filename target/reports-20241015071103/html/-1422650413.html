@@ -1,0 +1,74 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3023</td> <td>-1422650413</td><td>apache/camel</td><td>Claus Ibsen</td><td>ecdd4707b3a3957b4002344f18a8b84e81912700</td> <td>None</td> <td>TODO: option to output as pojo or json</td> <td>SATD_ADDED</td> <td>doList(Exchange, IDomain)</td> <td>protected void doList(Exchange exchange, IDomain domain)</td> <td>
+    StringBuilder sb = new StringBuilder("{\n  \"applications\": [");
+    // TODO: option to output as pojo or json
+    boolean first = true;
+    for (IApplication application : domain.getApplications()) {
+        if (!first) {
+            sb.append("\n    ],");
+        } else {
+            first = false;
+        }
+        String date = new SimpleDateFormat(TIMESTAMP_FORMAT).format(application.getCreationTime());
+        // application
+        sb.append("\n    {");
+        sb.append("\n      \"uuid\": \"" + application.getUUID() + "\",");
+        sb.append("\n      \"domain\": \"" + application.getDomain().getId() + "\",");
+        sb.append("\n      \"name\": \"" + application.getName() + "\",");
+        sb.append("\n      \"creationTime\": \"" + date + "\",");
+        sb.append("\n      \"applicationUrl\": \"" + application.getApplicationUrl() + "\",");
+        sb.append("\n      \"gitUrl\": \"" + application.getGitUrl() + "\",");
+        sb.append("\n      \"sshUrl\": \"" + application.getSshUrl() + "\",");
+        // catridge
+        sb.append("\n      \"catridge\": {");
+        sb.append("\n        \"name\": \"" + application.getCartridge().getName() + "\",");
+        sb.append("\n        \"displayName\": \"" + application.getCartridge().getDisplayName() + "\",");
+        sb.append("\n        \"description\": \"" + application.getCartridge().getDescription() + "\"");
+        sb.append("\n      },");
+        // embedded catridges
+        List<IEmbeddedCartridge> embeddedCartridges = application.getEmbeddedCartridges();
+        if (embeddedCartridges != null && !embeddedCartridges.isEmpty()) {
+            sb.append("\n      \"embeddedCatridges\": [");
+            for (Iterator<IEmbeddedCartridge> it = embeddedCartridges.iterator(); it.hasNext(); ) {
+                IEmbeddedCartridge cartridge = it.next();
+                sb.append("\n      \"catridge\": {");
+                sb.append("\n        \"name\": \"" + cartridge.getName() + "\",");
+                sb.append("\n        \"displayName\": \"" + cartridge.getDisplayName() + "\",");
+                sb.append("\n        \"description\": \"" + cartridge.getDescription() + "\"");
+                sb.append("\n      }");
+                if (it.hasNext()) {
+                    sb.append(",");
+                }
+            }
+            sb.append("\n      ]");
+        }
+        sb.append("\n      \"gearProfile\": \"" + application.getGearProfile().getName() + "\",");
+        sb.append("\n      \"gears\": [");
+        boolean firstGear = true;
+        for (IGearGroup group : application.getGearGroups()) {
+            for (IGear gear : group.getGears()) {
+                if (!firstGear) {
+                    sb.append(",");
+                } else {
+                    firstGear = false;
+                }
+                sb.append("\n        {");
+                sb.append("\n         \"id\": \"" + gear.getId() + "\",");
+                sb.append("\n         \"sshUrl\": \"" + gear.getSshUrl() + "\",");
+                sb.append("\n         \"state\": \"" + gear.getState().name().toLowerCase(Locale.ENGLISH) + "\"");
+                sb.append("\n        }");
+            }
+        }
+        sb.append("\n      ]");
+        sb.append("\n    }");
+    }
+    sb.append("\n  ]");
+    sb.append("\n}");
+    exchange.getIn().setBody(sb.toString());
+</td> </tr></table></body></html>

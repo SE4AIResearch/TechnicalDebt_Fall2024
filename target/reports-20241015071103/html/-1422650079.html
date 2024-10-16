@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3908</td> 
+     <td>-1422650079</td> 
+     <td>apache/camel</td> 
+     <td>Andrea Cosentino</td> 
+     <td>92cfda21164ed34debaa133ae37c46bfbe7dbfcf</td> 
+     <td>Workaround for the case when the entry is zero bytes big</td> 
+     <td>Workaround for the case when the entry is zero bytes big</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>getNextElement()</td> 
+     <td>private Message getNextElement()</td> 
+     <td> if (tarInputStream == null) { return null; } try { TarArchiveEntry current = getNextEntry(); if (current != null) { LOGGER.debug("Reading tarEntry {}", current.getName()); Message answer = new DefaultMessage(); answer.getHeaders().putAll(inputMessage.getHeaders()); answer.setHeader(TARFILE_ENTRY_NAME_HEADER, current.getName()); answer.setHeader(Exchange.FILE_NAME, current.getName()); if (current.getSize() &gt; 0) { answer.setBody(new TarElementInputStreamWrapper(tarInputStream)); } else { // Workaround for the case when the entry is zero bytes big answer.setBody(new ByteArrayInputStream(new byte[0])); } return answer; } else { LOGGER.trace("Closed tarInputStream"); return null; } } catch (IOException exception) { // Just wrap the IOException as CamelRuntimeException throw new RuntimeCamelException(exception); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3767</td> 
+     <td>-1422650079</td> 
+     <td>apache/camel</td> 
+     <td>Andrea Cosentino</td> 
+     <td>929d437cc2dd73b284d38485adf1931c4700b9c1</td> 
+     <td>Workaround for the case when the entry is zero bytes big</td> 
+     <td>Workaround for the case when the entry is zero bytes big</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createNextMessage()</td> 
+     <td>private Message createNextMessage()</td> 
+     <td> if (tarInputStream == null) { return null; } try { TarArchiveEntry current = getNextEntry(); if (current != null) { LOGGER.debug("Reading tarEntry {}", current.getName()); Message answer = new DefaultMessage(); answer.getHeaders().putAll(inputMessage.getHeaders()); answer.setHeader(TARFILE_ENTRY_NAME_HEADER, current.getName()); answer.setHeader(Exchange.FILE_NAME, current.getName()); if (current.getSize() &gt; 0) { // Have to cache current entry's portion of tarInputStream here, because getNextTarEntry // advances tarInputStream beyond current entry answer.setBody(exchange.getContext().getTypeConverter().mandatoryConvertTo(StreamCache.class, exchange, new TarElementInputStreamWrapper(tarInputStream))); } else { // Workaround for the case when the entry is zero bytes big answer.setBody(new ByteArrayInputStream(new byte[0])); } return answer; } else { LOGGER.trace("Closed tarInputStream"); return null; } } catch (Exception exception) { this.close(); // Just wrap the Exception as CamelRuntimeException throw new RuntimeCamelException(exception); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3667</td> 
+     <td>-1422650079</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>2051db4b46b7b423915fa77cad7f54e71358e659</td> 
+     <td>None</td> 
+     <td>Workaround for the case when the entry is zero bytes big</td> 
+     <td>SATD_ADDED</td> 
+     <td>getNextElement()</td> 
+     <td>private Message getNextElement()</td> 
+     <td> Message answer = null; if (tarInputStream == null) { return answer; } try { TarArchiveEntry current = getNextEntry(); if (current != null) { LOGGER.debug("Reading tarEntry {}", current.getName()); answer = new DefaultMessage(); answer.getHeaders().putAll(inputMessage.getHeaders()); answer.setHeader(TARFILE_ENTRY_NAME_HEADER, current.getName()); answer.setHeader(Exchange.FILE_NAME, current.getName()); if (current.getSize() &gt; 0) { answer.setBody(new TarElementInputStreamWrapper(tarInputStream)); } else { // Workaround for the case when the entry is zero bytes big answer.setBody(new ByteArrayInputStream(new byte[0])); } return answer; } else { LOGGER.trace("Closed tarInputStream"); } } catch (IOException exception) { // Just wrap the IOException as CamelRuntimeException throw new RuntimeCamelException(exception); } return answer; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

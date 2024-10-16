@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1188</td> <td>-1422651433</td><td>apache/camel</td><td>Claus Ibsen</td><td>fc157235dd368e25a58c957d3b5f3a8e124f2118</td> <td>None</td> <td>the outputs should be moved to the policy</td> <td>SATD_ADDED</td> <td>initPolicies(RouteDefinition)</td> <td>private void initPolicies(RouteDefinition route)</td> <td>
+    // setup the policies as JAXB yet again have not created a correct model for us
+    List<ProcessorDefinition> types = route.getOutputs();
+    PolicyDefinition policy = null;
+    for (ProcessorDefinition type : types) {
+        if (type instanceof PolicyDefinition) {
+            policy = (PolicyDefinition) type;
+        } else if (policy != null) {
+            // the outputs should be moved to the policy
+            policy.addOutput(type);
+        }
+    }
+    // did we find a policy if so replace it as the only output on the route
+    if (policy != null) {
+        route.clearOutput();
+        route.addOutput(policy);
+    }
+</td> </tr></table></body></html>

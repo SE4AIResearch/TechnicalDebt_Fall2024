@@ -1,0 +1,74 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4609</td> <td>1242677974</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>66b8e6ccc885f97892e71e1edd6c9f23428e7471</td> <td>None</td> <td>TODO: This is not optimal, but shouldn't be too costly in most cases.
+Maybe rewrite after done keeping track of diff chunk positions.</td> <td>SATD_ADDED</td> <td>renderSkips(int)</td> <td>private void renderSkips(int context)</td> <td>
+    clearSkipBars();
+    if (context == AccountDiffPreference.WHOLE_FILE_CONTEXT) {
+        return;
+    }
+    JsArray<Region> regions = diff.content();
+    List<SkippedLine> skips = new ArrayList<SkippedLine>();
+    int lineA = 0, lineB = 0;
+    for (int i = 0; i < regions.length(); i++) {
+        Region current = regions.get(i);
+        if (current.ab() != null) {
+            int len = current.ab().length();
+            if (i == 0 && len > context + 1) {
+                skips.add(new SkippedLine(0, 0, len - context));
+            } else if (i == regions.length() - 1 && len > context + 1) {
+                skips.add(new SkippedLine(lineA + context, lineB + context, len - context));
+            } else if (len > 2 * context + 1) {
+                skips.add(new SkippedLine(lineA + context, lineB + context, len - 2 * context));
+            }
+            lineA += len;
+            lineB += len;
+        } else {
+            lineA += current.a() != null ? current.a().length() : 0;
+            lineB += current.b() != null ? current.b().length() : 0;
+        }
+    }
+    // TODO: This is not optimal, but shouldn't be too costly in most cases.
+    // Maybe rewrite after done keeping track of diff chunk positions.
+    skipBars = new HashSet<SkipBar>();
+    for (CommentBox box : lineActiveBoxMap.values()) {
+        List<SkippedLine> temp = new ArrayList<SkippedLine>();
+        for (SkippedLine skip : skips) {
+            CommentInfo info = box.getCommentInfo();
+            int startLine = box.getSide() == DisplaySide.A ? skip.getStartA() : skip.getStartB();
+            int boxLine = info.line();
+            int deltaBefore = boxLine - startLine;
+            int deltaAfter = startLine + skip.getSize() - boxLine;
+            if (deltaBefore < -context || deltaAfter < -context) {
+                // Size guaranteed to be greater than 1
+                temp.add(skip);
+            } else if (deltaBefore > context && deltaAfter > context) {
+                SkippedLine before = new SkippedLine(skip.getStartA(), skip.getStartB(), skip.getSize() - deltaAfter - context);
+                skip.incrementStart(deltaBefore + context);
+                checkAndAddSkip(temp, before);
+                checkAndAddSkip(temp, skip);
+            } else if (deltaAfter > context) {
+                skip.incrementStart(deltaBefore + context);
+                checkAndAddSkip(temp, skip);
+            } else if (deltaBefore > context) {
+                skip.reduceSize(deltaAfter + context);
+                checkAndAddSkip(temp, skip);
+            }
+        }
+        if (temp.isEmpty()) {
+            return;
+        }
+        skips = temp;
+    }
+    for (SkippedLine skip : skips) {
+        SkipBar barA = renderSkipHelper(cmA, skip);
+        SkipBar barB = renderSkipHelper(cmB, skip);
+        SkipBar.link(barA, barB);
+        skipBars.add(barA);
+        skipBars.add(barB);
+    }
+</td> </tr></table></body></html>

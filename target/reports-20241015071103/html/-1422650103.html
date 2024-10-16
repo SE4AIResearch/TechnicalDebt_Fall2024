@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3619</td> 
+     <td>-1422650103</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>12e0ce4c0f79486faa3adc8e93af160a73375bf8</td> 
+     <td>TODO: scan components for each component and find component name from extendsScheme and then find the package name where the json file is</td> 
+     <td>we cannot use classloader to load external resources from other JARs during apt plugin, so load these resources using the file system</td> 
+     <td>SATD_REMOVED</td> 
+     <td>jsonFile(String, String)</td> 
+     <td>private static File jsonFile(String scheme, String extendsScheme)</td> 
+     <td> // we cannot use classloader to load external resources from other JARs during apt plugin, // so load these resources using the file system if ("file".equals(extendsScheme)) { return new File("../../camel-core/target/classes/org/apache/camel/component/file/file.json"); } else if ("atom".equals(extendsScheme)) { return new File("../camel-atom/target/classes/org/apache/camel/component/atom/atom.json"); } else if ("http".equals(extendsScheme)) { return new File("../camel-http/target/classes/org/apache/camel/component/http/http.json"); } else if ("https".equals(extendsScheme)) { return new File("../camel-http/target/classes/org/apache/camel/component/http/https.json"); } else if ("netty".equals(extendsScheme)) { return new File("../camel-netty/target/classes/org/apache/camel/component/netty/netty.json"); } else if ("netty4".equals(extendsScheme)) { return new File("../camel-netty4/target/classes/org/apache/camel/component/netty4/netty4.json"); } else if ("servlet".equals(extendsScheme)) { return new File("../camel-servlet/target/classes/org/apache/camel/component/servlet/servlet.json"); } // not found return null; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3618</td> 
+     <td>-1422650103</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>1e1e1f9f69269ed4fdaa40a153871c8780bda219</td> 
+     <td>None</td> 
+     <td>TODO: scan components for each component and find component name from extendsScheme and then find the package name where the json file is</td> 
+     <td>SATD_ADDED</td> 
+     <td>jsonFile(String, String)</td> 
+     <td>private static File jsonFile(String scheme, String extendsScheme)</td> 
+     <td> // TODO: scan components for each component and find component name from extendsScheme // and then find the package name where the json file is if ("file".equals(extendsScheme)) { return new File("../../camel-core/target/classes/org/apache/camel/component/file/file.json"); } else if ("http".equals(extendsScheme)) { return new File("../camel-http/target/classes/org/apache/camel/component/http/http.json"); } else if ("https".equals(extendsScheme)) { return new File("../camel-http/target/classes/org/apache/camel/component/http/https.json"); } else if ("netty".equals(extendsScheme)) { return new File("../camel-netty/target/classes/org/apache/camel/component/netty/netty.json"); } else if ("netty4".equals(extendsScheme)) { return new File("../camel-netty4/target/classes/org/apache/camel/component/netty4/netty4.json"); } else if ("servlet".equals(extendsScheme)) { return new File("../camel-servlet/target/classes/org/apache/camel/component/servlet/servlet.json"); } // not found return null; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

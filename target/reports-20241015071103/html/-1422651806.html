@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>448</td> <td>-1422651806</td><td>apache/camel</td><td>James Strachan</td><td>cd50f8795b774c857dac3363a4ee496fab86b5b8</td> <td>None</td> <td>TODO compile Groovy as part of build!</td> <td>SATD_ADDED</td> <td>init()</td> <td>private void init()</td> <td>
+    ClassLoader loader = getClass().getClassLoader();
+    GroovyShell shell = new GroovyShell(loader);
+    shell.evaluate(loader.getResourceAsStream("org/apache/camel/language/groovy/ConfigureCamel.groovy"));
+// TODO compile Groovy as part of build!
+// new ConfigureCamel().run();
+</td> </tr></table></body></html>

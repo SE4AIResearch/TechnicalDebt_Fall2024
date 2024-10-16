@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2564</td> <td>-1422650675</td><td>apache/camel</td><td>Benjamin P. O'Day</td><td>9390d0039cce23f609825edc82af531deff0f7c0</td> <td>None</td> <td>Create a temporary queue that this client will listen for responses on then create a consumer
+that consumes message from this temporary queue...for a real application a client should reuse
+the same temp queue for each message to the server...one temp queue per client</td> <td>SATD_ADDED</td> <td>createRandomString()</td> <td>private String createRandomString()</td> <td>
+    Random random = new Random(System.currentTimeMillis());
+    long randomLong = random.nextLong();
+    return Long.toHexString(randomLong);
+</td> </tr></table></body></html>

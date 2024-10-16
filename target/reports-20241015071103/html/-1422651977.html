@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>89</td> <td>-1422651977</td><td>apache/camel</td><td>Hiram R. Chirino</td><td>f062d553a704e2d707205e0855ac023a8c44a40e</td> <td>None</td> <td>TODO configure endpoint configuration and selector using URI properties</td> <td>SATD_ADDED</td> <td>createEndpoint(String, String)</td> <td>public JmsEndpoint createEndpoint(String uri, String path)</td> <td>
+    ObjectHelper.notNull(getContext(), "container");
+    boolean pubSubDomain = false;
+    if (path.startsWith(QUEUE_PREFIX)) {
+        pubSubDomain = false;
+        path = path.substring(QUEUE_PREFIX.length());
+    } else if (path.startsWith(TOPIC_PREFIX)) {
+        pubSubDomain = true;
+        path = path.substring(TOPIC_PREFIX.length());
+    }
+    final String subject = convertPathToActualDestination(path);
+    /*
+        Destination destination = (Destination) template.execute(new SessionCallback() {
+            public Object doInJms(Session session) throws JMSException {
+                return template.getDestinationResolver().resolveDestinationName(session, subject, template.isPubSubDomain());
+            }
+        });
+        */
+    // TODO configure endpoint configuration and selector using URI properties
+    return new JmsEndpoint(uri, getContext(), subject, pubSubDomain, getConfiguration().copy());
+</td> </tr></table></body></html>

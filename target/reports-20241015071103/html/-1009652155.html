@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5571</td> <td>-1009652155</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>work around 256-byte/22-splits issue</td> <td>SATD_ADDED</td> <td>doSingleBzip2BufferSize(JobConf)</td> <td>private static void doSingleBzip2BufferSize(JobConf jConf) throws IOException</td> <td>
+    TextInputFormat format = new TextInputFormat();
+    format.configure(jConf);
+    // work around 256-byte/22-splits issue
+    format.setMinSplitSize(5500);
+    // here's Nth pair of DecompressorStreams:
+    InputSplit[] splits = format.getSplits(jConf, 100);
+    assertEquals("compressed splits == 2", 2, splits.length);
+    FileSplit tmp = (FileSplit) splits[0];
+    if (tmp.getPath().getName().equals("testCompressThenConcat.txt.gz")) {
+        System.out.println("  (swapping)");
+        splits[0] = splits[1];
+        splits[1] = tmp;
+    }
+    // testConcatThenCompress (single)
+    List<Text> results = readSplit(format, splits[0], jConf);
+    assertEquals("splits[0] length (num lines)", 84, results.size());
+    assertEquals("splits[0][0]", "Call me Ishmael. Some years ago--never mind how long precisely--having", results.get(0).toString());
+    assertEquals("splits[0][42]", "Tell me, does the magnetic virtue of the needles of the compasses of", results.get(42).toString());
+    // testCompressThenConcat (multi)
+    results = readSplit(format, splits[1], jConf);
+    assertEquals("splits[1] length (num lines)", 84, results.size());
+    assertEquals("splits[1][0]", "Call me Ishmael. Some years ago--never mind how long precisely--having", results.get(0).toString());
+    assertEquals("splits[1][42]", "Tell me, does the magnetic virtue of the needles of the compasses of", results.get(42).toString());
+</td> </tr></table></body></html>

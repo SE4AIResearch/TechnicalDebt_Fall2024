@@ -1,0 +1,34 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>118</td> <td>-1422651958</td><td>apache/camel</td><td>James Strachan</td><td>1776be93767f8fb3f5a2e87b9b1b9b1ffbe8b918</td> <td>None</td> <td>TODO should we start it?</td> <td>SATD_ADDED</td> <td>resolveComponent(String, CamelContext)</td> <td>public Component<E> resolveComponent(String uri, CamelContext context)</td> <td>
+    String[] splitURI = ObjectHelper.splitOnCharacter(uri, ":", 2);
+    if (splitURI[1] == null) {
+        throw new IllegalArgumentException("Invalid URI, it did not contain a scheme: " + uri);
+    }
+    String scheme = splitURI[0];
+    Class type;
+    try {
+        type = componentFactory.findClass(scheme);
+    } catch (NoFactoryAvailableException e) {
+        return null;
+    } catch (Throwable e) {
+        throw new IllegalArgumentException("Invalid URI, no EndpointResolver registered for scheme : " + scheme, e);
+    }
+    if (type == null) {
+        return null;
+    }
+    if (Component.class.isAssignableFrom(type)) {
+        Component<E> answer = (Component<E>) context.getInjector().newInstance(type);
+        // lets add the component using the prefix
+        context.addComponent(scheme, answer);
+        // TODO should we start it?
+        return answer;
+    } else {
+        throw new IllegalArgumentException("Type is not a Component implementation. Found: " + type.getName());
+    }
+</td> </tr></table></body></html>

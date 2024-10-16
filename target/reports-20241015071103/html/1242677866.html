@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4435</td> 
+     <td>1242677866</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Edwin Kempin</td>
+     <td>3d47fa39c370f57e9235720871869f75a573c720</td> 
+     <td>no \"l../etc/passwd\" no \"foo/../etc/passwd\" \"foo/./foo\" is insane to ask windows UNC path can be \"//...\" common unix wildcard wildcard or string parameter wildcard Could be used for aboslute paths in windows? redirect input redirect output pipe dollar sign carriage return</td> 
+     <td>no windows/dos style paths no absolute paths no absolute paths</td> 
+     <td>SATD_REMOVED</td> 
+     <td>isUnreasonableName(Project.NameKey)</td> 
+     <td>private boolean isUnreasonableName(final Project.NameKey nameKey)</td> 
+     <td> final String name = nameKey.get(); // no empty paths if (name.length() == 0) return true; // no suffix if (name.charAt(name.length() - 1) == '/') return true; // no windows/dos style paths if (name.indexOf('\\') &gt;= 0) return true; // no absolute paths if (name.charAt(0) == '/') return true; // no absolute paths if (new File(name).isAbsolute()) return true; // no "l../etc/passwd" if (name.startsWith("../")) return true; // no "foo/../etc/passwd" if (name.contains("/../")) return true; // "foo/./foo" is insane to ask if (name.contains("/./")) return true; // windows UNC path can be "//..." if (name.contains("//")) return true; // common unix wildcard if (name.contains("?")) return true; // wildcard or string parameter if (name.contains("%")) return true; // wildcard if (name.contains("*")) return true; // Could be used for absolute paths in windows? if (name.contains(":")) return true; // redirect input if (name.contains("&lt;")) return true; // redirect output if (name.contains("&gt;")) return true; // pipe if (name.contains("|")) return true; // dollar sign if (name.contains("$")) return true; // carriage return if (name.contains("\r")) return true; // is a reasonable name return false; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4401</td> 
+     <td>1242677866</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Edwin Kempin</td>
+     <td>5c46ba48c008597881855c2c0e457df49eca9fce</td> 
+     <td>None</td> 
+     <td>no \"l../etc/passwd\" no \"foo/../etc/passwd\" \"foo/./foo\" is insane to ask windows UNC path can be \"//...\" common unix wildcard wildcard or string parameter wildcard Could be used for aboslute paths in windows? redirect input redirect output pipe dollar sign carriage return</td> 
+     <td>SATD_ADDED</td> 
+     <td>isUnreasonableName(Project.NameKey)</td> 
+     <td>private boolean isUnreasonableName(final Project.NameKey nameKey)</td> 
+     <td> final String name = nameKey.get(); // no empty paths if (name.length() == 0) return true; // no suffix if (name.charAt(name.length() - 1) == '/') return true; // no windows/dos stlye paths if (name.indexOf('\\') &gt;= 0) return true; // no absolute paths if (name.charAt(0) == '/') return true; // no absolute paths if (new File(name).isAbsolute()) return true; // no "l../etc/passwd" if (name.startsWith("../")) return true; // no "foo/../etc/passwd" if (name.contains("/../")) return true; // "foo/./foo" is insane to ask if (name.contains("/./")) return true; // windows UNC path can be "//..." if (name.contains("//")) return true; // common unix wildcard if (name.contains("?")) return true; // wildcard or string parameter if (name.contains("%")) return true; // wildcard if (name.contains("*")) return true; // Could be used for aboslute paths in windows? if (name.contains(":")) return true; // redirect input if (name.contains("&lt;")) return true; // redirect output if (name.contains("&gt;")) return true; // pipe if (name.contains("|")) return true; // dollar sign if (name.contains("$")) return true; // carriage return if (name.contains("\r")) return true; // is a reasonable name return false; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1668</td> <td>-1422651184</td><td>apache/camel</td><td>Claus Ibsen</td><td>ff6f3ce9697289d2ce3523654bff23c42d60a84c</td> <td>None</td> <td>it should be moved to DLQ in JMS broker</td> <td>SATD_ADDED</td> <td>testJmsToJmsTestRollbackDueToRollback()</td> <td>public void testJmsToJmsTestRollbackDueToRollback() throws Exception</td> <td>
+    context.addRoutes(new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            from("activemq:queue:foo").transacted().to("mock:start").to("activemq:queue:bar").rollback();
+            from("activemq:queue:bar").to("log:bar").to("mock:bar");
+        }
+    });
+    context.start();
+    MockEndpoint bar = getMockEndpoint("mock:bar");
+    bar.expectedMessageCount(0);
+    MockEndpoint start = getMockEndpoint("mock:start");
+    // default number of redeliveries by AMQ
+    start.expectedMessageCount(6);
+    template.sendBody("activemq:queue:foo", "Hello World");
+    assertMockEndpointsSatisfied();
+    // it should be moved to DLQ in JMS broker
+    Object body = consumer.receiveBody("activemq:queue:ActiveMQ.DLQ", 2000);
+    assertEquals("Hello World", body);
+</td> </tr></table></body></html>

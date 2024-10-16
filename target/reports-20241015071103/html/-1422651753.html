@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>553</td> 
+     <td>-1422651753</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>595c88fa74db01f1e01f85023b2d8f27c38edf36</td> 
+     <td>TODO: if exchange.isFailed() then out could potential be in - (what should we do)</td> 
+     <td>can not write a response since the exchange is failed and we don't know in what state the in/out messages are in so the session is closed</td> 
+     <td>SATD_REMOVED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> if (LOG.isDebugEnabled()) { LOG.debug("Binding to server address: " + address + " using acceptor: " + acceptor); } IoHandler handler = new IoHandlerAdapter() { @Override public void exceptionCaught(IoSession session, Throwable cause) throws Exception { // close invalid session if (session != null) { LOG.debug("Closing session as an exception was thrown from MINA"); session.close(); } // must wrap and rethrow since cause can be of Throwable and we must only throw Exception throw new CamelException(cause); } @Override public void messageReceived(IoSession session, Object object) throws Exception { if (LOG.isDebugEnabled()) { LOG.debug("Received body: " + object); } MinaExchange exchange = endpoint.createExchange(session, object); getProcessor().process(exchange); if (ExchangeHelper.isOutCapable(exchange)) { Object body = exchange.getOut().getBody(); boolean failed = exchange.isFailed(); if (failed) { // can not write a response since the exchange is failed and we don't know in what state the // in/out messages are in so the session is closed LOG.warn("Can not write body since the exchange is failed, closing session: " + exchange); session.close(); } else if (body == null) { // must close session if no data to write otherwise client will never receive a response // and wait forever (if not timing out) LOG.warn("Can not write body since its null, closing session: " + exchange); session.close(); } else { // we got a response to write if (LOG.isDebugEnabled()) { LOG.debug("Writing body: " + body); } session.write(body); } } else { if (LOG.isDebugEnabled()) { LOG.debug("Can not write body since this exchange is not out capable: " + exchange); } } } }; acceptor.bind(address, handler, endpoint.getAcceptorConfig()); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>538</td> 
+     <td>-1422651753</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>2911ab362ad87525b4f08a9b77cbd4166dc6b8a2</td> 
+     <td>None</td> 
+     <td>TODO: if exchange.isFailed() then out could potential be in - (what should we do)</td> 
+     <td>SATD_ADDED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> if (LOG.isDebugEnabled()) { LOG.debug("Binding to server address: " + address + " using acceptor: " + acceptor); } IoHandler handler = new IoHandlerAdapter() { @Override public void exceptionCaught(IoSession session, Throwable cause) throws Exception { // close invalid session LOG.debug("Closing session as an exception was thrown from MINA"); session.close(); // must wrap and rethrow since cause can be of Throwable and we must only throw Exception throw new CamelException(cause); } @Override public void messageReceived(IoSession session, Object object) throws Exception { if (LOG.isDebugEnabled()) { LOG.debug("Received body: " + object); } MinaExchange exchange = endpoint.createExchange(session, object); getProcessor().process(exchange); if (ExchangeHelper.isOutCapable(exchange)) { Object body = exchange.getOut().getBody(); // TODO: if exchange.isFailed() then out could potential be in - (what should we do) if (body != null) { if (LOG.isDebugEnabled()) { LOG.debug("Writing body: " + body); } session.write(body); } else { // must close session if no data to write otherwise client will never receive a response and wait forever LOG.warn("Can not write body since its null, closing session"); session.close(); } } else { if (LOG.isDebugEnabled()) { LOG.debug("Can not write body since this exchange is not out capable: " + exchange); } } } }; acceptor.bind(address, handler, endpoint.getConfig()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

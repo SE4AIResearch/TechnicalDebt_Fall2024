@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3191</td> 
+     <td>-1422650293</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>2ff43ad42f4819184d374b2b6708aa40187fd000</td> 
+     <td>TODO: assert the jmx mbeans</td> 
+     <td>there should be 2x4 names</td> 
+     <td>SATD_REMOVED</td> 
+     <td>testMetricsRoutePolicy()</td> 
+     <td>public void testMetricsRoutePolicy() throws Exception</td> 
+     <td> getMockEndpoint("mock:result").expectedMessageCount(10); for (int i = 0; i &lt; 50; i++) { if (i % 2 == 0) { template.sendBody("seda:foo", "Hello " + i); } else { template.sendBody("seda:bar", "Hello " + i); } } assertMockEndpointsSatisfied(); // there should be 2x4 names assertEquals(8, registry.getNames().size()); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3188</td> 
+     <td>-1422650293</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>c672d44b4f46a9a128216759059b134fc6f793ab</td> 
+     <td>None</td> 
+     <td>TODO: assert the jmx mbeans</td> 
+     <td>SATD_ADDED</td> 
+     <td>testMetricsRoutePolicy()</td> 
+     <td>public void testMetricsRoutePolicy() throws Exception</td> 
+     <td> getMockEndpoint("mock:result").expectedMessageCount(10); for (int i = 0; i &lt; 50; i++) { if (i % 2 == 0) { template.sendBody("seda:foo", "Hello " + i); } else { template.sendBody("seda:bar", "Hello " + i); } } assertMockEndpointsSatisfied(); // TODO: assert the jmx mbeans </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

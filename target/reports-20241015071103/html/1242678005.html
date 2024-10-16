@@ -1,0 +1,113 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4974</td> 
+     <td>1242678005</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>103db472e649eaacf79ac0105088da7946bc53ae</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>rebuildAsync(Change.Id, ListeningExecutorService)</td> 
+     <td>public ListenableFuture<!--?--> rebuildAsync(final Change.Id id, ListeningExecutorService executor)</td> 
+     <td> return executor.submit(new Callable<void>
+        () { @Override public Void call() throws Exception { try (ReviewDb db = schemaFactory.open()) { rebuild(db, id); } return null; } }); 
+      </void></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4971</td> 
+     <td>1242678005</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Urs Wolfer</td> 
+     <td>0e8077dc8d69acaf80a8ee9c7a920c9603d9228a</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>rebuildAsync(Change, ListeningExecutorService, Repository)</td> 
+     <td>public ListenableFuture<!--?--> rebuildAsync(final Change change, ListeningExecutorService executor, final Repository changeRepo)</td> 
+     <td> return executor.submit(new Callable<void>
+        () { @Override public Void call() throws Exception { rebuild(change, changeRepo); return null; } }); 
+      </void></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4667</td> 
+     <td>1242678005</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Yacob Yonas</td> 
+     <td>c93e841de36eacbed3813f18a998e8a98ab74af3</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>rebuildAsync(Change, ListeningExecutorService, BatchRefUpdate, BatchRefUpdate, Repository, Repository)</td> 
+     <td>public ListenableFuture<!--?--> rebuildAsync(final Change change, ListeningExecutorService executor, final BatchRefUpdate bru, final BatchRefUpdate bruForDrafts, final Repository changeRepo, final Repository allUsersRepo)</td> 
+     <td> return executor.submit(new Callable<void>
+        () { @Override public Void call() throws Exception { rebuild(change, bru, bruForDrafts, changeRepo, allUsersRepo); return null; } }); 
+      </void></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4666</td> 
+     <td>1242678005</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>904c08183c645ed9644fd0babdb8e670f226a06b</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>rebuildAsync(Change, ListeningExecutorService, BatchRefUpdate)</td> 
+     <td>public ListenableFuture<!--?--> rebuildAsync(final Change change, ListeningExecutorService executor, final BatchRefUpdate bru)</td> 
+     <td> return executor.submit(new Callable<void>
+        () { @Override public Void call() throws Exception { rebuild(change, bru); return null; } }); 
+      </void></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4664</td> 
+     <td>1242678005</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Yacob Yonas</td>
+     <td>3f4a1748b22003539e797d7ed36dc41535e1b0b2</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Smarter bucketing: pick a bucket start time T and include all events up to T + TS_WINDOW_MS but no further. Interleaving different authors complicates things.</td> 
+     <td>SATD_ADDED</td> 
+     <td>rebuildAsync(Change, ListeningExecutorService)</td> 
+     <td>public ListenableFuture<!--?--> rebuildAsync(final Change change, ListeningExecutorService executor)</td> 
+     <td> return executor.submit(new Callable<void>
+       () { @Override public Void call() throws Exception { rebuild(change, null); return null; } }); 
+      </void></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

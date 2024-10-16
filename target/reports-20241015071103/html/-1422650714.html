@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2490</td> <td>-1422650714</td><td>apache/camel</td><td>Babak Vahdat</td><td>af53b3bd2c23dbfd14c1926e1e67ee311dc7fda0</td> <td>None</td> <td>should drop the table properly to avoid any side effects while running all the tests together under maven</td> <td>SATD_ADDED</td> <td>tearDown()</td> <td>public void tearDown() throws Exception</td> <td>
+    // should drop the table properly to avoid any side effects while running all the tests together under maven
+    Connection connection = createConnection();
+    Statement statement = connection.createStatement();
+    statement.execute("drop table ACCOUNT");
+    connection.commit();
+    statement.close();
+    connection.close();
+    super.tearDown();
+</td> </tr></table></body></html>

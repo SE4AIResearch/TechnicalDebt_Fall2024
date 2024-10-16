@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5551</td> <td>-1009652175</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>report blocks once</td> <td>SATD_ADDED</td> <td>generateInputs(int[])</td> <td> void generateInputs(int[] ignore) throws IOException</td> <td>
+    final FSNamesystem namesystem = nameNode.getNamesystem();
+    // start data-nodes; create a bunch of files; generate block reports.
+    blockReportObject.generateInputs(ignore);
+    // stop replication monitor
+    namesystem.replthread.interrupt();
+    try {
+        namesystem.replthread.join();
+    } catch (InterruptedException ei) {
+        return;
+    }
+    // report blocks once
+    int nrDatanodes = blockReportObject.getNumDatanodes();
+    for (int idx = 0; idx < nrDatanodes; idx++) {
+        blockReportObject.executeOp(idx, 0, null);
+    }
+    // decommission data-nodes
+    decommissionNodes();
+    // set node replication limit
+    namesystem.setNodeReplicationLimit(nodeReplicationLimit);
+</td> </tr></table></body></html>

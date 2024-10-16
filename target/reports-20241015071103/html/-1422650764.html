@@ -1,0 +1,67 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2412</td> <td>-1422650764</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>78e4256576700538a185f30e93071c97b7ece292</td> <td>None</td> <td>choice
+split</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder() throws Exception</td> <td>
+    return new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            from("file:target/data?noop=true").process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    log.info("Starting to process file");
+                    watch.restart();
+                }
+            }).split().tokenizePair("<order>", "</order>").streaming().choice().when().xpath("/order/amount < 10").process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    String xml = exchange.getIn().getBody(String.class);
+                    assertTrue(xml, xml.contains("<amount>3</amount>"));
+                    int num = tiny.incrementAndGet();
+                    if (num % 100 == 0) {
+                        log.info("Processed " + num + " tiny messages");
+                        log.debug(xml);
+                    }
+                }
+            }).when().xpath("/order/amount < 50").process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    String xml = exchange.getIn().getBody(String.class);
+                    assertTrue(xml, xml.contains("<amount>44</amount>"));
+                    int num = small.incrementAndGet();
+                    if (num % 100 == 0) {
+                        log.info("Processed " + num + " small messages: " + xml);
+                        log.debug(xml);
+                    }
+                }
+            }).when().xpath("/order/amount < 100").process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    String xml = exchange.getIn().getBody(String.class);
+                    assertTrue(xml, xml.contains("<amount>88</amount>"));
+                    int num = med.incrementAndGet();
+                    if (num % 100 == 0) {
+                        log.info("Processed " + num + " medium messages");
+                        log.debug(xml);
+                    }
+                }
+            }).otherwise().process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    String xml = exchange.getIn().getBody(String.class);
+                    assertTrue(xml, xml.contains("<amount>123</amount>"));
+                    int num = large.incrementAndGet();
+                    if (num % 100 == 0) {
+                        log.info("Processed " + num + " large messages");
+                        log.debug(xml);
+                    }
+                }
+            }).end().end();
+        }
+    };
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5281</td> <td>-1009652441</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Hack for local FS that does not have the concept of a 'mounting point'</td> <td>SATD_ADDED</td> <td>testCustomFile()</td> <td>public void testCustomFile() throws Exception</td> <td>
+    Path inDir = new Path("testing/fileoutputformat/input");
+    Path outDir = new Path("testing/fileoutputformat/output");
+    // Hack for local FS that does not have the concept of a 'mounting point'
+    if (isLocalFS()) {
+        String localPathRoot = System.getProperty("test.build.data", "/tmp").replace(' ', '+');
+        inDir = new Path(localPathRoot, inDir);
+        outDir = new Path(localPathRoot, outDir);
+    }
+    JobConf conf = createJobConf();
+    FileSystem fs = FileSystem.get(conf);
+    fs.delete(outDir, true);
+    if (!fs.mkdirs(inDir)) {
+        throw new IOException("Mkdirs failed to create " + inDir.toString());
+    }
+    DataOutputStream file = fs.create(new Path(inDir, "part-0"));
+    file.writeBytes("a\nb\n\nc\nd\ne");
+    file.close();
+    file = fs.create(new Path(inDir, "part-1"));
+    file.writeBytes("a\nb\n\nc\nd\ne");
+    file.close();
+    conf.setJobName("fof");
+    conf.setInputFormat(TextInputFormat.class);
+    conf.setMapOutputKeyClass(LongWritable.class);
+    conf.setMapOutputValueClass(Text.class);
+    conf.setOutputFormat(TextOutputFormat.class);
+    conf.setOutputKeyClass(LongWritable.class);
+    conf.setOutputValueClass(Text.class);
+    conf.setMapperClass(TestMap.class);
+    conf.setReducerClass(TestReduce.class);
+    FileInputFormat.setInputPaths(conf, inDir);
+    FileOutputFormat.setOutputPath(conf, outDir);
+    JobClient jc = new JobClient(conf);
+    RunningJob job = jc.submitJob(conf);
+    while (!job.isComplete()) {
+        Thread.sleep(100);
+    }
+    assertTrue(job.isSuccessful());
+    boolean map0 = false;
+    boolean map1 = false;
+    boolean reduce = false;
+    FileStatus[] statuses = fs.listStatus(outDir);
+    for (FileStatus status : statuses) {
+        map0 = map0 || status.getPath().getName().equals("test-m-00000");
+        map1 = map1 || status.getPath().getName().equals("test-m-00001");
+        reduce = reduce || status.getPath().getName().equals("test-r-00000");
+    }
+    assertTrue(map0);
+    assertTrue(map1);
+    assertTrue(reduce);
+</td> </tr></table></body></html>

@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4412</td> <td>1242677876</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>a7d9c9b7ac203bb0dc89583889633a8f8d266cc1</td> <td>None</td> <td>TODO: Implement creation/update of dashboards by API.</td> <td>SATD_ADDED</td> <td>apply(DashboardResource, Input)</td> <td>public Object apply(DashboardResource resource, Input input) throws AuthException, BadRequestException, ResourceConflictException, Exception</td> <td>
+    if (resource.isProjectDefault()) {
+        return defaultSetter.get().apply(resource, input);
+    }
+    // TODO: Implement creation/update of dashboards by API.
+    throw new MethodNotAllowedException();
+</td> </tr></table></body></html>

@@ -1,0 +1,34 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4696</td> <td>1242678025</td><td>GerritCodeReview/gerrit</td><td>David Ostrovsky</td><td>11c56681b01a39c109a406f78cfcc2c59a8ffdc8</td> <td>None</td> <td>TODO: why do we need this? Looks like Ray added it a long time ago.</td> <td>SATD_ADDED</td> <td>start(TreeLogger)</td> <td> void start(final TreeLogger logger) throws UnableToCompleteException</td> <td>
+    Server newServer = new Server();
+    ServerConnector connector = new ServerConnector(newServer);
+    connector.setHost(bindAddress);
+    connector.setPort(port);
+    connector.setReuseAddress(false);
+    connector.setSoLingerTime(0);
+    newServer.addConnector(connector);
+    ServletContextHandler newHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    newHandler.setContextPath("/");
+    newHandler.addServlet(new ServletHolder(new HttpServlet() {
+
+        @Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            handleRequest(request.getPathInfo(), request, response, logger);
+        }
+    }), "/*");
+    newHandler.addFilter(GzipFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
+    newServer.setHandler(newHandler);
+    try {
+        newServer.start();
+    } catch (Exception e) {
+        logger.log(TreeLogger.ERROR, "cannot start web server", e);
+        throw new UnableToCompleteException();
+    }
+    this.server = newServer;
+</td> </tr></table></body></html>

@@ -1,0 +1,82 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4276</td> 
+     <td>1242677754</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>d8dea1ca367530cbc495f1bb20c434cfe48be4b1</td> 
+     <td>TODO populate the account role</td> 
+     <td></td> 
+     <td>SATD_REMOVED</td> 
+     <td>displayRow(int, ApprovalDetail, Change)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad, final Change change)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, patchsetapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, link(ad.getAccount())); if (ad.canRemove()) { Button remove = new Button("X"); remove.setTitle(// Util.M.removeReviewer(FormatUtil.name(accountCache.get(ad.getAccount())))); remove.setStyleName(Gerrit.RESOURCES.css().removeReviewer()); remove.addClickHandler(new ClickHandler() { @Override public void onClick(ClickEvent event) { doRemove(ad); } }); table.setWidget(row, col, remove); } else { table.clearCell(row, col); } fmt.setStyleName(row, col++, Gerrit.RESOURCES.css().removeReviewerCell()); for (final ApprovalType type : types) { fmt.setStyleName(row, col, Gerrit.RESOURCES.css().approvalscore()); final PatchSetApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, new Image(Gerrit.RESOURCES.redNot())); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, new Image(Gerrit.RESOURCES.greenCheck())); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.addStyleName(row, col, Gerrit.RESOURCES.css().posscore()); } else { fmt.addStyleName(row, col, Gerrit.RESOURCES.css().negscore()); } table.setText(row, col, vstr); } col++; } table.setText(row, col, hint.toString()); fmt.setStyleName(row, col, Gerrit.RESOURCES.css().rightmost()); fmt.addStyleName(row, col, Gerrit.RESOURCES.css().approvalhint()); col++; 
+      </approvalcategory.id,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4275</td> 
+     <td>1242677754</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>578bab17754f8c811f77eb569438aba1f855cd8d</td> 
+     <td>TODO populate the account role</td> 
+     <td>TODO populate the account role</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>displayRow(int, ApprovalDetail, Change)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad, final Change change)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, patchsetapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, link(ad.getAccount())); // TODO populate the account role table.clearCell(row, col++); for (final ApprovalType type : types) { final PatchSetApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, new Image(Gerrit.RESOURCES.redNot())); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, new Image(Gerrit.RESOURCES.greenCheck())); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.removeStyleName(row, col, Gerrit.RESOURCES.css().negscore()); fmt.addStyleName(row, col, Gerrit.RESOURCES.css().posscore()); } else { fmt.addStyleName(row, col, Gerrit.RESOURCES.css().negscore()); fmt.removeStyleName(row, col, Gerrit.RESOURCES.css().posscore()); } table.setText(row, col, vstr); } col++; } // // Remove button // if (change.getStatus().isOpen() &amp;&amp; Gerrit.isSignedIn()) { Button removeButton = new Button("X"); removeButton.setStyleName(Gerrit.RESOURCES.css().removeReviewer()); removeButton.addClickHandler(new ClickHandler() { @Override public void onClick(ClickEvent event) { PatchUtil.DETAIL_SVC.removeReviewer(changeId, ad.getAccount(), new GerritCallback 
+       <reviewerresult>
+         () { @Override public void onSuccess(ReviewerResult result) { if (result.getErrors().isEmpty()) { final ChangeDetail r = result.getChange(); display(r.getChange(), r.getMissingApprovals(), r.getApprovals()); } else { new ErrorDialog(result.getErrors().get(0).toString()).center(); } } }); } }); table.setWidget(row, col++, removeButton); } table.setText(row, col++, hint.toString()); 
+       </reviewerresult> 
+      </approvalcategory.id,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4216</td> 
+     <td>1242677754</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Ulrik Sjolin</td>
+     <td>44671f5c6929a8f05223dd359182610286ceb98a</td> 
+     <td>None</td> 
+     <td>TODO populate the account role</td> 
+     <td>SATD_ADDED</td> 
+     <td>displayRow(int, ApprovalDetail)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, patchsetapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, link(ad.getAccount())); // TODO populate the account role table.clearCell(row, col++); for (final ApprovalType type : types) { final PatchSetApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, Gerrit.ICONS.redNot().createImage()); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, Gerrit.ICONS.greenCheck().createImage()); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.removeStyleName(row, col, "negscore"); fmt.addStyleName(row, col, "posscore"); } else { fmt.addStyleName(row, col, "negscore"); fmt.removeStyleName(row, col, "posscore"); } table.setText(row, col, vstr); } col++; } table.setText(row, col++, hint.toString()); 
+      </approvalcategory.id,></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

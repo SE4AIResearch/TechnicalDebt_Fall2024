@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1718</td> <td>-1422651148</td><td>apache/camel</td><td>Claus Ibsen</td><td>f04d7f82f234be41f6c77e4485eea4a82c3143a7</td> <td>None</td> <td>some platform cannot test using Castor as it uses a SUN dependent Xerces</td> <td>SATD_ADDED</td> <td>testMarshalDomainObjectTwice()</td> <td>public void testMarshalDomainObjectTwice() throws Exception</td> <td>
+    // some platform cannot test using Castor as it uses a SUN dependent Xerces
+    if (isPlatform("aix")) {
+        return;
+    }
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(2);
+    PurchaseOrder order = new PurchaseOrder();
+    order.setName("Tiger");
+    order.setAmount(1);
+    order.setPrice(99.95);
+    template.sendBody("direct:in", order);
+    template.sendBody("direct:in", order);
+    mock.assertIsSatisfied();
+    String body1 = mock.getExchanges().get(0).getIn().getBody(String.class);
+    String body2 = mock.getExchanges().get(1).getIn().getBody(String.class);
+    assertEquals("The body should marshalled to the same", body1, body2);
+</td> </tr></table></body></html>

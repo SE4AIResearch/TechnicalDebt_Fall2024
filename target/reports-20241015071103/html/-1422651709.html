@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>605</td> <td>-1422651709</td><td>apache/camel</td><td>Claus Ibsen</td><td>afd7d4b0b2deb68931720f9b28dc4d5f16db8f67</td> <td>None</td> <td>let some time pass to let the consumer etc. properly do its business before closing</td> <td>SATD_ADDED</td> <td>testFromFtpToAsciiFileNoBodyConversion()</td> <td>public void testFromFtpToAsciiFileNoBodyConversion() throws Exception</td> <td>
+    MockEndpoint resultEndpoint = getMockEndpoint("mock:result");
+    resultEndpoint.expectedMinimumMessageCount(1);
+    resultEndpoint.expectedBodiesReceived("Hello ASCII from FTPServer");
+    // wait until the file producer has written the file
+    Thread.sleep(1000);
+    // assert the file
+    File file = new File("target/ftptest/helloascii.txt");
+    assertTrue("The ASCII file should exists", file.exists());
+    assertTrue("File size wrong", file.length() > 10);
+    // let some time pass to let the consumer etc. properly do its business before closing
+    Thread.sleep(1000);
+</td> </tr></table></body></html>

@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5450</td> <td>-1009652276</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Check if the job has been properly cleaned up.</td> <td>SATD_ADDED</td> <td>testFailedJobInitalizations()</td> <td>public void testFailedJobInitalizations() throws Exception</td> <td>
+    String[] qs = { "default" };
+    taskTrackerManager.addQueues(qs);
+    ArrayList<FakeQueueInfo> queues = new ArrayList<FakeQueueInfo>();
+    queues.add(new FakeQueueInfo("default", 100.0f, true, 100));
+    taskTrackerManager.setFakeQueues(queues);
+    scheduler.start();
+    JobQueuesManager mgr = scheduler.jobQueuesManager;
+    // Submit a job whose initialization would fail always.
+    FakeJobInProgress job = new FakeFailingJobInProgress(new JobID("test", ++jobCounter), new JobConf(), taskTrackerManager, "u1", UtilsForTests.getJobTracker());
+    job.getStatus().setRunState(JobStatus.PREP);
+    taskTrackerManager.submitJob(job);
+    // check if job is present in waiting list.
+    assertEquals("Waiting job list does not contain submitted job", 1, mgr.getJobQueue("default").getWaitingJobCount());
+    assertTrue("Waiting job does not contain submitted job", mgr.getJobQueue("default").getWaitingJobs().contains(job));
+    // initialization should fail now.
+    controlledInitializationPoller.selectJobsToInitialize();
+    // Check if the job has been properly cleaned up.
+    assertEquals("Waiting job list contains submitted job", 0, mgr.getJobQueue("default").getWaitingJobCount());
+    assertFalse("Waiting job contains submitted job", mgr.getJobQueue("default").getWaitingJobs().contains(job));
+    assertFalse("Waiting job contains submitted job", mgr.getJobQueue("default").getRunningJobs().contains(job));
+</td> </tr></table></body></html>

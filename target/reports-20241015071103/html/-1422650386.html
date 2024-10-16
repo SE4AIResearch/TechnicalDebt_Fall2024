@@ -1,0 +1,84 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3065</td> <td>-1422650386</td><td>apache/camel</td><td>Dhiraj Bokde</td><td>a4c8f76ca7f0299d7f50a05a11d5c2f7a88b6b83</td> <td>None</td> <td>TODO run this on an Executor to make it async</td> <td>SATD_ADDED</td> <td>authenticate(IAuthFlowListener)</td> <td>public void authenticate(IAuthFlowListener listener)</td> <td>
+    // TODO run this on an Executor to make it async
+    // create HtmlUnit client
+    final WebClient webClient = new WebClient(BrowserVersion.FIREFOX_24);
+    final WebClientOptions options = webClient.getOptions();
+    options.setRedirectEnabled(true);
+    options.setJavaScriptEnabled(false);
+    options.setThrowExceptionOnFailingStatusCode(true);
+    options.setThrowExceptionOnScriptError(true);
+    options.setPrintContentOnFailingStatusCode(LOG.isDebugEnabled());
+    // add HTTP proxy if set
+    final Map<String, Object> httpParams = configuration.getHttpParams();
+    if (httpParams != null && httpParams.get(ConnRoutePNames.DEFAULT_PROXY) != null) {
+        final HttpHost proxyHost = (HttpHost) httpParams.get(ConnRoutePNames.DEFAULT_PROXY);
+        final Boolean socksProxy = (Boolean) httpParams.get("http.route.socks-proxy");
+        final ProxyConfig proxyConfig = new ProxyConfig(proxyHost.getHostName(), proxyHost.getPort(), socksProxy != null ? socksProxy : false);
+        options.setProxyConfig(proxyConfig);
+    }
+    // authorize application on user's behalf
+    try {
+        final String csrfId = String.valueOf(new SecureRandom().nextLong());
+        OAuthWebViewData viewData = new OAuthWebViewData(boxClient.getOAuthDataController());
+        viewData.setOptionalState(String.valueOf(csrfId));
+        final HtmlPage authPage = webClient.getPage(viewData.buildUrl().toString());
+        // submit login credentials
+        final HtmlForm loginForm = authPage.getFormByName("login_form");
+        final HtmlTextInput login = loginForm.getInputByName("login");
+        login.setText(configuration.getUserName());
+        final HtmlPasswordInput password = loginForm.getInputByName("password");
+        password.setText(configuration.getUserPassword());
+        final HtmlSubmitInput submitInput = loginForm.getInputByName("login_submit");
+        // submit consent
+        final HtmlPage consentPage = submitInput.click();
+        final HtmlForm consentForm = consentPage.getFormByName("consent_form");
+        final HtmlButton consentAccept = consentForm.getButtonByName("consent_accept");
+        // disable redirect to avoid loading redirect URL
+        webClient.getOptions().setRedirectEnabled(false);
+        // validate CSRF and get authorization code
+        String redirectQuery;
+        try {
+            final Page redirectPage = consentAccept.click();
+            redirectQuery = redirectPage.getUrl().getQuery();
+        } catch (FailingHttpStatusCodeException e) {
+            // escalate non redirect errors
+            if (e.getStatusCode() != HttpStatus.SC_MOVED_TEMPORARILY) {
+                throw e;
+            }
+            final String location = e.getResponse().getResponseHeaderValue("Location");
+            redirectQuery = location.substring(location.indexOf('?') + 1);
+        }
+        final Map<String, String> params = new HashMap<String, String>();
+        final Matcher matcher = QUERY_PARAM_PATTERN.matcher(redirectQuery);
+        while (matcher.find()) {
+            params.put(matcher.group(1), matcher.group(2));
+        }
+        final String state = params.get("state");
+        if (!csrfId.equals(state)) {
+            final SecurityException e = new SecurityException("Invalid CSRF code!");
+            listener.onAuthFlowException(e);
+            this.listener.onAuthFlowException(e);
+        } else {
+            // get authorization code
+            final String authorizationCode = params.get("code");
+            // get OAuth token
+            final IBoxOAuthManager oAuthManager = boxClient.getOAuthManager();
+            final BoxOAuthToken oAuthToken = oAuthManager.createOAuth(authorizationCode, configuration.getClientId(), configuration.getClientSecret(), null);
+            // send initial token to BoxClient and this.listener
+            final OAuthDataMessage authDataMessage = new OAuthDataMessage(oAuthToken, boxClient.getJSONParser(), boxClient.getResourceHub());
+            listener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, authDataMessage);
+            this.listener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, authDataMessage);
+        }
+    } catch (Exception e) {
+        // forward login exceptions to listener
+        listener.onAuthFlowException(e);
+        this.listener.onAuthFlowException(e);
+    }
+</td> </tr></table></body></html>

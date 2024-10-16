@@ -1,0 +1,95 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4338</td> <td>1242677831</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>897d9218acd3d2397f5b8194a4aca035f6b7bd39</td> <td>None</td> <td>FIXME Assign low priority to this group.</td> <td>SATD_ADDED</td> <td>migrateData(ReviewDb, UpdateUI)</td> <td>protected void migrateData(ReviewDb db, UpdateUI ui) throws OrmException</td> <td>
+    SystemConfig sc = db.systemConfig().get(new SystemConfig.Key());
+    Project.NameKey allProjects = sc.wildProjectName;
+    FileBasedConfig cfg = new FileBasedConfig(site.gerrit_config, FS.DETECTED);
+    boolean cfgDirty = false;
+    try {
+        cfg.load();
+    } catch (ConfigInvalidException err) {
+        throw new OrmException("Cannot read " + site.gerrit_config, err);
+    } catch (IOException err) {
+        throw new OrmException("Cannot read " + site.gerrit_config, err);
+    }
+    if (!allProjects.get().equals(AllProjectsNameProvider.DEFAULT)) {
+        ui.message("Setting gerrit.allProjects = " + allProjects.get());
+        cfg.setString("gerrit", null, "allProjects", allProjects.get());
+        cfgDirty = true;
+    }
+    try {
+        Repository git = mgr.openRepository(allProjects);
+        try {
+            MetaDataUpdate md = new MetaDataUpdate(new NoReplication(), allProjects, git);
+            md.getCommitBuilder().setAuthor(serverUser);
+            md.getCommitBuilder().setCommitter(serverUser);
+            ProjectConfig config = ProjectConfig.read(md);
+            AccessSection cap = config.getAccessSection(AccessSection.GLOBAL_CAPABILITIES, true);
+            // Move the Administrators group reference to All-Projects.
+            cap.getPermission(GlobalCapability.ADMINISTRATE_SERVER, true).add(new PermissionRule(config.resolve(db.accountGroups().get(sc.adminGroupId))));
+            // Move the repository.*.createGroup to Create Project.
+            String[] createGroupList = cfg.getStringList("repository", "*", "createGroup");
+            for (String name : createGroupList) {
+                AccountGroup.NameKey key = new AccountGroup.NameKey(name);
+                AccountGroupName groupName = db.accountGroupNames().get(key);
+                if (groupName == null) {
+                    continue;
+                }
+                AccountGroup group = db.accountGroups().get(groupName.getId());
+                if (group == null) {
+                    continue;
+                }
+                cap.getPermission(GlobalCapability.CREATE_PROJECT, true).add(new PermissionRule(config.resolve(group)));
+            }
+            if (createGroupList.length != 0) {
+                ui.message("Moved repository.*.createGroup to 'Create Project' capability");
+                cfg.unset("repository", "*", "createGroup");
+                cfgDirty = true;
+            }
+            AccountGroup batch = db.accountGroups().get(sc.batchUsersGroupId);
+            if (db.accountGroupMembers().byGroup(sc.batchUsersGroupId).toList().isEmpty() && db.accountGroupIncludes().byGroup(sc.batchUsersGroupId).toList().isEmpty()) {
+                // If the batch user group is not used, delete it.
+                // 
+                if (batch != null) {
+                    db.accountGroups().delete(Collections.singleton(batch));
+                    AccountGroupName name = db.accountGroupNames().get(batch.getNameKey());
+                    if (name != null) {
+                        db.accountGroupNames().delete(Collections.singleton(name));
+                    }
+                }
+            } else {
+            // FIXME Assign low priority to this group.
+            }
+            md.setMessage("Upgrade to Gerrit Code Review schema 57\n");
+            if (!config.commit(md)) {
+                throw new OrmException("Cannot update " + allProjects);
+            }
+        } finally {
+            git.close();
+        }
+    } catch (ConfigInvalidException err) {
+        throw new OrmException("Cannot read " + allProjects, err);
+    } catch (IOException err) {
+        throw new OrmException("Cannot update " + allProjects, err);
+    }
+    if (cfgDirty) {
+        try {
+            cfg.save();
+        } catch (IOException err) {
+            throw new OrmException("Cannot update " + site.gerrit_config, err);
+        }
+    }
+    // We cannot set the columns to NULL, so use 0 and a DELETED tag.
+    sc.adminGroupId = new AccountGroup.Id(0);
+    sc.adminGroupUUID = new AccountGroup.UUID("DELETED");
+    sc.anonymousGroupId = new AccountGroup.Id(0);
+    sc.registeredGroupId = new AccountGroup.Id(0);
+    sc.wildProjectName = new Project.NameKey("DELETED");
+    sc.ownerGroupId = new AccountGroup.Id(0);
+    db.systemConfig().update(Collections.singleton(sc));
+</td> </tr></table></body></html>

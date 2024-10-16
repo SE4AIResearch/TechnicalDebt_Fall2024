@@ -1,0 +1,66 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1923</td> 
+     <td>-1422651044</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>66a871f94b33f48caa59910dd54c97ce0ec7c077</td> 
+     <td>TODO: total number continue processing the multicast asynchronously</td> 
+     <td>continue processing the multicast asynchronously</td> 
+     <td>SATD_REMOVED</td> 
+     <td>doProcess(Exchange, AtomicExchange, Iterator<processorexchangepair>
+       , ProcessorExchangePair, AsyncCallback, AtomicInteger)
+      </processorexchangepair></td> 
+     <td>private boolean doProcess(final Exchange original, final AtomicExchange result, final Iterator<processorexchangepair>
+        it, final ProcessorExchangePair pair, final AsyncCallback callback, final AtomicInteger total)
+      </processorexchangepair></td> 
+     <td> boolean sync = true; final Exchange exchange = pair.getExchange(); Processor processor = pair.getProcessor(); Producer producer = pair.getProducer(); TracedRouteNodes traced = exchange.getUnitOfWork() != null ? exchange.getUnitOfWork().getTracedRouteNodes() : null; // compute time taken if sending to another endpoint StopWatch watch = null; if (producer != null) { watch = new StopWatch(); } try { // prepare tracing starting from a new block if (traced != null) { traced.pushBlock(); } // let the prepared process it, remember to begin the exchange pair AsyncProcessor async = AsyncProcessorTypeConverter.convert(processor); pair.begin(); sync = async.process(exchange, new AsyncCallback() { public void done(boolean doneSync) { // we are done with the exchange pair pair.done(); // we only have to handle async completion of the routing slip if (doneSync) { return; } // continue processing the multicast asynchronously Exchange subExchange = exchange; // remember to test for stop on exception and aggregate before copying back results if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice exchange.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // and copy the current result to original so it will contain this exception // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } total.incrementAndGet(); // maybe there are more processors to multicast while (it.hasNext()) { // prepare and run the next ProcessorExchangePair pair = it.next(); subExchange = pair.getExchange(); updateNewExchange(subExchange, total.get(), null); boolean sync = doProcess(original, result, it, pair, callback, total); if (!sync) { if (LOG.isTraceEnabled()) { LOG.trace("Processing exchangeId: " + original.getExchangeId() + " is continued being processed asynchronously"); } return; } if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } total.incrementAndGet(); } // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // multicasting complete so copy results back to the original exchange if (result.get() != null) { ExchangeHelper.copyResults(original, result.get()); } callback.done(false); } }); } finally { // pop the block so by next round we have the same staring point and thus the tracing looks accurate if (traced != null) { traced.popBlock(); } if (producer != null) { long timeTaken = watch.stop(); Endpoint endpoint = producer.getEndpoint(); // emit event that the exchange was sent to the endpoint EventHelper.notifyExchangeSent(exchange.getContext(), exchange, endpoint, timeTaken); } } return sync; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1920</td> 
+     <td>-1422651044</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>2fb8090dd3b18feb0f35f3c53b95535946874ad0</td> 
+     <td>None</td> 
+     <td>TODO: total number continue processing the multicast asynchronously</td> 
+     <td>SATD_ADDED</td> 
+     <td>doProcess(Exchange, AtomicExchange, Iterator<processorexchangepair>
+       , ProcessorExchangePair, AsyncCallback)
+      </processorexchangepair></td> 
+     <td>private boolean doProcess(final Exchange original, final AtomicExchange result, final Iterator<processorexchangepair>
+        it, final ProcessorExchangePair pair, final AsyncCallback callback)
+      </processorexchangepair></td> 
+     <td> boolean sync = true; final Exchange exchange = pair.getExchange(); Processor processor = pair.getProcessor(); Producer producer = pair.getProducer(); TracedRouteNodes traced = exchange.getUnitOfWork() != null ? exchange.getUnitOfWork().getTracedRouteNodes() : null; // compute time taken if sending to another endpoint StopWatch watch = null; if (producer != null) { watch = new StopWatch(); } try { // prepare tracing starting from a new block if (traced != null) { traced.pushBlock(); } // let the prepared process it AsyncProcessor async = AsyncProcessorTypeConverter.convert(processor); pair.begin(); sync = async.process(exchange, new AsyncCallback() { public void done(boolean doneSync) { pair.done(); // we only have to handle async completion of the routing slip if (doneSync) { return; } // TODO: total number // continue processing the multicast asynchronously Exchange subExchange = exchange; int total = 0; while (it.hasNext()) { if (stopOnException &amp;&amp; exchange.getException() != null) { // wrap in exception to explain where it failed exchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); callback.done(false); return; } if (aggregationStrategy != null) { doAggregate(result, subExchange); } if (it.hasNext()) { // prepare and run the next ProcessorExchangePair pair = it.next(); subExchange = pair.getExchange(); updateNewExchange(subExchange, total, null); boolean sync = doProcess(original, result, it, pair, callback); if (!sync) { if (LOG.isTraceEnabled()) { LOG.trace("Processing exchangeId: " + original.getExchangeId() + " is continued being processed asynchronously"); } return; } total++; } } // remember to test for stop on exception and aggregate before copying back results if (stopOnException &amp;&amp; exchange.getException() != null) { // wrap in exception to explain where it failed exchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); callback.done(false); return; } if (aggregationStrategy != null) { doAggregate(result, subExchange); } // copy results back to the original exchange if (result.get() != null) { ExchangeHelper.copyResults(original, result.get()); } callback.done(false); } }); } finally { // pop the block so by next round we have the same staring point and thus the tracing looks accurate if (traced != null) { traced.popBlock(); } if (producer != null) { long timeTaken = watch.stop(); Endpoint endpoint = producer.getEndpoint(); // emit event that the exchange was sent to the endpoint EventHelper.notifyExchangeSent(exchange.getContext(), exchange, endpoint, timeTaken); } } return sync; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

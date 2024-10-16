@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5335</td> <td>-1009652387</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>get a non-exist reduce task attempt, expect a made-up task attempt
+TODO fill in test case</td> <td>SATD_ADDED</td> <td>testFirstJob()</td> <td>public void testFirstJob()</td> <td>
+    // 20th job seems reasonable: "totalMaps":329,"totalReduces":101
+    // successful map: 80 node-local, 196 rack-local, 53 rack-remote, 2 unknown
+    // failed map: 0-0-0-1
+    // successful reduce: 99 failed reduce: 13
+    // map attempts to success -- 0.9969879518072289, 0.0030120481927710845,
+    JobStory job = jobStories.get(0);
+    assertEquals(1, job.getNumberMaps());
+    assertEquals(1, job.getNumberReduces());
+    // get splits
+    TaskAttemptInfo taInfo = null;
+    long expectedRuntime = 2423;
+    // get a succeeded map task attempt, expect the exact same task attempt
+    taInfo = job.getMapTaskAttemptInfoAdjusted(14, 0, 1);
+    assertEquals(expectedRuntime, taInfo.getRuntime());
+    assertEquals(State.SUCCEEDED, taInfo.getRunState());
+    // get a succeeded map attempt, but reschedule with different locality.
+    taInfo = job.getMapTaskAttemptInfoAdjusted(14, 0, 2);
+    assertEquals(State.SUCCEEDED, taInfo.getRunState());
+    taInfo = job.getMapTaskAttemptInfoAdjusted(14, 0, 0);
+    assertEquals(State.SUCCEEDED, taInfo.getRunState());
+    expectedRuntime = 97502;
+    // get a succeeded reduce task attempt, expect the exact same task attempt
+    taInfo = job.getTaskAttemptInfo(TaskType.REDUCE, 14, 0);
+    assertEquals(State.SUCCEEDED, taInfo.getRunState());
+    // get a failed reduce task attempt, expect the exact same task attempt
+    taInfo = job.getTaskAttemptInfo(TaskType.REDUCE, 14, 0);
+    assertEquals(State.SUCCEEDED, taInfo.getRunState());
+// get a non-exist reduce task attempt, expect a made-up task attempt
+// TODO fill in test case
+</td> </tr></table></body></html>

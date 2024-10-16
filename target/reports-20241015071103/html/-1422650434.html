@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2985</td> <td>-1422650434</td><td>apache/camel</td><td>Claus Ibsen</td><td>a5696ea924e26aee4ce76d5056458d5abf42a811</td> <td>None</td> <td>wait a bit to allow the consumer to poll once and see a non-changed file</td> <td>SATD_ADDED</td> <td>testFile()</td> <td>public void testFile() throws Exception</td> <td>
+    getMockEndpoint("mock:file").expectedBodiesReceived("Hello World");
+    template.sendBodyAndHeader(endpoint, "Hello World", Exchange.FILE_NAME, "hello.txt");
+    assertMockEndpointsSatisfied();
+    oneExchangeDone.matches(5, TimeUnit.SECONDS);
+    resetMocks();
+    getMockEndpoint("mock:file").expectedBodiesReceived("Hello World Again");
+    // wait a bit to allow the consumer to poll once and see a non-changed file
+    Thread.sleep(250);
+    template.sendBodyAndHeader(endpoint, "Hello World Again", Exchange.FILE_NAME, "hello.txt");
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

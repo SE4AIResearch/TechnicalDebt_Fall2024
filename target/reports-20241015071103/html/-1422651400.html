@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1254</td> <td>-1422651400</td><td>apache/camel</td><td>Claus Ibsen</td><td>92d3cf91f9c35d41da4adaf19f562f12f37b9275</td> <td>TODO: special error handler, where we have a local error handler with onlly the catch definitions</td> <td>do not use error handler for try .. catch .. finally blocks as it will handle errors itself</td> <td>SATD_REMOVED</td> <td>wrapChannel(RouteContext, Processor)</td> <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor) throws Exception</td> <td>
+    // put a channel inbetween this and each output to control the route flow logic
+    Channel channel = createChannel(routeContext);
+    channel.setNextProcessor(processor);
+    // add interceptor strategies to the channel
+    channel.addInterceptStrategies(routeContext.getCamelContext().getInterceptStrategies());
+    channel.addInterceptStrategies(routeContext.getInterceptStrategies());
+    // init the channel
+    channel.initChannel(this, routeContext);
+    // set the error handler, must be done after init as we can set the error handler as first in the chain
+    if (this instanceof TryDefinition || this instanceof CatchDefinition || this instanceof FinallyDefinition) {
+        // do not use error handler for try .. catch .. finally blocks as it will handle errors itself
+        return channel;
+    } else {
+        // regular definition so add the error handler
+        Processor errorHandler = getErrorHandlerBuilder().createErrorHandler(routeContext, channel.getOutput());
+        channel.setErrorHandler(errorHandler);
+        return channel;
+    }
+</td> </tr></table></body></html>

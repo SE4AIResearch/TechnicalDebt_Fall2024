@@ -1,0 +1,66 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>646</td> 
+     <td>-1422651686</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>9a9e8041610ec05e9a35987ed6b748c4de341901</td> 
+     <td>TODO: Reuse spring mail support to handle the attachment now convert the mail attachments and put it to the msg</td> 
+     <td>mail with attachment</td> 
+     <td>SATD_REMOVED</td> 
+     <td>extractAttachments(Message, Map<string, datahandler>
+       )
+      </string,></td> 
+     <td>protected static void extractAttachments(Message message, Map<string, datahandler>
+        map) throws javax.mail.MessagingException, IOException
+      </string,></td> 
+     <td> Object content = message.getContent(); if (content instanceof Multipart) { // mail with attachment Multipart mp = (Multipart) content; for (int i = 0; i &lt; mp.getCount(); i++) { Part part = mp.getBodyPart(i); String disposition = part.getDisposition(); if (disposition != null) { if (disposition.equalsIgnoreCase(Part.ATTACHMENT) || disposition.equalsIgnoreCase(Part.INLINE)) { // only add named attachments if (part.getFileName() != null) { // Parts marked with a disposition of Part.ATTACHMENT are clearly attachments CollectionHelper.appendValue(map, part.getFileName(), part.getDataHandler()); } } } } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>643</td> 
+     <td>-1422651686</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>45ab816bcb8cd708f8b45cea69e78a70d235a707</td> 
+     <td>None</td> 
+     <td>TODO: Reuse spring mail support to handle the attachment now convert the mail attachments and put it to the msg</td> 
+     <td>SATD_ADDED</td> 
+     <td>extractAttachments(Map<string, datahandler>
+       )
+      </string,></td> 
+     <td>protected void extractAttachments(Map<string, datahandler>
+        map) throws javax.mail.MessagingException
+      </string,></td> 
+     <td> // TODO: Reuse spring mail support to handle the attachment // now convert the mail attachments and put it to the msg Multipart mp; Object content; try { content = this.mailMessage.getContent(); if (content instanceof Multipart) { // mail with attachment mp = (Multipart) content; int nbMP = mp.getCount(); for (int i = 0; i &lt; nbMP; i++) { Part part = mp.getBodyPart(i); String disposition = part.getDisposition(); if (disposition != null &amp;&amp; (disposition.equalsIgnoreCase(Part.ATTACHMENT) || disposition.equalsIgnoreCase(Part.INLINE))) { // only add named attachments if (part.getFileName() != null) { // Parts marked with a disposition of // Part.ATTACHMENT // from part.getDisposition() are clearly // attachments DataHandler att = part.getDataHandler(); // this is clearly a attachment CollectionHelper.appendValue(map, part.getFileName(), att); } } } } } catch (MessagingException e) { throw new javax.mail.MessagingException("Error while setting content on normalized message", e); } catch (IOException e) { throw new javax.mail.MessagingException("Error while fetching content", e); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5566</td> <td>-1009652160</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Wrap FSDataInputStream for efficient backward seeks
+Keep track on position with respect encapsulated FSDataInputStream</td> <td>SATD_ADDED</td> <td>init()</td> <td>public void init() throws IOException</td> <td>
+    LOG.info("StreamBaseRecordReader.init: " + " start_=" + start_ + " end_=" + end_ + " length_=" + length_ + " start_ > in_.getPos() =" + (start_ > in_.getPos()) + " " + start_ + " > " + in_.getPos());
+    if (start_ > in_.getPos()) {
+        in_.seek(start_);
+    }
+    pos_ = start_;
+    bin_ = new BufferedInputStream(in_);
+    seekNextRecordBoundary();
+</td> </tr></table></body></html>

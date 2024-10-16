@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2678</td> <td>-1422650610</td><td>apache/camel</td><td>Claus Ibsen</td><td>669d5e04be4f7d866030f7e193b426ea772dfaa5</td> <td>None</td> <td>TODO: support when with CAMEL-5977</td> <td>SATD_ADDED</td> <td>processBatch(Queue<Object>)</td> <td>public int processBatch(Queue<Object> exchanges) throws Exception</td> <td>
+    int total = exchanges.size();
+    // limit if needed
+    if (maxMessagesPerPoll > 0 && total > maxMessagesPerPoll) {
+        log.debug("Limiting to maximum messages to poll " + maxMessagesPerPoll + " as there was " + total + " messages in this poll.");
+        total = maxMessagesPerPoll;
+    }
+    for (int index = 0; index < total && isBatchAllowed(); index++) {
+        // only loop if we are started (allowed to run)
+        DataHolder holder = ObjectHelper.cast(DataHolder.class, exchanges.poll());
+        Exchange exchange = holder.exchange;
+        Object data = holder.data;
+        // add current index and total as properties
+        exchange.setProperty(Exchange.BATCH_INDEX, index);
+        exchange.setProperty(Exchange.BATCH_SIZE, total);
+        exchange.setProperty(Exchange.BATCH_COMPLETE, index == total - 1);
+        // update pending number of exchanges
+        pendingExchanges = total - index - 1;
+        // process the current exchange
+        log.debug("Processing exchange: {} with properties: {}", exchange, exchange.getProperties());
+        getProcessor().process(exchange);
+    // TODO: support when with CAMEL-5977
+    /*
+            try {
+                if (onConsume != null) {
+                    SqlEndpoint endpoint = (SqlEndpoint) getEndpoint();
+                    endpoint.getProcessingStrategy().commit(endpoint, exchange, data, jdbcTemplate, onConsume);
+                }
+            } catch (Exception e) {
+                handleException(e);
+            }*/
+    }
+    return total;
+</td> </tr></table></body></html>

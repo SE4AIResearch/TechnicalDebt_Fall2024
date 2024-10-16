@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4396</td> <td>1242677864</td><td>GerritCodeReview/gerrit</td><td>Sasa Zivkov</td><td>680a5f80d9271cae4ee977f36c37447006071b40</td> <td>None</td> <td>Should never occur for a well written rule</td> <td>SATD_ADDED</td> <td>getSubmitTypeRecord(ReviewDb, PatchSet, ChangeData)</td> <td>public SubmitTypeRecord getSubmitTypeRecord(ReviewDb db, PatchSet patchSet, @Nullable ChangeData cd)</td> <td>
+    if (!patchSet.getId().equals(change.currentPatchSetId())) {
+        return typeRuleError("Patch set " + patchSet.getPatchSetId() + " is not current");
+    }
+    try {
+        if (change.getStatus() == Change.Status.DRAFT && !isDraftVisible(db, cd)) {
+            return typeRuleError("Patch set " + patchSet.getPatchSetId() + " not found");
+        }
+        if (patchSet.isDraft() && !isDraftVisible(db, cd)) {
+            return typeRuleError("Patch set " + patchSet.getPatchSetId() + " not found");
+        }
+    } catch (OrmException err) {
+        return logTypeRuleError("Cannot read patch set " + patchSet.getId(), err);
+    }
+    List<String> results;
+    SubmitRuleEvaluator evaluator;
+    try {
+        evaluator = new SubmitRuleEvaluator(db, patchSet, getProjectControl(), this, change, cd, false, "locate_submit_type", "get_submit_type", "locate_submit_type_filter", "filter_submit_type_results");
+        results = evaluator.evaluate().toJava();
+    } catch (RuleEvalException e) {
+        return logTypeRuleError(e.getMessage(), e);
+    }
+    if (results.isEmpty()) {
+        // Should never occur for a well written rule
+        log.error("Submit rule '" + evaluator.getSubmitRule() + "' for change " + change.getId() + " of " + getProject().getName() + " has no solution.");
+        return typeRuleError("Project submit rule has no solution");
+    }
+    // Take only the first result and convert it to SubmitTypeRecord
+    // This logic will need to change once we support multiple submit types
+    // in the UI
+    String typeName = results.get(0);
+    try {
+        return SubmitTypeRecord.OK(Project.SubmitType.valueOf(typeName.toUpperCase()));
+    } catch (IllegalArgumentException e) {
+        return logInvalidType(evaluator.getSubmitRule(), typeName);
+    }
+</td> </tr></table></body></html>

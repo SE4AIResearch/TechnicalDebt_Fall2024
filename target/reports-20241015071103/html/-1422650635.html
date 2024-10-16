@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2633</td> <td>-1422650635</td><td>apache/camel</td><td>Claus Ibsen</td><td>1fa083310a69d536b52b3beacc10db3b542208a2</td> <td>None</td> <td>TODO need to use the binding to handle the requests</td> <td>SATD_ADDED</td> <td>process(Exchange, AsyncCallback)</td> <td>public boolean process(Exchange exchange, AsyncCallback callback)</td> <td>
+    LOG.trace("Process exchange: {} in the async way.", exchange);
+    Message in = exchange.getIn();
+    String operationName = in.getHeader(XmlRpcConstants.OPERATION_NAME, String.class);
+    XmlRpcAsyncCallback xmlRpcAsyncCallback = new XmlRpcAsyncCallback(exchange, callback);
+    // TODO need to use the binding to handle the requests
+    try {
+        client.executeAsync(operationName, in.getBody(List.class), xmlRpcAsyncCallback);
+        return false;
+    } catch (Exception ex) {
+        exchange.setException(ex);
+        callback.done(true);
+        return true;
+    }
+</td> </tr></table></body></html>

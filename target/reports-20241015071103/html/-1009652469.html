@@ -1,0 +1,76 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5246</td> <td>-1009652469</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>maybe didn't work</td> <td>SATD_ADDED</td> <td>run(String[])</td> <td>public int run(String[] args)</td> <td>
+    ParsedOutput parsedOpts = null;
+    try {
+        ArgumentParser argHolder = new ArgumentParser(args);
+        parsedOpts = argHolder.parse();
+        if (parsedOpts.shouldOutputHelp()) {
+            parsedOpts.outputHelp();
+            return 1;
+        }
+    } catch (Exception e) {
+        LOG.error("Unable to parse arguments due to error: ", e);
+        return 1;
+    }
+    LOG.info("Running with option list " + Helper.stringifyArray(args, " "));
+    ConfigExtractor config = null;
+    try {
+        ConfigMerger cfgMerger = new ConfigMerger();
+        Configuration cfg = cfgMerger.getMerged(parsedOpts, new Configuration(base));
+        if (cfg != null) {
+            config = new ConfigExtractor(cfg);
+        }
+    } catch (Exception e) {
+        LOG.error("Unable to merge config due to error: ", e);
+        return 1;
+    }
+    if (config == null) {
+        LOG.error("Unable to merge config & options!");
+        return 1;
+    }
+    try {
+        LOG.info("Options are:");
+        ConfigExtractor.dumpOptions(config);
+    } catch (Exception e) {
+        LOG.error("Unable to dump options due to error: ", e);
+        return 1;
+    }
+    boolean jobOk = false;
+    try {
+        LOG.info("Running job:");
+        runJob(config);
+        jobOk = true;
+    } catch (Exception e) {
+        LOG.error("Unable to run job due to error: ", e);
+    }
+    if (jobOk) {
+        try {
+            LOG.info("Reporting on job:");
+            writeReport(config);
+        } catch (Exception e) {
+            LOG.error("Unable to report on job due to error: ", e);
+        }
+    }
+    // attempt cleanup (not critical)
+    boolean cleanUp = getBool(parsedOpts.getValue(ConfigOption.CLEANUP.getOpt()));
+    if (cleanUp) {
+        try {
+            LOG.info("Cleaning up job:");
+            cleanup(config);
+        } catch (Exception e) {
+            LOG.error("Unable to cleanup job due to error: ", e);
+        }
+    }
+    // all mostly worked
+    if (jobOk) {
+        return 0;
+    }
+    // maybe didn't work
+    return 1;
+</td> </tr></table></body></html>

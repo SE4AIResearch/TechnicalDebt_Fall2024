@@ -1,0 +1,125 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4211</td> <td>1242677749</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>Missing a trailing LF? Correct it (perhaps the editor was broken).</td> <td>SATD_ADDED</td> <td>writeCherryPickCommit(Merger, CodeReviewCommit)</td> <td>private void writeCherryPickCommit(final Merger m, final CodeReviewCommit n) throws IOException</td> <td>
+    rw.parseBody(n);
+    final List<FooterLine> footers = n.getFooterLines();
+    final StringBuilder msgbuf = new StringBuilder();
+    msgbuf.append(n.getFullMessage());
+    if (msgbuf.length() == 0) {
+        // WTF, an empty commit message?
+        msgbuf.append("<no commit message provided>");
+    }
+    if (msgbuf.charAt(msgbuf.length() - 1) != '\n') {
+        // Missing a trailing LF? Correct it (perhaps the editor was broken).
+        msgbuf.append('\n');
+    }
+    if (footers.isEmpty()) {
+        // Doesn't end in a "Signed-off-by: ..." style line? Add another line
+        // break to start a new paragraph for the reviewed-by tag lines.
+        // 
+        msgbuf.append('\n');
+    }
+    if (!contains(footers, CHANGE_ID, n.change.getKey().get())) {
+        msgbuf.append(CHANGE_ID.getName());
+        msgbuf.append(": ");
+        msgbuf.append(n.change.getKey().get());
+        msgbuf.append('\n');
+    }
+    final String siteUrl = urlProvider.get();
+    if (siteUrl != null) {
+        final String url = siteUrl + n.patchsetId.getParentKey().get();
+        if (!contains(footers, REVIEWED_ON, url)) {
+            msgbuf.append(REVIEWED_ON.getName());
+            msgbuf.append(": ");
+            msgbuf.append(url);
+            msgbuf.append('\n');
+        }
+    }
+    PatchSetApproval submitAudit = null;
+    try {
+        final List<PatchSetApproval> approvalList = schema.patchSetApprovals().byPatchSet(n.patchsetId).toList();
+        Collections.sort(approvalList, new Comparator<PatchSetApproval>() {
+
+            public int compare(final PatchSetApproval a, final PatchSetApproval b) {
+                return a.getGranted().compareTo(b.getGranted());
+            }
+        });
+        for (final PatchSetApproval a : approvalList) {
+            if (a.getValue() <= 0) {
+                // Negative votes aren't counted.
+                continue;
+            }
+            if (ApprovalCategory.SUBMIT.equals(a.getCategoryId())) {
+                // Submit is treated specially, below (becomes committer)
+                // 
+                if (submitAudit == null || a.getGranted().compareTo(submitAudit.getGranted()) > 0) {
+                    submitAudit = a;
+                }
+                continue;
+            }
+            final Account acc = identifiedUserFactory.create(a.getAccountId()).getAccount();
+            final StringBuilder identbuf = new StringBuilder();
+            if (acc.getFullName() != null && acc.getFullName().length() > 0) {
+                if (identbuf.length() > 0) {
+                    identbuf.append(' ');
+                }
+                identbuf.append(acc.getFullName());
+            }
+            if (acc.getPreferredEmail() != null && acc.getPreferredEmail().length() > 0) {
+                if (isSignedOffBy(footers, acc.getPreferredEmail())) {
+                    continue;
+                }
+                if (identbuf.length() > 0) {
+                    identbuf.append(' ');
+                }
+                identbuf.append('<');
+                identbuf.append(acc.getPreferredEmail());
+                identbuf.append('>');
+            }
+            if (identbuf.length() == 0) {
+                // Nothing reasonable to describe them by? Ignore them.
+                continue;
+            }
+            final String tag;
+            if (CRVW.equals(a.getCategoryId())) {
+                tag = "Reviewed-by";
+            } else if (VRIF.equals(a.getCategoryId())) {
+                tag = "Tested-by";
+            } else {
+                final ApprovalType at = approvalTypes.getApprovalType(a.getCategoryId());
+                if (at == null) {
+                    // A deprecated/deleted approval type, ignore it.
+                    continue;
+                }
+                tag = at.getCategory().getName().replace(' ', '-');
+            }
+            if (!contains(footers, new FooterKey(tag), identbuf.toString())) {
+                msgbuf.append(tag);
+                msgbuf.append(": ");
+                msgbuf.append(identbuf);
+                msgbuf.append('\n');
+            }
+        }
+    } catch (OrmException e) {
+        log.error("Can't read approval records for " + n.patchsetId, e);
+    }
+    final PersonIdent submitIdent = toPersonIdent(submitAudit);
+    final Commit mergeCommit = new Commit(db);
+    mergeCommit.setTreeId(m.getResultTreeId());
+    mergeCommit.setParentIds(new ObjectId[] { mergeTip });
+    mergeCommit.setAuthor(n.getAuthorIdent());
+    mergeCommit.setCommitter(submitIdent != null ? submitIdent : myIdent);
+    mergeCommit.setMessage(msgbuf.toString());
+    final ObjectId id = m.getObjectWriter().writeCommit(mergeCommit);
+    final CodeReviewCommit newCommit = (CodeReviewCommit) rw.parseCommit(id);
+    newCommit.copyFrom(n);
+    newCommit.statusCode = CommitMergeStatus.CLEAN_PICK;
+    commits.put(newCommit.patchsetId.getParentKey(), newCommit);
+    mergeTip = newCommit;
+    setRefLogIdent(submitAudit);
+</td> </tr></table></body></html>

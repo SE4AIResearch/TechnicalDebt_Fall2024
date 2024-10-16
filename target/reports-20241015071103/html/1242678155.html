@@ -1,0 +1,55 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4975</td> <td>1242678155</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>acda8b37256e1c2175fdebb78e700f345d1d14d4</td> <td>None</td> <td>Take advantage of an existing update on All-Users to prune any
+published comments from drafts. NoteDbUpdateManager takes care of
+ensuring that this update is applied before its dependent draft
+update.
+
+Deleting aggressively in this way, combined with filtering out
+duplicate published/draft comments in ChangeNotes#getDraftComments,
+makes up for the fact that updates between the change repo and
+All-Users are not atomic.
+
+TODO(dborowitz): We might want to distinguish between deleted
+drafts that we're fixing up after the fact by putting them in a
+separate commit. But note that we don't care much about the commit
+graph of the draft ref, particularly because the ref is completely
+deleted when all drafts are gone.</td> <td>SATD_ADDED</td> <td>checkComments(Map<RevId, RevisionNote>, Map<RevId, RevisionNoteBuilder>)</td> <td>private void checkComments(Map<RevId, RevisionNote> existingNotes, Map<RevId, RevisionNoteBuilder> toUpdate) throws OrmException</td> <td>
+    // Prohibit various kinds of illegal operations on comments.
+    Set<PatchLineComment.Key> existing = new HashSet<>();
+    for (RevisionNote rn : existingNotes.values()) {
+        for (PatchLineComment c : rn.comments) {
+            existing.add(c.getKey());
+            if (draftUpdate != null) {
+                // Take advantage of an existing update on All-Users to prune any
+                // published comments from drafts. NoteDbUpdateManager takes care of
+                // ensuring that this update is applied before its dependent draft
+                // update.
+                // 
+                // Deleting aggressively in this way, combined with filtering out
+                // duplicate published/draft comments in ChangeNotes#getDraftComments,
+                // makes up for the fact that updates between the change repo and
+                // All-Users are not atomic.
+                // 
+                // TODO(dborowitz): We might want to distinguish between deleted
+                // drafts that we're fixing up after the fact by putting them in a
+                // separate commit. But note that we don't care much about the commit
+                // graph of the draft ref, particularly because the ref is completely
+                // deleted when all drafts are gone.
+                draftUpdate.deleteComment(c.getRevId(), c.getKey());
+            }
+        }
+    }
+    for (RevisionNoteBuilder b : toUpdate.values()) {
+        for (PatchLineComment c : b.put.values()) {
+            if (existing.contains(c.getKey())) {
+                throw new OrmException("Cannot update existing published comment: " + c);
+            }
+        }
+    }
+</td> </tr></table></body></html>

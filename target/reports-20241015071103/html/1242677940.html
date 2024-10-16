@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4544</td> <td>1242677940</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>1d2a9982985d7a0fb7dc40f97bd265420f19ebb6</td> <td>None</td> <td>TODO(dborowitz): Parallelize these</td> <td>SATD_ADDED</td> <td>call()</td> <td>public Void call() throws Exception</td> <td>
+    try {
+        final ReviewDb db = schemaFactory.open();
+        try {
+            context.setContext(new RequestContext() {
+
+                @Override
+                public Provider<ReviewDb> getReviewDbProvider() {
+                    return Providers.of(db);
+                }
+
+                @Override
+                public CurrentUser getCurrentUser() {
+                    throw new OutOfScopeException("No user during ChangeIndexer");
+                }
+            });
+            for (ChangeIndex index : indexes.getWriteIndexes()) {
+                // TODO(dborowitz): Parallelize these
+                index.replace(cd);
+            }
+            return null;
+        } finally {
+            context.setContext(null);
+            db.close();
+        }
+    } catch (Exception e) {
+        log.error(String.format("Failed to index change %d in %s", cd.getId().get(), cd.getChange().getProject().get()), e);
+        throw e;
+    }
+</td> </tr></table></body></html>

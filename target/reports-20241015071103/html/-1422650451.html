@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2952</td> <td>-1422650451</td><td>apache/camel</td><td>Claus Ibsen</td><td>8fb3106821d4f45b23d431cea95fd7622b6122d9</td> <td>None</td> <td>wait a bit to make sure the route has already been properly started through the given route policy</td> <td>SATD_ADDED</td> <td>testQuartzPersistentStoreClusteredApp()</td> <td>public void testQuartzPersistentStoreClusteredApp() throws Exception</td> <td>
+    // boot up the database the two apps are going to share inside a clustered quartz setup
+    AbstractXmlApplicationContext db = new ClassPathXmlApplicationContext("org/apache/camel/routepolicy/quartz/SpringQuartzEmbeddedDatabase.xml");
+    db.start();
+    // now launch the first clustered app
+    AbstractXmlApplicationContext app = new ClassPathXmlApplicationContext("org/apache/camel/routepolicy/quartz/SpringQuartzClusteredAppOneTest.xml");
+    app.start();
+    // as well as the second one
+    AbstractXmlApplicationContext app2 = new ClassPathXmlApplicationContext("org/apache/camel/routepolicy/quartz/SpringQuartzClusteredAppTwoTest.xml");
+    app2.start();
+    CamelContext camel = app.getBean("camelContext", CamelContext.class);
+    MockEndpoint mock = camel.getEndpoint("mock:result", MockEndpoint.class);
+    mock.expectedMessageCount(1);
+    mock.expectedBodiesReceived("clustering PINGS!");
+    // wait a bit to make sure the route has already been properly started through the given route policy
+    Thread.sleep(5000);
+    app.getBean("template", ProducerTemplate.class).sendBody("direct:start", "clustering");
+    mock.assertIsSatisfied();
+    // now let's simulate a crash of the first app
+    log.warn("The first app is going to crash NOW!");
+    app.close();
+    log.warn("Crashed...");
+    log.warn("Crashed...");
+    log.warn("Crashed...");
+    // wait long enough until the second app takes it over...
+    Thread.sleep(20000);
+    // inside the logs one can then clearly see how the route of the second CamelContext gets started:
+    // 2013-09-24 22:51:34,215 [main           ] WARN  ersistentStoreClusteredAppTest - Crashed...
+    // 2013-09-24 22:51:34,215 [main           ] WARN  ersistentStoreClusteredAppTest - Crashed...
+    // 2013-09-24 22:51:34,215 [main           ] WARN  ersistentStoreClusteredAppTest - Crashed...
+    // 2013-09-24 22:51:49,188 [_ClusterManager] INFO  LocalDataSourceJobStore        - ClusterManager: detected 1 failed or restarted instances.
+    // 2013-09-24 22:51:49,188 [_ClusterManager] INFO  LocalDataSourceJobStore        - ClusterManager: Scanning for instance "app-one"'s failed in-progress jobs.
+    // 2013-09-24 22:51:49,211 [eduler_Worker-1] INFO  SpringCamelContext             - Route: myRoute started and consuming from: Endpoint[direct://start]
+    CamelContext camel2 = app2.getBean("camelContext2", CamelContext.class);
+    MockEndpoint mock2 = camel2.getEndpoint("mock:result", MockEndpoint.class);
+    mock2.expectedMessageCount(1);
+    mock2.expectedBodiesReceived("clustering PONGS!");
+    app2.getBean("template", ProducerTemplate.class).sendBody("direct:start", "clustering");
+    mock2.assertIsSatisfied();
+    // stop the second app as we're already done
+    app2.close();
+    // and as the last step stop the database itself...
+    db.close();
+</td> </tr></table></body></html>

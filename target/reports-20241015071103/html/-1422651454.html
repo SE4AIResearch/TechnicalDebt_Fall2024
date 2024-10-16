@@ -1,0 +1,69 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1251</td> 
+     <td>-1422651454</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>92d3cf91f9c35d41da4adaf19f562f12f37b9275</td> 
+     <td>set the error handler strategy containing the list of outputs added TODO: align this code with InstrumentationLifecycleStrategy</td> 
+     <td>do nothing</td> 
+     <td>SATD_REMOVED</td> 
+     <td>onRouteContextCreate(RouteContext)</td> 
+     <td>public void onRouteContextCreate(RouteContext routeContext)</td> 
+     <td> // do nothing </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1153</td> 
+     <td>-1422651454</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>71e646abf0cb9161004ca84e547d853d9cdb6a65</td> 
+     <td>None</td> 
+     <td>set the error handler strategy containing the list of outputs added TODO: align this code with InstrumentationLifecycleStrategy</td> 
+     <td>SATD_ADDED</td> 
+     <td>onRouteContextCreate(RouteContext)</td> 
+     <td>public void onRouteContextCreate(RouteContext routeContext)</td> 
+     <td> RouteDefinition routeType = routeContext.getRoute(); if (routeType.getInputs() != null &amp;&amp; !routeType.getInputs().isEmpty()) { // configure the outputs List<processordefinition>
+        outputs = new ArrayList
+       <processordefinition>
+        (routeType.getOutputs()); // clearing the outputs routeType.clearOutput(); // a list of processors in the route List
+        <processordefinition>
+          counterList = new ArrayList
+         <processordefinition>
+          (); // add the output configure the outputs with the routeType for (ProcessorDefinition processorType : outputs) { routeType.addOutput(processorType); counterList.add(processorType); } // set the error handler strategy containing the list of outputs added // TODO: align this code with InstrumentationLifecycleStrategy routeContext.setErrorHandlerWrappingStrategy(new DefaultErrorHandlerWrappingStrategy(routeContext, counterList)); } 
+         </processordefinition>
+        </processordefinition>
+       </processordefinition>
+      </processordefinition></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

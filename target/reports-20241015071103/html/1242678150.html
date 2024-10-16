@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4965</td> <td>1242678150</td><td>GerritCodeReview/gerrit</td><td>David Ostrovsky</td><td>81b830df4e37d398ad957bb979b039f8e13a73ab</td> <td>None</td> <td>ignore non valid numbers
+We don't want to popup another ugly dialog just to say
+\"The number you've provided is invalid, try again\"</td> <td>SATD_ADDED</td> <td>gotoLine()</td> <td>private Runnable gotoLine()</td> <td>
+    return new Runnable() {
+
+        @Override
+        public void run() {
+            String n = Window.prompt(EditConstants.I.gotoLineNumber(), "");
+            if (n != null) {
+                try {
+                    int line = Integer.parseInt(n);
+                    line--;
+                    if (line >= 0) {
+                        cm.scrollToLine(line);
+                    }
+                } catch (NumberFormatException e) {
+                // ignore non valid numbers
+                // We don't want to popup another ugly dialog just to say
+                // "The number you've provided is invalid, try again"
+                }
+            }
+        }
+    };
+</td> </tr></table></body></html>

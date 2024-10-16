@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1981</td> <td>-1422651015</td><td>apache/camel</td><td>Claus Ibsen</td><td>2eec86f1bed109bc229a235bddc37b5fa37a004b</td> <td>None</td> <td>TODO: callback should be in finally to ensure its invoked</td> <td>SATD_ADDED</td> <td>handleException(Map<String, Object>, Throwable)</td> <td>public void handleException(Map<String, Object> ctx, Throwable ex)</td> <td>
+    LOG.trace("Handling exception +++ START +++");
+    super.handleException(ctx, ex);
+    camelExchange.setException(ex);
+    // TODO: callback should be in finally to ensure its invoked
+    LOG.trace("Handling response +++ DONE +++");
+    camelAsyncCallback.done(false);
+    LOG.trace("Handling response +++ END +++");
+</td> </tr></table></body></html>

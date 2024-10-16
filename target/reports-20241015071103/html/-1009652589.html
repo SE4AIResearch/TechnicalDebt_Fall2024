@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6033</td> 
+     <td>-1009652589</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Using default block size since there is no way in FTP client to know of block sizes on server. The assumption could be less than ideal.</td> 
+     <td>Using default block size since there is no way in FTP client to know of block sizes on server. The assumption could be less than ideal.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>getFileStatus(FTPFile, Path)</td> 
+     <td>private FileStatus getFileStatus(FTPFile ftpFile, Path parentPath)</td> 
+     <td> long length = ftpFile.getSize(); boolean isDir = ftpFile.isDirectory(); int blockReplication = 1; // Using default block size since there is no way in FTP client to know of // block sizes on server. The assumption could be less than ideal. long blockSize = DEFAULT_BLOCK_SIZE; long modTime = ftpFile.getTimestamp().getTimeInMillis(); long accessTime = 0; FsPermission permission = getPermissions(ftpFile); String user = ftpFile.getUser(); String group = ftpFile.getGroup(); Path filePath = new Path(parentPath, ftpFile.getName()); return new FileStatus(length, isDir, blockReplication, blockSize, modTime, accessTime, permission, user, group, filePath.makeQualified(this)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5197</td> 
+     <td>-1009652589</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Using default block size since there is no way in FTP client to know of block sizes on server. The assumption could be less than ideal.</td> 
+     <td>Using default block size since there is no way in FTP client to know of block sizes on server. The assumption could be less than ideal.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>getFileStatus(FTPFile, Path)</td> 
+     <td>private FileStatus getFileStatus(FTPFile ftpFile, Path parentPath)</td> 
+     <td> long length = ftpFile.getSize(); boolean isDir = ftpFile.isDirectory(); int blockReplication = 1; // Using default block size since there is no way in FTP client to know of // block sizes on server. The assumption could be less than ideal. long blockSize = DEFAULT_BLOCK_SIZE; long modTime = ftpFile.getTimestamp().getTimeInMillis(); long accessTime = 0; FsPermission permission = getPermissions(ftpFile); String user = ftpFile.getUser(); String group = ftpFile.getGroup(); Path filePath = new Path(parentPath, ftpFile.getName()); return new FileStatus(length, isDir, blockReplication, blockSize, modTime, accessTime, permission, user, group, filePath.makeQualified(this)); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

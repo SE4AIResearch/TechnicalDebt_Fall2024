@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>911</td> <td>-1422651551</td><td>apache/camel</td><td>Jonathan Anstey</td><td>697805feca4b5b570159f1e4ef08d3bfe96183c4</td> <td>None</td> <td>TODO get the scheme of the component?</td> <td>SATD_ADDED</td> <td>createEndpointUri()</td> <td>protected String createEndpointUri()</td> <td>
+    String scheme = "jms";
+    Component owner = getComponent();
+    if (owner != null) {
+    // TODO get the scheme of the component?
+    }
+    if (destination != null) {
+        return scheme + ":" + destination;
+    } else if (destinationName != null) {
+        return scheme + ":" + destinationName;
+    }
+    DestinationResolver resolver = getDestinationResolver();
+    if (resolver != null) {
+        return scheme + ":" + resolver;
+    }
+    return super.createEndpointUri();
+</td> </tr></table></body></html>

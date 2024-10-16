@@ -1,0 +1,113 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5430</td> <td>-1009652296</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>OP_CLOSE 9 see above
+OP_SET_GENSTAMP 10 see above
+OP_SET_NS_QUOTA 11 obsolete
+OP_CLEAR_NS_QUOTA 12 obsolete
+OP_TIMES 13
+Wed, 22 Sep 2010 22:45:27 GMT</td> <td>SATD_ADDED</td> <td>runOperations()</td> <td>private void runOperations() throws IOException</td> <td>
+    LOG.info("Creating edits by performing fs operations");
+    // no check, if it's not it throws an exception which is what we want
+    DistributedFileSystem dfs = (DistributedFileSystem) cluster.getFileSystem();
+    FileContext fc = FileContext.getFileContext(cluster.getURI(0), config);
+    // OP_ADD 0, OP_SET_GENSTAMP 10
+    Path pathFileCreate = new Path("/file_create");
+    FSDataOutputStream s = dfs.create(pathFileCreate);
+    // OP_CLOSE 9
+    s.close();
+    // OP_RENAME_OLD 1
+    Path pathFileMoved = new Path("/file_moved");
+    dfs.rename(pathFileCreate, pathFileMoved);
+    // OP_DELETE 2
+    dfs.delete(pathFileMoved, false);
+    // OP_MKDIR 3
+    Path pathDirectoryMkdir = new Path("/directory_mkdir");
+    dfs.mkdirs(pathDirectoryMkdir);
+    // OP_SET_REPLICATION 4
+    s = dfs.create(pathFileCreate);
+    s.close();
+    dfs.setReplication(pathFileCreate, (short) 1);
+    // OP_SET_PERMISSIONS 7
+    Short permission = 0777;
+    dfs.setPermission(pathFileCreate, new FsPermission(permission));
+    // OP_SET_OWNER 8
+    dfs.setOwner(pathFileCreate, new String("newOwner"), null);
+    // OP_CLOSE 9 see above
+    // OP_SET_GENSTAMP 10 see above
+    // OP_SET_NS_QUOTA 11 obsolete
+    // OP_CLEAR_NS_QUOTA 12 obsolete
+    // OP_TIMES 13
+    // Wed, 22 Sep 2010 22:45:27 GMT
+    long mtime = 1285195527000L;
+    long atime = mtime;
+    dfs.setTimes(pathFileCreate, mtime, atime);
+    // OP_SET_QUOTA 14
+    dfs.setQuota(pathDirectoryMkdir, 1000L, FSConstants.QUOTA_DONT_SET);
+    // OP_RENAME 15
+    fc.rename(pathFileCreate, pathFileMoved, Rename.NONE);
+    // OP_CONCAT_DELETE 16
+    Path pathConcatTarget = new Path("/file_concat_target");
+    Path[] pathConcatFiles = new Path[2];
+    pathConcatFiles[0] = new Path("/file_concat_0");
+    pathConcatFiles[1] = new Path("/file_concat_1");
+    // multiple of blocksize for concat
+    long length = blockSize * 3;
+    short replication = 1;
+    long seed = 1;
+    DFSTestUtil.createFile(dfs, pathConcatTarget, length, replication, seed);
+    DFSTestUtil.createFile(dfs, pathConcatFiles[0], length, replication, seed);
+    DFSTestUtil.createFile(dfs, pathConcatFiles[1], length, replication, seed);
+    dfs.concat(pathConcatTarget, pathConcatFiles);
+    // OP_SYMLINK 17
+    Path pathSymlink = new Path("/file_symlink");
+    fc.createSymlink(pathConcatTarget, pathSymlink, false);
+    // OP_GET_DELEGATION_TOKEN 18
+    final Token<DelegationTokenIdentifier> token = dfs.getDelegationToken("JobTracker");
+    // OP_RENEW_DELEGATION_TOKEN 19
+    // OP_CANCEL_DELEGATION_TOKEN 20
+    // see TestDelegationToken.java
+    // fake the user to renew token for
+    UserGroupInformation longUgi = UserGroupInformation.createRemoteUser("JobTracker/foo.com@FOO.COM");
+    UserGroupInformation shortUgi = UserGroupInformation.createRemoteUser("JobTracker");
+    try {
+        longUgi.doAs(new PrivilegedExceptionAction<Object>() {
+
+            public Object run() throws IOException {
+                final DistributedFileSystem dfs = (DistributedFileSystem) cluster.getFileSystem();
+                dfs.renewDelegationToken(token);
+                dfs.cancelDelegationToken(token);
+                return null;
+            }
+        });
+    } catch (InterruptedException e) {
+        throw new IOException("renewDelegationToken threw InterruptedException", e);
+    }
+    // OP_UPDATE_MASTER_KEY 21
+    // done by getDelegationTokenSecretManager().startThreads();
+    // sync to disk, otherwise we parse partial edits
+    cluster.getNameNode().getFSImage().getEditLog().logSync();
+    // OP_REASSIGN_LEASE 22
+    String filePath = "/hard-lease-recovery-test";
+    byte[] bytes = "foo-bar-baz".getBytes();
+    DFSClientAdapter.stopLeaseRenewer(dfs.getClient());
+    FSDataOutputStream leaseRecoveryPath = dfs.create(new Path(filePath));
+    leaseRecoveryPath.write(bytes);
+    leaseRecoveryPath.hflush();
+    // Set the hard lease timeout to 1 second.
+    cluster.setLeasePeriod(60 * 1000, 1000);
+    // wait for lease recovery to complete
+    LocatedBlocks locatedBlocks;
+    do {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            LOG.info("Innocuous exception", e);
+        }
+        locatedBlocks = DFSClientAdapter.callGetBlockLocations(cluster.getNameNode(), filePath, 0L, bytes.length);
+    } while (locatedBlocks.isUnderConstruction());
+</td> </tr></table></body></html>

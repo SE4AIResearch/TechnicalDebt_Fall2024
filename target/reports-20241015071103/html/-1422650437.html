@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2981</td> <td>-1422650437</td><td>apache/camel</td><td>Claus Ibsen</td><td>0372752aba87ca81383d2dd7c3fe3d04e6b650ee</td> <td>None</td> <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> <td>SATD_ADDED</td> <td>createPersistentConnectionFactory(String)</td> <td>public static ConnectionFactory createPersistentConnectionFactory(String options)</td> <td>
+    // using a unique broker name improves testing when running the entire test suite in the same JVM
+    int id = counter.incrementAndGet();
+    // use an unique data directory in target
+    String dir = "target/activemq-data-" + id;
+    // remove dir so its empty on startup
+    FileUtil.removeDir(new File(dir));
+    String url = "vm://test-broker-" + id + "?broker.persistent=true&broker.useJmx=false&broker.dataDirectory=" + dir;
+    if (options != null) {
+        url = url + "&" + options;
+    }
+    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+    // optimize AMQ to be as fast as possible so unit testing is quicker
+    connectionFactory.setCopyMessageOnSend(false);
+    connectionFactory.setOptimizeAcknowledge(true);
+    connectionFactory.setOptimizedMessageDispatch(true);
+    connectionFactory.setUseAsyncSend(true);
+    connectionFactory.setAlwaysSessionAsync(false);
+    // use a pooled connection factory
+    PooledConnectionFactory pooled = new PooledConnectionFactory(connectionFactory);
+    pooled.setMaxConnections(8);
+    return pooled;
+</td> </tr></table></body></html>

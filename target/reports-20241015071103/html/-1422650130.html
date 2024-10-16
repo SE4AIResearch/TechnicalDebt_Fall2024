@@ -1,0 +1,54 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3555</td> <td>-1422650130</td><td>apache/camel</td><td>Claus Ibsen</td><td>55cc138ae9ebb9751846698fa44ac8e7683f3963</td> <td>None</td> <td>get the exit value from the executor as it captures this to work around the common-exec bug</td> <td>SATD_ADDED</td> <td>execute(ExecCommand)</td> <td>public ExecResult execute(ExecCommand command)</td> <td>
+    notNull(command, "command");
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
+    DefaultExecutor executor = prepareDefaultExecutor(command);
+    // handle error and output of the process and write them to the given
+    // out stream
+    PumpStreamHandler handler = new PumpStreamHandler(out, err, command.getInput());
+    executor.setStreamHandler(handler);
+    CommandLine cl = toCommandLine(command);
+    try {
+        int exitValue = executor.execute(cl);
+        // if the size is zero, we have no output, so construct the result
+        // with null (required by ExecResult)
+        InputStream stdout = out.size() == 0 ? null : new ByteArrayInputStream(out.toByteArray());
+        InputStream stderr = err.size() == 0 ? null : new ByteArrayInputStream(err.toByteArray());
+        ExecResult result = new ExecResult(command, stdout, stderr, exitValue);
+        return result;
+    } catch (ExecuteException ee) {
+        LOG.error("ExecException while executing command: " + command.toString() + " - " + ee.getMessage());
+        throw new ExecException("Failed to execute command " + command, ee);
+    } catch (IOException ioe) {
+        // workaround to ignore if the stream was already closes due some race condition in commons-exec
+        String msg = ioe.getMessage();
+        if ("Stream closed".equals(msg)) {
+            LOG.debug("Ignoring Stream closed IOException", ioe);
+            // if the size is zero, we have no output, so construct the result
+            // with null (required by ExecResult)
+            InputStream stdout = out.size() == 0 ? null : new ByteArrayInputStream(out.toByteArray());
+            InputStream stderr = err.size() == 0 ? null : new ByteArrayInputStream(err.toByteArray());
+            // use 0 as exit value as the executor didn't return the value
+            int exitValue = 0;
+            if (executor instanceof ExecDefaultExecutor) {
+                // get the exit value from the executor as it captures this to work around the common-exec bug
+                exitValue = ((ExecDefaultExecutor) executor).getExitValue();
+            }
+            ExecResult result = new ExecResult(command, stdout, stderr, exitValue);
+            return result;
+        }
+        // invalid working dir
+        LOG.error("IOException while executing command: " + command.toString() + " - " + ioe.getMessage());
+        throw new ExecException("Unable to execute command " + command, ioe);
+    } finally {
+        // the inputStream must be closed after the execution
+        IOUtils.closeQuietly(command.getInput());
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1696</td> <td>-1422651158</td><td>apache/camel</td><td>Jonathan Anstey</td><td>1576fa802625bf5d3d192004f9f56b2aab2f1d1f</td> <td>None</td> <td>it could potentially retry the file on the 2nd poll and then fail again
+so it should be minimum message count</td> <td>SATD_ADDED</td> <td>testPollFileAndShouldNotBeDeleted()</td> <td>public void testPollFileAndShouldNotBeDeleted() throws Exception</td> <td>
+    template.sendBodyAndHeader("file://target/deletefile", body, Exchange.FILE_NAME, "hello.txt");
+    MockEndpoint mock = getMockEndpoint("mock:error");
+    // it could potentially retry the file on the 2nd poll and then fail again
+    // so it should be minimum message count
+    mock.expectedMinimumMessageCount(1);
+    mock.assertIsSatisfied();
+    // give time to NOT delete file
+    Thread.sleep(200);
+    // assert the file is deleted
+    File file = new File("./target/deletefile/hello.txt");
+    file = file.getAbsoluteFile();
+    assertTrue("The file should NOT have been deleted", file.exists());
+</td> </tr></table></body></html>

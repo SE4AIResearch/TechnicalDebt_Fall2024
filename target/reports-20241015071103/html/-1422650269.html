@@ -1,0 +1,77 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3317</td> 
+     <td>-1422650269</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>1acfe6e75143fa66320db1fd2159f7a4fd008b94</td> 
+     <td>TODO provide parameter values for get</td> 
+     <td>4. now try and get that comment</td> 
+     <td>SATD_REMOVED</td> 
+     <td>testComment()</td> 
+     <td>public void testComment() throws Exception</td> 
+     <td> // 1. create test file File testFile = uploadTestFile(); String fileId = testFile.getId(); // 2. comment on that file Map<string, object>
+        headers = new HashMap
+       <string, object>
+        (); // parameter type is String headers.put("CamelGoogleDrive.fileId", fileId); // parameter type is com.google.api.services.drive.model.Comment com.google.api.services.drive.model.Comment comment = new com.google.api.services.drive.model.Comment(); comment.setContent("Camel rocks!"); headers.put("CamelGoogleDrive.content", comment); requestBodyAndHeaders("direct://INSERT", null, headers); // 3. get a list of comments on the file // using String message body for single parameter "fileId" com.google.api.services.drive.model.CommentList result1 = requestBody("direct://LIST", fileId); assertNotNull(result1.get("items")); LOG.debug("list: " + result1); Comment comment2 = result1.getItems().get(0); // 4. now try and get that comment headers = new HashMap
+        <string, object>
+         (); // parameter type is String headers.put("CamelGoogleDrive.fileId", fileId); // parameter type is String headers.put("CamelGoogleDrive.commentId", comment2.getCommentId()); final com.google.api.services.drive.model.Comment result3 = requestBodyAndHeaders("direct://GET", null, headers); assertNotNull("get result", result3); // 5. delete the comment headers = new HashMap
+         <string, object>
+          (); // parameter type is String headers.put("CamelGoogleDrive.fileId", fileId); // parameter type is String headers.put("CamelGoogleDrive.commentId", comment2.getCommentId()); requestBodyAndHeaders("direct://DELETE", null, headers); // 6. ensure the comment is gone headers = new HashMap
+          <string, object>
+           (); // parameter type is String headers.put("CamelGoogleDrive.fileId", fileId); // parameter type is String headers.put("CamelGoogleDrive.commentId", comment2.getCommentId()); try { final com.google.api.services.drive.model.Comment result4 = requestBodyAndHeaders("direct://GET", null, headers); assertTrue("Should have thrown an exception.", false); } catch (Exception e) { e.printStackTrace(); } 
+          </string,>
+         </string,>
+        </string,>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3225</td> 
+     <td>-1422650269</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>301153bb55afc839ca71e81254fc1c11cf07a6fe</td> 
+     <td>None</td> 
+     <td>TODO provide parameter values for get</td> 
+     <td>SATD_ADDED</td> 
+     <td>testGet()</td> 
+     <td>public void testGet() throws Exception</td> 
+     <td> final Map<string, object>
+        headers = new HashMap
+       <string, object>
+        (); // parameter type is String headers.put("CamelGoogleDrive.fileId", null); // parameter type is String headers.put("CamelGoogleDrive.commentId", null); final com.google.api.services.drive.Drive.Comments.Get result = requestBodyAndHeaders("direct://GET", null, headers); assertNotNull("get result", result); LOG.debug("get: " + result); 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

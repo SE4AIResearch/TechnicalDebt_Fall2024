@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1693</td> <td>-1422651160</td><td>apache/camel</td><td>Claus Ibsen</td><td>f9062d776b9b1b95424786811006de1d8dc5e196</td> <td>None</td> <td>spring transaction template is working best with rollback if you throw it a runtime exception
+otherwise it may not rollback messages send to JMS queues etc.</td> <td>SATD_ADDED</td> <td>doInTransactionTemplate(Exchange)</td> <td>protected void doInTransactionTemplate(final Exchange exchange)</td> <td>
+    // spring transaction template is working best with rollback if you throw it a runtime exception
+    // otherwise it may not rollback messages send to JMS queues etc.
+    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+        protected void doInTransactionWithoutResult(TransactionStatus status) {
+            // wrapper exception to throw if the exchange failed
+            // IMPORTANT: Must be a runtime exception to let Spring regard it as to do "rollback"
+            RuntimeCamelException rce = null;
+            exchange.setProperty(Exchange.TRANSACTED, Boolean.TRUE);
+            // and now let process the exchange
+            try {
+                TransactionErrorHandler.super.process(exchange);
+            } catch (Exception e) {
+                exchange.setException(e);
+            }
+            // after handling and still an exception or marked as rollback only then rollback
+            if (exchange.getException() != null || exchange.isRollbackOnly()) {
+                // if it was a local rollback only then remove its marker so outer transaction
+                // wont rollback as well (Note: isRollbackOnly() also returns true for ROLLBACK_ONLY_LAST)
+                exchange.removeProperty(Exchange.ROLLBACK_ONLY_LAST);
+                // wrap exception in transacted exception
+                if (exchange.getException() != null) {
+                    rce = ObjectHelper.wrapRuntimeCamelException(exchange.getException());
+                }
+                if (!status.isRollbackOnly()) {
+                    status.setRollbackOnly();
+                }
+                // rethrow if an exception occurred
+                if (rce != null) {
+                    throw rce;
+                } else {
+                    // create dummy exception to force spring transaction manager to rollback
+                    throw new TransactionRollbackException();
+                }
+            }
+        }
+    });
+</td> </tr></table></body></html>

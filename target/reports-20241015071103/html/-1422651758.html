@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>527</td> <td>-1422651758</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>6467bc26601052c76b4202ff35087a996d24ffee</td> <td>None</td> <td>TODO we should support non-singletons in the lifecycle</td> <td>SATD_ADDED</td> <td>getEndpoint(String)</td> <td>public Endpoint getEndpoint(String uri)</td> <td>
+    Endpoint answer;
+    synchronized (endpoints) {
+        answer = endpoints.get(uri);
+        if (answer == null) {
+            try {
+                // Use the URI prefix to find the component.
+                String[] splitURI = ObjectHelper.splitOnCharacter(uri, ":", 2);
+                if (splitURI[1] != null) {
+                    String scheme = splitURI[0];
+                    Component component = getComponent(scheme);
+                    // Ask the component to resolve the endpoint.
+                    if (component != null) {
+                        // Have the component create the endpoint if it can.
+                        answer = component.createEndpoint(uri);
+                        if (answer != null && LOG.isDebugEnabled()) {
+                            LOG.debug(uri + " converted to endpoint: " + answer + " by component: " + component);
+                        }
+                    }
+                }
+                if (answer == null) {
+                    answer = createEndpoint(uri);
+                }
+                // If it's a singleton then auto register it.
+                if (answer != null) {
+                    addService(answer);
+                    if (answer.isSingleton()) {
+                        endpoints.put(uri, answer);
+                        // TODO we should support non-singletons in the lifecycle
+                        lifecycleStrategy.onEndpointAdd(answer);
+                    }
+                }
+            } catch (Exception e) {
+                LOG.debug("Failed to resolve endpoint " + uri + ". Reason: " + e, e);
+                throw new ResolveEndpointFailedException(uri, e);
+            }
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

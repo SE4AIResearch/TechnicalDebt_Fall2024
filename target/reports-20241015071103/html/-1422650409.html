@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3031</td> <td>-1422650409</td><td>apache/camel</td><td>Lauri Kimmel</td><td>225d11d9df8c4b4aa7af5068c60c007b27b853ee</td> <td>None</td> <td>TODO - 12.05.2014, Lauri - is there any better way to set this up?</td> <td>SATD_ADDED</td> <td>testMetricsRegistryFromCamelRegistry()</td> <td>public void testMetricsRegistryFromCamelRegistry() throws Exception</td> <td>
+    // TODO - 12.05.2014, Lauri - is there any better way to set this up?
+    MetricRegistry mockRegistry = endpoint.getCamelContext().getRegistry().lookupByNameAndType(MetricsComponent.METRIC_REGISTRY_NAME, MetricRegistry.class);
+    Counter mockCounter = Mockito.mock(Counter.class);
+    InOrder inOrder = Mockito.inOrder(mockRegistry, mockCounter);
+    when(mockRegistry.counter("A")).thenReturn(mockCounter);
+    endpoint.expectedMessageCount(1);
+    producer.sendBody(new Object());
+    endpoint.assertIsSatisfied();
+    inOrder.verify(mockRegistry, times(1)).counter("A");
+    inOrder.verify(mockCounter, times(1)).inc(512);
+    inOrder.verifyNoMoreInteractions();
+</td> </tr></table></body></html>

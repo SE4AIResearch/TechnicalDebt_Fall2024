@@ -1,0 +1,50 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2710</td> <td>-1422650595</td><td>apache/camel</td><td>Claus Ibsen</td><td>5a674965c45fbf458ad776190ac04cf09d327145</td> <td>None</td> <td>TODO cmueller: remove the 'dataSourceRef' lookup in Camel 3.0</td> <td>SATD_ADDED</td> <td>createEndpoint(String, String, Map<String, Object>)</td> <td>protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception</td> <td>
+    DataSource ds = resolveAndRemoveReferenceParameter(parameters, "dataSource", DataSource.class);
+    if (ds != null) {
+        dataSource = ds;
+    }
+    // TODO cmueller: remove the 'dataSourceRef' lookup in Camel 3.0
+    if (dataSource == null) {
+        String dataSourceRef = getAndRemoveParameter(parameters, "dataSourceRef", String.class);
+        if (dataSourceRef != null) {
+            dataSource = CamelContextHelper.mandatoryLookup(getCamelContext(), dataSourceRef, DataSource.class);
+        }
+    }
+    String parameterPlaceholderSubstitute = getAndRemoveParameter(parameters, "placeholder", String.class, "#");
+    JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    IntrospectionSupport.setProperties(jdbcTemplate, parameters, "template.");
+    String query = remaining.replaceAll(parameterPlaceholderSubstitute, "?");
+    String onConsume = getAndRemoveParameter(parameters, "consumer.onConsume", String.class);
+    if (onConsume == null) {
+        onConsume = getAndRemoveParameter(parameters, "onConsume", String.class);
+    }
+    if (onConsume != null && usePlaceholder) {
+        onConsume = onConsume.replaceAll(parameterPlaceholderSubstitute, "?");
+    }
+    String onConsumeFailed = getAndRemoveParameter(parameters, "consumer.onConsumeFailed", String.class);
+    if (onConsumeFailed == null) {
+        onConsumeFailed = getAndRemoveParameter(parameters, "onConsumeFailed", String.class);
+    }
+    if (onConsumeFailed != null && usePlaceholder) {
+        onConsumeFailed = onConsumeFailed.replaceAll(parameterPlaceholderSubstitute, "?");
+    }
+    String onConsumeBatchComplete = getAndRemoveParameter(parameters, "consumer.onConsumeBatchComplete", String.class);
+    if (onConsumeBatchComplete == null) {
+        onConsumeBatchComplete = getAndRemoveParameter(parameters, "onConsumeBatchComplete", String.class);
+    }
+    if (onConsumeBatchComplete != null && usePlaceholder) {
+        onConsumeBatchComplete = onConsumeBatchComplete.replaceAll(parameterPlaceholderSubstitute, "?");
+    }
+    SqlEndpoint endpoint = new SqlEndpoint(uri, this, jdbcTemplate, query);
+    endpoint.setOnConsume(onConsume);
+    endpoint.setOnConsumeFailed(onConsumeFailed);
+    endpoint.setOnConsumeBatchComplete(onConsumeBatchComplete);
+    return endpoint;
+</td> </tr></table></body></html>

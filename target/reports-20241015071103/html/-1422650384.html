@@ -1,0 +1,123 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3068</td> <td>-1422650384</td><td>apache/camel</td><td>Dhiraj Bokde</td><td>75fc0671bdc118d4d8e399889543431309ae63fe</td> <td>None</td> <td>TODO handle connection aborts!!!</td> <td>SATD_ADDED</td> <td>poll(long, String, int, EventCallback)</td> <td>public void poll(long streamPosition, final String streamType, final int limit, final EventCallback callback) throws BoxServerException, AuthFatalFailureException, BoxRestException</td> <td>
+    // get BoxClient Event Manager
+    final IBoxEventsManager eventsManager = cachedBoxClient.getBoxClient().getEventsManager();
+    // get current stream position if requested
+    if (BoxEventRequestObject.STREAM_POSITION_NOW == streamPosition) {
+        streamPosition = getCurrentStreamPosition(eventsManager, streamPosition);
+    }
+    // validate parameters
+    ObjectHelper.notNull(streamPosition, "streamPosition");
+    ObjectHelper.notEmpty(streamType, "streamType");
+    ObjectHelper.notNull(callback, "eventCallback");
+    httpClient = new DefaultHttpClient(cachedBoxClient.getClientConnectionManager(), httpParams);
+    // start polling thread
+    LOG.info("Started event polling thread for " + cachedBoxClient);
+    final long startStreamPosition = streamPosition;
+    pollFuture = executorService.submit(new Runnable() {
+
+        @Override
+        public void run() {
+            final ObjectMapper mapper = new ObjectMapper();
+            long currentStreamPosition = startStreamPosition;
+            BoxRealTimeServer realTimeServer = null;
+            boolean retry = false;
+            int retries = 0;
+            int maxRetries = 1;
+            while (!done) {
+                try {
+                    // set to true if no exceptions thrown
+                    retry = false;
+                    if (realTimeServer == null) {
+                        // get RTS URL
+                        realTimeServer = getBoxRealTimeServer(currentStreamPosition, eventsManager);
+                        // update HTTP timeout
+                        final int requestTimeout = Integer.parseInt(realTimeServer.getExtraData(RETRY_TIMEOUT).toString());
+                        final HttpParams params = httpClient.getParams();
+                        HttpConnectionParams.setSoTimeout(params, requestTimeout * 1000);
+                        // update maxRetries
+                        maxRetries = Integer.parseInt(realTimeServer.getExtraData(MAX_RETRIES).toString());
+                    }
+                    // create HTTP request for RTS
+                    httpGet = getPollRequest(realTimeServer.getUrl(), currentStreamPosition);
+                    // execute RTS poll
+                    HttpResponse httpResponse = null;
+                    try {
+                        httpResponse = httpClient.execute(httpGet, (HttpContext) null);
+                    } catch (SocketTimeoutException e) {
+                        LOG.debug("Poll timed out, retrying for " + cachedBoxClient);
+                    }
+                    if (httpResponse != null) {
+                        // parse response
+                        final StatusLine statusLine = httpResponse.getStatusLine();
+                        if (statusLine != null && statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                            final HttpEntity entity = httpResponse.getEntity();
+                            @SuppressWarnings("unchecked")
+                            Map<String, String> rtsResponse = mapper.readValue(entity.getContent(), Map.class);
+                            final String message = rtsResponse.get(MESSAGE);
+                            if (NEW_CHANGE.equals(message)) {
+                                // get events
+                                final BoxEventRequestObject requestObject = BoxEventRequestObject.getEventsRequestObject(currentStreamPosition);
+                                requestObject.setStreamType(streamType);
+                                requestObject.setLimit(limit);
+                                final BoxEventCollection events = eventsManager.getEvents(requestObject);
+                                // notify callback
+                                callback.onEvent(events);
+                                // update stream position
+                                currentStreamPosition = events.getNextStreamPosition();
+                            } else if (RECONNECT.equals(message) || MAX_RETRIES.equals(message)) {
+                                LOG.debug("Long poll reconnect for " + cachedBoxClient);
+                                realTimeServer = null;
+                            } else if (OUT_OF_DATE.equals(message)) {
+                                // update currentStreamPosition
+                                LOG.debug("Long poll out of date for " + cachedBoxClient);
+                                currentStreamPosition = getCurrentStreamPosition(eventsManager, BoxEventRequestObject.STREAM_POSITION_NOW);
+                                realTimeServer = null;
+                            } else {
+                                throw new RuntimeCamelException("Unknown poll response " + message);
+                            }
+                        } else {
+                            String msg = "Unknown error";
+                            if (statusLine != null) {
+                                msg = String.format("Error polling events for %s: code=%s, message=%s", cachedBoxClient, statusLine.getStatusCode(), statusLine.getReasonPhrase());
+                            }
+                            throw new RuntimeCamelException(msg);
+                        }
+                    }
+                    // keep polling
+                    retry = true;
+                } catch (InterruptedException e) {
+                    LOG.debug("Interrupted event polling thread for {}, exiting...", cachedBoxClient);
+                } catch (BoxSDKException e) {
+                    callback.onException(e);
+                } catch (RuntimeCamelException e) {
+                    callback.onException(e);
+                } catch (SocketException e) {
+                    // TODO handle connection aborts!!!
+                    LOG.debug("Socket exception while event polling for {}", cachedBoxClient);
+                    retry = true;
+                    realTimeServer = null;
+                } catch (Exception e) {
+                    callback.onException(new RuntimeCamelException("Error while polling for " + cachedBoxClient + ": " + e.getMessage(), e));
+                } finally {
+                    // are we done yet?
+                    if (!retry) {
+                        done = true;
+                    } else {
+                        if (realTimeServer != null && (++retries > maxRetries)) {
+                            // make another option call
+                            realTimeServer = null;
+                        }
+                    }
+                }
+            }
+            LOG.info("Stopped event polling thread for " + cachedBoxClient);
+        }
+    });
+</td> </tr></table></body></html>

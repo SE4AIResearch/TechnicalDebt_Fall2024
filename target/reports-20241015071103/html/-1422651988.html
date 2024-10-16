@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>75</td> <td>-1422651988</td><td>apache/camel</td><td>Hiram R. Chirino</td><td>85d7a943d131caba64f097163f59759be101ba5c</td> <td>TODO send into CXF</td> <td>TODO send into CXF</td> <td>CLASS_OR_METHOD_CHANGED</td> <td>createProducer()</td> <td>public Producer<CxfExchange> createProducer() throws Exception</td> <td>
+    return startService(new DefaultProducer<CxfExchange>(this) {
+
+        public void onExchange(CxfExchange exchange) {
+        // TODO send into CXF
+        }
+    });
+</td> </tr></table></body></html>

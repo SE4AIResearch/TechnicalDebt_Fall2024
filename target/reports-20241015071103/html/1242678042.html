@@ -1,0 +1,62 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4730</td> <td>1242678042</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>8e481f3c3383dcd4c47335c180d9a64c5b92acad</td> <td>None</td> <td>TODO(dborowitz): Use jimfs.</td> <td>SATD_ADDED</td> <td>configure()</td> <td>protected void configure()</td> <td>
+    // For simplicity, don't create child injectors, just use this one to get a
+    // few required modules.
+    Injector cfgInjector = Guice.createInjector(new AbstractModule() {
+
+        @Override
+        protected void configure() {
+            bind(Config.class).annotatedWith(GerritServerConfig.class).toInstance(cfg);
+        }
+    });
+    install(cfgInjector.getInstance(GerritGlobalModule.class));
+    bindScope(RequestScoped.class, PerThreadRequestScope.REQUEST);
+    // TODO(dborowitz): Use jimfs.
+    bind(Path.class).annotatedWith(SitePath.class).toInstance(Paths.get("."));
+    bind(Config.class).annotatedWith(GerritServerConfig.class).toInstance(cfg);
+    bind(SocketAddress.class).annotatedWith(RemotePeer.class).toInstance(new InetSocketAddress(InetAddresses.forString("127.0.0.1"), 1234));
+    bind(PersonIdent.class).annotatedWith(GerritPersonIdent.class).toProvider(GerritPersonIdentProvider.class);
+    bind(String.class).annotatedWith(AnonymousCowardName.class).toProvider(AnonymousCowardNameProvider.class);
+    bind(AllProjectsName.class).toProvider(AllProjectsNameProvider.class);
+    bind(AllUsersName.class).toProvider(AllUsersNameProvider.class);
+    bind(GitRepositoryManager.class).to(InMemoryRepositoryManager.class);
+    bind(InMemoryRepositoryManager.class).in(SINGLETON);
+    bind(TrackingFooters.class).toProvider(TrackingFootersProvider.class).in(SINGLETON);
+    bind(DataSourceType.class).to(InMemoryH2Type.class);
+    bind(new TypeLiteral<SchemaFactory<ReviewDb>>() {
+    }).to(InMemoryDatabase.class);
+    bind(SecureStore.class).to(DefaultSecureStore.class);
+    bind(ChangeHooks.class).to(DisabledChangeHooks.class);
+    install(NoSshKeyCache.module());
+    install(new CanonicalWebUrlModule() {
+
+        @Override
+        protected Class<? extends Provider<String>> provider() {
+            return CanonicalWebUrlProvider.class;
+        }
+    });
+    install(new DefaultCacheFactory.Module());
+    install(new SmtpEmailSender.Module());
+    install(new SignedTokenEmailTokenVerifier.Module());
+    IndexType indexType = null;
+    try {
+        indexType = cfg.getEnum("index", null, "type", IndexType.LUCENE);
+    } catch (IllegalArgumentException e) {
+    // Custom index type, caller must provide their own module.
+    }
+    if (indexType != null) {
+        switch(indexType) {
+            case LUCENE:
+                install(luceneIndexModule());
+                break;
+            default:
+                throw new ProvisionException("index type unsupported in tests: " + indexType);
+        }
+    }
+</td> </tr></table></body></html>

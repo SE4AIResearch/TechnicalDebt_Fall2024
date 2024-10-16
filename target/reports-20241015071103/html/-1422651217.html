@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1607</td> <td>-1422651217</td><td>apache/camel</td><td>Claus Ibsen</td><td>29610f9bba74720ebd56ab88a2fb174e9a2baa52</td> <td>None</td> <td>the route is suspended by the policy so we should only receive one</td> <td>SATD_ADDED</td> <td>testConsumeSuspendFile()</td> <td>public void testConsumeSuspendFile() throws Exception</td> <td>
+    deleteDirectory("target/suspended");
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedBodiesReceived("Bye World");
+    template.sendBodyAndHeader("file://target/suspended", "Bye World", Exchange.FILE_NAME, "bye.txt");
+    template.sendBodyAndHeader("file://target/suspended", "Hello World", Exchange.FILE_NAME, "hello.txt");
+    assertMockEndpointsSatisfied();
+    Thread.sleep(1000);
+    // the route is suspended by the policy so we should only receive one
+    File file = new File("target/suspended/hello.txt").getAbsoluteFile();
+    assertEquals("The file should exists", true, file.exists());
+</td> </tr></table></body></html>

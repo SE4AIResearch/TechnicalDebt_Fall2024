@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>709</td> 
+     <td>-1422651663</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>f4085743cb7508c3e8e7588bb623ba7c31ae8574</td> 
+     <td>TODO lets store the name in the header?</td> 
+     <td>lets store the name we really used in the header, so end-users can retrieve it</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createFileName(Message)</td> 
+     <td>protected File createFileName(Message message)</td> 
+     <td> File answer; String name = null; if (!endpoint.isIgnoreFileNameHeader()) { name = message.getHeader(FileComponent.HEADER_FILE_NAME, String.class); } File endpointFile = endpoint.getFile(); if (endpointFile.isDirectory()) { if (name != null) { answer = new File(endpointFile, name); if (answer.isDirectory()) { answer = new File(answer, endpoint.getGeneratedFileName(message)); } } else { answer = new File(endpointFile, endpoint.getGeneratedFileName(message)); } } else { if (name == null) { answer = endpointFile; } else { answer = new File(endpointFile, name); } } // lets store the name we really used in the header, so end-users can retrieve it message.setHeader(FileComponent.HEADER_FILE_NAME_PRODUCED, answer.getAbsolutePath()); return answer; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>685</td> 
+     <td>-1422651663</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>fb23e7858a6964ca96dc8d99f6f17ee549c3924d</td> 
+     <td>None</td> 
+     <td>TODO lets store the name in the header?</td> 
+     <td>SATD_ADDED</td> 
+     <td>createFileName(Message)</td> 
+     <td>protected File createFileName(Message message)</td> 
+     <td> File answer; String name = null; if (!endpoint.isIgnoreFileNameHeader()) { name = message.getHeader(FileComponent.HEADER_FILE_NAME, String.class); } File endpointFile = endpoint.getFile(); if (endpointFile.isDirectory()) { if (name != null) { answer = new File(endpointFile, name); if (answer.isDirectory()) { answer = new File(answer, endpoint.getGeneratedFileName(message)); } } else { answer = new File(endpointFile, endpoint.getGeneratedFileName(message)); } } else { if (name == null) { answer = endpointFile; } else { answer = new File(endpointFile, name); } } // TODO lets store the name in the header? // message.setHeader(FileComponent.HEADER_FILE_NAME, answer.toString()); return answer; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

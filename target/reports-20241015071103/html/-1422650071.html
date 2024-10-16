@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3679</td> <td>-1422650071</td><td>apache/camel</td><td>Claus Ibsen</td><td>0163fe44840c014f293e6790d6d60858191733be</td> <td>None</td> <td>create error handler (create error handler directly to keep it light weight,
+instead of using ProcessorDefinition.wrapInErrorHandler)</td> <td>SATD_ADDED</td> <td>createErrorHandler(RouteContext, Exchange, AsyncProcessor)</td> <td>protected AsyncProcessor createErrorHandler(RouteContext routeContext, Exchange exchange, AsyncProcessor processor)</td> <td>
+    AsyncProcessor answer = processor;
+    boolean tryBlock = exchange.getProperty(Exchange.TRY_ROUTE_BLOCK, false, boolean.class);
+    // do not wrap in error handler if we are inside a try block
+    if (!tryBlock && routeContext != null) {
+        // wrap the producer in error handler so we have fine grained error handling on
+        // the output side instead of the input side
+        // this is needed to support redelivery on that output alone and not doing redelivery
+        // for the entire routingslip/dynamic-router block again which will start from scratch again
+        // create key for cache
+        final PreparedErrorHandler key = new PreparedErrorHandler(routeContext, processor);
+        // lookup cached first to reuse and preserve memory
+        answer = errorHandlers.get(key);
+        if (answer != null) {
+            log.trace("Using existing error handler for: {}", processor);
+            return answer;
+        }
+        log.trace("Creating error handler for: {}", processor);
+        ErrorHandlerFactory builder = routeContext.getRoute().getErrorHandlerBuilder();
+        // create error handler (create error handler directly to keep it light weight,
+        // instead of using ProcessorDefinition.wrapInErrorHandler)
+        try {
+            answer = (AsyncProcessor) builder.createErrorHandler(routeContext, processor);
+            // must start the error handler
+            ServiceHelper.startServices(answer);
+            // add to cache
+            errorHandlers.putIfAbsent(key, answer);
+        } catch (Exception e) {
+            throw ObjectHelper.wrapRuntimeCamelException(e);
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

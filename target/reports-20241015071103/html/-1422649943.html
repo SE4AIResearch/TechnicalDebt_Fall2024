@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3883</td> <td>-1422649943</td><td>apache/camel</td><td>Claus Ibsen</td><td>bbf15fdd85005b04eda892fba79af4200fdf2b58</td> <td>None</td> <td>TODO: This is supported out of the box from ActiveMQ 5.14 onwards, and hence remove OriginalDestinationPropagateStrategy</td> <td>SATD_ADDED</td> <td>onMessageCreated(Message, Session, Exchange, Throwable)</td> <td>public void onMessageCreated(Message message, Session session, Exchange exchange, Throwable cause)</td> <td>
+    if (exchange.getIn() instanceof JmsMessage) {
+        JmsMessage msg = exchange.getIn(JmsMessage.class);
+        Message jms = msg.getJmsMessage();
+        if (message instanceof ActiveMQMessage) {
+            ActiveMQMessage amq = (ActiveMQMessage) jms;
+            ActiveMQDestination from = amq.getDestination();
+            if (from != null && message instanceof ActiveMQMessage) {
+                ((ActiveMQMessage) message).setOriginalDestination(from);
+            }
+        }
+    }
+</td> </tr></table></body></html>

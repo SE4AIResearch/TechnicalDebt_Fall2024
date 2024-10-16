@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>720</td> <td>-1422651642</td><td>apache/camel</td><td>Claus Ibsen</td><td>877ebe38e3938d63aee0b5794af9015f1fb48303</td> <td>None</td> <td>TODO: Damm this is not readable code (nested ? - please dont)</td> <td>SATD_ADDED</td> <td>createMethod(Exchange)</td> <td>protected HttpMethod createMethod(Exchange exchange)</td> <td>
+    String uri = ((HttpEndpoint) getEndpoint()).getHttpUri().toString();
+    RequestEntity requestEntity = createRequestEntity(exchange);
+    Object m = exchange.getIn().getHeader(HTTP_METHOD);
+    // TODO: Damm this is not readable code (nested ? - please dont)
+    HttpMethods ms = m instanceof HttpMethods ? (HttpMethods) m : HttpMethods.valueOf(m == null ? requestEntity == null ? "GET" : "POST" : m.toString());
+    HttpMethod method = ms.createMethod(uri);
+    if (exchange.getIn().getHeader(QUERY) != null) {
+        method.setQueryString(exchange.getIn().getHeader(QUERY, String.class));
+    }
+    if (ms.isEntityEnclosing()) {
+        ((EntityEnclosingMethod) method).setRequestEntity(requestEntity);
+    }
+    return method;
+</td> </tr></table></body></html>

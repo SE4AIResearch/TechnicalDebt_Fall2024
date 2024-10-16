@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1594</td> <td>-1422651227</td><td>apache/camel</td><td>Jonathan Anstey</td><td>5195b1ea0d55315eeda978617dffc8b8cb402111</td> <td>None</td> <td>TODO: workaround for CXF-2503</td> <td>SATD_ADDED</td> <td>populateExchangeFromCxfResponse(Exchange, org.apache.cxf.message.Exchange, Map<String, Object>)</td> <td>public void populateExchangeFromCxfResponse(Exchange camelExchange, org.apache.cxf.message.Exchange cxfExchange, Map<String, Object> responseContext)</td> <td>
+    Message cxfMessage = cxfExchange.getInMessage();
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("Populate exchange from CXF response message: " + cxfMessage);
+    }
+    // propagate body
+    camelExchange.getOut().setBody(DefaultCxfBinding.getContentFromCxf(cxfMessage, camelExchange.getProperty(CxfConstants.DATA_FORMAT_PROPERTY, DataFormat.class)));
+    // propagate response context
+    if (responseContext != null && responseContext.size() > 0) {
+        camelExchange.getOut().setHeader(Client.RESPONSE_CONTEXT, responseContext);
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Set header = " + Client.RESPONSE_CONTEXT + " value = " + responseContext);
+        }
+    }
+    // propagate protocol headers
+    propagateHeadersFromCxfToCamel(cxfMessage, camelExchange.getOut(), camelExchange);
+    if (cxfMessage.getAttachments() != null) {
+        // TODO: workaround for CXF-2503
+        try {
+            cxfMessage.getAttachments().size();
+        } catch (java.util.ConcurrentModificationException e) {
+        // ignore
+        }
+        // end of workaround
+        // propagate attachments
+        for (Attachment attachment : cxfMessage.getAttachments()) {
+            camelExchange.getOut().addAttachment(attachment.getId(), attachment.getDataHandler());
+        }
+    }
+</td> </tr></table></body></html>

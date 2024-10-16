@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>223</td> <td>-1422651916</td><td>apache/camel</td><td>James Strachan</td><td>d8becb7830b5637bc09779d75ea41887291e809d</td> <td>None</td> <td>TODO we should handle primitive array types?</td> <td>SATD_ADDED</td> <td>iterator(Object)</td> <td>public static Iterator iterator(Object value)</td> <td>
+    if (value == null) {
+        return Collections.EMPTY_LIST.iterator();
+    } else if (value instanceof Collection) {
+        Collection collection = (Collection) value;
+        return collection.iterator();
+    } else if (value.getClass().isArray()) {
+        // TODO we should handle primitive array types?
+        return Arrays.asList(value).iterator();
+    } else {
+        return Collections.singletonList(value).iterator();
+    }
+</td> </tr></table></body></html>

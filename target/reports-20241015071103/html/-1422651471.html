@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1101</td> <td>-1422651471</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>5acafd76210d7f314fbeb6a3a3a0f358ad100adb</td> <td>TODO we should add a transactional client / event driven consumer / polling client</td> <td>TODO we should add a transactional client / event driven consumer / polling client</td> <td>CLASS_OR_METHOD_CHANGED</td> <td>printRoute(PrintWriter, RouteType, FromType)</td> <td>protected void printRoute(PrintWriter writer, final RouteType route, FromType input)</td> <td>
+    NodeData nodeData = getNodeData(input);
+    printNode(writer, nodeData);
+    // TODO we should add a transactional client / event driven consumer / polling client
+    NodeData from = nodeData;
+    for (ProcessorType output : route.getOutputs()) {
+        NodeData newData = printNode(writer, from, output);
+        from = newData;
+    }
+</td> </tr></table></body></html>

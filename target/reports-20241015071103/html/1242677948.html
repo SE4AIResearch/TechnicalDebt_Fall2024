@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4593</td> 
+     <td>1242677948</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Pursehouse</td>
+     <td>6bd8beb2438ff8d664a82004c5474cc91141a39f</td> 
+     <td>TODO Replace CherryPickDialog with a nicer looking display.</td> 
+     <td>TODO Replace CherryPickDialog with a nicer looking display.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>call(Button, ChangeInfo, String, String, String)</td> 
+     <td> static void call(Button b, final ChangeInfo info, final String revision, String project, final String commitMessage)</td> 
+     <td> // TODO Replace CherryPickDialog with a nicer looking display. b.setEnabled(false); new CherryPickDialog(b, new Project.NameKey(project)) { { sendButton.setText(Util.C.buttonCherryPickChangeSend()); if (info.status().isClosed()) { message.setText(Util.M.cherryPickedChangeDefaultMessage(commitMessage.trim(), revision)); } else { message.setText(commitMessage.trim()); } } @Override public void onSend() { ChangeApi.cherrypick(info.legacy_id().get(), revision, getDestinationBranch(), getMessageText(), new GerritCallback<changeinfo>
+       () { @Override public void onSuccess(ChangeInfo result) { sent = true; hide(); Gerrit.display(PageLinks.toChange2(result.legacy_id())); } @Override public void onFailure(Throwable caught) { enableButtons(true); super.onFailure(caught); } }); } }.center(); 
+      </changeinfo></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4557</td> 
+     <td>1242677948</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>097b95791517008607f2332e6f4c2be621d6bf3e</td> 
+     <td>None</td> 
+     <td>TODO Replace CherryPickDialog with a nicer looking display.</td> 
+     <td>SATD_ADDED</td> 
+     <td>call(Button, Change.Id, String, String, String)</td> 
+     <td> static void call(Button b, final Change.Id id, final String revision, String project, final String commitMessage)</td> 
+     <td> // TODO Replace CherryPickDialog with a nicer looking display. b.setEnabled(false); new CherryPickDialog(b, new Project.NameKey(project)) { { sendButton.setText(Util.C.buttonCherryPickChangeSend()); message.setText(Util.M.cherryPickedChangeDefaultMessage(commitMessage.trim(), revision)); } @Override public void onSend() { ChangeApi.cherrypick(id.get(), revision, getDestinationBranch(), getMessageText(), new GerritCallback<changeinfo>
+       () { @Override public void onSuccess(ChangeInfo result) { sent = true; hide(); Gerrit.display(PageLinks.toChange2(result.legacy_id())); } @Override public void onFailure(Throwable caught) { enableButtons(true); super.onFailure(caught); } }); } }.center(); 
+      </changeinfo></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

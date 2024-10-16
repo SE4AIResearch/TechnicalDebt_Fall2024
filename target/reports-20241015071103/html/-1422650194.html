@@ -1,0 +1,77 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3384</td> 
+     <td>-1422650194</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>7e0d92c64b631397026c25118c88de842c0e9ab5</td> 
+     <td>TODO: include component meta-data such as scheme name, java class, mvn coordinate etc. also component summary, eg grab <description>
+        from mvn pom.xml 
+      </description></td> 
+     <td>gather component information</td> 
+     <td>SATD_REMOVED</td> 
+     <td>process(Set<!--? extends TypeElement-->, RoundEnvironment)</td> 
+     <td>public boolean process(Set<!--? extends TypeElement--> annotations, final RoundEnvironment roundEnv)</td> 
+     <td> if (roundEnv.processingOver()) { return true; } Set<!--? extends Element--> elements = roundEnv.getElementsAnnotatedWith(UriEndpoint.class); for (Element element : elements) { if (element instanceof TypeElement) { processEndpointClass(roundEnv, (TypeElement) element); } } return true; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3383</td> 
+     <td>-1422650194</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>fc3a01cba908db721e2e3fcebf79d636bc218272</td> 
+     <td>TODO: add some top details about component scheme name, and documentation</td> 
+     <td>TODO: include component meta-data such as scheme name, java class, mvn coordinate etc. also component summary, eg grab <description>
+        from mvn pom.xml 
+      </description></td> 
+     <td>SATD_CHANGED</td> 
+     <td>process(Set<!--? extends TypeElement-->, RoundEnvironment)</td> 
+     <td>public boolean process(Set<!--? extends TypeElement--> annotations, final RoundEnvironment roundEnv)</td> 
+     <td> if (roundEnv.processingOver()) { return true; } Set<!--? extends Element--> elements = roundEnv.getElementsAnnotatedWith(UriEndpoint.class); for (Element element : elements) { if (element instanceof TypeElement) { processEndpointClass(roundEnv, (TypeElement) element); } } return true; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3371</td> 
+     <td>-1422650194</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7bba46564cdb7782ee3ddc9e8c711c2f8ed80834</td> 
+     <td>None</td> 
+     <td>TODO: add some top details about component scheme name, and documentation</td> 
+     <td>SATD_ADDED</td> 
+     <td>process(Set<!--? extends TypeElement-->, RoundEnvironment)</td> 
+     <td>public boolean process(Set<!--? extends TypeElement--> annotations, final RoundEnvironment roundEnv)</td> 
+     <td> if (roundEnv.processingOver()) { return true; } Set<!--? extends Element--> elements = roundEnv.getElementsAnnotatedWith(UriEndpoint.class); for (Element element : elements) { if (element instanceof TypeElement) { processEndpointClass(roundEnv, (TypeElement) element); } } return true; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

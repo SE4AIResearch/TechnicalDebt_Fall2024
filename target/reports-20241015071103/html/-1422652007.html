@@ -1,0 +1,96 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>954</td> 
+     <td>-1422652007</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>68326f5bacc859d1ef14c21c6d56e7ecc159fa46</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(Test, String, ClassLoader)</td> 
+     <td>protected void find(Test test, String packageName, ClassLoader loader)</td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Searching for: " + test + " in package: " + packageName + " using classloader: " + loader.getClass().getName()); } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { LOG.trace("No URLs returned by classloader"); } } catch (IOException ioe) { LOG.warn("Could not read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); if (LOG.isTraceEnabled()) { LOG.trace("URL from classloader: " + url); } String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (LOG.isTraceEnabled()) { LOG.trace("Decoded urlPath: " + urlPath); } // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } // osgi bundles should be skipped if (url.toString().startsWith("bundle:") || urlPath.startsWith("bundle:")) { LOG.trace("It's a virtual osgi bundle, skipping"); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } if (LOG.isTraceEnabled()) { LOG.trace("Scanning for classes in [" + urlPath + "] matching criteria: " + test); } File file = new File(urlPath); if (file.isDirectory()) { if (LOG.isDebugEnabled()) { LOG.debug("Loading from directory: " + file); } loadImplementationsInDirectory(test, packageName, file); } else { InputStream stream; if (urlPath.startsWith("http:")) { // load resources using http such as java webstart LOG.debug("The current jar is accessed via http"); URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { stream = new FileInputStream(file); } if (LOG.isDebugEnabled()) { LOG.debug("Loading from jar: " + file); } loadImplementationsInJar(test, packageName, stream, urlPath); } } catch (IOException ioe) { LOG.warn("Could not read entries in url: " + url, ioe); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>767</td> 
+     <td>-1422652007</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>452dd362e779f2dcca5ce1c5453546c05784e4c6</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(Test, String, ClassLoader, boolean)</td> 
+     <td>protected void find(Test test, String packageName, ClassLoader loader, boolean osgi)</td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Searching for: " + test + " in package: " + packageName + " using classloader: " + loader.getClass().getName() + " osgi bundle classloader: " + osgi); } if (osgi) { try { Method mth = loader.getClass().getMethod("getBundle", new Class[] {}); if (mth != null) { if (LOG.isDebugEnabled()) { LOG.debug("Loading from osgi buindle using classloader: " + loader); } loadImplementationsInBundle(test, packageName, loader, mth); return; } } catch (NoSuchMethodException e) { LOG.warn("It's not an osgi bundle classloader: " + loader); return; } } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { LOG.trace("No URLs returned by classloader"); } } catch (IOException ioe) { LOG.warn("Could not read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); if (LOG.isTraceEnabled()) { LOG.trace("URL from classloader: " + url); } String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (LOG.isTraceEnabled()) { LOG.trace("Decoded urlPath: " + urlPath); } // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } // osgi bundles should be skipped if (urlPath.startsWith("bundle:")) { LOG.trace("It's a virtual osgi bundle, skipping"); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } if (LOG.isTraceEnabled()) { LOG.trace("Scanning for classes in [" + urlPath + "] matching criteria: " + test); } File file = new File(urlPath); if (file.isDirectory()) { if (LOG.isDebugEnabled()) { LOG.debug("Loading from directory: " + file); } loadImplementationsInDirectory(test, packageName, file); } else { InputStream stream; if (urlPath.startsWith("http:")) { // load resources using http such as java webstart LOG.debug("The current jar is accessed via http"); URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { stream = new FileInputStream(file); } if (LOG.isDebugEnabled()) { LOG.debug("Loading from jar: " + file); } loadImplementationsInJar(test, packageName, stream, urlPath); } } catch (IOException ioe) { LOG.warn("Could not read entries in url: " + url, ioe); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>412</td> 
+     <td>-1422652007</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>ffad0c2ec4d99aad807a1b9511fc9c5fa4bba38f</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(Test, String, ClassLoader)</td> 
+     <td>protected void find(Test test, String packageName, ClassLoader loader)</td> 
+     <td> Enumeration<url>
+        urls; try { urls = loader.getResources(packageName); } catch (IOException ioe) { LOG.warn("Could not read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { try { URL url = urls.nextElement(); String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } LOG.debug("Scanning for classes in [" + urlPath + "] matching criteria: " + test); File file = new File(urlPath); if (file.isDirectory()) { loadImplementationsInDirectory(test, packageName, file); } else { loadImplementationsInJar(test, packageName, file); } } catch (IOException ioe) { LOG.warn("could not read entries", ioe); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>44</td> 
+     <td>-1422652007</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>dd731cb69c3af19bd34154373930f2551e0390d3</td> 
+     <td>None</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>SATD_ADDED</td> 
+     <td>find(Test, String)</td> 
+     <td>public void find(Test test, String packageName)</td> 
+     <td> packageName = packageName.replace('.', '/'); ClassLoader loader = getClassLoader(); Enumeration<url>
+        urls; try { urls = loader.getResources(packageName); } catch (IOException ioe) { ResolverUtil.log.warn("Could not read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { try { String urlPath = urls.nextElement().getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } ResolverUtil.log.info("Scanning for classes in [" + urlPath + "] matching criteria: " + test); File file = new File(urlPath); if (file.isDirectory()) { loadImplementationsInDirectory(test, packageName, file); } else { loadImplementationsInJar(test, packageName, file); } } catch (IOException ioe) { ResolverUtil.log.warn("could not read entries", ioe); } } 
+      </url></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

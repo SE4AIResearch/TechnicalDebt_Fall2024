@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4408</td> <td>1242677872</td><td>GerritCodeReview/gerrit</td><td>Martin Fick</td><td>43f7940111973c589d3d8f4cee00d8c43dadd032</td> <td>None</td> <td>TODO Allow updating some labels even when closed.</td> <td>SATD_ADDED</td> <td>apply(RevisionResource, Input)</td> <td>public Object apply(RevisionResource revision, Input input) throws AuthException, BadRequestException, ResourceConflictException, Exception</td> <td>
+    if (input.labels != null) {
+        checkLabels(revision, input.strictLabels, input.labels);
+    }
+    if (input.comments != null) {
+        checkComments(input.comments);
+    }
+    db.changes().beginTransaction(revision.getChange().getId());
+    try {
+        change = db.changes().get(revision.getChange().getId());
+        ChangeUtil.updated(change);
+        timestamp = change.getLastUpdatedOn();
+        if (input.comments != null) {
+            insertComments(revision, input.comments, input.drafts);
+        }
+        if (change.getStatus().isOpen() && input.labels != null) {
+            // TODO Allow updating some labels even when closed.
+            updateLabels(revision, input.labels);
+        }
+        insertMessage(revision, input.message);
+        db.changes().update(Collections.singleton(change));
+        db.commit();
+    } finally {
+        db.rollback();
+    }
+    email.create(change, revision.getPatchSet(), revision.getAuthorId(), message, comments).sendAsync();
+    fireCommentAddedHook(revision);
+    return input;
+</td> </tr></table></body></html>

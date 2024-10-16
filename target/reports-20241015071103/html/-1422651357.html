@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1351</td> 
+     <td>-1422651357</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>d88d07780a1bedb280e8051c56eddf7cbc1c88db</td> 
+     <td>prepare original exchange if it should be moved instead of most recent</td> 
+     <td>prepare original IN body if it should be moved instead of current body</td> 
+     <td>SATD_CHANGED</td> 
+     <td>deliverToDeadLetterQueue(Exchange, RedeliveryData)</td> 
+     <td>private void deliverToDeadLetterQueue(final Exchange exchange, final RedeliveryData data)</td> 
+     <td> if (data.deadLetterQueue == null) { return; } // we did not success with the redelivery so now we let the failure processor handle it ExchangeHelper.setFailureHandled(exchange); // must decrement the redelivery counter as we didn't process the redelivery but is // handling by the failure handler. So we must -1 to not let the counter be out-of-sync decrementRedeliveryCounter(exchange); // reset cached streams so they can be read again MessageHelper.resetStreamCache(exchange.getIn()); // prepare original IN body if it should be moved instead of current body if (data.useOriginalInBody) { if (log.isTraceEnabled()) { log.trace("Using the original IN body in the DedLetterQueue instead of the current IN body"); } Object original = exchange.getUnitOfWork().getOriginalInBody(); exchange.getIn().setBody(original); } if (log.isTraceEnabled()) { log.trace("DeadLetterQueue " + data.deadLetterQueue + " is processing Exchange: " + exchange); } try { data.deadLetterQueue.process(exchange); } catch (Exception e) { exchange.setException(e); } log.trace("DedLetterQueue processor done"); prepareExchangeAfterMovedToDeadLetterQueue(exchange, data.handledPredicate); String msg = "Failed delivery for exchangeId: " + exchange.getExchangeId() + ". Moved to the dead letter queue: " + data.deadLetterQueue; logFailedDelivery(false, exchange, msg, data, null); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1350</td> 
+     <td>-1422651357</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>19ba32b3a328d06a1dcbee1eb662d380a4daf205</td> 
+     <td>None</td> 
+     <td>prepare original exchange if it should be moved instead of most recent</td> 
+     <td>SATD_ADDED</td> 
+     <td>deliverToDeadLetterQueue(Exchange, RedeliveryData)</td> 
+     <td>private void deliverToDeadLetterQueue(final Exchange exchange, final RedeliveryData data)</td> 
+     <td> if (data.deadLetterQueue == null) { return; } // we did not success with the redelivery so now we let the failure processor handle it ExchangeHelper.setFailureHandled(exchange); // must decrement the redelivery counter as we didn't process the redelivery but is // handling by the failure handler. So we must -1 to not let the counter be out-of-sync decrementRedeliveryCounter(exchange); // reset cached streams so they can be read again MessageHelper.resetStreamCache(exchange.getIn()); // prepare original exchange if it should be moved instead of most recent if (data.useOriginalExchange) { if (log.isTraceEnabled()) { log.trace("Using the original exchange bodies in the DedLetterQueue instead of the current exchange bodies"); } Exchange original = exchange.getUnitOfWork().getOriginalExchange(); // replace exchange IN/OUT with from original exchange.setIn(original.getIn()); if (original.hasOut()) { exchange.setOut(original.getOut()); } else { exchange.setOut(null); } } if (log.isTraceEnabled()) { log.trace("DeadLetterQueue " + data.deadLetterQueue + " is processing Exchange: " + exchange); } try { data.deadLetterQueue.process(exchange); } catch (Exception e) { exchange.setException(e); } log.trace("DedLetterQueue processor done"); prepareExchangeAfterMovedToDeadLetterQueue(exchange, data.handledPredicate); String msg = "Failed delivery for exchangeId: " + exchange.getExchangeId() + ". Moved to the dead letter queue: " + data.deadLetterQueue; logFailedDelivery(false, exchange, msg, data, null); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

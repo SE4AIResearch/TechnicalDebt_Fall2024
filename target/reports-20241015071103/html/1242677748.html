@@ -1,0 +1,333 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4908</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>David Pursehouse</td> 
+     <td>84bc19bc3d537601a7df5be670d977b113821344</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>ChangeData&gt; validateChangeList(Collection<changedata>
+        , IdentifiedUser) 
+      </changedata></td> 
+     <td>private ListMultimap<submittype, changedata>
+        validateChangeList(Collection 
+       <changedata>
+         submitted, IdentifiedUser caller) throws IntegrationException 
+       </changedata> 
+      </submittype,></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); ListMultimap<submittype, changedata>
+        toSubmit = ArrayListMultimap.create(); Map 
+       <string, ref>
+         allRefs; try { allRefs = repo.getRefDatabase().getRefs(ALL); } catch (IOException e) { throw new IntegrationException(e.getMessage(), e); } Set 
+        <objectid>
+          tips = new HashSet&lt;&gt;(); for (Ref r : allRefs.values()) { tips.add(r.getObjectId()); } for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); // Reload change in case index was stale. chg = cd.reloadChange(); } catch (OrmException e) { throw new IntegrationException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new IntegrationException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " is not contained in any ref"); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId(), caller); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType submitType; submitType = getSubmitType(commit.getControl(), ps); if (submitType == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); commit.setStatusCode(CommitMergeStatus.NO_SUBMIT_TYPE); continue; } commit.add(canMergeFlag); toSubmit.put(submitType, cd); } logDebug("Submitting on this run: {}", toSubmit); return toSubmit; 
+        </objectid> 
+       </string,> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4901</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>David Pursehouse</td> 
+     <td>4b1e2a460e30e9682f29a22d1668e80a0620d2ff</td> 
+     <td>TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>validateChangeList(OpenRepo, Collection<changedata>
+        ) 
+      </changedata></td> 
+     <td>private BranchBatch validateChangeList(OpenRepo or, Collection<changedata>
+        submitted) throws IntegrationException 
+      </changedata></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); List<changedata>
+        toSubmit = new ArrayList&lt;&gt;(submitted.size()); Multimap 
+       <objectid, patchset.id>
+         revisions = getRevisions(or, submitted); SubmitType submitType = null; ChangeData choseSubmitTypeFrom = null; for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); chg = cd.change(); } catch (OrmException e) { throw new IntegrationException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new IntegrationException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!revisions.containsEntry(id, ps.getId())) { // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " does not match " + ps.getId().toRefName()); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = or.rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(or.repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType st = getSubmitType(commit.getControl(), ps); if (st == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); throw new IntegrationException("No submit type for change " + cd.getId()); } if (submitType == null) { submitType = st; choseSubmitTypeFrom = cd; } else if (st != submitType) { throw new IntegrationException(String.format("Change %s has submit type %s, but previously chose submit type %s " + "from change %s in the same batch", cd.getId(), st, submitType, choseSubmitTypeFrom.getId())); } commit.add(or.canMergeFlag); toSubmit.add(cd); } logDebug("Submitting on this run: {}", toSubmit); return new AutoValue_MergeOp_BranchBatch(submitType, toSubmit); 
+       </objectid,> 
+      </changedata></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4900</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Andrew Bonventre</td> 
+     <td>d6503968423b359569b17cf19baa309e42f61225</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>SATD_CHANGED</td> 
+     <td>validateChangeList(Collection<changedata>
+        ) 
+      </changedata></td> 
+     <td>private BranchBatch validateChangeList(Collection<changedata>
+        submitted) throws IntegrationException 
+      </changedata></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); List<changedata>
+        toSubmit = new ArrayList&lt;&gt;(submitted.size()); Multimap 
+       <objectid, patchset.id>
+         revisions = getRevisions(submitted); SubmitType submitType = null; ChangeData choseSubmitTypeFrom = null; for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); chg = cd.change(); } catch (OrmException e) { throw new IntegrationException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new IntegrationException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!revisions.containsEntry(id, ps.getId())) { // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " does not match " + ps.getId().toRefName()); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType st = getSubmitType(commit.getControl(), ps); if (st == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); throw new IntegrationException("No submit type for change " + cd.getId()); } if (submitType == null) { submitType = st; choseSubmitTypeFrom = cd; } else if (st != submitType) { throw new IntegrationException(String.format("Change %s has submit type %s, but previously chose submit type %s " + "from change %s in the same batch", cd.getId(), st, submitType, choseSubmitTypeFrom.getId())); } commit.add(canMergeFlag); toSubmit.add(cd); } logDebug("Submitting on this run: {}", toSubmit); return new AutoValue_MergeOp_BranchBatch(submitType, toSubmit); 
+       </objectid,> 
+      </changedata></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4898</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>0761fd5ce4a7a34fa5b776c0bcfdc3b6e18d8697</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>validateChangeList(Collection<changedata>
+        ) 
+      </changedata></td> 
+     <td>private BranchBatch validateChangeList(Collection<changedata>
+        submitted) throws IntegrationException 
+      </changedata></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); List<changedata>
+        toSubmit = new ArrayList&lt;&gt;(submitted.size()); Map 
+       <string, ref>
+         allRefs; try { allRefs = repo.getRefDatabase().getRefs(ALL); } catch (IOException e) { throw new IntegrationException(e.getMessage(), e); } Set 
+        <objectid>
+          tips = new HashSet&lt;&gt;(); for (Ref r : allRefs.values()) { tips.add(r.getObjectId()); } SubmitType submitType = null; ChangeData choseSubmitTypeFrom = null; for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); // Reload change in case index was stale. chg = cd.reloadChange(); } catch (OrmException e) { throw new IntegrationException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new IntegrationException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " is not contained in any ref"); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType st = getSubmitType(commit.getControl(), ps); if (st == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); throw new IntegrationException("No submit type for change " + cd.getId()); } if (submitType == null) { submitType = st; choseSubmitTypeFrom = cd; } else if (st != submitType) { throw new IntegrationException(String.format("Change %s has submit type %s, but previously chose submit type %s " + "from change %s in the same batch", cd.getId(), st, submitType, choseSubmitTypeFrom.getId())); } commit.add(canMergeFlag); toSubmit.add(cd); } logDebug("Submitting on this run: {}", toSubmit); return new AutoValue_MergeOp_BranchBatch(submitType, toSubmit); 
+        </objectid> 
+       </string,> 
+      </changedata></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4846</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>22345d1c2a9a6fa3f84bc100640438c029da6134</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>ChangeData&gt; validateChangeList(Collection<changedata>
+        ) 
+      </changedata></td> 
+     <td>private ListMultimap<submittype, changedata>
+        validateChangeList(Collection 
+       <changedata>
+         submitted) throws MergeException 
+       </changedata> 
+      </submittype,></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); ListMultimap<submittype, changedata>
+        toSubmit = ArrayListMultimap.create(); Map 
+       <string, ref>
+         allRefs; try { allRefs = repo.getRefDatabase().getRefs(ALL); } catch (IOException e) { throw new MergeException(e.getMessage(), e); } Set 
+        <objectid>
+          tips = new HashSet&lt;&gt;(); for (Ref r : allRefs.values()) { tips.add(r.getObjectId()); } for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); // Reload change in case index was stale. chg = cd.reloadChange(); } catch (OrmException e) { throw new MergeException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " is not contained in any ref"); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType submitType; submitType = getSubmitType(commit.getControl(), ps); if (submitType == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); commit.setStatusCode(CommitMergeStatus.NO_SUBMIT_TYPE); continue; } commit.add(canMergeFlag); toSubmit.put(submitType, cd); } logDebug("Submitting on this run: {}", toSubmit); return toSubmit; 
+        </objectid> 
+       </string,> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4816</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Stefan Beller</td> 
+     <td>7063a4b8f0659d8b22bb62a349872e5350fb6a7b</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>ChangeData&gt; validateChangeList(List<changedata>
+        ) 
+      </changedata></td> 
+     <td>private ListMultimap<submittype, changedata>
+        validateChangeList(List 
+       <changedata>
+         submitted) throws MergeException 
+       </changedata> 
+      </submittype,></td> 
+     <td> logDebug("Validating {} changes", submitted.size()); ListMultimap<submittype, changedata>
+        toSubmit = ArrayListMultimap.create(); Map 
+       <string, ref>
+         allRefs; try { allRefs = repo.getRefDatabase().getRefs(ALL); } catch (IOException e) { throw new MergeException(e.getMessage(), e); } Set 
+        <objectid>
+          tips = new HashSet&lt;&gt;(); for (Ref r : allRefs.values()) { tips.add(r.getObjectId()); } for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); // Reload change in case index was stale. chg = cd.reloadChange(); } catch (OrmException e) { throw new MergeException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.getStatus() != Change.Status.SUBMITTED &amp;&amp; chg.getStatus() != Change.Status.NEW) { logDebug("Change {} is not new or submitted: {}", changeId, chg.getStatus()); continue; } if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } PatchSet ps; Branch.NameKey destBranch = chg.getDest(); try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " is not contained in any ref"); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); continue; } SubmitType submitType; submitType = getSubmitType(commit.getControl(), ps); if (submitType == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); commit.setStatusCode(CommitMergeStatus.NO_SUBMIT_TYPE); continue; } commit.add(canMergeFlag); toSubmit.put(submitType, cd); } logDebug("Submitting on this run: {}", toSubmit); return toSubmit; 
+        </objectid> 
+       </string,> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4713</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>dfc07f63bb21b4c1c9296cb88ac56f536bb92ddf</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>Change&gt; validateChangeList(List<changedata>
+        ) 
+      </changedata></td> 
+     <td>private ListMultimap<submittype, change>
+        validateChangeList(List 
+       <changedata>
+         submitted) throws MergeException 
+       </changedata> 
+      </submittype,></td> 
+     <td> ListMultimap<submittype, change>
+        toSubmit = ArrayListMultimap.create(); Map 
+       <string, ref>
+         allRefs; try { allRefs = repo.getRefDatabase().getRefs(ALL); } catch (IOException e) { throw new MergeException(e.getMessage(), e); } Set 
+        <objectid>
+          tips = new HashSet&lt;&gt;(); for (Ref r : allRefs.values()) { tips.add(r.getObjectId()); } for (ChangeData cd : submitted) { ChangeControl ctl; Change chg; try { ctl = cd.changeControl(); chg = cd.change(); } catch (OrmException e) { throw new MergeException("Failed to validate changes", e); } Change.Id changeId = cd.getId(); if (chg.currentPatchSetId() == null) { logError("Missing current patch set on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); toUpdate.add(chg); continue; } PatchSet ps; try { ps = cd.currentPatchSet(); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { logError("Missing patch set or revision on change " + changeId); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); toUpdate.add(chg); continue; } String idstr = ps.getRevision().get(); ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { logError("Invalid revision on patch set " + ps.getId()); commits.put(changeId, CodeReviewCommit.noPatchSet(ctl)); toUpdate.add(chg); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // logError("Revision " + idstr + " of patch set " + ps.getId() + " is not contained in any ref"); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); toUpdate.add(chg); continue; } CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { logError("Invalid commit " + idstr + " on patch set " + ps.getId(), e); commits.put(changeId, CodeReviewCommit.revisionGone(ctl)); toUpdate.add(chg); continue; } // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit. commit.setControl(ctl); commit.setPatchsetId(ps.getId()); commits.put(changeId, commit); MergeValidators mergeValidators = mergeValidatorsFactory.create(); try { mergeValidators.validatePreMerge(repo, commit, destProject, destBranch, ps.getId()); } catch (MergeValidationException mve) { logDebug("Revision {} of patch set {} failed validation: {}", idstr, ps.getId(), mve.getStatus()); commit.setStatusCode(mve.getStatus()); toUpdate.add(chg); continue; } if (branchTip != null) { // If this commit is already merged its a bug in the queuing code // that we got back here. Just mark it complete and move on. It's // merged and that is all that mattered to the requestor. // try { if (rw.isMergedInto(commit, branchTip)) { logDebug("Revision {} of patch set {} is already merged", idstr, ps.getId()); commit.setStatusCode(CommitMergeStatus.ALREADY_MERGED); try { setMerged(chg, null); } catch (OrmException e) { logError("Cannot mark change " + chg.getId() + " merged", e); } continue; } } catch (IOException err) { throw new MergeException("Cannot perform merge base test", err); } } SubmitType submitType; submitType = getSubmitType(commit.getControl(), ps); if (submitType == null) { logError("No submit type for revision " + idstr + " of patch set " + ps.getId()); commit.setStatusCode(CommitMergeStatus.NO_SUBMIT_TYPE); toUpdate.add(chg); continue; } commit.add(canMergeFlag); toMerge.put(submitType, commit); toSubmit.put(submitType, chg); } return toSubmit; 
+        </objectid> 
+       </string,> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4399</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>ba02b61480af0e397dca39c9787947acf4061bcd</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>Change&gt; validateChangeList(List<change>
+        ) 
+      </change></td> 
+     <td>private ListMultimap<submittype, change>
+        validateChangeList(final List 
+       <change>
+         submitted) throws MergeException 
+       </change> 
+      </submittype,></td> 
+     <td> final ListMultimap<submittype, change>
+        toSubmit = ArrayListMultimap.create(); final Set 
+       <objectid>
+         tips = new HashSet 
+        <objectid>
+          (); for (final Ref r : repo.getAllRefs().values()) { tips.add(r.getObjectId()); } int commitOrder = 0; for (final Change chg : submitted) { final Change.Id changeId = chg.getId(); if (chg.currentPatchSetId() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final PatchSet ps; try { ps = db.patchSets().get(chg.currentPatchSetId()); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final String idstr = ps.getRevision().get(); final ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } final CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { log.error("Invalid commit " + id.name() + " on " + chg.getKey(), e); commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } commit.change = chg; commit.patchsetId = ps.getId(); commit.originalOrder = commitOrder++; commits.put(changeId, commit); if (branchTip != null) { // If this commit is already merged its a bug in the queuing code // that we got back here. Just mark it complete and move on. It's // merged and that is all that mattered to the requestor. // try { if (rw.isMergedInto(commit, branchTip)) { commit.statusCode = CommitMergeStatus.ALREADY_MERGED; continue; } } catch (IOException err) { throw new MergeException("Cannot perform merge base test", err); } } final SubmitType submitType = getSubmitType(chg, ps); if (submitType == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_SUBMIT_TYPE)); continue; } commit.add(canMergeFlag); toMerge.put(submitType, commit); toSubmit.put(submitType, chg); } return toSubmit; 
+        </objectid> 
+       </objectid> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4395</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>edb573adbbbbf1c8332645492f93b24a146fea8b</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>List<change>
+        &gt; validateChangeList(List 
+       <change>
+         ) 
+       </change> 
+      </change></td> 
+     <td>private Map<submittype, list<change>
+        &gt; validateChangeList(final List 
+       <change>
+         submitted) throws MergeException 
+       </change> 
+      </submittype,></td> 
+     <td> final Map<submittype, list<change>
+        &gt; toSubmit = new HashMap 
+       <project.submittype, list<change>
+         &gt;(); final Set 
+        <objectid>
+          tips = new HashSet 
+         <objectid>
+           (); for (final Ref r : repo.getAllRefs().values()) { tips.add(r.getObjectId()); } int commitOrder = 0; for (final Change chg : submitted) { final Change.Id changeId = chg.getId(); if (chg.currentPatchSetId() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final PatchSet ps; try { ps = db.patchSets().get(chg.currentPatchSetId()); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final String idstr = ps.getRevision().get(); final ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } final CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { log.error("Invalid commit " + id.name() + " on " + chg.getKey(), e); commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } commit.change = chg; commit.patchsetId = ps.getId(); commit.originalOrder = commitOrder++; commits.put(changeId, commit); if (branchTip != null) { // If this commit is already merged its a bug in the queuing code // that we got back here. Just mark it complete and move on. It's // merged and that is all that mattered to the requestor. // try { if (rw.isMergedInto(commit, branchTip)) { commit.statusCode = CommitMergeStatus.ALREADY_MERGED; continue; } } catch (IOException err) { throw new MergeException("Cannot perform merge base test", err); } } final SubmitType submitType = getSubmitType(chg, ps); if (submitType == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_SUBMIT_TYPE)); continue; } commit.add(canMergeFlag); getList(submitType, toMerge).add(commit); getList(submitType, toSubmit).add(chg); } return toSubmit; 
+         </objectid> 
+        </objectid> 
+       </project.submittype,> 
+      </submittype,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4394</td> 
+     <td>1242677748</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>7d9ae387f42fdadd98e4aed62fe4d2dd14ba2266</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>validateChangeList(List<change>
+        ) 
+      </change></td> 
+     <td>private void validateChangeList(final List<change>
+        submitted) throws MergeException 
+      </change></td> 
+     <td> final Set<objectid>
+        tips = new HashSet 
+       <objectid>
+         (); for (final Ref r : repo.getAllRefs().values()) { tips.add(r.getObjectId()); } int commitOrder = 0; for (final Change chg : submitted) { final Change.Id changeId = chg.getId(); if (chg.currentPatchSetId() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final PatchSet ps; try { ps = db.patchSets().get(chg.currentPatchSetId()); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final String idstr = ps.getRevision().get(); final ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } final CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { log.error("Invalid commit " + id.name() + " on " + chg.getKey(), e); commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } commit.change = chg; commit.patchsetId = ps.getId(); commit.originalOrder = commitOrder++; commits.put(changeId, commit); if (branchTip != null) { // If this commit is already merged its a bug in the queuing code // that we got back here. Just mark it complete and move on. It's // merged and that is all that mattered to the requestor. // try { if (rw.isMergedInto(commit, branchTip)) { commit.statusCode = CommitMergeStatus.ALREADY_MERGED; continue; } } catch (IOException err) { throw new MergeException("Cannot perform merge base test", err); } } commit.add(canMergeFlag); toMerge.add(commit); } 
+       </objectid> 
+      </objectid></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4210</td> 
+     <td>1242677748</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Ulrik Sjolin</td>
+     <td>44671f5c6929a8f05223dd359182610286ceb98a</td> 
+     <td>None</td> 
+     <td>TODO Technically the proper way to do this test is to use a RevWalk on \"$id --not --all\" and test for an empty set. But that is way slower than looking for a ref directly pointing at the desired tip. We should always have a ref available. TODO this is actually an error, the branch is gone but we want to merge the issue. We can't safely do that if the tip is not reachable. </td> 
+     <td>SATD_ADDED</td> 
+     <td>validateChangeList()</td> 
+     <td>private void validateChangeList() throws MergeException</td> 
+     <td> final Set<objectid>
+        tips = new HashSet
+       <objectid>
+        (); for (final Ref r : db.getAllRefs().values()) { tips.add(r.getObjectId()); } int commitOrder = 0; for (final Change chg : submitted) { final Change.Id changeId = chg.getId(); if (chg.currentPatchSetId() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final PatchSet ps; try { ps = schema.patchSets().get(chg.currentPatchSetId()); } catch (OrmException e) { throw new MergeException("Cannot query the database", e); } if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } final String idstr = ps.getRevision().get(); final ObjectId id; try { id = ObjectId.fromString(idstr); } catch (IllegalArgumentException iae) { commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.NO_PATCH_SET)); continue; } if (!tips.contains(id)) { // TODO Technically the proper way to do this test is to use a // RevWalk on "$id --not --all" and test for an empty set. But // that is way slower than looking for a ref directly pointing // at the desired tip. We should always have a ref available. // // TODO this is actually an error, the branch is gone but we // want to merge the issue. We can't safely do that if the // tip is not reachable. // commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } final CodeReviewCommit commit; try { commit = (CodeReviewCommit) rw.parseCommit(id); } catch (IOException e) { log.error("Invalid commit " + id.name() + " on " + chg.getKey(), e); commits.put(changeId, CodeReviewCommit.error(CommitMergeStatus.REVISION_GONE)); continue; } commit.change = chg; commit.patchsetId = ps.getId(); commit.originalOrder = commitOrder++; commits.put(changeId, commit); if (branchTip != null) { // If this commit is already merged its a bug in the queuing code // that we got back here. Just mark it complete and move on. Its // merged and that is all that mattered to the requestor. // try { if (rw.isMergedInto(commit, branchTip)) { commit.statusCode = CommitMergeStatus.ALREADY_MERGED; continue; } } catch (IOException err) { throw new MergeException("Cannot perform merge base test", err); } } commit.add(CAN_MERGE); toMerge.add(commit); } 
+       </objectid>
+      </objectid></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

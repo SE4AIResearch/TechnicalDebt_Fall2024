@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4685</td> <td>1242678018</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>b9596123373163913b65671029868603a795e0d5</td> <td>None</td> <td>TODO(dborowitz): Test for other-branches.</td> <td>SATD_ADDED</td> <td>mergeable()</td> <td>public void mergeable() throws Exception</td> <td>
+    ObjectId initial = git.getRepository().getRef(HEAD).getLeaf().getObjectId();
+    PushOneCommit push1 = pushFactory.create(db, admin.getIdent(), PushOneCommit.SUBJECT, PushOneCommit.FILE_NAME, "push 1 content");
+    PushOneCommit.Result r1 = push1.to(git, "refs/for/master");
+    assertMergeable(r1.getChangeId(), true);
+    merge(r1);
+    // Reset HEAD to initial so the new change is a merge conflict.
+    RefUpdate ru = git.getRepository().updateRef(HEAD);
+    ru.setNewObjectId(initial);
+    assertThat(ru.forceUpdate()).isEqualTo(RefUpdate.Result.FORCED);
+    PushOneCommit push2 = pushFactory.create(db, admin.getIdent(), PushOneCommit.SUBJECT, PushOneCommit.FILE_NAME, "push 2 content");
+    PushOneCommit.Result r2 = push2.to(git, "refs/for/master");
+    assertMergeable(r2.getChangeId(), false);
+// TODO(dborowitz): Test for other-branches.
+</td> </tr></table></body></html>

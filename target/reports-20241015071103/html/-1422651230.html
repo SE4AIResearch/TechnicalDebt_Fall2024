@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1591</td> 
+     <td>-1422651230</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a6584f9378f4cef362938c5d7f96c4e1b6ee1c2b</td> 
+     <td>TODO: type convert to method signature</td> 
+     <td>do not return a reply if the method is VOID or the MEP is not OUT capable</td> 
+     <td>SATD_REMOVED</td> 
+     <td>invoke(Object, Method, Object[])</td> 
+     <td>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable</td> 
+     <td> BeanInvocation invocation = new BeanInvocation(method, args); ExchangePattern pattern = ExchangePattern.InOut; MethodInfo methodInfo = methodInfoCache.getMethodInfo(method); if (methodInfo != null) { pattern = methodInfo.getPattern(); } Exchange exchange = new DefaultExchange(endpoint, pattern); exchange.getIn().setBody(invocation); // process the exchange if (LOG.isTraceEnabled()) { LOG.trace("Proxied method call " + method.getName() + " invoking producer: " + producer); } producer.process(exchange); // check if we had an exception Throwable fault = exchange.getException(); if (fault != null) { if (fault instanceof RuntimeCamelException) { // if the inner cause is a runtime exception we can throw it directly if (fault.getCause() instanceof RuntimeException) { throw (RuntimeException) ((RuntimeCamelException) fault).getCause(); } throw (RuntimeCamelException) fault; } throw new InvocationTargetException(fault); } // do not return a reply if the method is VOID or the MEP is not OUT capable Class<!--?--> to = method.getReturnType(); if (to == Void.TYPE || !pattern.isOutCapable()) { return null; } // use type converter so we can convert output in the desired type defined by the method // and let it be mandatory so we know wont return null if we cant convert it to the defined type Object answer = exchange.getOut().getMandatoryBody(to); if (LOG.isTraceEnabled()) { LOG.trace("Proxied method call " + method.getName() + " returning: " + answer); } return answer; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1589</td> 
+     <td>-1422651230</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>f9958cac99d31ebf47040a110f9b1b6ebcd0c7da</td> 
+     <td>None</td> 
+     <td>TODO: type convert to method signature</td> 
+     <td>SATD_ADDED</td> 
+     <td>invoke(Object, Method, Object[])</td> 
+     <td>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable</td> 
+     <td> BeanInvocation invocation = new BeanInvocation(method, args); ExchangePattern pattern = ExchangePattern.InOut; MethodInfo methodInfo = methodInfoCache.getMethodInfo(method); if (methodInfo != null) { pattern = methodInfo.getPattern(); } Exchange exchange = new DefaultExchange(endpoint, pattern); exchange.getIn().setBody(invocation); producer.process(exchange); Throwable fault = exchange.getException(); if (fault != null) { if (fault instanceof RuntimeCamelException) { // if the inner cause is a runtime exception we can throw it directly if (fault.getCause() instanceof RuntimeException) { throw (RuntimeException) ((RuntimeCamelException) fault).getCause(); } throw (RuntimeCamelException) fault; } throw new InvocationTargetException(fault); } // TODO: type convert to method signature if (pattern.isOutCapable()) { return exchange.getOut().getBody(); } else { return null; } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

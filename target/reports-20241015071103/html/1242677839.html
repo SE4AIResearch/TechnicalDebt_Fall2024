@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4356</td> <td>1242677839</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>ce5d7fb3321c31ef301c4cb549e975fa6c706b04</td> <td>None</td> <td>Clean up the path. Users seem to like putting extra slashes into the URL
+which can break redirections by misinterpreting at either client or server.</td> <td>SATD_ADDED</td> <td>upgradeUI(String)</td> <td> static void upgradeUI(String token)</td> <td>
+    History.newItem(Dispatcher.RELOAD_UI + token, false);
+    Window.Location.reload();
+</td> </tr></table></body></html>

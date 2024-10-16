@@ -1,0 +1,62 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4332</td> <td>1242677828</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>d12c47672c291fa5caac0135f5afaca6a1d4d7de</td> <td>None</td> <td>Special case: If the section list is empty, this project has no current
+access control information. Rely on what ProjectControl determines
+is ownership, which probably means falling back to site administrators.</td> <td>SATD_ADDED</td> <td>call()</td> <td>public ProjectAccess call() throws NoSuchProjectException, IOException, ConfigInvalidException</td> <td>
+    pc = open();
+    // Load the current configuration from the repository, ensuring its the most
+    // recent version available. If it differs from what was in the project
+    // state, force a cache flush now.
+    // 
+    ProjectConfig config;
+    MetaDataUpdate md = metaDataUpdateFactory.create(projectName);
+    try {
+        config = ProjectConfig.read(md);
+        if (config.updateGroupNames(groupCache)) {
+            md.setMessage("Update group names\n");
+            if (config.commit(md)) {
+                projectCache.evict(config.getProject());
+                pc = open();
+            }
+        } else if (config.getRevision() != null && !config.getRevision().equals(pc.getProjectState().getConfig().getRevision())) {
+            projectCache.evict(config.getProject());
+            pc = open();
+        }
+    } finally {
+        md.close();
+    }
+    List<AccessSection> local = new ArrayList<AccessSection>();
+    Set<String> ownerOf = new HashSet<String>();
+    for (AccessSection section : config.getAccessSections()) {
+        RefControl rc = pc.controlForRef(section.getRefPattern());
+        if (rc.isOwner()) {
+            local.add(section);
+            ownerOf.add(section.getRefPattern());
+        } else if (rc.isVisible()) {
+            local.add(section);
+        }
+    }
+    if (ownerOf.isEmpty() && pc.isOwnerAnyRef()) {
+        // Special case: If the section list is empty, this project has no current
+        // access control information. Rely on what ProjectControl determines
+        // is ownership, which probably means falling back to site administrators.
+        ownerOf.add(AccessSection.ALL);
+    }
+    final ProjectAccess detail = new ProjectAccess();
+    detail.setRevision(config.getRevision().name());
+    detail.setLocal(local);
+    detail.setOwnerOf(ownerOf);
+    if (projectName.equals(wildProject)) {
+        detail.setInheritsFrom(null);
+    } else if (config.getProject().getParent() != null) {
+        detail.setInheritsFrom(config.getProject().getParent());
+    } else {
+        detail.setInheritsFrom(wildProject);
+    }
+    return detail;
+</td> </tr></table></body></html>

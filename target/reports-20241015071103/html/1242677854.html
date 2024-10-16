@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4378</td> <td>1242677854</td><td>GerritCodeReview/gerrit</td><td>Colby Ranger</td><td>2ac82b021ff33105893e1abd2ba81fbb1c537f75</td> <td>None</td> <td>TODO(cranger): maybe get the state through the accountCache instead.</td> <td>SATD_ADDED</td> <td>state()</td> <td>public AccountState state()</td> <td>
+    if (state == null) {
+        state = accountCache.get(getAccountId());
+    }
+    return state;
+</td> </tr></table></body></html>

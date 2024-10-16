@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4996</td> 
+     <td>1242678131</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>2443905d177e6b9b1e3ead9d923b34bfcdc3cadb</td> 
+     <td>TODO(dborowitz): Re-enable when ConsistencyChecker supports notedb.</td> 
+     <td>TODO(dborowitz): Re-enable when ConsistencyChecker supports notedb. Note that we *do* want to enable these tests with GERRIT_CHECK_NOTEDB, as we need to be able to convert old, corrupt changes. However, those tests don't necessarily need to pass.</td> 
+     <td>SATD_REMOVED</td> 
+     <td>setUp()</td> 
+     <td>public void setUp() throws Exception</td> 
+     <td> // TODO(dborowitz): Re-enable when ConsistencyChecker supports notedb. // Note that we *do* want to enable these tests with GERRIT_CHECK_NOTEDB, as // we need to be able to convert old, corrupt changes. However, those tests // don't necessarily need to pass. assume().that(notesMigration.enabled()).isFalse(); // Ignore client clone of project; repurpose as server-side TestRepository. testRepo = new TestRepository&lt;&gt;((InMemoryRepository) repoManager.openRepository(project)); tip = testRepo.getRevWalk().parseCommit(testRepo.getRepository().exactRef("HEAD").getObjectId()); adminId = admin.getId(); checker = checkerProvider.get(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4933</td> 
+     <td>1242678131</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>d5db7d0ed0f1d0e393f38af04677655400cfc91f</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Re-enable when ConsistencyChecker supports notedb.</td> 
+     <td>SATD_ADDED</td> 
+     <td>setUp()</td> 
+     <td>public void setUp() throws Exception</td> 
+     <td> // TODO(dborowitz): Re-enable when ConsistencyChecker supports notedb. assume().that(notesMigration.enabled()).isFalse(); // Ignore client clone of project; repurpose as server-side TestRepository. testRepo = new TestRepository&lt;&gt;((InMemoryRepository) repoManager.openRepository(project)); tip = testRepo.getRevWalk().parseCommit(testRepo.getRepository().exactRef("HEAD").getObjectId()); adminId = admin.getId(); checker = checkerProvider.get(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

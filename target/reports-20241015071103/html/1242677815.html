@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4310</td> <td>1242677815</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>0365b824a22934e78b99bd7e813b976e2b59b0e4</td> <td>Combine edits that are really close together. Right now our rule
+is, coalesce two line edits which are only one line apart if that
+common context line is either a \"pointless line\", or is identical
+on both sides and starts a new block of code. These are mostly
+block reindents to add or remove control flow operators.
+</td> <td>Combine edits that are really close together. Right now our rule
+is, coalesce two line edits which are only one line apart if that
+common context line is either a \"pointless line\", or is identical
+on both sides and starts a new block of code. These are mostly
+block reindents to add or remove control flow operators.
+</td> <td>SATD_MOVED_FILE</td> <td>combineLineEdits(List<Edit>, Text, Text)</td> <td>private static void combineLineEdits(List<Edit> edits, Text a, Text b)</td> <td>
+    for (int j = 0; j < edits.size() - 1; ) {
+        Edit c = edits.get(j);
+        Edit n = edits.get(j + 1);
+        // Combine edits that are really close together. Right now our rule
+        // is, coalesce two line edits which are only one line apart if that
+        // common context line is either a "pointless line", or is identical
+        // on both sides and starts a new block of code. These are mostly
+        // block reindents to add or remove control flow operators.
+        // 
+        final int ad = n.getBeginA() - c.getEndA();
+        final int bd = n.getBeginB() - c.getEndB();
+        if ((1 <= ad && isBlankLineGap(a, c.getEndA(), n.getBeginA())) || (1 <= bd && isBlankLineGap(b, c.getEndB(), n.getBeginB())) || (ad == 1 && bd == 1 && isControlBlockStart(a, c.getEndA()))) {
+            int ab = c.getBeginA();
+            int ae = n.getEndA();
+            int bb = c.getBeginB();
+            int be = n.getEndB();
+            edits.set(j, new Edit(ab, ae, bb, be));
+            edits.remove(j + 1);
+            continue;
+        }
+        j++;
+    }
+</td> </tr></table></body></html>

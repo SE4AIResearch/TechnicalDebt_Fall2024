@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2727</td> <td>-1422650586</td><td>apache/camel</td><td>James Strachan</td><td>14d532decdc67829ad5c159054cc69a0bf23b895</td> <td>None</td> <td>TODO validate all the values are valid (e.g. mandatory)</td> <td>SATD_ADDED</td> <td>configureEndpoint(Endpoint)</td> <td>public void configureEndpoint(Endpoint endpoint)</td> <td>
+    Map<String, Object> map = getParameters();
+    if (map != null) {
+        Set<Map.Entry<String, Object>> entries = map.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            setEndpointParameter(endpoint, entry.getKey(), entry.getValue());
+        }
+    }
+// TODO validate all the values are valid (e.g. mandatory)
+</td> </tr></table></body></html>

@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1645</td> <td>-1422651198</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>be7f6c7e17ee43879a2cc93d240e647ac879936b</td> <td>None</td> <td>TODO: consider TaskOptions method (POST, GET, ...)</td> <td>SATD_ADDED</td> <td>writeRequest(GTaskEndpoint, Exchange, TaskOptions)</td> <td>public TaskOptions writeRequest(GTaskEndpoint endpoint, Exchange exchange, TaskOptions request)</td> <td>
+    TaskOptions answer = TaskOptions.Builder.url(getWorkerRoot(endpoint) + endpoint.getPath());
+    writeRequestHeaders(endpoint, exchange, answer);
+    writeRequestBody(endpoint, exchange, answer);
+    // TODO: consider TaskOptions method (POST, GET, ...)
+    return answer;
+</td> </tr></table></body></html>

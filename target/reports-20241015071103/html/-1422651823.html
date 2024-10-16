@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>423</td> <td>-1422651823</td><td>apache/camel</td><td>Hiram R. Chirino</td><td>64a4b6aa85a599505008fab00a8c498323469787</td> <td>None</td> <td>TBD may be delegate to the EndpointUri params.</td> <td>SATD_ADDED</td> <td>getEndpointInfo(Service, CxfEndpoint)</td> <td>public static EndpointInfo getEndpointInfo(final Service service, final CxfEndpoint endpoint)</td> <td>
+    EndpointInfo endpointInfo = null;
+    final java.util.Collection<EndpointInfo> endpoints = service.getServiceInfos().get(0).getEndpoints();
+    if (endpoints.size() == 1) {
+        endpointInfo = endpoints.iterator().next();
+    } else {
+        final String port = endpoint.getPortName();
+        if (port != null) {
+            final QName endpointName = QName.valueOf(port);
+            endpointInfo = service.getServiceInfos().get(0).getEndpoint(endpointName);
+        }
+    // TBD may be delegate to the EndpointUri params.
+    }
+    return endpointInfo;
+</td> </tr></table></body></html>

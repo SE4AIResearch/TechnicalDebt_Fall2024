@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2043</td> <td>-1422650981</td><td>apache/camel</td><td>Claus Ibsen</td><td>4f57ad9a72dd18b43ca4b9196b743e453303c530</td> <td>None</td> <td>TODO: CxfConsumer should use OSGi http service (no embedded Jetty)
+TODO: Make this test work with OSGi</td> <td>SATD_ADDED</td> <td>configure()</td> <td>public static Option[] configure()</td> <td>
+    Option[] options = options(// install the spring dm profile
+    profile("spring.dm").version("1.2.0"), profile("compendium"), profile("web"), // this is how you set the default log level when using pax logging (logProfile)
+    org.ops4j.pax.exam.CoreOptions.systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), // using the features to install the camel components
+    scanFeatures(getCamelKarafFeatureUrl(), "camel-core", "camel-spring", "camel-test", "camel-cxf"), workingDirectory("target/paxrunner/"), equinox());
+    return options;
+</td> </tr></table></body></html>

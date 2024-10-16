@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1951</td> 
+     <td>-1422651345</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>613d4b7eca55458b46009f45e2ba5a78cc6289e5</td> 
+     <td>TODO: Run this manually and browse the memory usage, eg in IDEA there is a Statistics tab</td> 
+     <td>run this manually and browse the memory usage, eg in IDEA there is a Statistics tab</td> 
+     <td>SATD_CHANGED</td> 
+     <td>xxxtestMemoryLeak()</td> 
+     <td>public void xxxtestMemoryLeak() throws Exception</td> 
+     <td> // run this manually and browse the memory usage, eg in IDEA there is a Statistics tab deleteDirectory("target/filesorter/archiv"); for (int c = 0; c &lt; 100; c++) { template.sendBodyAndHeader(fileUrl + "c", "test", Exchange.FILE_NAME, c + ".dat"); } context.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { from(fileUrl + "c/?sortBy=ignoreCase:file:name").process(new Processor() { public void process(Exchange exchange) throws Exception { StringBuilder buf = new StringBuilder(10000000); buf.setLength(1000000); exchange.getIn().setBody(buf.toString()); } }).to("file:target/filesorter/archiv"); } }); context.start(); Thread.sleep(30 * 1000L); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1375</td> 
+     <td>-1422651345</td>
+     <td>apache/camel</td>
+     <td>Hadrian Zbarcea</td>
+     <td>89faee662ffeaad944c1baeb9e128129b767a04c</td> 
+     <td>None</td> 
+     <td>TODO: Run this manually and browse the memory usage, eg in IDEA there is a Statistics tab</td> 
+     <td>SATD_ADDED</td> 
+     <td>xxxtestMemoryLeak()</td> 
+     <td>public void xxxtestMemoryLeak() throws Exception</td> 
+     <td> // TODO: Run this manually and browse the memory usage, eg in IDEA there is a Statistics tab deleteDirectory("target/filesorter/archiv"); for (int c = 0; c &lt; 100; c++) { template.sendBodyAndHeader(fileUrl + "c", "test", Exchange.FILE_NAME, c + ".dat"); } context.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { from(fileUrl + "c/?sortBy=ignoreCase:file:name").process(new Processor() { public void process(Exchange exchange) throws Exception { StringBuilder buf = new StringBuilder(10000000); buf.setLength(1000000); exchange.getIn().setBody(buf.toString()); } }).to("file:target/filesorter/archiv"); } }); context.start(); Thread.sleep(30 * 1000L); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

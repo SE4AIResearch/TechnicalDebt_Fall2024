@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5691</td> <td>-1009651947</td><td>apache/hadoop</td><td>Tsz-wo Sze</td><td>cabec474e0f4c525ba80bd7c8dede1a8d76e4f39</td> <td>// Set the policy to default policy to place the block in the default way
+setBlockPlacementPolicy(namesystem, new BlockPlacementPolicyDefault(</td> <td>create a new BlockPlacementPolicyRaid to clear the cache</td> <td>SATD_REMOVED</td> <td>refreshPolicy()</td> <td>private void refreshPolicy()</td> <td>
+    policy = new BlockPlacementPolicyRaid();
+    policy.initialize(conf, namesystem, namesystem.clusterMap);
+</td> </tr></table></body></html>

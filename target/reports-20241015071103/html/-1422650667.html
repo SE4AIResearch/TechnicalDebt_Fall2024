@@ -1,0 +1,97 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3365</td> 
+     <td>-1422650667</td> 
+     <td>apache/camel</td> 
+     <td>Willem Jiang</td> 
+     <td>e9bac0e0e4311b4cd2191885b1dc68ce482313b4</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>setJmsMessageHeaders(Message, Exchange, boolean, KeyFormatStrategy)</td> 
+     <td>public static Exchange setJmsMessageHeaders(final Message jmsMessage, final Exchange exchange, boolean out, KeyFormatStrategy keyFormatStrategy) throws JMSException</td> 
+     <td> Map<string, object>
+        headers = new HashMap 
+       <string, object>
+         (); if (jmsMessage != null) { // lets populate the standard JMS message headers try { headers.put(JmsMessageHeaderType.JMSCorrelationID.toString(), jmsMessage.getJMSCorrelationID()); headers.put(JmsMessageHeaderType.JMSDeliveryMode.toString(), jmsMessage.getJMSDeliveryMode()); headers.put(JmsMessageHeaderType.JMSDestination.toString(), jmsMessage.getJMSDestination()); headers.put(JmsMessageHeaderType.JMSExpiration.toString(), jmsMessage.getJMSExpiration()); headers.put(JmsMessageHeaderType.JMSMessageID.toString(), jmsMessage.getJMSMessageID()); headers.put(JmsMessageHeaderType.JMSPriority.toString(), jmsMessage.getJMSPriority()); headers.put(JmsMessageHeaderType.JMSRedelivered.toString(), jmsMessage.getJMSRedelivered()); headers.put(JmsMessageHeaderType.JMSTimestamp.toString(), jmsMessage.getJMSTimestamp()); headers.put(JmsMessageHeaderType.JMSReplyTo.toString(), SjmsExchangeMessageHelper.getJMSReplyTo(jmsMessage)); headers.put(JmsMessageHeaderType.JMSType.toString(), SjmsExchangeMessageHelper.getJMSType(jmsMessage)); // this works around a bug in the ActiveMQ property handling headers.put(JmsMessageHeaderType.JMSXGroupID.toString(), jmsMessage.getStringProperty(JmsMessageHeaderType.JMSXGroupID.toString())); } catch (JMSException e) { throw new RuntimeCamelException(e); } for (Enumeration 
+        <string>
+          enumeration = jmsMessage.getPropertyNames(); enumeration.hasMoreElements(); ) { String key = enumeration.nextElement(); if (hasIllegalHeaderKey(key)) { throw new IllegalHeaderException("Header " + key + " is not a legal JMS header name value"); } Object value = jmsMessage.getObjectProperty(key); String decodedName = keyFormatStrategy.decodeKey(key); headers.put(decodedName, value); } } if (out) { exchange.getOut().setHeaders(headers); } else { exchange.getIn().setHeaders(headers); } return exchange; 
+        </string> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2609</td> 
+     <td>-1422650667</td> 
+     <td>apache/camel</td> 
+     <td>Babak Vahdat</td> 
+     <td>c00393c48b1fd89a163bf2f7c3c0ce3dc6d88b38</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>setJmsMessageHeaders(Message, Exchange, boolean)</td> 
+     <td>public static Exchange setJmsMessageHeaders(final Message jmsMessage, final Exchange exchange, boolean out) throws JMSException</td> 
+     <td> HashMap<string, object>
+        headers = new HashMap 
+       <string, object>
+         (); if (jmsMessage != null) { // lets populate the standard JMS message headers try { headers.put(JmsMessageHeaderType.JMSCorrelationID.toString(), jmsMessage.getJMSCorrelationID()); headers.put(JmsMessageHeaderType.JMSDeliveryMode.toString(), jmsMessage.getJMSDeliveryMode()); headers.put(JmsMessageHeaderType.JMSDestination.toString(), jmsMessage.getJMSDestination()); headers.put(JmsMessageHeaderType.JMSExpiration.toString(), jmsMessage.getJMSExpiration()); headers.put(JmsMessageHeaderType.JMSMessageID.toString(), jmsMessage.getJMSMessageID()); headers.put(JmsMessageHeaderType.JMSPriority.toString(), jmsMessage.getJMSPriority()); headers.put(JmsMessageHeaderType.JMSRedelivered.toString(), jmsMessage.getJMSRedelivered()); headers.put(JmsMessageHeaderType.JMSTimestamp.toString(), jmsMessage.getJMSTimestamp()); headers.put(JmsMessageHeaderType.JMSReplyTo.toString(), SjmsExchangeMessageHelper.getJMSReplyTo(jmsMessage)); headers.put(JmsMessageHeaderType.JMSType.toString(), SjmsExchangeMessageHelper.getJMSType(jmsMessage)); // this works around a bug in the ActiveMQ property handling headers.put(JmsMessageHeaderType.JMSXGroupID.toString(), jmsMessage.getStringProperty(JmsMessageHeaderType.JMSXGroupID.toString())); } catch (JMSException e) { throw new RuntimeCamelException(e); } for (Enumeration 
+        <string>
+          enumeration = jmsMessage.getPropertyNames(); enumeration.hasMoreElements(); ) { String key = enumeration.nextElement(); if (hasIllegalHeaderKey(key)) { throw new IllegalHeaderException("Header " + key + " is not a legal JMS header name value"); } Object value = jmsMessage.getObjectProperty(key); headers.put(key, value); } } if (out) { exchange.getOut().setHeaders(headers); } else { exchange.getIn().setHeaders(headers); } return exchange; 
+        </string> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2579</td> 
+     <td>-1422650667</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>1221d553ad036b7869d236a857009a95bbe44645</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>this works around a bug in the ActiveMQ property handling</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>setJmsMessageHeaders(Message, Exchange, boolean)</td> 
+     <td>public static Exchange setJmsMessageHeaders(final Message jmsMessage, final Exchange exchange, boolean out) throws JMSException</td> 
+     <td> HashMap<string, object>
+        headers = new HashMap
+       <string, object>
+        (); if (jmsMessage != null) { // lets populate the standard JMS message headers try { headers.put(JmsMessageHeaderType.JMSCorrelationID.toString(), jmsMessage.getJMSCorrelationID()); headers.put(JmsMessageHeaderType.JMSDeliveryMode.toString(), jmsMessage.getJMSDeliveryMode()); headers.put(JmsMessageHeaderType.JMSDestination.toString(), jmsMessage.getJMSDestination()); headers.put(JmsMessageHeaderType.JMSExpiration.toString(), jmsMessage.getJMSExpiration()); headers.put(JmsMessageHeaderType.JMSMessageID.toString(), jmsMessage.getJMSMessageID()); headers.put(JmsMessageHeaderType.JMSPriority.toString(), jmsMessage.getJMSPriority()); headers.put(JmsMessageHeaderType.JMSRedelivered.toString(), jmsMessage.getJMSRedelivered()); headers.put(JmsMessageHeaderType.JMSTimestamp.toString(), jmsMessage.getJMSTimestamp()); headers.put(JmsMessageHeaderType.JMSReplyTo.toString(), JmsMessageExchangeHelper.getJMSReplyTo(jmsMessage)); headers.put(JmsMessageHeaderType.JMSType.toString(), JmsMessageExchangeHelper.getJMSType(jmsMessage)); // this works around a bug in the ActiveMQ property handling headers.put(JmsMessageHeaderType.JMSXGroupID.toString(), jmsMessage.getStringProperty(JmsMessageHeaderType.JMSXGroupID.toString())); } catch (JMSException e) { throw new RuntimeCamelException(e); } for (Enumeration
+        <string>
+          enumeration = jmsMessage.getPropertyNames(); enumeration.hasMoreElements(); ) { String key = enumeration.nextElement(); if (hasIllegalHeaderKey(key)) { throw new IllegalHeaderException("Header " + key + " is not a legal JMS header name value"); } Object value = jmsMessage.getObjectProperty(key); headers.put(key, value); } } if (out) { exchange.getOut().setHeaders(headers); } else { exchange.getIn().setHeaders(headers); } return exchange; 
+        </string>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

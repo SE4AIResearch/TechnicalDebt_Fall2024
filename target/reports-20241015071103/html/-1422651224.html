@@ -1,0 +1,84 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1597</td> <td>-1422651224</td><td>apache/camel</td><td>Jonathan Anstey</td><td>5195b1ea0d55315eeda978617dffc8b8cb402111</td> <td>None</td> <td>TODO: make this streamable. This is one of my pet
+peeves in JAXB RI as well, so if you fix this, submit the
+code to the JAXB RI as well (see RuntimeBuiltinLeafInfoImpl)! - DD</td> <td>SATD_ADDED</td> <td>processAttachments(SoapMessage, SoapBodyInfo)</td> <td>protected void processAttachments(SoapMessage message, SoapBodyInfo sbi)</td> <td>
+    Collection<Attachment> atts = setupAttachmentOutput(message);
+    List<Object> outObjects = CastUtils.cast(message.getContent(List.class));
+    for (MessagePartInfo mpi : sbi.getAttachments()) {
+        String partName = mpi.getConcreteName().getLocalPart();
+        String ct = (String) mpi.getProperty(Message.CONTENT_TYPE);
+        String id = new StringBuilder().append(partName).append("=").append(UUID.randomUUID()).append("@apache.org").toString();
+        // this assumes things are in order...
+        int idx = mpi.getIndex();
+        Object o = outObjects.get(idx);
+        if (o == null) {
+            continue;
+        }
+        outObjects.set(idx, null);
+        DataHandler dh = null;
+        // This code could probably be refactored out somewhere...
+        if (o instanceof Source) {
+            dh = new DataHandler(createDataSource((Source) o, ct));
+        } else if (o instanceof Image) {
+            // TODO: make this streamable. This is one of my pet
+            // peeves in JAXB RI as well, so if you fix this, submit the
+            // code to the JAXB RI as well (see RuntimeBuiltinLeafInfoImpl)! - DD
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(2048);
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType(ct);
+            if (writers.hasNext()) {
+                ImageWriter writer = writers.next();
+                try {
+                    BufferedImage bimg = convertToBufferedImage((Image) o);
+                    ImageOutputStream out = ImageIO.createImageOutputStream(bos);
+                    writer.setOutput(out);
+                    writer.write(bimg);
+                    writer.dispose();
+                    out.flush();
+                    out.close();
+                    bos.close();
+                } catch (IOException e) {
+                    throw new Fault(e);
+                }
+            } else {
+                throw new Fault(new org.apache.cxf.common.i18n.Message("ATTACHMENT_NOT_SUPPORTED", LOG, ct));
+            }
+            dh = new DataHandler(new ByteArrayDataSource(bos.toByteArray(), ct));
+        } else if (o instanceof DataHandler) {
+            dh = (DataHandler) o;
+            ct = dh.getContentType();
+            try {
+                if ("text/xml".equals(ct) && dh.getContent() instanceof Source) {
+                    dh = new DataHandler(createDataSource((Source) dh.getContent(), ct));
+                }
+            } catch (IOException e) {
+            // ignore, use same dh
+            }
+        } else if (o instanceof byte[]) {
+            if (ct == null) {
+                ct = "application/octet-stream";
+            }
+            dh = new DataHandler(new ByteArrayDataSource((byte[]) o, ct));
+        } else if (o instanceof String) {
+            if (ct == null) {
+                ct = "text/plain; charset=\'UTF-8\'";
+            }
+            try {
+                dh = new DataHandler(new ByteArrayDataSource((String) o, ct));
+            } catch (IOException e) {
+                throw new Fault(e);
+            }
+        } else {
+            throw new Fault(new org.apache.cxf.common.i18n.Message("ATTACHMENT_NOT_SUPPORTED", LOG, o.getClass()));
+        }
+        AttachmentImpl att = new AttachmentImpl(id);
+        att.setDataHandler(dh);
+        att.setHeader("Content-Type", ct);
+        atts.add(att);
+    }
+</td> </tr></table></body></html>

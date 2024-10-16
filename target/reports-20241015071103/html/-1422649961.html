@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3854</td> <td>-1422649961</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>TODO: refine the key to the type and qualifiers instead of the whole injection point as it leads to registering redundant observers</td> <td>SATD_ADDED</td> <td>cdiEventEndpoints(ProcessBean<?>)</td> <td>private void cdiEventEndpoints(@Observes ProcessBean<?> pb)</td> <td>
+    for (InjectionPoint ip : pb.getBean().getInjectionPoints()) {
+        if (!CdiEventEndpoint.class.equals(CdiSpiHelper.getRawType(ip.getType()))) {
+            continue;
+        }
+        // TODO: refine the key to the type and qualifiers instead of the whole injection point as it leads to registering redundant observers
+        if (ip.getType() instanceof ParameterizedType) {
+            cdiEventEndpoints.put(ip, new ForwardingObserverMethod<>(((ParameterizedType) ip.getType()).getActualTypeArguments()[0], ip.getQualifiers()));
+        } else if (ip.getType() instanceof Class) {
+            cdiEventEndpoints.put(ip, new ForwardingObserverMethod<>(Object.class, ip.getQualifiers()));
+        }
+    }
+</td> </tr></table></body></html>

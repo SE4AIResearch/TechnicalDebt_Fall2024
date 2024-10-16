@@ -1,0 +1,90 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4634</td> 
+     <td>1242677892</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>e342270dba73886f6c3042c821ebc3fac514e5a9</td> 
+     <td>Might be a group name, be nice and accept unique names.</td> 
+     <td>Might be a group name, be nice and accept unique names.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>parseId(String)</td> 
+     <td>public GroupDescription.Basic parseId(String id)</td> 
+     <td> AccountGroup.UUID uuid = new AccountGroup.UUID(id); if (groupBackend.handles(uuid)) { GroupDescription.Basic d = groupBackend.get(uuid); if (d != null) { return d; } } // Might be a legacy AccountGroup.Id. if (id.matches("^[1-9][0-9]*$")) { try { AccountGroup.Id legacyId = AccountGroup.Id.parse(id); return groupControlFactory.controlFor(legacyId).getGroup(); } catch (IllegalArgumentException invalidId) { } catch (NoSuchGroupException e) { } } // Might be a group name, be nice and accept unique names. GroupReference ref = GroupBackends.findExactSuggestion(groupBackend, id); if (ref != null) { GroupDescription.Basic d = groupBackend.get(ref.getUUID()); if (d != null) { return d; } } return null; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4472</td> 
+     <td>1242677892</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>7abdd70b76874f3f77ecc616b70df171b8300d03</td> 
+     <td>Might be a group name, be nice and accept unique names.</td> 
+     <td>Might be a group name, be nice and accept unique names.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>_parse(String)</td> 
+     <td>private GroupDescription.Basic _parse(String id)</td> 
+     <td> AccountGroup.UUID uuid = new AccountGroup.UUID(id); if (groupBackend.handles(uuid)) { GroupDescription.Basic d = groupBackend.get(uuid); if (d != null) { return d; } } // Might be a legacy AccountGroup.Id. if (id.matches("^[1-9][0-9]*$")) { try { AccountGroup.Id legacyId = AccountGroup.Id.parse(id); return groupControlFactory.controlFor(legacyId).getGroup(); } catch (IllegalArgumentException invalidId) { } catch (NoSuchGroupException e) { } } // Might be a group name, be nice and accept unique names. GroupReference ref = GroupBackends.findExactSuggestion(groupBackend, id); if (ref != null) { GroupDescription.Basic d = groupBackend.get(ref.getUUID()); if (d != null) { return d; } } return null; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4434</td> 
+     <td>1242677892</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>f53c20147fbf34af77f88daf6b2dd30d912c7348</td> 
+     <td>Might be a group name. Try to be nice and accept unique names.</td> 
+     <td>Might be a group name, be nice and accept unique names.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>parse(String)</td> 
+     <td> String id = Url.decode(urlId); try { AccountGroup.UUID uuid = new AccountGroup.UUID(id); return check(urlId, groupControlFactory.controlFor(uuid)); } catch (NoSuchGroupException noSuchGroup) { } // Might be a legacy AccountGroup.Id. if (id.matches("^[1-9][0-9]*$")) { try { AccountGroup.Id legacyId = AccountGroup.Id.parse(id); return check(urlId, groupControlFactory.controlFor(legacyId)); } catch (IllegalArgumentException invalidId) { } catch (NoSuchGroupException e) { } } // Might be a group name, be nice and accept unique names. GroupReference ref = GroupBackends.findExactSuggestion(groupBackend, id); if (ref != null) { try { return check(urlId, groupControlFactory.controlFor(ref.getUUID())); } catch (NoSuchGroupException e) { } } throw new ResourceNotFoundException(urlId); </td> 
+     <td> GroupResource parse(String urlId) throws ResourceNotFoundException</td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4433</td> 
+     <td>1242677892</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Edwin Kempin</td>
+     <td>938ce41c915c049a7f339d2d2112a0034b92be55</td> 
+     <td>None</td> 
+     <td>Might be a group name. Try to be nice and accept unique names.</td> 
+     <td>SATD_ADDED</td> 
+     <td>parse(String)</td> 
+     <td> String id = Url.decode(urlId); try { AccountGroup.UUID uuid = new AccountGroup.UUID(id); return check(urlId, groupControlFactory.controlFor(uuid)); } catch (NoSuchGroupException noSuchGroup) { } // Might be a legacy AccountGroup.Id. if (id.matches("^[1-9][0-9]*$")) { try { AccountGroup.Id legacyId = AccountGroup.Id.parse(id); return check(urlId, groupControlFactory.controlFor(legacyId)); } catch (IllegalArgumentException invalidId) { } catch (NoSuchGroupException e) { } } // Might be a group name. Try to be nice and accept unique names. Collection<groupreference>
+        suggestions = groupBackend.suggest(id); if (suggestions.size() == 1) { try { GroupReference ref = Iterables.getOnlyElement(suggestions); return check(urlId, groupControlFactory.controlFor(ref.getUUID())); } catch (NoSuchGroupException e) { } } throw new ResourceNotFoundException(urlId); 
+      </groupreference></td> 
+     <td> GroupResource parse(String urlId) throws ResourceNotFoundException</td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

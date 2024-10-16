@@ -1,0 +1,60 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2735</td> 
+     <td>-1422650581</td>
+     <td>apache/camel</td>
+     <td>Christian Mueller</td>
+     <td>bf1f5654dd9f1cca87ba576c2e9e7777dc776cb5</td> 
+     <td>TODO: map from request to Camel</td> 
+     <td>flatten the list and store as single value</td> 
+     <td>SATD_REMOVED</td> 
+     <td>toCamelMessage(HttpRequest, Exchange)</td> 
+     <td>public Message toCamelMessage(HttpRequest request, Exchange exchange)</td> 
+     <td> NettyHttpMessage answer = new NettyHttpMessage(request); answer.setHeader(Exchange.HTTP_METHOD, request.getMethod().getName()); answer.setHeader(Exchange.HTTP_URI, request.getUri()); for (String name : request.getHeaderNames()) { List<string>
+        values = request.getHeaders(name); if (values.size() == 1) { // flatten the list and store as single value answer.setHeader(name, values.get(0)); } else { // if multiple values store them as list answer.setHeader(name, values); } } // keep the body as is, and use type converters answer.setBody(request.getContent()); return answer; 
+      </string></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2734</td> 
+     <td>-1422650581</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>b72c775fca015c8cc9b0226468d072c2e45a757c</td> 
+     <td>None</td> 
+     <td>TODO: map from request to Camel</td> 
+     <td>SATD_ADDED</td> 
+     <td>toCamelMessage(Exchange, HttpRequest)</td> 
+     <td>public Message toCamelMessage(Exchange exchange, HttpRequest request)</td> 
+     <td> // map http headers to Camel message // TODO: map from request to Camel exchange.getIn().setBody("TODO"); return exchange.getIn(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

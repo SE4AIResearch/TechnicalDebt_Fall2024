@@ -1,0 +1,76 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3784</td> <td>-1422650011</td><td>apache/camel</td><td>Claus Ibsen</td><td>bd1661b248c960e200bd5f69e1ba34989529a712</td> <td>None</td> <td>TODO:  Come up with an intelligent way to size this stream</td> <td>SATD_ADDED</td> <td>closeFrame(Socket)</td> <td>public static byte[] closeFrame(Socket socket) throws MllpTimeoutException, MllpCorruptFrameException, MllpException</td> <td>
+    if (socket.isConnected() && !socket.isClosed()) {
+        InputStream socketInputStream = MllpUtil.getInputStream(socket);
+        // TODO:  Come up with an intelligent way to size this stream
+        ByteArrayOutputStream payload = new ByteArrayOutputStream(4096);
+        try {
+            while (true) {
+                int readByte = socketInputStream.read();
+                switch(readByte) {
+                    case END_OF_STREAM:
+                        if (isLogPHIEnabled(log)) {
+                            log.error("END_OF_STREAM read while looking for the end of the MLLP frame - resetting connection and eating data: {}", payload.toString().replace('\r', '\n'));
+                        } else {
+                            log.error("END_OF_STREAM read while looking for the end of the MLLP frame - resetting connection and eating data");
+                        }
+                        resetConnection(socket);
+                        throw new MllpCorruptFrameException("END_OF_STREAM read while looking for the end of the MLLP frame", payload.size() > 0 ? payload.toByteArray() : null);
+                    case START_OF_BLOCK:
+                        if (isLogPHIEnabled(log)) {
+                            log.error("A new MLLP frame was opened before the previous frame was closed - resetting connection and eating data: {}", payload.toString().replace('\r', '\n'));
+                        } else {
+                            log.error("A new MLLP frame was opened before the previous frame was closed - resetting connection and eating data");
+                        }
+                        resetConnection(socket);
+                        throw new MllpCorruptFrameException("A new MLLP frame was opened before the previous frame was closed", payload.size() > 0 ? payload.toByteArray() : null);
+                    case END_OF_BLOCK:
+                        if (END_OF_DATA != socketInputStream.read()) {
+                            if (isLogPHIEnabled(log)) {
+                                log.error("The MLLP frame was partially closed - END_OF_BLOCK was not followed by END_OF_DATA - resetting connection and eating data: {}", payload.toString().replace('\r', '\n'));
+                            } else {
+                                log.error("The MLLP frame was partially closed - END_OF_BLOCK was not followed by END_OF_DATA - resetting connection and eating data");
+                            }
+                            resetConnection(socket);
+                            throw new MllpCorruptFrameException("The MLLP frame was partially closed - END_OF_BLOCK was not followed by END_OF_DATA", payload.size() > 0 ? payload.toByteArray() : null);
+                        }
+                        return payload.toByteArray();
+                    default:
+                        // log.trace( "Read Character: {}", (char)readByte );
+                        payload.write(readByte);
+                }
+            }
+        } catch (SocketTimeoutException timeoutEx) {
+            if (0 < payload.size()) {
+                if (isLogPHIEnabled(log)) {
+                    log.error("Timeout looking for the end of the MLLP frame - resetting connection and eating data: {}", payload.toString().replace('\r', '\n'));
+                } else {
+                    log.error("Timeout looking for the end of the MLLP frame - resetting connection and eating data");
+                }
+            } else {
+                log.error("Timeout looking for the end of the MLLP frame - resetting connection");
+            }
+            resetConnection(socket);
+            throw new MllpCorruptFrameException("Timeout looking for the end of the MLLP frame", payload.size() > 0 ? payload.toByteArray() : null, timeoutEx);
+        } catch (IOException ioEx) {
+            if (0 < payload.size()) {
+                if (isLogPHIEnabled(log)) {
+                    log.error("Exception encountered looking for the end of the MLLP frame - resetting connection and eating data: {}", payload.toString().replace('\r', '\n'));
+                } else {
+                    log.error("Exception encountered looking for the end of the MLLP frame - resetting connection and eating data");
+                }
+            } else {
+                log.error("Exception encountered looking for the end of the MLLP frame - resetting connection");
+            }
+            resetConnection(socket);
+            throw new MllpException("Exception encountered looking for the end of the MLLP frame", payload.size() > 0 ? payload.toByteArray() : null, ioEx);
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

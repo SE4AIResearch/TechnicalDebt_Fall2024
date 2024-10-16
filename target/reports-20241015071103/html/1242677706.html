@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4106</td> <td>1242677706</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>f6b3c2214fa9c9aeae1746c66f899092e02a24bf</td> <td>None</td> <td>Just don't CC everyone. Better to send a partial message to those
+we already have queued up then to fail deliver entirely to people
+who have a lower interest in the change.</td> <td>SATD_ADDED</td> <td>bccWatchesNotifySubmittedChanges()</td> <td>private void bccWatchesNotifySubmittedChanges() throws MessagingException</td> <td>
+    if (db != null) {
+        try {
+            // BCC anyone else who has interest in this project's changes
+            // 
+            final Project project = getProject();
+            if (project != null) {
+                for (AccountProjectWatch w : db.accountProjectWatches().notifySubmittedChanges(project.getId())) {
+                    add(RecipientType.BCC, w.getAccountId());
+                }
+            }
+        } catch (OrmException err) {
+        // Just don't CC everyone. Better to send a partial message to those
+        // we already have queued up then to fail deliver entirely to people
+        // who have a lower interest in the change.
+        }
+    }
+</td> </tr></table></body></html>

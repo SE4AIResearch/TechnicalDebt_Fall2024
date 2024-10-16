@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2560</td> <td>-1422650679</td><td>apache/camel</td><td>Benjamin P. O'Day</td><td>9390d0039cce23f609825edc82af531deff0f7c0</td> <td>None</td> <td>TODO fix the string hack</td> <td>SATD_ADDED</td> <td>doStart()</td> <td>protected void doStart() throws Exception</td> <td>
+    super.doStart();
+    // 
+    // TODO since we only need a session pool for one use case, find a better way
+    // 
+    // We only create a session pool when we are not transacted.
+    // Transacted listeners or producers need to be paired with the
+    // Session that created them.
+    if (!isTransacted()) {
+        sessions = new SessionPool(getSessionCount(), getConnectionResource());
+        // TODO fix the string hack
+        sessions.setAcknowledgeMode(SessionAcknowledgementType.valueOf(getAcknowledgementMode() + ""));
+        getSessions().fillPool();
+    }
+</td> </tr></table></body></html>

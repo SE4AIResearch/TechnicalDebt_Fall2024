@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4600</td> <td>1242677969</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>1134051b485cfbb5d2b6a0bc772ddf36e91f6048</td> <td>None</td> <td>TODO(dborowitz): > and < are broken at head.</td> <td>SATD_ADDED</td> <td>byLabel()</td> <td>public void byLabel() throws Exception</td> <td>
+    accountManager.authenticate(AuthRequest.forUser("anotheruser"));
+    TestRepository<InMemoryRepository> repo = createProject("repo");
+    ChangeInserter ins = newChange(repo, null, null, null, null);
+    Change change = ins.insert();
+    ChangeControl ctl = changeControlFactory.controlFor(change, user);
+    PostReview.Input input = new PostReview.Input();
+    input.message = "toplevel";
+    input.labels = ImmutableMap.<String, Short>of("Code-Review", (short) 1);
+    postReview.apply(new RevisionResource(new ChangeResource(ctl), ins.getPatchSet()), input);
+    assertTrue(query("label:Code-Review=-2").isEmpty());
+    assertTrue(query("label:Code-Review-2").isEmpty());
+    assertTrue(query("label:Code-Review=-1").isEmpty());
+    assertTrue(query("label:Code-Review-1").isEmpty());
+    assertTrue(query("label:Code-Review=0").isEmpty());
+    assertResultEquals(change, queryOne("label:Code-Review=+1"));
+    assertResultEquals(change, queryOne("label:Code-Review=1"));
+    assertResultEquals(change, queryOne("label:Code-Review+1"));
+    assertTrue(query("label:Code-Review=+2").isEmpty());
+    assertTrue(query("label:Code-Review=2").isEmpty());
+    assertTrue(query("label:Code-Review+2").isEmpty());
+    // TODO(dborowitz): > and < are broken at head.
+    assertResultEquals(change, queryOne("label:Code-Review>=0"));
+    // assertResultEquals(change, queryOne("label:Code-Review>0"));
+    assertResultEquals(change, queryOne("label:Code-Review>=1"));
+    // assertTrue(query("label:Code-Review>1").isEmpty());
+    assertTrue(query("label:Code-Review>=2").isEmpty());
+    assertResultEquals(change, queryOne("label: Code-Review<=2"));
+    // assertResultEquals(change, queryOne("label: Code-Review<2"));
+    assertResultEquals(change, queryOne("label: Code-Review<=1"));
+    // assertTrue(query("label: Code-Review<1").isEmpty());
+    assertTrue(query("label: Code-Review<=0").isEmpty());
+    assertTrue(query("label:Code-Review=+1,anotheruser").isEmpty());
+    assertResultEquals(change, queryOne("label:Code-Review=+1,user"));
+    assertResultEquals(change, queryOne("label:Code-Review=+1,user=user"));
+    assertResultEquals(change, queryOne("label:Code-Review=+1,Administrators"));
+    assertResultEquals(change, queryOne("label:Code-Review=+1,group=Administrators"));
+</td> </tr></table></body></html>

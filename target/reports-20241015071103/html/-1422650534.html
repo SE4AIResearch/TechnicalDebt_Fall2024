@@ -1,0 +1,38 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2800</td> <td>-1422650534</td><td>apache/camel</td><td>Claus Ibsen</td><td>6d05326fa18af21d8ce70a460eba741bfd5ba79a</td> <td>None</td> <td>wait a bit to ensure consumer is suspended, as it could be in a poll mode where
+it would poll and route (there is a little slack (up till 1 sec) before suspension is empowered)</td> <td>SATD_ADDED</td> <td>testSuspendResume()</td> <td>public void testSuspendResume() throws Exception</td> <td>
+    final MockEndpoint mock = getMockEndpoint("mock:bar");
+    mock.expectedMessageCount(1);
+    template.sendBody("disruptor:foo", "A");
+    mock.assertIsSatisfied();
+    assertEquals("Started", context.getRouteStatus("foo").name());
+    assertEquals("Started", context.getRouteStatus("bar").name());
+    // suspend bar consumer (not the route)
+    final DisruptorConsumer consumer = (DisruptorConsumer) context.getRoute("bar").getConsumer();
+    ServiceHelper.suspendService(consumer);
+    assertEquals("Suspended", consumer.getStatus().name());
+    // send a message to the route but the consumer is suspended
+    // so it should not route it
+    resetMocks();
+    mock.expectedMessageCount(0);
+    // wait a bit to ensure consumer is suspended, as it could be in a poll mode where
+    // it would poll and route (there is a little slack (up till 1 sec) before suspension is empowered)
+    Thread.sleep(2000);
+    template.sendBody("disruptor:foo", "B");
+    // wait 2 sec to ensure disruptor consumer thread would have tried to poll otherwise
+    mock.assertIsSatisfied(2000);
+    // resume consumer
+    resetMocks();
+    mock.expectedMessageCount(1);
+    // resume bar consumer (not the route)
+    ServiceHelper.resumeService(consumer);
+    assertEquals("Started", consumer.getStatus().name());
+    // the message should be routed now
+    mock.assertIsSatisfied();
+</td> </tr></table></body></html>

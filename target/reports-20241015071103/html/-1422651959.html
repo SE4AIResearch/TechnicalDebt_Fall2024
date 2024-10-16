@@ -1,0 +1,102 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1038</td> 
+     <td>-1422651959</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>60ffcc3f08a68e1468fc1102e9cbdc75089bca22</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>lets now test that the database is updated we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>SATD_REMOVED</td> 
+     <td>testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange()</td> 
+     <td>public void testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange() throws Exception</td> 
+     <td> transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // lets delete any exiting records before the test entityManager.createQuery("delete from " + entityName).executeUpdate(); // now lets create a dummy entry MultiSteps dummy = new MultiSteps("cheese"); dummy.setStep(4); entityManager.persist(dummy); return null; } }); List results = jpaTemplate.find(queryText); assertEquals("Should have no results: " + results, 0, results.size()); // lets produce some objects template.send(endpoint, new Processor() { public void process(Exchange exchange) { exchange.getIn().setBody(new MultiSteps("foo@bar.com")); } }); // now lets assert that there is a result results = jpaTemplate.find(queryText); assertEquals("Should have results: " + results, 1, results.size()); MultiSteps mail = (MultiSteps) results.get(0); assertEquals("address property", "foo@bar.com", mail.getAddress()); // now lets create a consumer to consume it consumer = endpoint.createConsumer(new Processor() { public void process(Exchange e) { LOG.info("Received exchange: " + e.getIn()); receivedExchange = e; latch.countDown(); } }); consumer.start(); boolean received = latch.await(50, TimeUnit.SECONDS); assertTrue("Did not receive the message!", received); assertNotNull(receivedExchange); MultiSteps result = receivedExchange.getIn().getBody(MultiSteps.class); assertNotNull("Received a POJO", result); assertEquals("address property", "foo@bar.com", result.getAddress()); // lets now test that the database is updated // we need to sleep as we will be invoked from inside the transaction! Thread.sleep(1000); transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // now lets assert that there are still 2 entities left List<multisteps>
+        rows = entityManager.createQuery("select x from MultiSteps x").getResultList(); assertEquals("Number of entities: " + rows, 2, rows.size()); int counter = 1; for (MultiSteps row : rows) { LOG.info("entity: " + counter++ + " = " + row); if (row.getAddress().equals("foo@bar.com")) { LOG.info("Found updated row: " + row); assertEquals("Updated row step for: " + row, 2, row.getStep()); } else { // dummy row assertEquals("dummy row step for: " + row, 4, row.getStep()); } } return null; } }); 
+      </multisteps></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>355</td> 
+     <td>-1422651959</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>7ff7e7017667cd44e79bc9fe22a8e3cd9326115e</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>SATD_CHANGED</td> 
+     <td>testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange()</td> 
+     <td>public void testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange() throws Exception</td> 
+     <td> transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // lets delete any exiting records before the test entityManager.createQuery("delete from " + entityName).executeUpdate(); // now lets create a dummy entry MultiSteps dummy = new MultiSteps("cheese"); dummy.setStep(4); entityManager.persist(dummy); return null; } }); List results = jpaTemplate.find(queryText); assertEquals("Should have no results: " + results, 0, results.size()); // lets produce some objects template.send(endpoint, new Processor() { public void process(Exchange exchange) { exchange.getIn().setBody(new MultiSteps("foo@bar.com")); } }); // now lets assert that there is a result results = jpaTemplate.find(queryText); assertEquals("Should have results: " + results, 1, results.size()); MultiSteps mail = (MultiSteps) results.get(0); assertEquals("address property", "foo@bar.com", mail.getAddress()); // now lets create a consumer to consume it consumer = endpoint.createConsumer(new Processor() { public void process(Exchange e) { LOG.info("Received exchange: " + e.getIn()); receivedExchange = e; latch.countDown(); } }); consumer.start(); boolean received = latch.await(50, TimeUnit.SECONDS); assertTrue("Did not receive the message!", received); assertNotNull(receivedExchange); MultiSteps result = receivedExchange.getIn().getBody(MultiSteps.class); assertNotNull("Received a POJO", result); assertEquals("address property", "foo@bar.com", result.getAddress()); // lets now test that the database is updated // TODO we need to sleep as we will be invoked from inside the // transaction! Thread.sleep(1000); transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // now lets assert that there are still 2 entities left List<multisteps>
+        rows = entityManager.createQuery("select x from MultiSteps x").getResultList(); assertEquals("Number of entities: " + rows, 2, rows.size()); int counter = 1; for (MultiSteps row : rows) { LOG.info("entity: " + counter++ + " = " + row); if (row.getAddress().equals("foo@bar.com")) { LOG.info("Found updated row: " + row); assertEquals("Updated row step for: " + row, 2, row.getStep()); } else { // dummy row assertEquals("dummy row step for: " + row, 4, row.getStep()); } } return null; } }); 
+      </multisteps></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>217</td> 
+     <td>-1422651959</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange()</td> 
+     <td>public void testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange() throws Exception</td> 
+     <td> transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // lets delete any exiting records before the test entityManager.createQuery("delete from " + entityName).executeUpdate(); // now lets create a dummy entry MultiSteps dummy = new MultiSteps("cheese"); dummy.setStep(4); entityManager.persist(dummy); return null; } }); List results = jpaTemplate.find(queryText); assertEquals("Should have no results: " + results, 0, results.size()); // lets produce some objects template.send(endpoint, new Processor() { public void process(Exchange exchange) { exchange.getIn().setBody(new MultiSteps("foo@bar.com")); } }); // now lets assert that there is a result results = jpaTemplate.find(queryText); assertEquals("Should have results: " + results, 1, results.size()); MultiSteps mail = (MultiSteps) results.get(0); assertEquals("address property", "foo@bar.com", mail.getAddress()); // now lets create a consumer to consume it consumer = endpoint.createConsumer(new Processor() { public void process(Exchange e) { log.info("Received exchange: " + e.getIn()); receivedExchange = e; latch.countDown(); } }); consumer.start(); boolean received = latch.await(50, TimeUnit.SECONDS); assertTrue("Did not receive the message!", received); assertNotNull(receivedExchange); MultiSteps result = receivedExchange.getIn().getBody(MultiSteps.class); assertNotNull("Received a POJO", result); assertEquals("address property", "foo@bar.com", result.getAddress()); // lets now test that the database is updated // TODO we need to sleep as we will be invoked from inside the transaction! Thread.sleep(1000); transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // now lets assert that there are still 2 entities left List<multisteps>
+        rows = entityManager.createQuery("select x from MultiSteps x").getResultList(); assertEquals("Number of entities: " + rows, 2, rows.size()); int counter = 1; for (MultiSteps row : rows) { log.info("entity: " + counter++ + " = " + row); if (row.getAddress().equals("foo@bar.com")) { log.info("Found updated row: " + row); assertEquals("Updated row step for: " + row, 2, row.getStep()); } else { // dummy row assertEquals("dummy row step for: " + row, 4, row.getStep()); } } return null; } }); 
+      </multisteps></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>116</td> 
+     <td>-1422651959</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>27990e4219b56b336fb7748e80afffa5a2090813</td> 
+     <td>None</td> 
+     <td>lets now test that the database is updated TODO we need to sleep as we will be invoked from inside the transaction!</td> 
+     <td>SATD_ADDED</td> 
+     <td>testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange()</td> 
+     <td>public void testProducerInsertsIntoDatabaseThenConsumerFiresMessageExchange() throws Exception</td> 
+     <td> transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // lets delete any exiting records before the test entityManager.createQuery("delete from " + entityName).executeUpdate(); // now lets create a dummy entry MultiSteps dummy = new MultiSteps("cheese"); dummy.setStep(4); entityManager.persist(dummy); return null; } }); List results = template.find(queryText); assertEquals("Should have no results: " + results, 0, results.size()); // lets produce some objects client.send(endpoint, new Processor<exchange>
+       () { public void onExchange(Exchange exchange) { exchange.getIn().setBody(new MultiSteps("foo@bar.com")); } }); // now lets assert that there is a result results = template.find(queryText); assertEquals("Should have results: " + results, 1, results.size()); MultiSteps mail = (MultiSteps) results.get(0); assertEquals("address property", "foo@bar.com", mail.getAddress()); // now lets create a consumer to consume it consumer = endpoint.createConsumer(new Processor
+       <exchange>
+        () { public void onExchange(Exchange e) { log.info("Received exchange: " + e.getIn()); receivedExchange = e; latch.countDown(); } }); boolean received = latch.await(50, TimeUnit.SECONDS); assertTrue("Did not receive the message!", received); assertNotNull(receivedExchange); MultiSteps result = receivedExchange.getIn().getBody(MultiSteps.class); assertNotNull("Received a POJO", result); assertEquals("address property", "foo@bar.com", result.getAddress()); // lets now test that the database is updated // TODO we need to sleep as we will be invoked from inside the transaction! Thread.sleep(1000); transactionStrategy.execute(new JpaCallback() { public Object doInJpa(EntityManager entityManager) throws PersistenceException { // now lets assert that there are still 2 entities left List
+        <multisteps>
+          rows = entityManager.createQuery("select x from MultiSteps x").getResultList(); assertEquals("Number of entities: " + rows, 2, rows.size()); int counter = 1; for (MultiSteps row : rows) { log.info("entity: " + counter++ + " = " + row); if (row.getAddress().equals("foo@bar.com")) { log.info("Found updated row: " + row); assertEquals("Updated row step for: " + row, 2, row.getStep()); } else { // dummy row assertEquals("dummy row step for: " + row, 4, row.getStep()); } } return null; } }); 
+        </multisteps>
+       </exchange>
+      </exchange></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

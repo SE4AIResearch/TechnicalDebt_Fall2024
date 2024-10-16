@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6073</td> 
+     <td>-1009652582</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>give up</td> 
+     <td>give up</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>sortInternal(IndexedSortable, int, int, Progressable, int)</td> 
+     <td>private static void sortInternal(final IndexedSortable s, int p, int r, final Progressable rep, int depth)</td> 
+     <td> if (null != rep) { rep.progress(); } while (true) { if (r - p &lt; 13) { for (int i = p; i &lt; r; ++i) { for (int j = i; j &gt; p &amp;&amp; s.compare(j - 1, j) &gt; 0; --j) { s.swap(j, j - 1); } } return; } if (--depth &lt; 0) { // give up alt.sort(s, p, r, rep); return; } // select, move pivot into first position fix(s, (p + r) &gt;&gt;&gt; 1, p); fix(s, (p + r) &gt;&gt;&gt; 1, r - 1); fix(s, p, r - 1); // Divide int i = p; int j = r; int ll = p; int rr = r; int cr; while (true) { while (++i &lt; j) { if ((cr = s.compare(i, p)) &gt; 0) break; if (0 == cr &amp;&amp; ++ll != i) { s.swap(ll, i); } } while (--j &gt; i) { if ((cr = s.compare(p, j)) &gt; 0) break; if (0 == cr &amp;&amp; --rr != j) { s.swap(rr, j); } } if (i &lt; j) s.swap(i, j); else break; } j = i; // swap pivot- and all eq values- into position while (ll &gt;= p) { s.swap(ll--, --i); } while (rr &lt; r) { s.swap(rr++, j++); } // Conquer // Recurse on smaller interval first to keep stack shallow assert i != j; if (i - p &lt; r - j) { sortInternal(s, p, i, rep, depth); p = j; } else { sortInternal(s, j, r, rep, depth); r = i; } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5180</td> 
+     <td>-1009652582</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>give up</td> 
+     <td>give up</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>sortInternal(IndexedSortable, int, int, Progressable, int)</td> 
+     <td>private static void sortInternal(final IndexedSortable s, int p, int r, final Progressable rep, int depth)</td> 
+     <td> if (null != rep) { rep.progress(); } while (true) { if (r - p &lt; 13) { for (int i = p; i &lt; r; ++i) { for (int j = i; j &gt; p &amp;&amp; s.compare(j - 1, j) &gt; 0; --j) { s.swap(j, j - 1); } } return; } if (--depth &lt; 0) { // give up alt.sort(s, p, r, rep); return; } // select, move pivot into first position fix(s, (p + r) &gt;&gt;&gt; 1, p); fix(s, (p + r) &gt;&gt;&gt; 1, r - 1); fix(s, p, r - 1); // Divide int i = p; int j = r; int ll = p; int rr = r; int cr; while (true) { while (++i &lt; j) { if ((cr = s.compare(i, p)) &gt; 0) break; if (0 == cr &amp;&amp; ++ll != i) { s.swap(ll, i); } } while (--j &gt; i) { if ((cr = s.compare(p, j)) &gt; 0) break; if (0 == cr &amp;&amp; --rr != j) { s.swap(rr, j); } } if (i &lt; j) s.swap(i, j); else break; } j = i; // swap pivot- and all eq values- into position while (ll &gt;= p) { s.swap(ll--, --i); } while (rr &lt; r) { s.swap(rr++, j++); } // Conquer // Recurse on smaller interval first to keep stack shallow assert i != j; if (i - p &lt; r - j) { sortInternal(s, p, i, rep, depth); p = j; } else { sortInternal(s, j, r, rep, depth); r = i; } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

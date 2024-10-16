@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>918</td> <td>-1422651548</td><td>apache/camel</td><td>Jonathan Anstey</td><td>82d092a2a405e480b92e52bc933de5e502b596b6</td> <td>None</td> <td>we might need to expose more than these two but that is pretty good
+for a default well formed Html generator</td> <td>SATD_ADDED</td> <td>createContentHandler(Writer)</td> <td>protected ContentHandler createContentHandler(Writer w)</td> <td>
+    XMLWriter xmlWriter = new XMLWriter(w);
+    // we might need to expose more than these two but that is pretty good
+    // for a default well formed Html generator
+    if (getMethod() != null) {
+        xmlWriter.setOutputProperty(XMLWriter.METHOD, getMethod());
+    } else {
+        xmlWriter.setOutputProperty(XMLWriter.METHOD, XML);
+    }
+    if (isOmitXmlDeclaration) {
+        xmlWriter.setOutputProperty(XMLWriter.OMIT_XML_DECLARATION, YES);
+    } else {
+        xmlWriter.setOutputProperty(XMLWriter.OMIT_XML_DECLARATION, NO);
+    }
+    return xmlWriter;
+</td> </tr></table></body></html>

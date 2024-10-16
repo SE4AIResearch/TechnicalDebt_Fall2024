@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4141</td> <td>1242677727</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>82d93f7f4ae6f662e88e9c5a20659c71d6038e76</td> <td>None</td> <td>Unused, but we need to force it to load before we do, otherwise we risk
+reading an empty database without the wild project being in the database.
+Asking for it should ensures Guice loads it first.</td> <td>SATD_ADDED</td> <td>get()</td> <td>public Collection<TrustedExternalId> get()</td> <td>
+    final List<TrustedExternalId> l;
+    try {
+        final ReviewDb db = schema.open();
+        try {
+            l = db.trustedExternalIds().all().toList();
+        } finally {
+            db.close();
+        }
+    } catch (OrmException e) {
+        throw new ProvisionException("Cannot load TrustedExternalIds", e);
+    }
+    return Collections.unmodifiableList(l);
+</td> </tr></table></body></html>

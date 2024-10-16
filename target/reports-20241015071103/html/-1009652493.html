@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5128</td> <td>-1009652493</td><td>apache/hadoop</td><td>Suresh Srinivas</td><td>38ac23159dd0eea5a58928fbcff501cbd9ffdd5b</td> <td>None</td> <td>TODO: printing the path twice is silly for backwards compatibility</td> <td>SATD_ADDED</td> <td>registerCommands(CommandFactory)</td> <td>public static void registerCommands(CommandFactory factory)</td> <td>
+    factory.addClass(Chmod.class, "-chmod");
+    factory.addClass(Chown.class, "-chown");
+    factory.addClass(Chgrp.class, "-chgrp");
+</td> </tr></table></body></html>

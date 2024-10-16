@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3725</td> <td>-1422650048</td><td>apache/camel</td><td>Claus Ibsen</td><td>ed0f42a1434cda23b85a140a40a54bdf3ae0c8b5</td> <td>None</td> <td>TODO: must be named</td> <td>SATD_ADDED</td> <td>createConsumer(Processor)</td> <td>public Consumer createConsumer(Processor processor) throws Exception</td> <td>
+    // TODO: must be named
+    /*
+        SqlProcessingStrategy proStrategy = new ElsqlSqlProcessingStrategy(elsqlName, elSql);
+        SqlPrepareStatementStrategy preStategy = new ElsqlSqlPrepareStatementStrategy();
+
+        ElsqlConsumer consumer = new ElsqlConsumer(this, processor, jdbcTemplate, elsqlName, preStategy, proStrategy);
+        consumer.setMaxMessagesPerPoll(getMaxMessagesPerPoll());
+        consumer.setOnConsume(getOnConsume());
+        consumer.setOnConsumeFailed(getOnConsumeFailed());
+        consumer.setOnConsumeBatchComplete(getOnConsumeBatchComplete());
+        consumer.setBreakBatchOnConsumeFail(isBreakBatchOnConsumeFail());
+        consumer.setExpectedUpdateCount(getExpectedUpdateCount());
+        consumer.setUseIterator(isUseIterator());
+        consumer.setRouteEmptyResultSet(isRouteEmptyResultSet());
+        configureConsumer(consumer);
+        return consumer;
+        */
+    return null;
+</td> </tr></table></body></html>

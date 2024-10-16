@@ -1,0 +1,33 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4865</td> <td>1242678103</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>bb0b7f833c1d324f5a1465f9696bae1fc748f7f2</td> <td>None</td> <td>TODO(dborowitz): This is only public because callers expect validation to
+happen before updating any refs, and they are still updating refs manually.
+Make private once we have migrated ref updates into this class.</td> <td>SATD_ADDED</td> <td>validate()</td> <td>public void validate() throws IOException, InvalidChangeOperationException</td> <td>
+    if (validated || validatePolicy == CommitValidators.Policy.NONE) {
+        return;
+    }
+    CommitValidators cv = commitValidatorsFactory.create(refControl, new NoSshInfo(), git);
+    String refName = patchSet.getId().toRefName();
+    CommitReceivedEvent event = new CommitReceivedEvent(new ReceiveCommand(ObjectId.zeroId(), commit.getId(), refName), refControl.getProjectControl().getProject(), refControl.getRefName(), commit, user);
+    try {
+        switch(validatePolicy) {
+            case RECEIVE_COMMITS:
+                NoteMap rejectCommits = BanCommit.loadRejectCommitsMap(git, revWalk);
+                cv.validateForReceiveCommits(event, rejectCommits);
+                break;
+            case GERRIT:
+                cv.validateForGerritCommits(event);
+                break;
+            case NONE:
+                break;
+        }
+    } catch (CommitValidationException e) {
+        throw new InvalidChangeOperationException(e.getMessage());
+    }
+    validated = true;
+</td> </tr></table></body></html>

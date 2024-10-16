@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2371</td> <td>-1422650792</td><td>apache/camel</td><td>Christian Schneider</td><td>bd9e5e5ce92bba800696a4d74f8812c2f830f465</td> <td>None</td> <td>TODO: fix me</td> <td>SATD_ADDED</td> <td>testCopy()</td> <td>public void testCopy()</td> <td>
+    DefaultExchange sourceExchange = new DefaultExchange(context);
+    MyMessage sourceIn = new MyMessage();
+    sourceExchange.setIn(sourceIn);
+    Exchange destExchange = sourceExchange.copy();
+    Message destIn = destExchange.getIn();
+// TODO: fix me
+// assertEquals("dest message should be of the same type as source message", sourceIn.getClass(), destIn.getClass());
+</td> </tr></table></body></html>

@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>500</td> <td>-1422651779</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>35c8dd74eb0f96c9d242234936fa4dc4d9252104</td> <td>None</td> <td>TODO: is there a way to avoid copy-pasting the reconnect logic?</td> <td>SATD_ADDED</td> <td>connectIfNecessary()</td> <td>protected void connectIfNecessary() throws IOException</td> <td>
+    if (!client.isConnected()) {
+        LOG.warn("FtpConsumer's client isn't connected, trying to reconnect...");
+        endpoint.connect(client);
+        LOG.info("Connected to " + endpoint.getConfiguration());
+    }
+</td> </tr></table></body></html>

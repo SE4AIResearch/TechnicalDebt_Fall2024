@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6005</td> 
+     <td>-1009652497</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>this is the stupid semantics of FileSystem</td> 
+     <td>this is the stupid semantics of FileSystem</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>mkdirs(Path, FsPermission)</td> 
+     <td>public boolean mkdirs(Path dir, FsPermission permission) throws AccessControlException, FileAlreadyExistsException</td> 
+     <td> if (theInternalDir.isRoot &amp; dir == null) { throw new FileAlreadyExistsException("/ already exits"); } // Note dir starts with / if (theInternalDir.children.containsKey(dir.toString().substring(1))) { // this is the stupid semantics of FileSystem return true; } throw readOnlyMountTable("mkdirs", dir); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5233</td> 
+     <td>-1009652497</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>this is the stupid semantics of FileSystem</td> 
+     <td>this is the stupid semantics of FileSystem</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>mkdirs(Path, FsPermission)</td> 
+     <td>public boolean mkdirs(Path dir, FsPermission permission) throws AccessControlException, FileAlreadyExistsException</td> 
+     <td> if (theInternalDir.isRoot &amp; dir == null) { throw new FileAlreadyExistsException("/ already exits"); } // Note dir starts with / if (theInternalDir.children.containsKey(dir.toString().substring(1))) { // this is the stupid semantics of FileSystem return true; } throw readOnlyMountTable("mkdirs", dir); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5123</td> 
+     <td>-1009652497</td>
+     <td>apache/hadoop</td>
+     <td>Tsz-wo Sze</td>
+     <td>f1c74df922058e88791ed6971bbb96b53f6770f1</td> 
+     <td>None</td> 
+     <td>this is the stupid semantics of FileSystem</td> 
+     <td>SATD_ADDED</td> 
+     <td>mkdirs(Path, FsPermission)</td> 
+     <td>public boolean mkdirs(Path dir, FsPermission permission) throws AccessControlException, FileAlreadyExistsException</td> 
+     <td> if (theInternalDir.isRoot &amp; dir == null) { throw new FileAlreadyExistsException("/ already exits"); } // Note dir starts with / if (theInternalDir.children.containsKey(dir.toString().substring(1))) { // this is the stupid semantics of FileSystem return true; } throw readOnlyMountTable("mkdirs", dir); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

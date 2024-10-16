@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2600</td> 
+     <td>-1422650941</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>13886b798a9d8fb1762cc3c68857e8cdca1897d2</td> 
+     <td>only add to services to close if its a singleton otherwise we could for example end up with a lot of prototype scope endpoints assume singleton by default</td> 
+     <td>only add to services to close if its a singleton otherwise we could for example end up with a lot of prototype scope endpoints assume singleton by default</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>doAddService(Object, boolean)</td> 
+     <td>private void doAddService(Object object, boolean closeOnShutdown) throws Exception</td> 
+     <td> // inject CamelContext if (object instanceof CamelContextAware) { CamelContextAware aware = (CamelContextAware) object; aware.setCamelContext(this); } if (object instanceof Service) { Service service = (Service) object; for (LifecycleStrategy strategy : lifecycleStrategies) { if (service instanceof Endpoint) { // use specialized endpoint add strategy.onEndpointAdd((Endpoint) service); } else { strategy.onServiceAdd(this, service, null); } } // only add to services to close if its a singleton // otherwise we could for example end up with a lot of prototype scope endpoints // assume singleton by default boolean singleton = true; if (service instanceof IsSingleton) { singleton = ((IsSingleton) service).isSingleton(); } // do not add endpoints as they have their own list if (singleton &amp;&amp; !(service instanceof Endpoint)) { // only add to list of services to close if its not already there if (closeOnShutdown &amp;&amp; !hasService(service)) { servicesToClose.add(service); } } } // and then ensure service is started (as stated in the javadoc) if (object instanceof Service) { startService((Service) object); } else if (object instanceof Collection<!--?-->) { startServices((Collection<!--?-->) object); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2101</td> 
+     <td>-1422650941</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>1ff6f43354e7f25f0eda3860fcd412d107722830</td> 
+     <td>None</td> 
+     <td>only add to services to close if its a singleton otherwise we could for example end up with a lot of prototype scope endpoints assume singleton by default</td> 
+     <td>SATD_ADDED</td> 
+     <td>addService(Object)</td> 
+     <td>public void addService(Object object) throws Exception</td> 
+     <td> if (object instanceof Service) { Service service = (Service) object; for (LifecycleStrategy strategy : lifecycleStrategies) { if (service instanceof Endpoint) { // use specialized endpoint add strategy.onEndpointAdd((Endpoint) service); } else { strategy.onServiceAdd(this, service, null); } } // only add to services to close if its a singleton // otherwise we could for example end up with a lot of prototype scope endpoints // assume singleton by default boolean singleton = true; if (service instanceof IsSingleton) { singleton = ((IsSingleton) service).isSingleton(); } if (singleton) { servicesToClose.add(service); } } startServices(object); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

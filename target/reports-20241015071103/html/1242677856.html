@@ -1,0 +1,62 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4380</td> <td>1242677856</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>9b141578de147090325cfdd14b7626754223f2e7</td> <td>None</td> <td>javac generics bug</td> <td>SATD_ADDED</td> <td>send(AsyncCallback<T>)</td> <td>public void send(final AsyncCallback<T> cb)</td> <td>
+    RequestBuilder req = new RequestBuilder(RequestBuilder.GET, url.toString());
+    req.setHeader("Accept", JsonConstants.JSON_TYPE);
+    req.setCallback(new RequestCallback() {
+
+        @Override
+        public void onResponseReceived(Request req, Response res) {
+            RpcStatus.INSTANCE.onRpcComplete();
+            int status = res.getStatusCode();
+            if (status != 200) {
+                if ((400 <= status && status < 500) && isTextBody(res)) {
+                    cb.onFailure(new RemoteJsonException(res.getText(), status, null));
+                } else {
+                    cb.onFailure(new StatusCodeException(status, res.getStatusText()));
+                }
+                return;
+            }
+            if (!isJsonBody(res)) {
+                cb.onFailure(new RemoteJsonException("Invalid JSON"));
+                return;
+            }
+            String json = res.getText();
+            if (!json.startsWith(JSON_MAGIC)) {
+                cb.onFailure(new RemoteJsonException("Invalid JSON"));
+                return;
+            }
+            T data;
+            try {
+                // javac generics bug
+                data = Natives.<T>parseJSON(json.substring(JSON_MAGIC.length()));
+            } catch (RuntimeException e) {
+                cb.onFailure(new RemoteJsonException("Invalid JSON"));
+                return;
+            }
+            cb.onSuccess(data);
+        }
+
+        @Override
+        public void onError(Request req, Throwable err) {
+            RpcStatus.INSTANCE.onRpcComplete();
+            if (err.getMessage().contains("XmlHttpRequest.status")) {
+                cb.onFailure(new ServerUnavailableException());
+            } else {
+                cb.onFailure(err);
+            }
+        }
+    });
+    try {
+        RpcStatus.INSTANCE.onRpcStart();
+        req.send();
+    } catch (RequestException e) {
+        RpcStatus.INSTANCE.onRpcComplete();
+        cb.onFailure(e);
+    }
+</td> </tr></table></body></html>

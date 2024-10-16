@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5583</td> <td>-1009652143</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TCP_NODELAY is crucial here because of bad interactions between
+Nagle's Algorithm and Delayed ACKs. With connection keepalive
+between the client and DN, the conversation looks like:
+1. Client -> DN: Read block X
+2. DN -> Client: data for block X
+3. Client -> DN: Status OK (successful read)
+4. Client -> DN: Read block Y
+The fact that step #3 and #4 are both in the client->DN direction
+triggers Nagling. If the DN is using delayed ACKs, this results
+in a delay of 40ms or more.
+
+TCP_NODELAY disables nagling and thus avoids this performance
+disaster.</td> <td>SATD_ADDED</td> <td>addToDeadNodes(DatanodeInfo)</td> <td> void addToDeadNodes(DatanodeInfo dnInfo)</td> <td>
+    deadNodes.put(dnInfo, dnInfo);
+</td> </tr></table></body></html>

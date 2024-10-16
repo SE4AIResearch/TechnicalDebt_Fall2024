@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>29</td> 
+     <td>-1422652021</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>3f90f9286e6d5eb4d344334c9690e3790a4fb544</td> 
+     <td>TODO support optional parameters selector messageConverter durableSubscriberName</td> 
+     <td>TODO support optional parameters selector messageConverter durableSubscriberName</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createEndpoint(String, String)</td> 
+     <td>public JmsEndpoint createEndpoint(String uri, String path)</td> 
+     <td> ObjectHelper.notNull(container, "container"); if (path.startsWith(QUEUE_PREFIX)) { template.setPubSubDomain(false); path = path.substring(QUEUE_PREFIX.length()); } else if (path.startsWith(TOPIC_PREFIX)) { template.setPubSubDomain(false); path = path.substring(TOPIC_PREFIX.length()); } final String subject = convertPathToActualDestination(path); template.setDefaultDestinationName(subject); /* Destination destination = (Destination) template.execute(new SessionCallback() { public Object doInJms(Session session) throws JMSException { return template.getDestinationResolver().resolveDestinationName(session, subject, template.isPubSubDomain()); } }); */ AbstractMessageListenerContainer listenerContainer = createMessageListenerContainer(template); listenerContainer.setDestinationName(subject); listenerContainer.setPubSubDomain(template.isPubSubDomain()); listenerContainer.setConnectionFactory(template.getConnectionFactory()); // TODO support optional parameters // selector // messageConverter // durableSubscriberName return new JmsEndpoint(uri, container, subject, template, listenerContainer); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>18</td> 
+     <td>-1422652021</td>
+     <td>apache/camel</td>
+     <td>Hiram R. Chirino</td>
+     <td>9bca570e177686e4eb8fddf05004ee0e3f153dff</td> 
+     <td>None</td> 
+     <td>TODO support optional parameters selector messageConverter durableSubscriberName</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(String, String)</td> 
+     <td>public JmsEndpoint createEndpoint(String uri, String path)</td> 
+     <td> ObjectHelper.notNull(container, "container"); if (path.startsWith(QUEUE_PREFIX)) { template.setPubSubDomain(false); path = path.substring(QUEUE_PREFIX.length()); } else if (path.startsWith(TOPIC_PREFIX)) { template.setPubSubDomain(false); path = path.substring(TOPIC_PREFIX.length()); } final String subject = convertPathToActualDestination(path); template.setDefaultDestinationName(subject); /* Destination destination = (Destination) template.execute(new SessionCallback() { public Object doInJms(Session session) throws JMSException { return template.getDestinationResolver().resolveDestinationName(session, subject, template.isPubSubDomain()); } }); */ AbstractMessageListenerContainer listenerContainer = createMessageListenerContainer(template); listenerContainer.setDestinationName(subject); listenerContainer.setPubSubDomain(template.isPubSubDomain()); listenerContainer.setConnectionFactory(template.getConnectionFactory()); // TODO support optional parameters // selector // messageConverter // durableSubscriberName return new JmsEndpoint(uri, container, template, listenerContainer); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

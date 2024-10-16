@@ -1,0 +1,63 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4080</td> <td>1242677700</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>6216316caaac3ed34add7705873abed25242c059</td> <td>None</td> <td>Its really binary, but Git couldn't see the nul early enough
+to realize its binary, and instead produced the diff.
+</td> <td>SATD_ADDED</td> <td>importFile(FileHeader)</td> <td>private void importFile(final FileHeader fh)</td> <td>
+    final String path;
+    if (fh.getChangeType() == FileHeader.ChangeType.DELETE) {
+        path = fh.getOldName();
+    } else {
+        path = fh.getNewName();
+    }
+    Patch p = patchExisting.remove(path);
+    if (p == null) {
+        p = new Patch(new Patch.Key(dst.getId(), path));
+        patchInsert.add(p);
+    } else {
+        p.setSourceFileName(null);
+        patchUpdate.add(p);
+    }
+    // Convert the ChangeType
+    // 
+    if (fh.getChangeType() == FileHeader.ChangeType.ADD) {
+        p.setChangeType(Patch.ChangeType.ADDED);
+    } else if (fh.getChangeType() == FileHeader.ChangeType.MODIFY) {
+        p.setChangeType(Patch.ChangeType.MODIFIED);
+    } else if (fh.getChangeType() == FileHeader.ChangeType.DELETE) {
+        p.setChangeType(Patch.ChangeType.DELETED);
+    } else if (fh.getChangeType() == FileHeader.ChangeType.RENAME) {
+        p.setChangeType(Patch.ChangeType.RENAMED);
+        p.setSourceFileName(fh.getOldName());
+    } else if (fh.getChangeType() == FileHeader.ChangeType.COPY) {
+        p.setChangeType(Patch.ChangeType.COPIED);
+        p.setSourceFileName(fh.getOldName());
+    }
+    // Convert the PatchType
+    // 
+    if (fh instanceof CombinedFileHeader) {
+        p.setPatchType(Patch.PatchType.N_WAY);
+    } else if (fh.getPatchType() == FileHeader.PatchType.GIT_BINARY) {
+        p.setPatchType(Patch.PatchType.BINARY);
+    } else if (fh.getPatchType() == FileHeader.PatchType.BINARY) {
+        p.setPatchType(Patch.PatchType.BINARY);
+    }
+    if (p.getPatchType() != Patch.PatchType.BINARY) {
+        final byte[] buf = fh.getBuffer();
+        for (int ptr = fh.getStartOffset(); ptr < fh.getEndOffset(); ptr++) {
+            if (buf[ptr] == '\0') {
+                // Its really binary, but Git couldn't see the nul early enough
+                // to realize its binary, and instead produced the diff.
+                // 
+                // Force it to be a binary; it really should have been that.
+                // 
+                p.setPatchType(Patch.PatchType.BINARY);
+                break;
+            }
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,59 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5454</td> <td>-1009652272</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Refresh the service level authorization policy once again,
+this time it should fail!</td> <td>SATD_ADDED</td> <td>testRefresh()</td> <td>public void testRefresh() throws Exception</td> <td>
+    MiniDFSCluster dfs = null;
+    try {
+        final int slaves = 4;
+        // Turn on service-level authorization
+        final Configuration conf = new Configuration();
+        conf.setClass(PolicyProvider.POLICY_PROVIDER_CONFIG, HDFSPolicyProvider.class, PolicyProvider.class);
+        conf.setBoolean(ServiceAuthorizationManager.SERVICE_AUTHORIZATION_CONFIG, true);
+        // Start the mini dfs cluster
+        dfs = new MiniDFSCluster(conf, slaves, true, null);
+        // Refresh the service level authorization policy
+        refreshPolicy(conf);
+        // Simulate an 'edit' of hadoop-policy.xml
+        String confDir = System.getProperty("test.build.extraconf", "build/test/extraconf");
+        String HADOOP_POLICY_FILE = System.getProperty("hadoop.policy.file");
+        File policyFile = new File(confDir, HADOOP_POLICY_FILE);
+        String policyFileCopy = HADOOP_POLICY_FILE + ".orig";
+        // first save original
+        FileUtil.copy(// first save original
+        policyFile, // first save original
+        FileSystem.getLocal(conf), new Path(confDir, policyFileCopy), false, conf);
+        rewriteHadoopPolicyFile(new File(confDir, HADOOP_POLICY_FILE));
+        // Refresh the service level authorization policy
+        refreshPolicy(conf);
+        // Refresh the service level authorization policy once again,
+        // this time it should fail!
+        try {
+            // Note: hadoop-policy.xml for tests has
+            // security.refresh.policy.protocol.acl = ${user.name}
+            UserGroupInformation unknownUser = UserGroupInformation.createRemoteUser("unknown");
+            unknownUser.doAs(new PrivilegedExceptionAction<Void>() {
+
+                public Void run() throws IOException {
+                    refreshPolicy(conf);
+                    return null;
+                }
+            });
+            fail("Refresh of NameNode's policy file cannot be successful!");
+        } catch (Exception re) {
+            System.out.println("Good, refresh worked... refresh failed with: " + StringUtils.stringifyException(re));
+        } finally {
+            // Reset to original hadoop-policy.xml
+            FileUtil.fullyDelete(new File(confDir, HADOOP_POLICY_FILE));
+            FileUtil.replaceFile(new File(confDir, policyFileCopy), new File(confDir, HADOOP_POLICY_FILE));
+        }
+    } finally {
+        if (dfs != null) {
+            dfs.shutdown();
+        }
+    }
+</td> </tr></table></body></html>

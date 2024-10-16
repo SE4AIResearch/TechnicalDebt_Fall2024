@@ -1,0 +1,61 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4889</td> <td>1242678110</td><td>GerritCodeReview/gerrit</td><td>Michael Zhou</td><td>713551b09573d6f67916d562908f5618d6adee70</td> <td>None</td> <td>limit the number of query terms otherwise Gerrit will barf</td> <td>SATD_ADDED</td> <td>label(String)</td> <td>public Predicate<ChangeData> label(String name) throws QueryParseException, OrmException</td> <td>
+    Set<Account.Id> accounts = null;
+    AccountGroup.UUID group = null;
+    // Parse for:
+    // label:CodeReview=1,user=jsmith or
+    // label:CodeReview=1,jsmith or
+    // label:CodeReview=1,group=android_approvers or
+    // label:CodeReview=1,android_approvers
+    // user/groups without a label will first attempt to match user
+    String[] splitReviewer = name.split(",", 2);
+    // remove all but the vote piece, e.g.'CodeReview=1'
+    name = splitReviewer[0];
+    if (splitReviewer.length == 2) {
+        // process the user/group piece
+        PredicateArgs lblArgs = new PredicateArgs(splitReviewer[1]);
+        for (Map.Entry<String, String> pair : lblArgs.keyValue.entrySet()) {
+            if (pair.getKey().equalsIgnoreCase(ARG_ID_USER)) {
+                accounts = parseAccount(pair.getValue());
+            } else if (pair.getKey().equalsIgnoreCase(ARG_ID_GROUP)) {
+                group = parseGroup(pair.getValue()).getUUID();
+            } else {
+                throw new QueryParseException("Invalid argument identifier '" + pair.getKey() + "'");
+            }
+        }
+        for (String value : lblArgs.positional) {
+            if (accounts != null || group != null) {
+                throw new QueryParseException("more than one user/group specified (" + value + ")");
+            }
+            try {
+                accounts = parseAccount(value);
+            } catch (QueryParseException qpex) {
+                // If it doesn't match an account, see if it matches a group
+                // (accounts get precedence)
+                try {
+                    group = parseGroup(value).getUUID();
+                } catch (QueryParseException e) {
+                    throw error("Neither user nor group " + value + " found");
+                }
+            }
+        }
+    }
+    // expand a group predicate into multiple user predicates
+    if (group != null) {
+        Set<Account.Id> allMembers = getMemberIds(group, new HashSet<AccountGroup.UUID>());
+        int maxTerms = args.indexConfig.maxLimit();
+        if (allMembers.size() > maxTerms) {
+            // limit the number of query terms otherwise Gerrit will barf
+            accounts = ImmutableSet.copyOf(Iterables.limit(allMembers, maxTerms));
+        } else {
+            accounts = allMembers;
+        }
+    }
+    return new LabelPredicate(args.projectCache, args.changeControlGenericFactory, args.userFactory, args.db, name, accounts, group);
+</td> </tr></table></body></html>

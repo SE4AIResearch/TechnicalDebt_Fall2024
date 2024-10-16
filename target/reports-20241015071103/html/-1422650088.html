@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3650</td> <td>-1422650088</td><td>apache/camel</td><td>Claus Ibsen</td><td>741924393379923efbdb0a98d1be84bece75f659</td> <td>None</td> <td>FIXME - find which might work...</td> <td>SATD_ADDED</td> <td>getChild(String)</td> <td>public Resource getChild(String name)</td> <td>
+    if (possibles != null) {
+    // FIXME - find which might work...
+    }
+    Resource child = super.getChild(name);
+    if (child == null) {
+        final List<CamelCoapResource> possibles = new LinkedList<>();
+        for (Resource r : getChildren()) {
+            if (r.getName().startsWith("{") && r.getName().endsWith("}")) {
+                possibles.add((CamelCoapResource) r);
+            }
+        }
+        if (possibles.size() == 1) {
+            return possibles.get(0);
+        }
+        if (!possibles.isEmpty()) {
+            return new CamelCoapResource(name, possibles);
+        }
+    }
+    return child;
+</td> </tr></table></body></html>

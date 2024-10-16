@@ -1,0 +1,71 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4140</td> <td>1242677726</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>537a4cf7b1318c9be8bb349cf7b6e9e0fbd34f9f</td> <td>None</td> <td>Grab the current GerritCall to gain access to the XSRF token
+generator, and force a token to be constructed for this user.
+We can then send the XSRF token as part of the initial data
+vector in the host page, saving the client 1 round trip as it
+bootstraps itself.
+</td> <td>SATD_ADDED</td> <td>doGet(HttpServletRequest, HttpServletResponse)</td> <td>protected void doGet(final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> <td>
+    // If we wanted SSL, but the user didn't come to us over an SSL channel,
+    // force it to be SSL by issuing a protocol redirect. Try to keep the
+    // name "localhost" in case this is an SSH port tunnel.
+    // 
+    if (wantSSL && !isSecure(req)) {
+        final StringBuffer reqUrl = req.getRequestURL();
+        if (isLocalHost(req)) {
+            reqUrl.replace(0, reqUrl.indexOf(":"), "https");
+        } else {
+            reqUrl.setLength(0);
+            reqUrl.append(urlProvider.get());
+        }
+        rsp.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+        rsp.setHeader("Location", reqUrl.toString());
+        return;
+    }
+    final HostPageData pageData = new HostPageData();
+    pageData.config = config;
+    // Grab the current GerritCall to gain access to the XSRF token
+    // generator, and force a token to be constructed for this user.
+    // We can then send the XSRF token as part of the initial data
+    // vector in the host page, saving the client 1 round trip as it
+    // bootstraps itself.
+    // 
+    try {
+        final GerritCall call = jsonCall.get();
+        call.xsrfValidate();
+        pageData.xsrfToken = call.getXsrfKeyOut();
+    } catch (XsrfException e) {
+        log("Cannot create initial XSRF token for user", e);
+    }
+    final CurrentUser user = currentUser.get();
+    if (user instanceof IdentifiedUser) {
+        pageData.userAccount = ((IdentifiedUser) user).getAccount();
+    }
+    final Document peruser = HtmlDomUtil.clone(hostDoc);
+    injectJson(peruser, "gerrit_hostpagedata", pageData);
+    final byte[] raw = HtmlDomUtil.toUTF8(peruser);
+    final byte[] tosend;
+    if (RPCServletUtils.acceptsGzipEncoding(req)) {
+        rsp.setHeader("Content-Encoding", "gzip");
+        tosend = HtmlDomUtil.compress(raw);
+    } else {
+        tosend = raw;
+    }
+    rsp.setHeader("Expires", "Fri, 01 Jan 1980 00:00:00 GMT");
+    rsp.setHeader("Pragma", "no-cache");
+    rsp.setHeader("Cache-Control", "no-cache, must-revalidate");
+    rsp.setContentType("text/html");
+    rsp.setCharacterEncoding(HtmlDomUtil.ENC);
+    rsp.setContentLength(tosend.length);
+    final OutputStream out = rsp.getOutputStream();
+    try {
+        out.write(tosend);
+    } finally {
+        out.close();
+    }
+</td> </tr></table></body></html>

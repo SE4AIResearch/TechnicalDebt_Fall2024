@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1210</td> <td>-1422651423</td><td>apache/camel</td><td>James Strachan</td><td>4672f457a77b21bfc997e1b68f291f44a16a87e9</td> <td>None</td> <td>TODO we should be using Camel OSGi really to deal with class loader issues</td> <td>SATD_ADDED</td> <td>listBundles()</td> <td>public void listBundles() throws Exception</td> <td>
+    System.out.println("************ Hello from OSGi ************");
+    for (Bundle b : bundleContext.getBundles()) {
+        System.out.println("Bundle " + b.getBundleId() + " : " + b.getSymbolicName());
+    }
+    // TODO we should be using Camel OSGi really to deal with class loader issues
+    CamelContext camelContext = new DefaultCamelContext();
+    camelContext.addRoutes(new RouteBuilder() {
+
+        public void configure() throws Exception {
+            from("seda:foo").to("seda:bar");
+        }
+    });
+    camelContext.start();
+    Thread.sleep(2000);
+    camelContext.stop();
+</td> </tr></table></body></html>

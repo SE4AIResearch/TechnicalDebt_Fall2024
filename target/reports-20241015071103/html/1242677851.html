@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4372</td> <td>1242677851</td><td>GerritCodeReview/gerrit</td><td>Nasser Grainawi</td><td>bf4fa3460680659d1364972860e94a5804fff96e</td> <td>None</td> <td>TODO: Replace with a loop iterating over possible formatters</td> <td>SATD_ADDED</td> <td>init(ServletConfig)</td> <td>public synchronized void init(ServletConfig config) throws ServletException</td> <td>
+    super.init(config);
+    String path = config.getServletContext().getContextPath();
+    base = Strings.nullToEmpty(path) + "/plugins/";
+    for (Plugin plugin : pending) {
+        install(plugin);
+    }
+    pending = null;
+</td> </tr></table></body></html>

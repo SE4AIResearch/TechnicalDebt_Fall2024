@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2646</td> 
+     <td>-1422650628</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>b4a4c829a0619cee92f20c6a56ea94949fdc84b9</td> 
+     <td>TODO: occasionally we get only 6 instead of 7 expected exchanges which's most probably an issue in AcitveMQ itself</td> 
+     <td>TODO: occasionally we get only 6 instead of 7 expected exchanges which's most probably an issue in ActiveMQ itself</td> 
+     <td>SATD_CHANGED</td> 
+     <td>testJmsToJdbcJmsRollbackAtA()</td> 
+     <td>public void testJmsToJdbcJmsRollbackAtA() throws Exception</td> 
+     <td> checkInitialState(); // use a notify to know that after 1+6 (1 original + 6 redelivery) attempts from AcitveMQ NotifyBuilder notify = new NotifyBuilder(context).whenDone(7).create(); // TODO: occasionally we get only 6 instead of 7 expected exchanges which's most probably an issue in ActiveMQ itself getMockEndpoint("mock:a").expectedMessageCount(7); // force exception to occur at mock a getMockEndpoint("mock:a").whenAnyExchangeReceived(new Processor() { @Override public void process(Exchange exchange) throws Exception { throw new ConnectException("Forced cannot connect to database"); } }); getMockEndpoint("mock:b").expectedMessageCount(0); template.sendBodyAndHeader("activemq:queue:inbox", "A", "uid", 123); // assert mock and wait for the message to be done assertMockEndpointsSatisfied(); assertTrue("Should complete 7 message", notify.matchesMockWaitTime()); // check that there is a message in the database and JMS queue assertEquals(0, jdbcTemplate.queryForInt("select count(*) from CAMEL_MESSAGEPROCESSED")); assertNull(consumer.receiveBody("activemq:queue:outbox", 3000)); // the message should have been moved to the AMQ DLQ queue assertEquals("A", consumer.receiveBody("activemq:queue:ActiveMQ.DLQ", 3000)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2645</td> 
+     <td>-1422650628</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>eeabd53e6009c25b2a3019e73351ec29aab1d15f</td> 
+     <td>None</td> 
+     <td>TODO: occasionally we get only 6 instead of 7 expected exchanges which's most probably an issue in AcitveMQ itself</td> 
+     <td>SATD_ADDED</td> 
+     <td>testJmsToJdbcJmsRollbackAtA()</td> 
+     <td>public void testJmsToJdbcJmsRollbackAtA() throws Exception</td> 
+     <td> checkInitialState(); // use a notify to know that after 1+6 (1 original + 6 redelivery) attempts from AcitveMQ NotifyBuilder notify = new NotifyBuilder(context).whenDone(7).create(); // TODO: occasionally we get only 6 instead of 7 expected exchanges which's most probably an issue in AcitveMQ itself getMockEndpoint("mock:a").expectedMessageCount(7); // force exception to occur at mock a getMockEndpoint("mock:a").whenAnyExchangeReceived(new Processor() { @Override public void process(Exchange exchange) throws Exception { throw new ConnectException("Forced cannot connect to database"); } }); getMockEndpoint("mock:b").expectedMessageCount(0); template.sendBodyAndHeader("activemq:queue:inbox", "A", "uid", 123); // assert mock and wait for the message to be done assertMockEndpointsSatisfied(); assertTrue("Should complete 7 message", notify.matchesMockWaitTime()); // check that there is a message in the database and JMS queue assertEquals(0, jdbcTemplate.queryForInt("select count(*) from CAMEL_MESSAGEPROCESSED")); assertNull(consumer.receiveBody("activemq:queue:outbox", 3000)); // the message should have been moved to the AMQ DLQ queue assertEquals("A", consumer.receiveBody("activemq:queue:ActiveMQ.DLQ", 3000)); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

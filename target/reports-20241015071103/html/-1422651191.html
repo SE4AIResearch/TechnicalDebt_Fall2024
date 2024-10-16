@@ -1,0 +1,40 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1652</td> <td>-1422651191</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>0da34811115b853f357f0fefb3c99652ed0d0590</td> <td>None</td> <td>get the camel template for Spring template style sending of messages (= producer)</td> <td>SATD_ADDED</td> <td>main(String[])</td> <td>public static void main(final String[] args) throws Exception</td> <td>
+    System.out.println("Notice this client requires that the CamelServer is already running!");
+    ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring/camel-client.xml");
+    // get the camel template for Spring template style sending of messages (= producer)
+    final ProducerTemplate producer = (ProducerTemplate) context.getBean("camelTemplate");
+    final MockEndpoint mock = (MockEndpoint) context.getBean("result");
+    mock.expectedMessageCount(SIZE);
+    // expect no duplicate bodies
+    mock.expectsNoDuplicates().body();
+    // now send a lot of messages
+    System.out.println("Sending ...");
+    for (int i = 0; i < SIZE; i++) {
+        InputReportIncident input = new InputReportIncident();
+        input.setIncidentId("" + i);
+        input.setIncidentDate("20091116");
+        input.setGivenName("Claus");
+        input.setFamilyName("Ibsen");
+        input.setSummary("Camel rocks");
+        input.setDetails("More bla");
+        input.setEmail("davsclaus@apache.org");
+        input.setPhone("55512345678");
+        // must add to a list otherwise CXF cannot send data
+        // TODO: camel-cxf should be able to do this itself without me having to create a List object
+        List data = new ArrayList();
+        data.add(input);
+        producer.sendBody("direct:start", data);
+    }
+    System.out.println("... Send done");
+    System.out.println("Asserting ...");
+    mock.assertIsSatisfied();
+    System.out.println("... Asserting done");
+    System.exit(0);
+</td> </tr></table></body></html>

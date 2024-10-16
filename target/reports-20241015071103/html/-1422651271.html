@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1522</td> <td>-1422651271</td><td>apache/camel</td><td>Claus Ibsen</td><td>78d454de8f47cbea9072fd7c9559ed6f3e22a359</td> <td>None</td> <td>need a little delay to slow these okays down so we better can test stop when parallel</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder() throws Exception</td> <td>
+    return new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            // use a pool with 2 concurrent tasks so we cannot run to fast
+            ExecutorService service = Executors.newFixedThreadPool(2);
+            from("direct:start").multicast().parallelProcessing().stopOnException().executorService(service).to("direct:foo", "direct:bar", "direct:baz").end().to("mock:result");
+            // need a little delay to slow these okays down so we better can test stop when parallel
+            from("direct:foo").delay(1000).to("mock:foo");
+            from("direct:bar").process(new Processor() {
+
+                public void process(Exchange exchange) throws Exception {
+                    String body = exchange.getIn().getBody(String.class);
+                    if ("Kaboom".equals(body)) {
+                        throw new IllegalArgumentException("Forced");
+                    }
+                }
+            }).to("mock:bar");
+            // need a little delay to slow these okays down so we better can test stop when parallel
+            from("direct:baz").delay(1000).to("mock:baz");
+        }
+    };
+</td> </tr></table></body></html>

@@ -1,0 +1,192 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2833</td> <td>-1422650512</td><td>apache/camel</td><td>Henryk Konsek</td><td>0c401b9fba53837bdea3dc486880dd0e0c6e2d6f</td> <td>None</td> <td>create a type map
+using JAXB mapping, for the most part
+uses Joda time instead of XmlGregorianCalendar
+TODO do we need support for commented types???</td> <td>SATD_ADDED</td> <td>execute()</td> <td>public void execute() throws MojoExecutionException</td> <td>
+    // initialize velocity to load resources from class loader and use Log4J
+    Properties velocityProperties = new Properties();
+    velocityProperties.setProperty(RuntimeConstants.RESOURCE_LOADER, "cloader");
+    velocityProperties.setProperty("cloader.resource.loader.class", ClasspathResourceLoader.class.getName());
+    velocityProperties.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, Log4JLogChute.class.getName());
+    velocityProperties.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM + ".log4j.logger", LOG.getName());
+    engine = new VelocityEngine(velocityProperties);
+    engine.init();
+    // make sure we can load both templates
+    if (!engine.resourceExists(SOBJECT_POJO_VM) || !engine.resourceExists(SOBJECT_QUERY_RECORDS_VM)) {
+        throw new MojoExecutionException("Velocity templates not found");
+    }
+    // connect to Salesforce
+    final HttpClient httpClient = new HttpClient();
+    httpClient.registerListener(RedirectListener.class.getName());
+    httpClient.setConnectTimeout(TIMEOUT);
+    httpClient.setTimeout(TIMEOUT);
+    try {
+        httpClient.start();
+    } catch (Exception e) {
+        throw new MojoExecutionException("Error creating HTTP client: " + e.getMessage(), e);
+    }
+    final SalesforceSession session = new SalesforceSession(httpClient, new SalesforceLoginConfig(SalesforceLoginConfig.DEFAULT_LOGIN_URL, clientId, clientSecret, userName, password, false));
+    getLog().info("Salesforce login...");
+    try {
+        session.login(null);
+    } catch (SalesforceException e) {
+        String msg = "Salesforce login error " + e.getMessage();
+        throw new MojoExecutionException(msg, e);
+    }
+    getLog().info("Salesforce login successful");
+    // create rest client
+    RestClient restClient = null;
+    try {
+        restClient = new DefaultRestClient(httpClient, version, "json", session);
+        // remember to start the active client object
+        ((DefaultRestClient) restClient).start();
+    } catch (Exception e) {
+        final String msg = "Unexpected exception creating Rest client: " + e.getMessage();
+        throw new MojoExecutionException(msg, e);
+    }
+    try {
+        // use Jackson json
+        final ObjectMapper mapper = new ObjectMapper();
+        // call getGlobalObjects to get all SObjects
+        final Set<String> objectNames = new HashSet<String>();
+        final SyncResponseCallback callback = new SyncResponseCallback();
+        try {
+            getLog().info("Getting Salesforce Objects...");
+            restClient.getGlobalObjects(callback);
+            if (!callback.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
+                throw new MojoExecutionException("Timeout waiting for getGlobalObjects!");
+            }
+            final SalesforceException ex = callback.getException();
+            if (ex != null) {
+                throw ex;
+            }
+            final GlobalObjects globalObjects = mapper.readValue(callback.getResponse(), GlobalObjects.class);
+            // create a list of object names
+            for (SObject sObject : globalObjects.getSobjects()) {
+                objectNames.add(sObject.getName());
+            }
+        } catch (Exception e) {
+            String msg = "Error getting global Objects " + e.getMessage();
+            throw new MojoExecutionException(msg, e);
+        }
+        // check if we are generating POJOs for all objects or not
+        if ((includes != null && includes.length > 0) || (excludes != null && excludes.length > 0) || (includePattern != null && !includePattern.trim().isEmpty()) || (excludePattern != null && !excludePattern.trim().isEmpty())) {
+            getLog().info("Looking for matching Object names...");
+            // create a list of accepted names
+            final Set<String> includedNames = new HashSet<String>();
+            if (includes != null && includes.length > 0) {
+                for (String name : includes) {
+                    name = name.trim();
+                    if (name.isEmpty()) {
+                        throw new MojoExecutionException("Invalid empty name in includes");
+                    }
+                    includedNames.add(name);
+                }
+            }
+            final Set<String> excludedNames = new HashSet<String>();
+            if (excludes != null && excludes.length > 0) {
+                for (String name : excludes) {
+                    name = name.trim();
+                    if (name.isEmpty()) {
+                        throw new MojoExecutionException("Invalid empty name in excludes");
+                    }
+                    excludedNames.add(name);
+                }
+            }
+            // check whether a pattern is in effect
+            Pattern incPattern;
+            if (includePattern != null && !includePattern.trim().isEmpty()) {
+                incPattern = Pattern.compile(includePattern.trim());
+            } else if (includedNames.isEmpty()) {
+                // include everything by default if no include names are set
+                incPattern = Pattern.compile(".*");
+            } else {
+                // include nothing by default if include names are set
+                incPattern = Pattern.compile("^$");
+            }
+            // check whether a pattern is in effect
+            Pattern excPattern;
+            if (excludePattern != null && !excludePattern.trim().isEmpty()) {
+                excPattern = Pattern.compile(excludePattern.trim());
+            } else {
+                // exclude nothing by default
+                excPattern = Pattern.compile("^$");
+            }
+            final Set<String> acceptedNames = new HashSet<String>();
+            for (String name : objectNames) {
+                // name is included, or matches include pattern
+                // and is not excluded and does not match exclude pattern
+                if ((includedNames.contains(name) || incPattern.matcher(name).matches()) && !excludedNames.contains(name) && !excPattern.matcher(name).matches()) {
+                    acceptedNames.add(name);
+                }
+            }
+            objectNames.clear();
+            objectNames.addAll(acceptedNames);
+            getLog().info(String.format("Found %s matching Objects", objectNames.size()));
+        } else {
+            getLog().warn(String.format("Generating Java classes for all %s Objects, this may take a while...", objectNames.size()));
+        }
+        // for every accepted name, get SObject description
+        final Set<SObjectDescription> descriptions = new HashSet<SObjectDescription>();
+        try {
+            getLog().info("Retrieving Object descriptions...");
+            for (String name : objectNames) {
+                callback.reset();
+                restClient.getDescription(name, callback);
+                if (!callback.await(TIMEOUT, TimeUnit.MILLISECONDS)) {
+                    throw new MojoExecutionException("Timeout waiting for getDescription for sObject " + name);
+                }
+                final SalesforceException ex = callback.getException();
+                if (ex != null) {
+                    throw ex;
+                }
+                descriptions.add(mapper.readValue(callback.getResponse(), SObjectDescription.class));
+            }
+        } catch (Exception e) {
+            String msg = "Error getting SObject description " + e.getMessage();
+            throw new MojoExecutionException(msg, e);
+        }
+        // create package directory
+        // validate package name
+        if (!packageName.matches(PACKAGE_NAME_PATTERN)) {
+            throw new MojoExecutionException("Invalid package name " + packageName);
+        }
+        final File pkgDir = new File(outputDirectory, packageName.trim().replace('.', File.separatorChar));
+        if (!pkgDir.exists()) {
+            if (!pkgDir.mkdirs()) {
+                throw new MojoExecutionException("Unable to create " + pkgDir);
+            }
+        }
+        getLog().info("Generating Java Classes...");
+        // generate POJOs for every object description
+        final GeneratorUtility utility = new GeneratorUtility();
+        // should we provide a flag to control timestamp generation?
+        final String generatedDate = new Date().toString();
+        for (SObjectDescription description : descriptions) {
+            processDescription(pkgDir, description, utility, generatedDate);
+        }
+        getLog().info(String.format("Successfully generated %s Java Classes", (descriptions.size() * 2)));
+    } finally {
+        // remember to stop the client
+        try {
+            ((DefaultRestClient) restClient).stop();
+        } catch (Exception ignore) {
+        }
+        // Salesforce session stop
+        try {
+            session.stop();
+        } catch (Exception ignore) {
+        }
+        // release HttpConnections
+        try {
+            httpClient.stop();
+        } catch (Exception ignore) {
+        }
+    }
+</td> </tr></table></body></html>

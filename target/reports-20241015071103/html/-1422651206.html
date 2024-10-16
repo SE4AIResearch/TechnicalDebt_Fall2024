@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1623</td> <td>-1422651206</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>cc972c93d7a9798a5fa346d5f0b0b40e31a803f7</td> <td>None</td> <td>TODO: hook into exiting route path</td> <td>SATD_ADDED</td> <td>run()</td> <td>public void run()</td> <td>
+    while (isRunAllowed()) {
+        Exchange exchange;
+        try {
+            // TODO: Wonder if we can use take instead of poll with timeout?
+            exchange = completeTasks.poll(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            LOG.debug("Sleep interrupted, are we stopping? " + (isStopping() || isStopped()));
+            continue;
+        }
+        if (exchange != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Continue to route Exchange: " + exchange);
+            }
+            // TODO: hook into exiting route path
+            exchange.getContext().createProducerTemplate().send("mock:result", exchange);
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>632</td> 
+     <td>-1422651694</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>ba530dc1b191e9b2e8a17035f3b8f730e211c69e</td> 
+     <td>TODO: Why do we change protocol from smtp to pop3?</td> 
+     <td>replace smtp with pop3 since we are creating a consumer and thus we need to use pop3 as protocol as stmp is only for sending</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createConsumer(Processor)</td> 
+     <td>public Consumer<mailexchange>
+        createConsumer(Processor processor) throws Exception
+      </mailexchange></td> 
+     <td> JavaMailConnection connection = configuration.createJavaMailConnection(this); String protocol = getConfiguration().getProtocol(); // replace smtp with pop3 since we are creating a consumer and thus we need to use pop3 as protocol // as stmp is only for sending if (protocol.equals("smtp")) { protocol = "pop3"; } String folderName = getConfiguration().getFolderName(); Folder folder = connection.getFolder(protocol, folderName); if (folder == null) { throw new IllegalArgumentException("No folder for protocol: " + protocol + " and name: " + folderName); } return createConsumer(processor, folder); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>631</td> 
+     <td>-1422651694</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>2bafa4eede4a3a4a763fa5cc565eaeee9bfb0d73</td> 
+     <td>None</td> 
+     <td>TODO: Why do we change protocol from smtp to pop3?</td> 
+     <td>SATD_ADDED</td> 
+     <td>createConsumer(Processor)</td> 
+     <td>public Consumer<mailexchange>
+        createConsumer(Processor processor) throws Exception
+      </mailexchange></td> 
+     <td> JavaMailConnection connection = configuration.createJavaMailConnection(this); String protocol = getConfiguration().getProtocol(); // TODO: Why do we change protocol from smtp to pop3? if (protocol.equals("smtp")) { protocol = "pop3"; } String folderName = getConfiguration().getFolderName(); Folder folder = connection.getFolder(protocol, folderName); if (folder == null) { throw new IllegalArgumentException("No folder for protocol: " + protocol + " and name: " + folderName); } return createConsumer(processor, folder); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

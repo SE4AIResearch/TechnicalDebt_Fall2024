@@ -1,0 +1,55 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1619</td> <td>-1422651210</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>cc972c93d7a9798a5fa346d5f0b0b40e31a803f7</td> <td>None</td> <td>maybe from is already the type we want</td> <td>SATD_ADDED</td> <td>convertTo(Class<?>, Exchange, Object, TypeConverterRegistry)</td> <td>public static Object convertTo(Class<?> type, Exchange exchange, Object value, TypeConverterRegistry registry) throws Exception</td> <td>
+    // do not convert to stream cache
+    if (StreamCache.class.isAssignableFrom(value.getClass())) {
+        return null;
+    }
+    if (JettyHttpMessage.class.isAssignableFrom(value.getClass())) {
+        JettyHttpMessage message = (JettyHttpMessage) value;
+        Object body = message.getBody();
+        if (body == null) {
+            return null;
+        }
+        if (body instanceof JettyFutureGetBody) {
+            JettyFutureGetBody future = (JettyFutureGetBody) body;
+            if (future.isCancelled()) {
+                // return void to indicate its not possible to convert at this time
+                return Void.TYPE;
+            }
+            // do some trace logging as the get is blocking until the response is ready
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Getting future response");
+            }
+            Object reply = future.get();
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Got future response");
+            }
+            if (reply == null) {
+                // return void to indicate its not possible to convert at this time
+                return Void.TYPE;
+            }
+            // maybe from is already the type we want
+            if (type.isAssignableFrom(reply.getClass())) {
+                return type.cast(reply);
+            }
+            // no then try to lookup a type converter
+            TypeConverter tc = registry.lookup(type, reply.getClass());
+            if (tc != null) {
+                return tc.convertTo(type, exchange, reply);
+            }
+        } else {
+            // no then try to lookup a type converter
+            TypeConverter tc = registry.lookup(type, body.getClass());
+            if (tc != null) {
+                return tc.convertTo(type, exchange, body);
+            }
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

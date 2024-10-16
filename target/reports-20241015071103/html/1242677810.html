@@ -1,0 +1,61 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4305</td> <td>1242677810</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>0365b824a22934e78b99bd7e813b976e2b59b0e4</td> <td>TODO(jeffschu) correctly handle merge commits</td> <td>TODO(jeffschu) correctly handle merge commits</td> <td>SATD_MOVED_FILE</td> <td>readPatchList(PatchListKey, Repository)</td> <td>private PatchList readPatchList(final PatchListKey key, final Repository repo) throws IOException</td> <td>
+    // TODO(jeffschu) correctly handle merge commits
+    final RawTextComparator cmp = comparatorFor(key.getWhitespace());
+    final ObjectReader reader = repo.newObjectReader();
+    try {
+        final RevWalk rw = new RevWalk(reader);
+        final RevCommit b = rw.parseCommit(key.getNewId());
+        final RevObject a = aFor(key, repo, rw, b);
+        if (a == null) {
+            // This is a merge commit, compared to its ancestor.
+            // 
+            final PatchListEntry[] entries = new PatchListEntry[1];
+            entries[0] = newCommitMessage(cmp, repo, reader, null, b);
+            return new PatchList(a, b, true, entries);
+        }
+        final boolean againstParent = b.getParentCount() > 0 && b.getParent(0) == a;
+        RevCommit aCommit;
+        RevTree aTree;
+        if (a instanceof RevCommit) {
+            aCommit = (RevCommit) a;
+            aTree = aCommit.getTree();
+        } else if (a instanceof RevTree) {
+            aCommit = null;
+            aTree = (RevTree) a;
+        } else {
+            throw new IOException("Unexpected type: " + a.getClass());
+        }
+        RevTree bTree = b.getTree();
+        final TreeWalk walk = new TreeWalk(reader);
+        walk.reset();
+        walk.setRecursive(true);
+        walk.addTree(aTree);
+        walk.addTree(bTree);
+        walk.setFilter(TreeFilter.ANY_DIFF);
+        DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE);
+        df.setRepository(repo);
+        df.setDiffComparator(cmp);
+        df.setDetectRenames(true);
+        List<DiffEntry> diffEntries = df.scan(aTree, bTree);
+        final int cnt = diffEntries.size();
+        final PatchListEntry[] entries = new PatchListEntry[1 + cnt];
+        entries[0] = newCommitMessage(// 
+        cmp, // 
+        repo, // 
+        reader, againstParent ? null : aCommit, b);
+        for (int i = 0; i < cnt; i++) {
+            FileHeader fh = df.toFileHeader(diffEntries.get(i));
+            entries[1 + i] = newEntry(aTree, fh);
+        }
+        return new PatchList(a, b, againstParent, entries);
+    } finally {
+        reader.release();
+    }
+</td> </tr></table></body></html>

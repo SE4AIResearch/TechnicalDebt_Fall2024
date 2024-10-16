@@ -1,0 +1,11 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4563</td> <td>1242677954</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>097b95791517008607f2332e6f4c2be621d6bf3e</td> <td>None</td> <td>TODO(sop): Use JS to link, avoiding early URL update.</td> <td>SATD_ADDED</td> <td>columnPath(SafeHtmlBuilder, FileInfo)</td> <td>private void columnPath(SafeHtmlBuilder sb, FileInfo info)</td> <td>
+    // TODO(sop): Use JS to link, avoiding early URL update.
+    sb.openTd().setStyleName(R.css().pathColumn()).openAnchor().setAttribute("href", "#" + url(info)).append(Patch.COMMIT_MSG.equals(info.path()) ? Util.C.commitMessage() : info.path()).closeAnchor().closeTd();
+</td> </tr></table></body></html>

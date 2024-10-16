@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2085</td> <td>-1422650951</td><td>apache/camel</td><td>Claus Ibsen</td><td>fbb1688e8361ef986a17df7b25f3f7ef094ca67c</td> <td>None</td> <td>TODO: Using multiple intercept should be avoided</td> <td>SATD_ADDED</td> <td>testDualIntercept()</td> <td>public void testDualIntercept() throws Exception</td> <td>
+    getMockEndpoint("mock:foo").expectedMessageCount(1);
+    getMockEndpoint("mock:bar").expectedMessageCount(1);
+    getMockEndpoint("mock:result").expectedMessageCount(1);
+    getMockEndpoint("mock:intercepted").expectedMessageCount(6);
+    getMockEndpoint("mock:a").expectedMessageCount(3);
+    getMockEndpoint("mock:b").expectedMessageCount(3);
+    template.sendBody("direct:start", "Hello World");
+// TODO: Using multiple intercept should be avoided
+// assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

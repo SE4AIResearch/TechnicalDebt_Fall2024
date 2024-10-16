@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>835</td> <td>-1422651585</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>1919118993f9af91dcc4c50c98c2194023307e67</td> <td>None</td> <td>TODO: we should probably catch evaluate/convert exception an set is as fault (after fix for CAMEL-316)</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws Exception</td> <td>
+    // Intermediate conversion to String is needed when direct conversion to Integer is not available
+    // but evaluation result is a textual representation of a numeric value.
+    String text = ExchangeHelper.convertToType(exchange, String.class, expression.evaluate(exchange));
+    Integer value = ExchangeHelper.convertToType(exchange, Integer.class, text);
+    if (value == null) {
+        // TODO: we should probably catch evaluate/convert exception an set is as fault (after fix for CAMEL-316)
+        throw new RuntimeCamelException("Expression \"" + expression + "\" does not evaluate to an int.");
+    }
+    int count = value.intValue();
+    exchange.setProperty(PROP_ITER_COUNT, count);
+    for (int i = 0; i < count; i++) {
+        LOG.debug("LoopProcessor: iteration #" + i);
+        exchange.setProperty(PROP_ITER_INDEX, i);
+        super.process(exchange);
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,100 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5310</td> <td>-1009652412</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO: catch when params required but missing
+TODO: better error message when count query is bad</td> <td>SATD_ADDED</td> <td>getSplits(JobContext)</td> <td>public static List<InputSplit> getSplits(JobContext context) throws IOException</td> <td>
+    Configuration conf = context.getConfiguration();
+    int numSplits = conf.getInt("mapreduce.job.maps", 1);
+    LOG.debug("creating splits up to " + numSplits);
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+    int i = 0;
+    long start = 0;
+    long end = 0;
+    boolean limitOffset = true;
+    // This is the fancy part of mapping inputs...here's how we figure out
+    // splits
+    // get the params query or the params
+    VerticaConfiguration config = new VerticaConfiguration(conf);
+    String inputQuery = config.getInputQuery();
+    if (inputQuery == null)
+        throw new IOException("Vertica input requires query defined by " + VerticaConfiguration.QUERY_PROP);
+    String paramsQuery = config.getParamsQuery();
+    Collection<List<Object>> params = config.getInputParameters();
+    // TODO: limit needs order by unique key
+    // TODO: what if there are more parameters than numsplits?
+    // prep a count(*) wrapper query and then populate the bind params for each
+    String countQuery = "SELECT COUNT(*) FROM (\n" + inputQuery + "\n) count";
+    if (paramsQuery != null) {
+        LOG.debug("creating splits using paramsQuery :" + paramsQuery);
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = config.getConnection(false);
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(paramsQuery);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            while (rs.next()) {
+                limitOffset = false;
+                List<Object> segmentParams = new ArrayList<Object>();
+                for (int j = 1; j <= rsmd.getColumnCount(); j++) {
+                    segmentParams.add(rs.getObject(j));
+                }
+                splits.add(new VerticaInputSplit(inputQuery, segmentParams, start, end));
+            }
+        } catch (Exception e) {
+            throw new IOException(e);
+        } finally {
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException e) {
+                throw new IOException(e);
+            }
+        }
+    } else if (params != null && params.size() > 0) {
+        LOG.debug("creating splits using " + params.size() + " params");
+        limitOffset = false;
+        for (List<Object> segmentParams : params) {
+            // if there are more numSplits than params we're going to introduce some
+            // limit and offsets
+            // TODO: write code to generate the start/end pairs for each group
+            splits.add(new VerticaInputSplit(inputQuery, segmentParams, start, end));
+        }
+    }
+    if (limitOffset) {
+        LOG.debug("creating splits using limit and offset");
+        Connection conn = null;
+        Statement stmt = null;
+        long count = 0;
+        try {
+            conn = config.getConnection(false);
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(countQuery);
+            rs.next();
+            count = rs.getLong(1);
+        } catch (Exception e) {
+            throw new IOException(e);
+        } finally {
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException e) {
+                throw new IOException(e);
+            }
+        }
+        long splitSize = count / numSplits;
+        end = splitSize;
+        LOG.debug("creating " + numSplits + " splits for " + count + " records");
+        for (i = 0; i < numSplits; i++) {
+            splits.add(new VerticaInputSplit(inputQuery, null, start, end));
+            start += splitSize;
+            end += splitSize;
+        }
+    }
+    LOG.debug("returning " + splits.size() + " final splits");
+    return splits;
+</td> </tr></table></body></html>

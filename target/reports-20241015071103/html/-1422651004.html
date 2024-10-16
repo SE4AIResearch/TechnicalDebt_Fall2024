@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2003</td> <td>-1422651004</td><td>apache/camel</td><td>Claus Ibsen</td><td>6989ff8bf8961aff791d0715d083a654ed010a97</td> <td>None</td> <td>seda consumer doesnt support suspension so it will stop instead</td> <td>SATD_ADDED</td> <td>testSuspendResume()</td> <td>public void testSuspendResume() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedBodiesReceived("A");
+    template.sendBody("seda:foo", "A");
+    assertMockEndpointsSatisfied();
+    log.info("Suspending");
+    // now suspend and dont expect a message to be routed
+    resetMocks();
+    mock.expectedMessageCount(0);
+    MockEndpoint mockBar = getMockEndpoint("mock:bar");
+    mockBar.expectedMessageCount(1);
+    context.suspendRoute("foo");
+    template.sendBody("seda:foo", "B");
+    template.sendBody("direct:bar", "C");
+    // we can still send a message to bar when foo route is suspended
+    mockBar.assertIsSatisfied();
+    mock.assertIsSatisfied(1000);
+    // seda consumer doesnt support suspension so it will stop instead
+    assertEquals("Stopped", context.getRouteStatus("foo").name());
+    assertEquals("Started", context.getRouteStatus("bar").name());
+    log.info("Resuming");
+    // now resume and expect the previous message to be routed
+    resetMocks();
+    mock.expectedBodiesReceived("B");
+    context.resumeRoute("foo");
+    assertMockEndpointsSatisfied();
+    assertEquals("Started", context.getRouteStatus("foo").name());
+    assertEquals("Started", context.getRouteStatus("bar").name());
+</td> </tr></table></body></html>

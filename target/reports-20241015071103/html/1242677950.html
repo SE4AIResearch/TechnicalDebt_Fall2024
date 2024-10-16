@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4559</td> <td>1242677950</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>097b95791517008607f2332e6f4c2be621d6bf3e</td> <td>None</td> <td>TODO Fix approximation of reviewers and CC list(s).</td> <td>SATD_ADDED</td> <td>renderReviewers(ChangeInfo)</td> <td>private void renderReviewers(ChangeInfo info)</td> <td>
+    // TODO Fix approximation of reviewers and CC list(s).
+    Map<Integer, AccountInfo> r = new HashMap<Integer, AccountInfo>();
+    Map<Integer, AccountInfo> cc = new HashMap<Integer, AccountInfo>();
+    for (LabelInfo label : Natives.asList(info.all_labels().values())) {
+        if (label.all() != null) {
+            for (ApprovalInfo ai : Natives.asList(label.all())) {
+                (ai.value() != 0 ? r : cc).put(ai._account_id(), ai);
+            }
+        }
+    }
+    for (Integer i : r.keySet()) {
+        cc.remove(i);
+    }
+    reviewersText.setInnerSafeHtml(labels.formatUserList(r.values()));
+    ccText.setInnerSafeHtml(labels.formatUserList(cc.values()));
+</td> </tr></table></body></html>

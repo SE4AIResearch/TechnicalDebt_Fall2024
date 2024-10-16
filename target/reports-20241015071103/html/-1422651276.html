@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1512</td> <td>-1422651276</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>f47adf75510ef71a5b4071e8c77af7abb9c07dc9</td> <td>TODO: Support ordering of interceptors</td> <td>trace interceptor need to have a reference to route context so we at runtime can enable/disable tracing on-the-fly</td> <td>SATD_REMOVED</td> <td>initChannel(ProcessorDefinition, RouteContext)</td> <td>public void initChannel(ProcessorDefinition outputDefinition, RouteContext routeContext) throws Exception</td> <td>
+    this.definition = outputDefinition;
+    this.routeContext = routeContext;
+    this.camelContext = routeContext.getCamelContext();
+    Processor target = nextProcessor;
+    Processor next;
+    // first wrap the output with the managed strategy if any
+    InterceptStrategy managed = routeContext.getManagedInterceptStrategy();
+    if (managed != null) {
+        next = target == nextProcessor ? null : nextProcessor;
+        target = managed.wrapProcessorInInterceptors(routeContext.getCamelContext(), outputDefinition, target, next);
+    }
+    // then wrap the output with the tracer
+    TraceInterceptor trace = (TraceInterceptor) getOrCreateTracer().wrapProcessorInInterceptors(routeContext.getCamelContext(), outputDefinition, target, null);
+    // trace interceptor need to have a reference to route context so we at runtime can enable/disable tracing on-the-fly
+    trace.setRouteContext(routeContext);
+    target = trace;
+    // wrap the output with the configured interceptors
+    for (InterceptStrategy strategy : interceptors) {
+        next = target == nextProcessor ? null : nextProcessor;
+        // skip tracer as we did the specially beforehand and it could potentially be added as an interceptor strategy
+        if (strategy instanceof Tracer) {
+            continue;
+        }
+        target = strategy.wrapProcessorInInterceptors(routeContext.getCamelContext(), outputDefinition, target, next);
+    }
+    // sets the delegate to our wrapped output
+    output = target;
+</td> </tr></table></body></html>

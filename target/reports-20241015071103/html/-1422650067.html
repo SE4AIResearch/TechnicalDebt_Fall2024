@@ -1,0 +1,85 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3702</td> 
+     <td>-1422650067</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>e2f5c9f075c89a8e74332e4f91a72f733fb0d4ca</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>getRestDefinitions(String)</td> 
+     <td>public List<restdefinition>
+        getRestDefinitions(String camelId) throws Exception 
+      </restdefinition></td> 
+     <td> ObjectName found = null; MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set<objectname>
+        names = server.queryNames(new ObjectName("org.apache.camel:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } if (camelId == null || camelId.equals(id)) { // filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl) String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { found = on; } } } if (found != null) { String xml = (String) server.invoke(found, "dumpRestsAsXml", null, null); if (xml != null) { RestsDefinition rests = ModelHelper.createModelFromXml(null, xml, RestsDefinition.class); if (rests != null) { return rests.getRests(); } } } return null; 
+      </objectname></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3696</td> 
+     <td>-1422650067</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>bf36f6149d3280e160cee8be12fd03ada3e81d35</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>SATD_CHANGED</td> 
+     <td>getRestDefinitions(String)</td> 
+     <td>public List<restdefinition>
+        getRestDefinitions(String camelId) throws Exception 
+      </restdefinition></td> 
+     <td> ObjectName found = null; MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set<objectname>
+        names = server.queryNames(new ObjectName("org.apache.camel:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } if (camelId == null || camelId.equals(id)) { // filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl) String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { found = on; } } } if (found != null) { String xml = (String) server.invoke(found, "dumpRestsAsXml", null, null); if (xml != null) { RestsDefinition rests = ModelHelper.createModelFromXml(null, xml, RestsDefinition.class); if (rests != null) { return rests.getRests(); } } } return null; 
+      </objectname></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3683</td> 
+     <td>-1422650067</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>1d5b0dab8751b59044706b20f1b10614bfec5c28</td> 
+     <td>None</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better</td> 
+     <td>SATD_ADDED</td> 
+     <td>getRestDefinitions(String)</td> 
+     <td>public List<restdefinition>
+        getRestDefinitions(String camelId) throws Exception
+      </restdefinition></td> 
+     <td> ObjectName found = null; MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set<objectname>
+        names = server.queryNames(new ObjectName("org.apache.camel:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } if (camelId == null || camelId.equals(id)) { // filter out older Camel versions as this requires Camel 2.15 or better String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { found = on; } } } if (found != null) { String xml = (String) server.invoke(found, "dumpRestsAsXml", null, null); if (xml != null) { RestsDefinition rests = ModelHelper.createModelFromXml(null, xml, RestsDefinition.class); if (rests != null) { return rests.getRests(); } } } return null; 
+      </objectname></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

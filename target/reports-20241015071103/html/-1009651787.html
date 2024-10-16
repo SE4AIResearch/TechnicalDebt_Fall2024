@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5981</td> <td>-1009651787</td><td>apache/hadoop</td><td>Steve Loughran</td><td>28e6a4e44a3e920dcaf858f9a74a6358226b3a63</td> <td>None</td> <td>this doesn't directly upload an image, but rather asks the NN
+to connect back to the 2NN to download the specified image.</td> <td>SATD_ADDED</td> <td>uploadImageFromStorage(String, InetSocketAddress, NNStorage, long)</td> <td> static void uploadImageFromStorage(String fsName, InetSocketAddress imageListenAddress, NNStorage storage, long txid) throws IOException</td> <td>
+    String fileid = GetImageServlet.getParamStringToPutImage(txid, imageListenAddress, storage);
+    // this doesn't directly upload an image, but rather asks the NN
+    // to connect back to the 2NN to download the specified image.
+    TransferFsImage.getFileClient(fsName, fileid, null, null, false);
+    LOG.info("Uploaded image with txid " + txid + " to namenode at " + fsName);
+</td> </tr></table></body></html>

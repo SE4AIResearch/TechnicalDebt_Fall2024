@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1470</td> 
+     <td>-1422651733</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>a157ceccbc317eaf8f7dfd702013ebf5bbc848fd</td> 
+     <td>TODO lets do a much better version of this!</td> 
+     <td>wait as long as we get a decent message rate</td> 
+     <td>SATD_REMOVED</td> 
+     <td>waitForCompleteLatch(long)</td> 
+     <td>protected void waitForCompleteLatch(long timeout) throws InterruptedException</td> 
+     <td> super.waitForCompleteLatch(timeout); if (minRate &gt; 0) { int count = getReceivedCounter(); do { // wait as long as we get a decent message rate super.waitForCompleteLatch(1000L); count = getReceivedCounter() - count; } while (count &gt;= minRate); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>576</td> 
+     <td>-1422651733</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>97f346947a920c09ea7ff1d0b9cd7f2bb17b7ea6</td> 
+     <td>None</td> 
+     <td>TODO lets do a much better version of this!</td> 
+     <td>SATD_ADDED</td> 
+     <td>waitForCompleteLatch()</td> 
+     <td>protected void waitForCompleteLatch() throws InterruptedException</td> 
+     <td> // TODO lets do a much better version of this! long size = getDataSet().getSize(); size *= 4000; setDefaulResultWaitMillis(size); super.waitForCompleteLatch(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

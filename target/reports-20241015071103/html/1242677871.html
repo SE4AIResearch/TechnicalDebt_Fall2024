@@ -1,0 +1,150 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4407</td> <td>1242677871</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>f0713bfe39968e844d49d7a699a895099866b7ba</td> <td>None</td> <td>TODO: once the other users of ActionDialog have converted to
+REST APIs, we can use createCallback() rather than providing
+them directly.</td> <td>SATD_ADDED</td> <td>populateActions(PatchSetDetail)</td> <td>private void populateActions(final PatchSetDetail detail)</td> <td>
+    final boolean isOpen = changeDetail.getChange().getStatus().isOpen();
+    if (isOpen && changeDetail.canSubmit()) {
+        final Button b = new Button(Util.M.submitPatchSet(detail.getPatchSet().getPatchSetId()));
+        if (Gerrit.getConfig().testChangeMerge()) {
+            b.setEnabled(changeDetail.getChange().isMergeable());
+        }
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                Util.MANAGE_SVC.submit(patchSet.getId(), new ChangeDetailCache.GerritWidgetCallback(b) {
+
+                    public void onSuccess(ChangeDetail result) {
+                        onSubmitResult(result);
+                    }
+                });
+            }
+        });
+        actionsPanel.add(b);
+    }
+    if (changeDetail.canRevert()) {
+        final Button b = new Button(Util.C.buttonRevertChangeBegin());
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                new ActionDialog(b, true, Util.C.revertChangeTitle(), Util.C.headingRevertMessage()) {
+
+                    {
+                        sendButton.setText(Util.C.buttonRevertChangeSend());
+                        message.setText(Util.M.revertChangeDefaultMessage(detail.getInfo().getSubject(), detail.getPatchSet().getRevision().get()));
+                    }
+
+                    @Override
+                    public void onSend() {
+                        Util.MANAGE_SVC.revertChange(patchSet.getId(), getMessageText(), createCallback());
+                    }
+                }.center();
+            }
+        });
+        actionsPanel.add(b);
+    }
+    if (changeDetail.canAbandon()) {
+        final Button b = new Button(Util.C.buttonAbandonChangeBegin());
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                new ActionDialog(b, false, Util.C.abandonChangeTitle(), Util.C.headingAbandonMessage()) {
+
+                    {
+                        sendButton.setText(Util.C.buttonAbandonChangeSend());
+                    }
+
+                    @Override
+                    public void onSend() {
+                        // TODO: once the other users of ActionDialog have converted to
+                        // REST APIs, we can use createCallback() rather than providing
+                        // them directly.
+                        ChangeApi.abandon(changeDetail.getChange().getChangeId(), getMessageText(), new AsyncCallback<ChangeInfo>() {
+
+                            @Override
+                            public void onSuccess(ChangeInfo result) {
+                                sent = true;
+                                Gerrit.display(PageLinks.toChange(new Change.Id(result._number())));
+                                hide();
+                            }
+
+                            @Override
+                            public void onFailure(Throwable caught) {
+                                enableButtons(true);
+                            }
+                        });
+                    }
+                }.center();
+            }
+        });
+        actionsPanel.add(b);
+    }
+    if (changeDetail.getChange().getStatus() == Change.Status.DRAFT && changeDetail.canDeleteDraft()) {
+        final Button b = new Button(Util.C.buttonDeleteDraftChange());
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                Util.MANAGE_SVC.deleteDraftChange(patchSet.getId(), new GerritCallback<VoidResult>() {
+
+                    public void onSuccess(VoidResult result) {
+                        Gerrit.display(PageLinks.MINE);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        b.setEnabled(true);
+                        super.onFailure(caught);
+                    }
+                });
+            }
+        });
+        actionsPanel.add(b);
+    }
+    if (changeDetail.canRestore()) {
+        final Button b = new Button(Util.C.buttonRestoreChangeBegin());
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                new ActionDialog(b, false, Util.C.restoreChangeTitle(), Util.C.headingRestoreMessage()) {
+
+                    {
+                        sendButton.setText(Util.C.buttonRestoreChangeSend());
+                    }
+
+                    @Override
+                    public void onSend() {
+                        Util.MANAGE_SVC.restoreChange(patchSet.getId(), getMessageText(), createCallback());
+                    }
+                }.center();
+            }
+        });
+        actionsPanel.add(b);
+    }
+    if (changeDetail.canRebase()) {
+        final Button b = new Button(Util.C.buttonRebaseChange());
+        b.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                b.setEnabled(false);
+                Util.MANAGE_SVC.rebaseChange(patchSet.getId(), new ChangeDetailCache.GerritWidgetCallback(b));
+            }
+        });
+        actionsPanel.add(b);
+    }
+</td> </tr></table></body></html>

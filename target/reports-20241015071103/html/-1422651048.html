@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1953</td> 
+     <td>-1422651048</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>4d33c4ed377f1624cb052d3d2254da15c362fb06</td> 
+     <td>let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to have it being executed in the future, or immediately</td> 
+     <td>let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to have it being executed in the future, or immediately Note: the data.redeliverFromSync should be kept as is, in case it was enabled previously to ensure the callback will continue routing from where we left</td> 
+     <td>SATD_CHANGED</td> 
+     <td>processAsyncErrorHandler(Exchange, AsyncCallback, RedeliveryData)</td> 
+     <td>protected void processAsyncErrorHandler(final Exchange exchange, final AsyncCallback callback, final RedeliveryData data)</td> 
+     <td> // can we still run if (!isRunAllowed()) { if (exchange.getException() == null) { exchange.setException(new RejectedExecutionException()); } callback.done(data.sync); return; } // did previous processing cause an exception? boolean handle = shouldHandleException(exchange); if (handle) { handleException(exchange, data); } // compute if we should redeliver or not boolean shouldRedeliver = shouldRedeliver(exchange, data); if (!shouldRedeliver) { // no we should not redeliver to the same output so either try an onException (if any given) // or the dead letter queue Processor target = data.failureProcessor != null ? data.failureProcessor : data.deadLetterProcessor; // deliver to the failure processor (either an on exception or dead letter queue deliverToFailureProcessor(target, exchange, data, callback); // we are breaking out return; } if (data.redeliveryCounter &gt; 0) { // let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to // have it being executed in the future, or immediately // Note: the data.redeliverFromSync should be kept as is, in case it was enabled previously // to ensure the callback will continue routing from where we left AsyncRedeliveryTask task = new AsyncRedeliveryTask(exchange, callback, data); // calculate the redelivery delay data.redeliveryDelay = data.currentRedeliveryPolicy.calculateRedeliveryDelay(data.redeliveryDelay, data.redeliveryCounter); if (data.redeliveryDelay &gt; 0) { // schedule the redelivery task if (log.isTraceEnabled()) { log.trace("Scheduling redelivery task to run in " + data.redeliveryDelay + " millis for exchangeId: " + exchange.getExchangeId()); } executorService.schedule(task, data.redeliveryDelay, TimeUnit.MILLISECONDS); } else { // execute the task immediately executorService.submit(task); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1911</td> 
+     <td>-1422651048</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>b56abffc4aea759df72061f176a407b1a74203dd</td> 
+     <td>TODO: Use a scheduler to schedule the redelivery delay which contains the outputAsync task being executed we can optimize and only use the scheduler if there is a delay</td> 
+     <td>calculate the redelivery delay</td> 
+     <td>SATD_REMOVED</td> 
+     <td>processAsyncErrorHandler(Exchange, AsyncCallback, RedeliveryData)</td> 
+     <td>protected void processAsyncErrorHandler(final Exchange exchange, final AsyncCallback callback, final RedeliveryData data)</td> 
+     <td> // can we still run if (!isRunAllowed()) { if (exchange.getException() == null) { exchange.setException(new RejectedExecutionException()); } callback.done(data.sync); return; } // did previous processing cause an exception? boolean handle = shouldHandleException(exchange); if (handle) { handleException(exchange, data); } // compute if we should redeliver or not boolean shouldRedeliver = shouldRedeliver(exchange, data); if (!shouldRedeliver) { // no we should not redeliver to the same output so either try an onException (if any given) // or the dead letter queue Processor target = data.failureProcessor != null ? data.failureProcessor : data.deadLetterProcessor; // deliver to the failure processor (either an on exception or dead letter queue deliverToFailureProcessor(target, exchange, data, callback); // we are breaking out return; } if (data.redeliveryCounter &gt; 0) { // let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to // have it being executed in the future, or immediately RedeliveryTask task = new RedeliveryTask(exchange, callback, data); // calculate the redelivery delay data.redeliveryDelay = data.currentRedeliveryPolicy.calculateRedeliveryDelay(data.redeliveryDelay, data.redeliveryCounter); if (data.redeliveryDelay &gt; 0) { // schedule the redelivery task if (log.isTraceEnabled()) { log.trace("Scheduling redelivery task to run in " + data.redeliveryDelay + " millis for exchangeId: " + exchange.getExchangeId()); } executorService.schedule(task, data.redeliveryDelay, TimeUnit.MILLISECONDS); } else { // execute the task immediately executorService.submit(task); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1910</td> 
+     <td>-1422651048</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>b56abffc4aea759df72061f176a407b1a74203dd</td> 
+     <td>TODO: Use a scheduler to schedule the redelivery delay which contains the outputAsync task being executed we can optimize and only use the scheduler if there is a delay</td> 
+     <td>let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to have it being executed in the future, or immediately</td> 
+     <td>SATD_CHANGED</td> 
+     <td>processAsyncErrorHandler(Exchange, AsyncCallback, RedeliveryData)</td> 
+     <td>protected void processAsyncErrorHandler(final Exchange exchange, final AsyncCallback callback, final RedeliveryData data)</td> 
+     <td> // can we still run if (!isRunAllowed()) { if (exchange.getException() == null) { exchange.setException(new RejectedExecutionException()); } callback.done(data.sync); return; } // did previous processing cause an exception? boolean handle = shouldHandleException(exchange); if (handle) { handleException(exchange, data); } // compute if we should redeliver or not boolean shouldRedeliver = shouldRedeliver(exchange, data); if (!shouldRedeliver) { // no we should not redeliver to the same output so either try an onException (if any given) // or the dead letter queue Processor target = data.failureProcessor != null ? data.failureProcessor : data.deadLetterProcessor; // deliver to the failure processor (either an on exception or dead letter queue deliverToFailureProcessor(target, exchange, data, callback); // we are breaking out return; } if (data.redeliveryCounter &gt; 0) { // let the RedeliverTask be the logic which tries to redeliver the Exchange which we can used a scheduler to // have it being executed in the future, or immediately RedeliveryTask task = new RedeliveryTask(exchange, callback, data); // calculate the redelivery delay data.redeliveryDelay = data.currentRedeliveryPolicy.calculateRedeliveryDelay(data.redeliveryDelay, data.redeliveryCounter); if (data.redeliveryDelay &gt; 0) { // schedule the redelivery task if (log.isTraceEnabled()) { log.trace("Scheduling redelivery task to run in " + data.redeliveryDelay + " millis for exchangeId: " + exchange.getExchangeId()); } executorService.schedule(task, data.redeliveryDelay, TimeUnit.MILLISECONDS); } else { // execute the task immediately executorService.submit(task); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1909</td> 
+     <td>-1422651048</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>943fe8d7952baafa825d4359d5dd1dbdd59f0ec7</td> 
+     <td>None</td> 
+     <td>TODO: Use a scheduler to schedule the redelivery delay which contains the outputAsync task being executed we can optimize and only use the scheduler if there is a delay</td> 
+     <td>SATD_ADDED</td> 
+     <td>processAsyncErrorHandler(Exchange, AsyncCallback, RedeliveryData)</td> 
+     <td>protected void processAsyncErrorHandler(final Exchange exchange, final AsyncCallback callback, final RedeliveryData data)</td> 
+     <td> // can we still run if (!isRunAllowed()) { if (exchange.getException() == null) { exchange.setException(new RejectedExecutionException()); } callback.done(data.sync); return; } // did previous processing cause an exception? boolean handle = shouldHandleException(exchange); if (handle) { handleException(exchange, data); } // compute if we should redeliver or not boolean shouldRedeliver = shouldRedeliver(exchange, data); if (!shouldRedeliver) { // no we should not redeliver to the same output so either try an onException (if any given) // or the dead letter queue Processor target = data.failureProcessor != null ? data.failureProcessor : data.deadLetterProcessor; // deliver to the failure processor (either an on exception or dead letter queue deliverToFailureProcessor(target, exchange, data, callback); // we are breaking out return; } // TODO: Use a scheduler to schedule the redelivery delay // which contains the outputAsync task being executed // we can optimize and only use the scheduler if there is a delay if (shouldRedeliver &amp;&amp; data.redeliveryCounter &gt; 0) { // prepare for redelivery prepareExchangeForRedelivery(exchange); // if we are redelivering then sleep before trying again // wait until we should redeliver try { data.redeliveryDelay = data.currentRedeliveryPolicy.sleep(data.redeliveryDelay, data.redeliveryCounter); } catch (InterruptedException e) { if (log.isDebugEnabled()) { log.debug("Sleep interrupted, are we stopping? " + (isStopping() || isStopped())); } return; } // letting onRedeliver be executed deliverToRedeliveryProcessor(exchange, data); } // process the exchange (also redelivery) outputAsync.process(exchange, new AsyncCallback() { public void done(boolean sync) { // this callback should only handle the async case if (sync) { return; } // mark we are in async mode now data.sync = false; // only process if the exchange hasn't failed // and it has not been handled by the error processor if (isDone(exchange)) { callback.done(sync); return; } // error occurred so loop back around which we do by invoking the processAsyncErrorHandler processAsyncErrorHandler(exchange, callback, data); } }); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

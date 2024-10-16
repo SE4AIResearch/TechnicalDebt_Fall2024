@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>636</td> <td>-1422651691</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>7fd60493e4a4caee42824cdc9c90d4ad0b98c927</td> <td>None</td> <td>TODO: below fails for Mail component, maybe a converter is missing</td> <td>SATD_ADDED</td> <td>testProcessOnlyUnseenMessages()</td> <td>public void testProcessOnlyUnseenMessages() throws Exception</td> <td>
+    prepareMailbox();
+    sendBody("direct:a", "Message 3");
+    // let Camel have time to consume and process the mailbox
+    Thread.sleep(1000);
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(1);
+    // TODO: below fails for Mail component, maybe a converter is missing
+    // mock.expectedBodiesReceived("Message 3");
+    String body = mock.assertExchangeReceived(0).getIn().getBody(String.class);
+    assertEquals("Message 3", body);
+    mock.assertIsSatisfied();
+</td> </tr></table></body></html>

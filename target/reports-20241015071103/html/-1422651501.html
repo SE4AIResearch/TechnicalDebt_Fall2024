@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1034</td> <td>-1422651501</td><td>apache/camel</td><td>Jonathan Anstey</td><td>449ae5dc3469288ad3537bef0e409cd4695b1fd9</td> <td>TODO we can zap this?</td> <td>TODO we can zap this?</td> <td>CLASS_OR_METHOD_CHANGED</td> <td>registerEndpoint(Element, ParserContext, String)</td> <td>private void registerEndpoint(Element childElement, ParserContext parserContext, String contextId)</td> <td>
+    String id = childElement.getAttribute("id");
+    // must have an id to be registered
+    if (ObjectHelper.isNotEmpty(id)) {
+        BeanDefinition definition = endpointParser.parse(childElement, parserContext);
+        // TODO we can zap this?
+        definition.getPropertyValues().addPropertyValue("camelContext", new RuntimeBeanReference(contextId));
+        // definition.getPropertyValues().addPropertyValue("context",
+        // builder.getBeanDefinition());
+        parserContext.registerComponent(new BeanComponentDefinition(definition, id));
+    }
+</td> </tr></table></body></html>

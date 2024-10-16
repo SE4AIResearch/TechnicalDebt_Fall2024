@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>951</td> 
+     <td>-1422651536</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8a774123422d62272b996f51630a95a7f8b0e918</td> 
+     <td>we just append the redelivery counter to the body you can of course do all kind of stuff instead</td> 
+     <td>we just append the redelivery counter to the body you can of course do all kind of stuff instead</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // to execute unit test much faster we dont use delay between redeliveries errorHandler(deadLetterChannel("mock:error").delay(0L)); // START SNIPPET: e1 // we configure an interceptor that is triggered when the redelivery flag // has been set TRUE on an exchange intercept().when(header("org.apache.camel.Redelivered").isEqualTo(Boolean.TRUE)).process(new Processor() { public void process(Exchange exchange) throws Exception { // the message is being redelivered so we can alter it // we just append the redelivery counter to the body // you can of course do all kind of stuff instead String body = exchange.getIn().getBody(String.class); int count = exchange.getIn().getHeader("org.apache.camel.RedeliveryCounter", Integer.class); exchange.getIn().setBody(body + count); } }); // END SNIPPET: e1 from("direct:start").process(new Processor() { public void process(Exchange exchange) throws Exception { // force some error so Camel will do redelivery if (++counter &lt;= 3) { throw new MyTechnicalException("Forced by unit test"); } } }).to("mock:result"); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>950</td> 
+     <td>-1422651536</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>29fe36a035bb9fd2c50b6bd6c56637837c2b5095</td> 
+     <td>None</td> 
+     <td>we just append the redelivery counter to the body you can of course do all kind of stuff instead</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // to execute unit test much faster we dont use delay between redeliveries errorHandler(deadLetterChannel("mock:error").delay(0L)); // START SNIPPET: e1 // we configure an interceptor that is triggered when the redelivery flag // has been set on an exchange intercept().when(header("org.apache.camel.Redelivered").isNotNull()).process(new Processor() { public void process(Exchange exchange) throws Exception { // the message is being redelivered so we can alter it // we just append the redelivery counter to the body // you can of course do all kind of stuff instead String body = exchange.getIn().getBody(String.class); int count = exchange.getIn().getHeader("org.apache.camel.RedeliveryCounter", Integer.class); exchange.getIn().setBody(body + count); } }); // END SNIPPET: e1 from("direct:start").process(new Processor() { public void process(Exchange exchange) throws Exception { // force some error so Camel will do redelivery if (++counter &lt;= 3) { throw new MyTechnicalException("Forced by unit test"); } } }).to("mock:result"); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

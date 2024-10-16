@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3763</td> <td>-1422650024</td><td>apache/camel</td><td>Candle</td><td>78fd81e5f7861e6fbde3fb9d63519bc1e775c93c</td> <td>None</td> <td>XXX only uses the first shard</td> <td>SATD_ADDED</td> <td>getShardItertor()</td> <td>private String getShardItertor()</td> <td>
+    // either return a cached one or get a new one via a GetShardIterator request.
+    if (currentShardIterator == null) {
+        ListStreamsRequest req0 = new ListStreamsRequest().withTableName(getEndpoint().getTableName());
+        ListStreamsResult res0 = getClient().listStreams(req0);
+        // XXX assumes there is only one stream
+        final String streamArn = res0.getStreams().get(0).getStreamArn();
+        DescribeStreamRequest req1 = new DescribeStreamRequest().withStreamArn(streamArn);
+        DescribeStreamResult res1 = getClient().describeStream(req1);
+        GetShardIteratorRequest req = new GetShardIteratorRequest().withStreamArn(streamArn).withShardId(// XXX only uses the first shard
+        res1.getStreamDescription().getShards().get(0).getShardId()).withShardIteratorType(getEndpoint().getIteratorType());
+        GetShardIteratorResult result = getClient().getShardIterator(req);
+        currentShardIterator = result.getShardIterator();
+    }
+    LOG.trace("Shard Iterator is: {}", currentShardIterator);
+    return currentShardIterator;
+</td> </tr></table></body></html>

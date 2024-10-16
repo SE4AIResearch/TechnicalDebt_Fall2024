@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5340</td> <td>-1009652127</td><td>apache/hadoop</td><td>Thomas White</td><td>a732ab38047299c545cfc978e25f6b2871b5a4b3</td> <td>None</td> <td>test whether the heap usage emulator achieves the desired target using
+desired calls to the underling core engine.</td> <td>SATD_ADDED</td> <td>testEmulationAccuracy(Configuration, FakeHeapUsageEmulatorCore, ResourceCalculatorPlugin, ResourceUsageMetrics, TotalHeapUsageEmulatorPlugin, long, long)</td> <td>private static void testEmulationAccuracy(Configuration conf, FakeHeapUsageEmulatorCore fakeCore, ResourceCalculatorPlugin monitor, ResourceUsageMetrics metrics, TotalHeapUsageEmulatorPlugin heapPlugin, long expectedTotalHeapUsageInMB, long expectedTotalNumCalls) throws Exception</td> <td>
+    FakeProgressive fakeProgress = new FakeProgressive();
+    fakeCore.resetFake();
+    heapPlugin.initialize(conf, metrics, monitor, fakeProgress);
+    int numLoops = 0;
+    while (fakeProgress.getProgress() < 1) {
+        ++numLoops;
+        float progress = numLoops / 100.0F;
+        fakeProgress.setProgress(progress);
+        heapPlugin.emulate();
+    }
+    // test if the resource plugin shows the expected usage
+    assertEquals("Cumulative heap usage emulator plugin failed (total usage)!", expectedTotalHeapUsageInMB, fakeCore.getHeapUsageInMB(), 1L);
+    // test if the resource plugin shows the expected num calls
+    assertEquals("Cumulative heap usage emulator plugin failed (num calls)!", expectedTotalNumCalls, fakeCore.getNumCalls(), 0L);
+</td> </tr></table></body></html>

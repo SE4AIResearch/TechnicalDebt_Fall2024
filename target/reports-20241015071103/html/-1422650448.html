@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2958</td> <td>-1422650448</td><td>apache/camel</td><td>Claus Ibsen</td><td>f1ea032dcaf22a840b46a0e47e26fd6300712f47</td> <td>None</td> <td>TODO: don't make use of the id property here as it could potentially end up
+with a deadlock through the openjpa generated proxy object of this entity</td> <td>SATD_ADDED</td> <td>toString()</td> <td>public String toString()</td> <td>
+    // TODO: don't make use of the id property here as it could potentially end up
+    // with a deadlock through the openjpa generated proxy object of this entity
+    return "MultiSteps[step: " + getStep() + " address: " + getAddress() + "]";
+</td> </tr></table></body></html>

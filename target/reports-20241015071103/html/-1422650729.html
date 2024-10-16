@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2466</td> <td>-1422650729</td><td>apache/camel</td><td>Christian Schneider</td><td>d66d63361c73b5d28de11ad83456791b722835e4</td> <td>None</td> <td>X TODO Java-EE5 support needs to be discussed
+workaround for some Java-EE5 environments in combination with a special
+StartupBroadcaster for bootstrapping CDI</td> <td>SATD_ADDED</td> <td>getInstance()</td> <td>public static BeanManagerProvider getInstance()</td> <td>
+    if (bmp == null) {
+    // X TODO Java-EE5 support needs to be discussed
+    // workaround for some Java-EE5 environments in combination with a special
+    // StartupBroadcaster for bootstrapping CDI
+    // CodiStartupBroadcaster.broadcastStartup();
+    // here bmp might not be null (depends on the broadcasters)
+    }
+    if (bmp == null) {
+        throw new IllegalStateException("No " + BeanManagerProvider.class.getName() + " in place! " + "Please ensure that you configured the CDI implementation of your choice properly. " + "If your setup is correct, please clear all caches and compiled artifacts.");
+    }
+    return bmp;
+</td> </tr></table></body></html>

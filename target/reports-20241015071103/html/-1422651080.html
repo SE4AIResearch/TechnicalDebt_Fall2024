@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1844</td> <td>-1422651080</td><td>apache/camel</td><td>Claus Ibsen</td><td>24a09408139ef14448f94388099b8f5f54a3b3ea</td> <td>None</td> <td>TODO: rework to have configured executor service in SendAsyncProcessor being handled in stop/start scenario</td> <td>SATD_ADDED</td> <td>createProcessor(RouteContext)</td> <td>public Processor createProcessor(RouteContext routeContext) throws Exception</td> <td>
+    if (async == null || !async) {
+        // when sync then let super create the processor
+        return super.createProcessor(routeContext);
+    }
+    // this code below is only for creating when async is enabled
+    // ----------------------------------------------------------
+    // create the child processor which is the async route
+    Processor childProcessor = this.createChildProcessor(routeContext, false);
+    // wrap it in a unit of work so the route that comes next is also done in a unit of work
+    UnitOfWorkProcessor uow = new UnitOfWorkProcessor(routeContext, childProcessor);
+    // create async processor
+    Endpoint endpoint = resolveEndpoint(routeContext);
+    // TODO: rework to have configured executor service in SendAsyncProcessor being handled in stop/start scenario
+    SendAsyncProcessor async = new SendAsyncProcessor(endpoint, getPattern(), uow);
+    executorService = ExecutorServiceHelper.getConfiguredExecutorService(routeContext, "ToAsync", this);
+    if (executorService != null) {
+        async.setExecutorService(executorService);
+    }
+    if (poolSize != null) {
+        async.setPoolSize(poolSize);
+    }
+    return async;
+</td> </tr></table></body></html>

@@ -1,0 +1,64 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5448</td> <td>-1009652278</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Total 2 map slots should be accounted for.</td> <td>SATD_ADDED</td> <td>testHighMemoryBlockingAcrossTaskTypes()</td> <td>public void testHighMemoryBlockingAcrossTaskTypes() throws IOException</td> <td>
+    // 2 map and 1 reduce slots
+    taskTrackerManager = new FakeTaskTrackerManager(1, 2, 2);
+    taskTrackerManager.addQueues(new String[] { "default" });
+    ArrayList<FakeQueueInfo> queues = new ArrayList<FakeQueueInfo>();
+    queues.add(new FakeQueueInfo("default", 100.0f, true, 25));
+    scheduler.setTaskTrackerManager(taskTrackerManager);
+    // enabled memory-based scheduling
+    // Normal job in the cluster would be 1GB maps/reduces
+    scheduler.getConf().setLong(JTConfig.JT_MAX_MAPMEMORY_MB, 2 * 1024);
+    scheduler.getConf().setLong(MRConfig.MAPMEMORY_MB, 1 * 1024);
+    scheduler.getConf().setLong(JTConfig.JT_MAX_REDUCEMEMORY_MB, 1 * 1024);
+    scheduler.getConf().setLong(MRConfig.REDUCEMEMORY_MB, 1 * 1024);
+    taskTrackerManager.setFakeQueues(queues);
+    scheduler.start();
+    // The situation : Two jobs in the queue. First job with only maps and no
+    // reduces and is a high memory job. Second job is a normal job with both
+    // maps and reduces.
+    // First job cannot run for want of memory for maps. In this case, second
+    // job's reduces should run.
+    LOG.debug("Submit one high memory(2GB maps, 0MB reduces) job of " + "2 map tasks");
+    JobConf jConf = new JobConf(conf);
+    jConf.setMemoryForMapTask(2 * 1024);
+    jConf.setMemoryForReduceTask(0);
+    jConf.setNumMapTasks(2);
+    jConf.setNumReduceTasks(0);
+    jConf.setQueueName("default");
+    jConf.setUser("u1");
+    FakeJobInProgress job1 = taskTrackerManager.submitJobAndInit(JobStatus.PREP, jConf);
+    LOG.debug("Submit another regular memory(1GB vmem maps/reduces) job of " + "2 map/red tasks");
+    jConf = new JobConf(conf);
+    jConf.setMemoryForMapTask(1 * 1024);
+    jConf.setMemoryForReduceTask(1 * 1024);
+    jConf.setNumMapTasks(2);
+    jConf.setNumReduceTasks(2);
+    jConf.setQueueName("default");
+    jConf.setUser("u1");
+    FakeJobInProgress job2 = taskTrackerManager.submitJobAndInit(JobStatus.PREP, jConf);
+    // first, a map from j1 and a reduce from other job j2
+    Map<String, String> strs = new HashMap<String, String>();
+    strs.put(MAP, "attempt_test_0001_m_000001_0 on tt1");
+    strs.put(REDUCE, "attempt_test_0002_r_000001_0 on tt1");
+    checkMultipleTaskAssignment(taskTrackerManager, scheduler, "tt1", strs);
+    // Total 2 map slots should be accounted for.
+    checkOccupiedSlots("default", TaskType.MAP, 1, 2, 100.0f);
+    checkOccupiedSlots("default", TaskType.REDUCE, 1, 1, 50.0f);
+    checkMemReservedForTasksOnTT("tt1", 2 * 1024L, 1 * 1024L);
+    // TT has 2 slots for reduces hence this call should get a reduce task
+    // from other job
+    checkAssignment(taskTrackerManager, scheduler, "tt1", "attempt_test_0002_r_000002_0 on tt1");
+    checkOccupiedSlots("default", TaskType.MAP, 1, 2, 100.0f);
+    checkOccupiedSlots("default", TaskType.REDUCE, 1, 2, 100.0f);
+    checkMemReservedForTasksOnTT("tt1", 2 * 1024L, 2 * 1024L);
+    // now as all the slots are occupied hence no more tasks would be
+    // assigned.
+    assertNull(scheduler.assignTasks(tracker("tt1")));
+</td> </tr></table></body></html>

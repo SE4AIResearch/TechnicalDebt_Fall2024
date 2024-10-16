@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6016</td> 
+     <td>-1009652561</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>verify that after expunging the Trash, it really goes away</td> 
+     <td>verify that after expunging the Trash, it really goes away</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5214</td> 
+     <td>-1009652561</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>verify that after expunging the Trash, it really goes away</td> 
+     <td>verify that after expunging the Trash, it really goes away</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5013</td> 
+     <td>-1009652561</td>
+     <td>apache/hadoop</td>
+     <td>Owen O'Malley</td>
+     <td>ac670cc47f06b0eb880dcb5522a5aba187b5c67d</td> 
+     <td>None</td> 
+     <td>verify that after expunging the Trash, it really goes away</td> 
+     <td>SATD_ADDED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

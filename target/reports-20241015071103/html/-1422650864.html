@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2741</td> 
+     <td>-1422650864</td>
+     <td>apache/camel</td>
+     <td>Hadrian Zbarcea</td>
+     <td>619892ec97587de5cb0d02f986d59da4a678d331</td> 
+     <td>Reverse session ID for reply TODO may need to optionally include subID and locationID</td> 
+     <td>TODO may need to optionally include subID and locationID</td> 
+     <td>SATD_CHANGED</td> 
+     <td>addHeaderFieldIfPresent(int, String)</td> 
+     <td>private void addHeaderFieldIfPresent(int tag, String value)</td> 
+     <td> if (!ObjectHelper.isEmpty(value)) { withHeaderField(tag, value); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2245</td> 
+     <td>-1422650864</td>
+     <td>apache/camel</td>
+     <td>Martin Krasser</td>
+     <td>4690a669ba39341b5a29bc2e071ba084c21c6b26</td> 
+     <td>None</td> 
+     <td>Reverse session ID for reply TODO may need to optionally include subID and locationID</td> 
+     <td>SATD_ADDED</td> 
+     <td>addHeaderFieldIfPresent(int, String)</td> 
+     <td>private void addHeaderFieldIfPresent(int tag, String value)</td> 
+     <td> if (value != null &amp;&amp; !"".equals(value)) { withHeaderField(tag, value); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

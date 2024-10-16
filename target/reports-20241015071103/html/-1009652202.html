@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5524</td> <td>-1009652202</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO: use explicit date formats</td> <td>SATD_ADDED</td> <td>VerticaRecord> getRecordWriter(TaskAttemptContext)</td> <td>public RecordWriter<Text, VerticaRecord> getRecordWriter(TaskAttemptContext context) throws IOException</td> <td>
+    VerticaConfiguration config = new VerticaConfiguration(context.getConfiguration());
+    String name = context.getJobName();
+    // TODO: use explicit date formats
+    String table = config.getOutputTableName();
+    String copyStmt = "COPY " + table + " FROM STDIN" + " DELIMITER '" + delimiter + "' RECORD TERMINATOR '" + terminator + "' STREAM NAME '" + name + "' DIRECT";
+    try {
+        Connection conn = config.getConnection(true);
+        return new VerticaRecordWriter(conn, copyStmt, table, delimiter, terminator);
+    } catch (Exception e) {
+        throw new IOException(e);
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4363</td> <td>1242677844</td><td>GerritCodeReview/gerrit</td><td>Martin Fick</td><td>d9488f0c37084f3e8b6426ad9fd7722bea776ae2</td> <td>None</td> <td>TODO(cranger): remove once the schema is migrated in the next patch.</td> <td>SATD_ADDED</td> <td>setFrom(Account.Id)</td> <td>public void setFrom(final Account.Id id)</td> <td>
+    super.setFrom(id);
+    /**
+     * Is the from user in an email squelching group?
+     */
+    final IdentifiedUser user = args.identifiedUserFactory.create(id);
+    if (!user.getCapabilities().canEmailReviewers()) {
+        emailOnlyAuthors = true;
+    } else {
+        // TODO(cranger): remove once the schema is migrated in the next patch.
+        final Set<AccountGroup.UUID> gids = user.getEffectiveGroups().getKnownGroups();
+        for (final AccountGroup.UUID gid : gids) {
+            AccountGroup group = args.groupCache.get(gid);
+            if (group != null && group.isEmailOnlyAuthors()) {
+                emailOnlyAuthors = true;
+                break;
+            }
+        }
+    }
+</td> </tr></table></body></html>

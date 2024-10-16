@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4344</td> <td>1242677833</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>2d65d29d80ace5b05f8ee63c85fab57f607b6777</td> <td>None</td> <td>Only permit a refresh if all new references start from the tip of
+an existing references. This happens some of the time within a
+Gerrit Code Review server, perhaps about 50% of new references.
+Since a complete rebuild is so costly, try this approach first.</td> <td>SATD_ADDED</td> <td>lookupTag(AnyObjectId)</td> <td> Tag lookupTag(AnyObjectId id)</td> <td>
+    return tags.get(id);
+</td> </tr></table></body></html>

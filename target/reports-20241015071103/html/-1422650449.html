@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2957</td> 
+     <td>-1422650449</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>5105d1d74807b7c0294c2acb909e68893784710e</td> 
+     <td>inside the route can be resolved. please note that in this simple test we just add these properties hard-coded below but of course the mechanism to retrieve these extra properties can be anything else, e.g. through the entries inside a database table etc.</td> 
+     <td>note that in this simple test we just add these properties hard-coded below but of course the mechanism to retrieve these extra properties can be anything else, e.g. through the entries inside a database table etc.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>resolveProperties(CamelContext, boolean, String...)</td> 
+     <td>public Properties resolveProperties(CamelContext context, boolean ignoreMissingLocation, String... uri) throws Exception</td> 
+     <td> Properties answer = super.resolveProperties(context, ignoreMissingLocation, uri); // define the additional properties we need to provide so that the uri "direct:{{foo}}" by the "from" clause // as well as "{{scheme}}{{separator}}{{context-path}}" by the "to" clause can be properly resolved. please // note that in this simple test we just add these properties hard-coded below but of course the mechanism to // retrieve these extra properties can be anything else, e.g. through the entries inside a database table etc. answer.put("foo", "bar"); answer.put("scheme", "mock"); answer.put("separator", ":"); answer.put("context-path", "result"); return answer; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2956</td> 
+     <td>-1422650449</td>
+     <td>apache/camel</td>
+     <td>cmueller</td>
+     <td>17f9678a6881ad269fe0eb8728082b53c8296e87</td> 
+     <td>None</td> 
+     <td>inside the route can be resolved. please note that in this simple test we just add these properties hard-coded below but of course the mechanism to retrieve these extra properties can be anything else, e.g. through the entries inside a database table etc.</td> 
+     <td>SATD_ADDED</td> 
+     <td>resolveProperties(CamelContext, boolean, String...)</td> 
+     <td>public Properties resolveProperties(CamelContext context, boolean ignoreMissingLocation, String... uri) throws Exception</td> 
+     <td> Properties answer = super.resolveProperties(context, ignoreMissingLocation, uri); // add the additional properties we need to provide so that the uri ""{{scheme}}{{separator}}{{authority}}"" // inside the route can be resolved. please note that in this simple test we just add these properties // hard-coded below but of course the mechanism to retrieve these extra properties can be anything else, // e.g. through the entries inside a database table etc. answer.put("scheme", "mock"); answer.put("separator", ":"); answer.put("authority", "result"); return answer; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

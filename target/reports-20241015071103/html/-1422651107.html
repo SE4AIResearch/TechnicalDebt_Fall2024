@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1790</td> <td>-1422651107</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>21ab70c79ec8651a5969836fe033f1bd731269de</td> <td>None</td> <td>TODO: This class should extends ServiceSupport so we can cleanup recipientList when stopping</td> <td>SATD_ADDED</td> <td>matchContext(String)</td> <td>private boolean matchContext(String context)</td> <td>
+    if (ObjectHelper.isNotEmpty(context)) {
+        if (!camelContext.getName().equals(context)) {
+            return false;
+        }
+    }
+    return true;
+</td> </tr></table></body></html>

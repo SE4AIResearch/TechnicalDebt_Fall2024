@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5443</td> <td>-1009652283</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>generate splits</td> <td>SATD_ADDED</td> <td>getSplits(JobContext)</td> <td>public List<InputSplit> getSplits(JobContext job) throws IOException</td> <td>
+    long minSize = Math.max(getFormatMinSplitSize(), getMinSplitSize(job));
+    long maxSize = getMaxSplitSize(job);
+    // generate splits
+    List<InputSplit> splits = new ArrayList<InputSplit>();
+    List<FileStatus> files = listStatus(job);
+    for (FileStatus file : files) {
+        Path path = file.getPath();
+        long length = file.getLen();
+        if (length != 0) {
+            FileSystem fs = path.getFileSystem(job.getConfiguration());
+            BlockLocation[] blkLocations = fs.getFileBlockLocations(file, 0, length);
+            if (isSplitable(job, path)) {
+                long blockSize = file.getBlockSize();
+                long splitSize = computeSplitSize(blockSize, minSize, maxSize);
+                long bytesRemaining = length;
+                while (((double) bytesRemaining) / splitSize > SPLIT_SLOP) {
+                    int blkIndex = getBlockIndex(blkLocations, length - bytesRemaining);
+                    splits.add(makeSplit(path, length - bytesRemaining, splitSize, blkLocations[blkIndex].getHosts()));
+                    bytesRemaining -= splitSize;
+                }
+                if (bytesRemaining != 0) {
+                    splits.add(makeSplit(path, length - bytesRemaining, bytesRemaining, blkLocations[blkLocations.length - 1].getHosts()));
+                }
+            } else {
+                // not splitable
+                splits.add(makeSplit(path, 0, length, blkLocations[0].getHosts()));
+            }
+        } else {
+            // Create empty hosts array for zero length files
+            splits.add(makeSplit(path, 0, length, new String[0]));
+        }
+    }
+    // Save the number of input files for metrics/loadgen
+    job.getConfiguration().setLong(NUM_INPUT_FILES, files.size());
+    LOG.debug("Total # of splits: " + splits.size());
+    return splits;
+</td> </tr></table></body></html>

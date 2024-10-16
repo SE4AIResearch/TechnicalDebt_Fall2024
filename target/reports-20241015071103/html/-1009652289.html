@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5437</td> <td>-1009652289</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO enable upload command only when selection is exactly one folder</td> <td>SATD_ADDED</td> <td>uploadFilesToDFS(IStructuredSelection)</td> <td>private void uploadFilesToDFS(IStructuredSelection selection) throws InvocationTargetException, InterruptedException</td> <td>
+    // Ask the user which files to upload
+    FileDialog dialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.OPEN | SWT.MULTI);
+    dialog.setText("Select the local files to upload");
+    dialog.open();
+    List<File> files = new ArrayList<File>();
+    for (String fname : dialog.getFileNames()) files.add(new File(dialog.getFilterPath() + File.separator + fname));
+    // TODO enable upload command only when selection is exactly one folder
+    List<DFSFolder> folders = filterSelection(DFSFolder.class, selection);
+    if (folders.size() >= 1)
+        uploadToDFS(folders.get(0), files);
+</td> </tr></table></body></html>

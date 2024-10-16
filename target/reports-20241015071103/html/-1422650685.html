@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2546</td> <td>-1422650685</td><td>apache/camel</td><td>Babak Vahdat</td><td>16d21d5e2d64cefff268be426f6c4f00b9c8b3a7</td> <td>None</td> <td>TODO replace this method with the cxf util's method when it becomes available</td> <td>SATD_ADDED</td> <td>changeToOneway(org.apache.cxf.message.Exchange)</td> <td>private static void changeToOneway(org.apache.cxf.message.Exchange cxfExchange)</td> <td>
+    cxfExchange.setOneWay(true);
+    Object httpresp = cxfExchange.getInMessage().get("HTTP.RESPONSE");
+    if (httpresp != null) {
+        try {
+            Method m = ReflectionUtil.findMethod(httpresp.getClass(), "setStatus", int.class);
+            if (m != null) {
+                m.invoke(httpresp, 202);
+            }
+        } catch (Exception e) {
+            LOG.warn("Unable to set the http ", e);
+        }
+    }
+</td> </tr></table></body></html>

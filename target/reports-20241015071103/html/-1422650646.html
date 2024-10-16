@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2618</td> <td>-1422650646</td><td>apache/camel</td><td>Claus Ibsen</td><td>fcbdcfb8af981e3255d0c12824acf9ccd92ec567</td> <td>None</td> <td>Both the 3.4 and 5.0 SMPP specs clearly state that 0x02 is
+'Octet-unspecified (8-bit)', but jsmpp doesn't account for this for
+some reason.</td> <td>SATD_ADDED</td> <td>parseAlphabetFromDataCoding(byte)</td> <td>public static Alphabet parseAlphabetFromDataCoding(byte dataCoding)</td> <td>
+    /* Both the 3.4 and 5.0 SMPP specs clearly state that 0x02 is
+         * 'Octet-unspecified (8-bit)', but jsmpp doesn't account for this for
+         * some reason.
+         */
+    return dataCoding == 0x02 ? Alphabet.ALPHA_8_BIT : Alphabet.valueOf((byte) (dataCoding & Alphabet.MASK_ALPHABET));
+</td> </tr></table></body></html>

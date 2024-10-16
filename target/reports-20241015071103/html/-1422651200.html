@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1640</td> <td>-1422651200</td><td>apache/camel</td><td>Claus Ibsen</td><td>4480a89252ea465aee29bddb0f39579787801ff4</td> <td>None</td> <td>get the camel template for Spring template style sending of messages (= producer)</td> <td>SATD_ADDED</td> <td>main(String[])</td> <td>public static void main(final String[] args) throws Exception</td> <td>
+    System.out.println("Notice this client requires that the CamelServer is already running!");
+    ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring/camel-client.xml");
+    // get the camel template for Spring template style sending of messages (= producer)
+    final ProducerTemplate producer = (ProducerTemplate) context.getBean("camelTemplate");
+    final MockEndpoint mock = (MockEndpoint) context.getBean("result");
+    mock.expectedMessageCount(SIZE);
+    // expect no duplicate bodies
+    mock.expectsNoDuplicates().body();
+    // and all replies should start with this text
+    mock.allMessages().body().startsWith("Bye Message");
+    // now send a lot of messages
+    System.out.println("Sending ...");
+    for (int i = 0; i < SIZE; i++) {
+        producer.sendBody("direct:start", "Message " + i);
+    }
+    System.out.println("... Send done");
+    System.out.println("Asserting ...");
+    mock.assertIsSatisfied();
+    System.out.println("... Asserting done");
+    System.exit(0);
+</td> </tr></table></body></html>

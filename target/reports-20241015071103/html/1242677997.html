@@ -1,0 +1,38 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4652</td> <td>1242677997</td><td>GerritCodeReview/gerrit</td><td>Luca Milanesio</td><td>195b9d7ece63e385192d22061e2d70130b3a90f9</td> <td>None</td> <td>TODO(yyonas): figure out how to handle this exception</td> <td>SATD_ADDED</td> <td>onLoad()</td> <td>protected void onLoad() throws IOException, ConfigInvalidException</td> <td>
+    ObjectId rev = getRevision();
+    if (rev == null) {
+        loadDefaults();
+        return;
+    }
+    RevWalk walk = new RevWalk(reader);
+    try {
+        Parser parser = new Parser(change, rev, walk, repoManager);
+        parser.parseAll();
+        if (parser.status != null) {
+            change.setStatus(parser.status);
+        }
+        approvals = parser.buildApprovals();
+        changeMessages = parser.buildMessages();
+        commentsForBase = ImmutableListMultimap.copyOf(parser.commentsForBase);
+        commentsForPS = ImmutableListMultimap.copyOf(parser.commentsForPs);
+        noteMap = parser.commentNoteMap;
+        ImmutableSetMultimap.Builder<ReviewerState, Account.Id> reviewers = ImmutableSetMultimap.builder();
+        for (Map.Entry<Account.Id, ReviewerState> e : parser.reviewers.entrySet()) {
+            reviewers.put(e.getValue(), e.getKey());
+        }
+        this.reviewers = reviewers.build();
+        submitRecords = ImmutableList.copyOf(parser.submitRecords);
+    } catch (ParseException e1) {
+        // TODO(yyonas): figure out how to handle this exception
+        throw new IOException(e1);
+    } finally {
+        walk.release();
+    }
+</td> </tr></table></body></html>

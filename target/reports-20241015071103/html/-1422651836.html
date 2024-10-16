@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>405</td> <td>-1422651836</td><td>apache/camel</td><td>James Strachan</td><td>28e705fb782c27f2fd0328f5577c89c8fe95a154</td> <td>None</td> <td>TODO: figure out the route id</td> <td>SATD_ADDED</td> <td>getObjectName(CamelContext, PerformanceCounter)</td> <td>public ObjectName getObjectName(CamelContext context, PerformanceCounter mbean) throws MalformedObjectNameException</td> <td>
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(domainName + ":");
+    buffer.append(KEY_CONTEXT + "=" + getContextId(context) + ",");
+    buffer.append(KEY_CLASS + "=" + CLASS_ROUTES + ",");
+    // TODO: figure out the route id
+    buffer.append(KEY_ROUTE + "=" + "Route.Counter" + ",");
+    buffer.append(KEY_NAME + "=" + "Stats");
+    return new ObjectName(buffer.toString());
+</td> </tr></table></body></html>

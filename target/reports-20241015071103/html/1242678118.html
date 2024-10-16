@@ -1,0 +1,100 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4910</td> <td>1242678118</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>82253c6e514a9ac546e5305534859d15e28ad188</td> <td>TODO this is actually an error, the branch is gone but we
+want to merge the issue. We can't safely do that if the
+tip is not reachable.
+</td> <td>TODO this is actually an error, the branch is gone but we
+want to merge the issue. We can't safely do that if the
+tip is not reachable.
+</td> <td>CLASS_OR_METHOD_CHANGED</td> <td>validateChangeList(OpenRepo, Collection<ChangeData>)</td> <td>private BranchBatch validateChangeList(OpenRepo or, Collection<ChangeData> submitted) throws IntegrationException</td> <td>
+    logDebug("Validating {} changes", submitted.size());
+    List<ChangeData> toSubmit = new ArrayList<>(submitted.size());
+    Multimap<ObjectId, PatchSet.Id> revisions = getRevisions(or, submitted);
+    SubmitType submitType = null;
+    ChangeData choseSubmitTypeFrom = null;
+    for (ChangeData cd : submitted) {
+        Change.Id changeId = cd.getId();
+        ChangeControl ctl;
+        Change chg;
+        try {
+            ctl = cd.changeControl();
+            chg = cd.change();
+        } catch (OrmException e) {
+            commits.logProblem(changeId, e);
+            continue;
+        }
+        if (chg.currentPatchSetId() == null) {
+            String msg = "Missing current patch set on change";
+            logError(msg + " " + changeId);
+            commits.problem(changeId, msg);
+            continue;
+        }
+        PatchSet ps;
+        Branch.NameKey destBranch = chg.getDest();
+        try {
+            ps = cd.currentPatchSet();
+        } catch (OrmException e) {
+            commits.logProblem(changeId, e);
+            continue;
+        }
+        if (ps == null || ps.getRevision() == null || ps.getRevision().get() == null) {
+            commits.logProblem(changeId, "Missing patch set or revision on change");
+            continue;
+        }
+        String idstr = ps.getRevision().get();
+        ObjectId id;
+        try {
+            id = ObjectId.fromString(idstr);
+        } catch (IllegalArgumentException e) {
+            commits.logProblem(changeId, e);
+            continue;
+        }
+        if (!revisions.containsEntry(id, ps.getId())) {
+            // TODO this is actually an error, the branch is gone but we
+            // want to merge the issue. We can't safely do that if the
+            // tip is not reachable.
+            // 
+            commits.logProblem(changeId, "Revision " + idstr + " of patch set " + ps.getPatchSetId() + " does not match " + ps.getId().toRefName() + " for change");
+            continue;
+        }
+        CodeReviewCommit commit;
+        try {
+            commit = or.rw.parseCommit(id);
+        } catch (IOException e) {
+            commits.logProblem(changeId, e);
+            continue;
+        }
+        // TODO(dborowitz): Consider putting ChangeData in CodeReviewCommit.
+        commit.setControl(ctl);
+        commit.setPatchsetId(ps.getId());
+        commits.put(commit);
+        MergeValidators mergeValidators = mergeValidatorsFactory.create();
+        try {
+            mergeValidators.validatePreMerge(or.repo, commit, or.project, destBranch, ps.getId(), caller);
+        } catch (MergeValidationException mve) {
+            commits.problem(changeId, mve.getMessage());
+            continue;
+        }
+        SubmitType st = getSubmitType(cd);
+        if (st == null) {
+            commits.logProblem(changeId, "No submit type for change");
+            continue;
+        }
+        if (submitType == null) {
+            submitType = st;
+            choseSubmitTypeFrom = cd;
+        } else if (st != submitType) {
+            commits.problem(changeId, String.format("Change has submit type %s, but previously chose submit type %s " + "from change %s in the same batch", st, submitType, choseSubmitTypeFrom.getId()));
+            continue;
+        }
+        commit.add(or.canMergeFlag);
+        toSubmit.add(cd);
+    }
+    logDebug("Submitting on this run: {}", toSubmit);
+    return new AutoValue_MergeOp_BranchBatch(submitType, toSubmit);
+</td> </tr></table></body></html>

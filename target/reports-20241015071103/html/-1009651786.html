@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5982</td> <td>-1009651786</td><td>apache/hadoop</td><td>Steve Loughran</td><td>28e6a4e44a3e920dcaf858f9a74a6358226b3a63</td> <td>None</td> <td>We appear to have missed some transactions -- the NN probably
+lost contact with us temporarily. So, mark the current segment
+as aborted.</td> <td>SATD_ADDED</td> <td>namenodeStartedLogSegment(long)</td> <td>
+    LOG.info("NameNode started a new log segment at txid " + txid);
+    if (editLog.isOpen()) {
+        if (editLog.getLastWrittenTxId() == txid - 1) {
+            // We are in sync with the NN, so end and finalize the current segment
+            editLog.endCurrentLogSegment(false);
+        } else {
+            // We appear to have missed some transactions -- the NN probably
+            // lost contact with us temporarily. So, mark the current segment
+            // as aborted.
+            LOG.warn("NN started new log segment at txid " + txid + ", but BN had only written up to txid " + editLog.getLastWrittenTxId() + "in the log segment starting at " + editLog.getCurSegmentTxId() + ". Aborting this " + "log segment.");
+            editLog.abortCurrentLogSegment();
+        }
+    }
+    editLog.setNextTxId(txid);
+    editLog.startLogSegment(txid, false);
+    if (bnState == BNState.DROP_UNTIL_NEXT_ROLL) {
+        setState(BNState.JOURNAL_ONLY);
+    }
+    if (stopApplyingEditsOnNextRoll) {
+        if (bnState == BNState.IN_SYNC) {
+            LOG.info("Stopped applying edits to prepare for checkpoint.");
+            setState(BNState.JOURNAL_ONLY);
+        }
+        stopApplyingEditsOnNextRoll = false;
+        notifyAll();
+    }
+</td> <td> synchronized void namenodeStartedLogSegment(long txid) throws IOException</td> </tr></table></body></html>

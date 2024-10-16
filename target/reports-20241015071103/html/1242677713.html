@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4115</td> <td>1242677713</td><td>GerritCodeReview/gerrit</td><td>Grzegorz Kossakowski</td><td>12268c42ee1f6994c1c20236d20f48119612b3ee</td> <td>If one of the user's groups had denied them access, but
+this group grants them access, prefer the grant over
+the denial. We have to break the tie somehow and we
+prefer being \"more open\" to being \"more closed\".
+</td> <td>If one of the user's groups had denied them access, but
+this group grants them access, prefer the grant over
+the denial. We have to break the tie somehow and we
+prefer being \"more open\" to being \"more closed\".
+</td> <td>FILE_PATH_CHANGED</td> <td>run(AsyncCallback<T>, Action<T>)</td> <td>protected void run(final AsyncCallback<T> callback, final Action<T> action)</td> <td>
+    try {
+        final ReviewDb db = Common.getSchemaFactory().open();
+        final T r;
+        try {
+            r = action.run(db);
+        } finally {
+            db.close();
+        }
+        if (r != null) {
+            callback.onSuccess(r);
+        }
+    } catch (OrmException e) {
+        if (e.getCause() instanceof Failure) {
+            callback.onFailure(e.getCause().getCause());
+        } else if (e.getCause() instanceof CorruptEntityException) {
+            callback.onFailure(e.getCause());
+        } else if (e.getCause() instanceof NoSuchEntityException) {
+            callback.onFailure(e.getCause());
+        } else {
+            callback.onFailure(e);
+        }
+    } catch (Failure e) {
+        callback.onFailure(e.getCause());
+    }
+</td> </tr></table></body></html>

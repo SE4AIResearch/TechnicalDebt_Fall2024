@@ -1,0 +1,76 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1336</td> 
+     <td>-1422651364</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>eb8cd639472d4216d40210463097fd9fa712531a</td> 
+     <td>TODO I wonder if there is a completion servce that can order the take in the same order as the tasks was submitted, if so we can do aggregate to catch-up while still processing for more performance this one completes all tasks before doing aggregation</td> 
+     <td>execute tasks in parallel but aggregate in the same order as the tasks was submitted (in order sequence)</td> 
+     <td>SATD_REMOVED</td> 
+     <td>doProcessParallel(AtomicExchange, Iterable<processorexchangepair>
+       )
+      </processorexchangepair></td> 
+     <td>protected void doProcessParallel(final AtomicExchange result, Iterable<processorexchangepair>
+        pairs) throws InterruptedException
+      </processorexchangepair></td> 
+     <td> // execute tasks in parallel but aggregate in the same order as the tasks was submitted (in order sequence) final List<exchange>
+        ordered = new ArrayList
+       <exchange>
+        (); final CountingLatch latch = new CountingLatch(); int total = 0; for (ProcessorExchangePair pair : pairs) { final Processor producer = pair.getProcessor(); final Exchange subExchange = pair.getExchange(); updateNewExchange(subExchange, total, pairs); // add to the list of ordered exchanges to aggregate when all the tasks is finished ordered.add(subExchange); // increment number of tasks to do latch.increment(); executorService.submit(new Runnable() { public void run() { try { producer.process(subExchange); } catch (Exception e) { subExchange.setException(e); } if (LOG.isTraceEnabled()) { LOG.trace("Parallel processing complete for exchange: " + subExchange); } // this task is done so decrement latch.decrement(); } }); total++; } // wait for all tasks to be complete latch.await(); // aggregate in order for (Exchange subExchange : ordered) { if (aggregationStrategy != null) { doAggregate(result, subExchange); } } if (LOG.isTraceEnabled()) { LOG.trace("Done parallel processing " + total + " exchanges"); } 
+       </exchange>
+      </exchange></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1334</td> 
+     <td>-1422651364</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>90e0713ac8a6d8ce3b46a5724bd869caeaac3c95</td> 
+     <td>None</td> 
+     <td>TODO I wonder if there is a completion servce that can order the take in the same order as the tasks was submitted, if so we can do aggregate to catch-up while still processing for more performance this one completes all tasks before doing aggregation</td> 
+     <td>SATD_ADDED</td> 
+     <td>doProcessNewParallel(AtomicExchange, Iterable<processorexchangepair>
+       )
+      </processorexchangepair></td> 
+     <td>protected void doProcessNewParallel(final AtomicExchange result, Iterable<processorexchangepair>
+        pairs) throws InterruptedException
+      </processorexchangepair></td> 
+     <td> // execute tasks in parallel but aggregate in the same order as the tasks was submitted (in order sequence) // TODO I wonder if there is a completion servce that can order the take in the same order as the tasks // was submitted, if so we can do aggregate to catch-up while still processing for more performance // this one completes all tasks before doing aggregation final List<exchange>
+        ordered = new ArrayList
+       <exchange>
+        (); final CountingLatch latch = new CountingLatch(); int total = 0; for (ProcessorExchangePair pair : pairs) { final Processor producer = pair.getProcessor(); final Exchange subExchange = pair.getExchange(); updateNewExchange(subExchange, total, pairs); // add to the list of ordered exchanges to aggregate when all the tasks is finished ordered.add(subExchange); // increment number of tasks to do latch.increment(); executorService.submit(new Runnable() { public void run() { try { producer.process(subExchange); } catch (Exception e) { subExchange.setException(e); } // this task is done so decrement latch.decrement(); } }); total++; } // wait for all tasks to be complete latch.await(); // aggregate in order for (Exchange subExchange : ordered) { if (aggregationStrategy != null) { doAggregate(result, subExchange); } } if (LOG.isTraceEnabled()) { LOG.trace("Done parallel processing " + total + " exchanges"); } 
+       </exchange>
+      </exchange></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

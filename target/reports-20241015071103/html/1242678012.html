@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4676</td> <td>1242678012</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>0ec2763bc3e06c93eb02024003af95a2190ecbba</td> <td>None</td> <td>TODO Replace CreateChangeDialog with a nicer looking display.</td> <td>SATD_ADDED</td> <td>call(Button, String)</td> <td> static void call(Button b, final String project)</td> <td>
+    // TODO Replace CreateChangeDialog with a nicer looking display.
+    b.setEnabled(false);
+    new CreateChangeDialog(b, new Project.NameKey(project)) {
+
+        {
+            sendButton.setText(Util.C.buttonCreate());
+            message.setText(Util.C.buttonCreateDescription());
+        }
+
+        @Override
+        public void onSend() {
+            ChangeApi.createChange(project, getDestinationBranch(), message.getText(), new GerritCallback<ChangeInfo>() {
+
+                @Override
+                public void onSuccess(ChangeInfo result) {
+                    sent = true;
+                    hide();
+                    Gerrit.display(PageLinks.toChange(result.legacy_id()));
+                }
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    enableButtons(true);
+                    super.onFailure(caught);
+                }
+            });
+        }
+    }.center();
+</td> </tr></table></body></html>

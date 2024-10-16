@@ -1,0 +1,61 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2928</td> <td>-1422650465</td><td>apache/camel</td><td>Claus Ibsen</td><td>2fb5de834578b769d101b27651c1972744b72c9f</td> <td>None</td> <td>the new way</td> <td>SATD_ADDED</td> <td>createSmppMessage(DeliverSm)</td> <td>public SmppMessage createSmppMessage(DeliverSm deliverSm) throws Exception</td> <td>
+    SmppMessage smppMessage = new SmppMessage(deliverSm, configuration);
+    if (deliverSm.isSmscDeliveryReceipt()) {
+        smppMessage.setHeader(SmppConstants.MESSAGE_TYPE, SmppMessageType.DeliveryReceipt.toString());
+        DeliveryReceipt smscDeliveryReceipt = deliverSm.getShortMessageAsDeliveryReceipt();
+        smppMessage.setBody(smscDeliveryReceipt.getText());
+        smppMessage.setHeader(SmppConstants.ID, smscDeliveryReceipt.getId());
+        smppMessage.setHeader(SmppConstants.DELIVERED, smscDeliveryReceipt.getDelivered());
+        smppMessage.setHeader(SmppConstants.DONE_DATE, smscDeliveryReceipt.getDoneDate());
+        if (!"000".equals(smscDeliveryReceipt.getError())) {
+            smppMessage.setHeader(SmppConstants.ERROR, smscDeliveryReceipt.getError());
+        }
+        smppMessage.setHeader(SmppConstants.SUBMIT_DATE, smscDeliveryReceipt.getSubmitDate());
+        smppMessage.setHeader(SmppConstants.SUBMITTED, smscDeliveryReceipt.getSubmitted());
+        smppMessage.setHeader(SmppConstants.FINAL_STATUS, smscDeliveryReceipt.getFinalStatus());
+        if (deliverSm.getOptionalParametes() != null && deliverSm.getOptionalParametes().length > 0) {
+            // the deprecated way
+            Map<String, Object> optionalParameters = createOptionalParameterByName(deliverSm);
+            smppMessage.setHeader(SmppConstants.OPTIONAL_PARAMETERS, optionalParameters);
+            // the new way
+            Map<Short, Object> optionalParameter = createOptionalParameterByCode(deliverSm);
+            smppMessage.setHeader(SmppConstants.OPTIONAL_PARAMETER, optionalParameter);
+        }
+    } else {
+        smppMessage.setHeader(SmppConstants.MESSAGE_TYPE, SmppMessageType.DeliverSm.toString());
+        if (deliverSm.getShortMessage() != null) {
+            if (SmppUtils.parseAlphabetFromDataCoding(deliverSm.getDataCoding()) == Alphabet.ALPHA_8_BIT) {
+                smppMessage.setBody(deliverSm.getShortMessage());
+            } else {
+                smppMessage.setBody(String.valueOf(new String(deliverSm.getShortMessage(), configuration.getEncoding())));
+            }
+        } else if (deliverSm.getOptionalParametes() != null && deliverSm.getOptionalParametes().length > 0) {
+            List<OptionalParameter> oplist = Arrays.asList(deliverSm.getOptionalParametes());
+            for (OptionalParameter optPara : oplist) {
+                if (OptionalParameter.Tag.MESSAGE_PAYLOAD.code() == optPara.tag && OctetString.class.isInstance(optPara)) {
+                    smppMessage.setBody(((OctetString) optPara).getValueAsString());
+                    break;
+                }
+            }
+        }
+        smppMessage.setHeader(SmppConstants.SEQUENCE_NUMBER, deliverSm.getSequenceNumber());
+        smppMessage.setHeader(SmppConstants.COMMAND_ID, deliverSm.getCommandId());
+        smppMessage.setHeader(SmppConstants.SOURCE_ADDR, deliverSm.getSourceAddr());
+        smppMessage.setHeader(SmppConstants.SOURCE_ADDR_NPI, deliverSm.getSourceAddrNpi());
+        smppMessage.setHeader(SmppConstants.SOURCE_ADDR_TON, deliverSm.getSourceAddrTon());
+        smppMessage.setHeader(SmppConstants.DEST_ADDR, deliverSm.getDestAddress());
+        smppMessage.setHeader(SmppConstants.DEST_ADDR_NPI, deliverSm.getDestAddrNpi());
+        smppMessage.setHeader(SmppConstants.DEST_ADDR_TON, deliverSm.getDestAddrTon());
+        smppMessage.setHeader(SmppConstants.SCHEDULE_DELIVERY_TIME, deliverSm.getScheduleDeliveryTime());
+        smppMessage.setHeader(SmppConstants.VALIDITY_PERIOD, deliverSm.getValidityPeriod());
+        smppMessage.setHeader(SmppConstants.SERVICE_TYPE, deliverSm.getServiceType());
+    }
+    return smppMessage;
+</td> </tr></table></body></html>

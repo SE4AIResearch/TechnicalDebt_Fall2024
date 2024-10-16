@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>924</td> 
+     <td>-1422651546</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a0004478da11d7bcbd9826d672abfb2a934020d0</td> 
+     <td>TODO fix the test failure in no windows box</td> 
+     <td>TODO fix the test failure in no windows box</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>testPollFileWhileSlowFileIsBeingWrittenWithTimeoutAndNoop()</td> 
+     <td>public void testPollFileWhileSlowFileIsBeingWrittenWithTimeoutAndNoop() throws Exception</td> 
+     <td> deleteDirectory("./target/exclusiveread"); createDirectory("./target/exclusiveread/slowfile"); // to test that if noop and thus idempotent we will retry to consume the file // the 2nd. time since the first time we could not get the read lock due timeout // so the file should only be marked in the idempotent repository if we could process it context.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { from("seda:start").process(new MySlowFileProcessor()); from(fileUrl + "&amp;readLockTimeout=1000&amp;noop=true").to("mock:result"); } }); context.start(); MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedMessageCount(1); mock.setMinimumResultWaitTime(3000); mock.setResultWaitTime(5000); // send a message to seda:start to trigger the creating of the slowfile to poll template.sendBody("seda:start", "Create the slow file"); mock.assertIsSatisfied(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>923</td> 
+     <td>-1422651546</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>4be3a4839f91fa3f3d047fb1d025366e46e5a3ae</td> 
+     <td>None</td> 
+     <td>TODO fix the test failure in no windows box</td> 
+     <td>SATD_ADDED</td> 
+     <td>testPollFileWhileSlowFileIsBeingWrittenWithTimeoutAndNoop()</td> 
+     <td>public void testPollFileWhileSlowFileIsBeingWrittenWithTimeoutAndNoop() throws Exception</td> 
+     <td> deleteDirectory("./target/exclusiveread"); createDirectory("./target/exclusiveread/slowfile"); // to test that if noop and thus idempotent we will retry to consume the file // the 2nd. time since the first time we could not get the read lock due timeout // so the file should only be marked in the idempotent repository if we could process it context.addRoutes(new RouteBuilder() { @Override public void configure() throws Exception { from("seda:start").process(new MySlowFileProcessor()); from(fileUrl + "&amp;readLockTimeout=1000&amp;noop=true").to("mock:result"); } }); context.start(); MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedMessageCount(1); mock.setMinimumResultWaitTime(3000); mock.setResultWaitTime(5000); // send a message to seda:start to trigger the creating of the slowfile to poll template.sendBody("seda:start", "Create the slow file"); mock.assertIsSatisfied(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

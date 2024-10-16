@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3918</td> <td>-1422649922</td><td>apache/camel</td><td>Claus Ibsen</td><td>585154511947c0ddf2674e1e44fc0f85db7f9311</td> <td>None</td> <td>This is the camel exchange processor. Allows to send messages to CM
+API.
+TODO: Should i provide a CMSender factory? Dynamically choose
+CMSender implementation? Sending strategy?
+Consider:
+1. single - Single Message strategy.
+2. Multi - CM Api supports to 1000 messages per call.
+3. sliding - sliding window? 1000 messages or time thresold?
+4. mocked - in order to fake cm responses</td> <td>SATD_ADDED</td> <td>createProducer()</td> <td>public CMProducer createProducer() throws Exception</td> <td>
+    final CMConfiguration config = getConfiguration();
+    // This is the camel exchange processor. Allows to send messages to CM
+    // API.
+    // TODO: Should i provide a CMSender factory? Dynamically choose
+    // CMSender implementation? Sending strategy?
+    // Consider:
+    // 1. single - Single Message strategy.
+    // 2. Multi - CM Api supports to 1000 messages per call.
+    // 3. sliding - sliding window? 1000 messages or time thresold?
+    // 4. mocked - in order to fake cm responses
+    // CMConstants.DEFAULT_SCHEME + host is a valid URL. It was previously checked
+    String token = config.getProductToken();
+    ObjectHelper.notEmpty(token, "productToken");
+    UUID uuid = UUID.fromString(token);
+    return new CMProducer(this, new CMSenderOneMessageImpl(getCMUrl(), uuid));
+</td> </tr></table></body></html>

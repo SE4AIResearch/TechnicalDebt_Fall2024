@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2903</td> <td>-1422650482</td><td>apache/camel</td><td>Claus Ibsen</td><td>28e045dea038c566dcf02499a64fd0b75adc902b</td> <td>None</td> <td>this SendProcessor is used a lot in Camel (eg every .to in the route DSL) and therefore we
+want to optimize for regular producers, by using the producer directly instead of the ProducerCache
+Only for pooled and non singleton producers we have to use the ProducerCache as it supports these
+kind of producer better (though these kind of producer should be rare)</td> <td>SATD_ADDED</td> <td>doStart()</td> <td>protected void doStart() throws Exception</td> <td>
+    if (producerCache == null) {
+        // use a single producer cache as we need to only hold reference for one destination
+        // and use a regular HashMap as we do not want a soft reference store that may get re-claimed when low on memory
+        // as we want to ensure the producer is kept around, to ensure its lifecycle is fully managed,
+        // eg stopping the producer when we stop etc.
+        producerCache = new ProducerCache(this, camelContext, new HashMap<String, Producer>(1));
+    // do not add as service as we do not want to manage the producer cache
+    }
+    ServiceHelper.startService(producerCache);
+    // the destination could since have been intercepted by a interceptSendToEndpoint so we got to
+    // lookup this before we can use the destination
+    Endpoint lookup = camelContext.hasEndpoint(destination.getEndpointKey());
+    if (lookup instanceof InterceptSendToEndpoint) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Intercepted sending to {} -> {}", URISupport.sanitizeUri(destination.getEndpointUri()), URISupport.sanitizeUri(lookup.getEndpointUri()));
+        }
+        destination = lookup;
+    }
+    // warm up the producer by starting it so we can fail fast if there was a problem
+    // however must start endpoint first
+    ServiceHelper.startService(destination);
+    // this SendProcessor is used a lot in Camel (eg every .to in the route DSL) and therefore we
+    // want to optimize for regular producers, by using the producer directly instead of the ProducerCache
+    // Only for pooled and non singleton producers we have to use the ProducerCache as it supports these
+    // kind of producer better (though these kind of producer should be rare)
+    Producer producer = producerCache.acquireProducer(destination);
+    if (producer instanceof ServicePoolAware || !producer.isSingleton()) {
+        // no we cannot optimize it - so release the producer back to the producer cache
+        // and use the producer cache for sending
+        producerCache.releaseProducer(destination, producer);
+    } else {
+        // yes we can optimize and use the producer directly for sending
+        this.producer = AsyncProcessorConverterHelper.convert(producer);
+    }
+</td> </tr></table></body></html>

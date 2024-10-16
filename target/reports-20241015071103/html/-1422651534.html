@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>953</td> <td>-1422651534</td><td>apache/camel</td><td>James Strachan</td><td>e66465106741ccaaa97f02b4406b157049d9b06c</td> <td>None</td> <td>TODO: This method is not used</td> <td>SATD_ADDED</td> <td>safeCopy(Exchange, Message)</td> <td>private static Message safeCopy(Exchange exchange, Message message)</td> <td>
+    // TODO: This method is not used
+    if (message == null) {
+        return null;
+    }
+    Message answer = message.copy();
+    if (answer instanceof MessageSupport) {
+        MessageSupport messageSupport = (MessageSupport) answer;
+        messageSupport.setExchange(exchange);
+    }
+    return answer;
+</td> </tr></table></body></html>

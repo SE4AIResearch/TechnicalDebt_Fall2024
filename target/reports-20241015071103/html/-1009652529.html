@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6068</td> 
+     <td>-1009652529</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>NOTE: this is the one place we do NOT want to save the number of bytes sent (nRemaining here) into lastBytesSent: since we are resending what we've already sent before, offset is nonzero in general (only way it could be zero is if it already equals nRemaining), which would then screw up the offset calculation _next_ time around. IOW, getRemaining() is in terms of the original, zero-offset bufferload, so lastBytesSent must be as well. Cheesy ASCII art: &lt;------------ m, lastBytesSent -----------&gt; +===============================================+ buffer: |1111111111|22222222222222222|333333333333| | +===============================================+ #1: &lt;-- off --&gt;|&lt;-------- nRemaining ---------&gt; #2: &lt;----------- off -----------&gt;|&lt;-- nRem. --&gt;</td> 
+     <td>NOTE: this is the one place we do NOT want to save the number of bytes sent (nRemaining here) into lastBytesSent: since we are resending what we've already sent before, offset is nonzero in general (only way it could be zero is if it already equals nRemaining), which would then screw up the offset calculation _next_ time around. IOW, getRemaining() is in terms of the original, zero-offset bufferload, so lastBytesSent must be as well. Cheesy ASCII art: &lt;------------ m, lastBytesSent -----------&gt; +===============================================+ buffer: |1111111111|22222222222222222|333333333333| | +===============================================+ #1: &lt;-- off --&gt;|&lt;-------- nRemaining ---------&gt; #2: &lt;----------- off -----------&gt;|&lt;-- nRem. --&gt;</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>read()</td> 
+     <td>public int read() throws IOException</td> 
+     <td> checkStream(); return (read(oneByte, 0, oneByte.length) == -1) ? -1 : (oneByte[0] &amp; 0xff); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5185</td> 
+     <td>-1009652529</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>NOTE: this is the one place we do NOT want to save the number of bytes sent (nRemaining here) into lastBytesSent: since we are resending what we've already sent before, offset is nonzero in general (only way it could be zero is if it already equals nRemaining), which would then screw up the offset calculation _next_ time around. IOW, getRemaining() is in terms of the original, zero-offset bufferload, so lastBytesSent must be as well. Cheesy ASCII art: &lt;------------ m, lastBytesSent -----------&gt; +===============================================+ buffer: |1111111111|22222222222222222|333333333333| | +===============================================+ #1: &lt;-- off --&gt;|&lt;-------- nRemaining ---------&gt; #2: &lt;----------- off -----------&gt;|&lt;-- nRem. --&gt;</td> 
+     <td>NOTE: this is the one place we do NOT want to save the number of bytes sent (nRemaining here) into lastBytesSent: since we are resending what we've already sent before, offset is nonzero in general (only way it could be zero is if it already equals nRemaining), which would then screw up the offset calculation _next_ time around. IOW, getRemaining() is in terms of the original, zero-offset bufferload, so lastBytesSent must be as well. Cheesy ASCII art: &lt;------------ m, lastBytesSent -----------&gt; +===============================================+ buffer: |1111111111|22222222222222222|333333333333| | +===============================================+ #1: &lt;-- off --&gt;|&lt;-------- nRemaining ---------&gt; #2: &lt;----------- off -----------&gt;|&lt;-- nRem. --&gt;</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>read()</td> 
+     <td>public int read() throws IOException</td> 
+     <td> checkStream(); return (read(oneByte, 0, oneByte.length) == -1) ? -1 : (oneByte[0] &amp; 0xff); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5077</td> 
+     <td>-1009652529</td>
+     <td>apache/hadoop</td>
+     <td>Jakob Homan</td>
+     <td>2a248dfc32e5061c1f80295f448ca525ade764c6</td> 
+     <td>None</td> 
+     <td>NOTE: this is the one place we do NOT want to save the number of bytes sent (nRemaining here) into lastBytesSent: since we are resending what we've already sent before, offset is nonzero in general (only way it could be zero is if it already equals nRemaining), which would then screw up the offset calculation _next_ time around. IOW, getRemaining() is in terms of the original, zero-offset bufferload, so lastBytesSent must be as well. Cheesy ASCII art: &lt;------------ m, lastBytesSent -----------&gt; +===============================================+ buffer: |1111111111|22222222222222222|333333333333| | +===============================================+ #1: &lt;-- off --&gt;|&lt;-------- nRemaining ---------&gt; #2: &lt;----------- off -----------&gt;|&lt;-- nRem. --&gt;</td> 
+     <td>SATD_ADDED</td> 
+     <td>read()</td> 
+     <td>public int read() throws IOException</td> 
+     <td> checkStream(); return (read(oneByte, 0, oneByte.length) == -1) ? -1 : (oneByte[0] &amp; 0xff); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4341</td> 
+     <td>1242677826</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>02630e708c52a9403e1371ec7d7561d92496dc30</td> 
+     <td>TODO: this is a non-standard label. Offer it without the type.</td> 
+     <td>TODO Newer style label.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>onInitUI()</td> 
+     <td>protected void onInitUI()</td> 
+     <td> super.onInitUI(); addStyleName(Gerrit.RESOURCES.css().publishCommentsScreen()); approvalButtons = new ArrayList<valueradiobutton>
+       (); descBlock = new ChangeDescriptionBlock(); add(descBlock); final FormPanel form = new FormPanel(); final FlowPanel body = new FlowPanel(); form.setWidget(body); form.addSubmitHandler(new FormPanel.SubmitHandler() { @Override public void onSubmit(final SubmitEvent event) { event.cancel(); } }); add(form); approvalPanel = new FlowPanel(); body.add(approvalPanel); initMessage(body); draftsPanel = new FlowPanel(); body.add(draftsPanel); final FlowPanel buttonRow = new FlowPanel(); buttonRow.setStyleName(Gerrit.RESOURCES.css().patchSetActions()); body.add(buttonRow); send = new Button(Util.C.buttonPublishCommentsSend()); send.addClickHandler(this); buttonRow.add(send); submit = new Button(Util.C.buttonPublishSubmitSend()); submit.addClickHandler(this); buttonRow.add(submit); cancel = new Button(Util.C.buttonPublishCommentsCancel()); cancel.addClickHandler(this); buttonRow.add(cancel); 
+      </valueradiobutton></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4330</td> 
+     <td>1242677826</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>6a765190df238f60674804e8c541ae210757c407</td> 
+     <td>None</td> 
+     <td>TODO: this is a non-standard label. Offer it without the type.</td> 
+     <td>SATD_ADDED</td> 
+     <td>onInitUI()</td> 
+     <td>protected void onInitUI()</td> 
+     <td> super.onInitUI(); addStyleName(Gerrit.RESOURCES.css().publishCommentsScreen()); approvalButtons = new ArrayList<valueradiobutton>
+       (); descBlock = new ChangeDescriptionBlock(); add(descBlock); final FormPanel form = new FormPanel(); final FlowPanel body = new FlowPanel(); form.setWidget(body); form.addSubmitHandler(new FormPanel.SubmitHandler() { @Override public void onSubmit(final SubmitEvent event) { event.cancel(); } }); add(form); approvalPanel = new FlowPanel(); body.add(approvalPanel); initMessage(body); draftsPanel = new FlowPanel(); body.add(draftsPanel); final FlowPanel buttonRow = new FlowPanel(); buttonRow.setStyleName(Gerrit.RESOURCES.css().patchSetActions()); body.add(buttonRow); send = new Button(Util.C.buttonPublishCommentsSend()); send.addClickHandler(this); buttonRow.add(send); submit = new Button(Util.C.buttonPublishSubmitSend()); submit.addClickHandler(this); buttonRow.add(submit); cancel = new Button(Util.C.buttonPublishCommentsCancel()); cancel.addClickHandler(this); buttonRow.add(cancel); 
+      </valueradiobutton></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3556</td> 
+     <td>-1422651731</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>4661cbb94513d6047e58581b23dcd4a6fad166f7</td> 
+     <td>stream caching should fix re-readability issues when multicasting messags</td> 
+     <td>stream caching should fix re-readability issues when multicasting messages</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder()</td> 
+     <td> final Processor processor = new Processor() { public void process(Exchange exchange) { // lets transform the IN message Message in = exchange.getIn(); String body = in.getBody(String.class); in.setBody(body + "+output"); } }; return new RouteBuilder() { public void configure() { // enable stream caching context.setStreamCaching(true); errorHandler(deadLetterChannel("mock:error").redeliveryDelay(0).maximumRedeliveries(3)); // stream caching should fix re-readability issues when multicasting messages from("direct:a").multicast().to("direct:x", "direct:y", "direct:z"); from("direct:x").process(processor).to("mock:x"); from("direct:y").process(processor).to("mock:y"); from("direct:z").process(processor).to("mock:z"); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>579</td> 
+     <td>-1422651731</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>485d9d70fd60d910d3a05cea441c9c1fbe2e0dec</td> 
+     <td>None</td> 
+     <td>stream caching should fix re-readability issues when multicasting messags</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder()</td> 
+     <td> final Processor processor = new Processor() { public void process(Exchange exchange) { // lets transform the IN message Message in = exchange.getIn(); String body = in.getBody(String.class); in.setBody(body + "+output"); } }; return new RouteBuilder() { public void configure() { // stream caching should fix re-readability issues when multicasting messags from("direct:a").streamCaching().multicast().to("direct:x", "direct:y", "direct:z"); from("direct:x").process(processor).to("mock:x"); from("direct:y").process(processor).to("mock:y"); from("direct:z").process(processor).to("mock:z"); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

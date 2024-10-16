@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3840</td> <td>-1422649975</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>TODO: support stereotype with empty @Named annotation</td> <td>SATD_ADDED</td> <td>nameStrategy(Annotated)</td> <td>private static CamelContextNameStrategy nameStrategy(Annotated annotated)</td> <td>
+    if (annotated.isAnnotationPresent(ContextName.class)) {
+        return new ExplicitCamelContextNameStrategy(annotated.getAnnotation(ContextName.class).value());
+    } else if (annotated.isAnnotationPresent(Named.class)) {
+        // TODO: support stereotype with empty @Named annotation
+        String name = annotated.getAnnotation(Named.class).value();
+        if (name.isEmpty()) {
+            if (annotated instanceof AnnotatedField) {
+                name = ((AnnotatedField) annotated).getJavaMember().getName();
+            } else if (annotated instanceof AnnotatedMethod) {
+                name = ((AnnotatedMethod) annotated).getJavaMember().getName();
+                if (name.startsWith("get")) {
+                    name = Introspector.decapitalize(name.substring(3));
+                }
+            } else {
+                name = Introspector.decapitalize(CdiSpiHelper.getRawType(annotated.getBaseType()).getSimpleName());
+            }
+        }
+        return new ExplicitCamelContextNameStrategy(name);
+    } else {
+        // Use a specific naming strategy for Camel CDI as the default one increments the suffix for each CDI proxy created
+        return new CdiCamelContextNameStrategy();
+    }
+</td> </tr></table></body></html>

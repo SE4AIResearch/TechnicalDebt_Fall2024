@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5302</td> <td>-1009652420</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Simple check to make sure that capacity is properly distributed among
+its children.
+level 1 children</td> <td>SATD_ADDED</td> <td>testMinCapacity()</td> <td>public void testMinCapacity()</td> <td>
+    AbstractQueue rt = QueueHierarchyBuilder.createRootAbstractQueue();
+    // Simple check to make sure that capacity is properly distributed among
+    // its children.
+    // level 1 children
+    QueueSchedulingContext a1 = new QueueSchedulingContext("a", 25, -1, -1);
+    QueueSchedulingContext a2 = new QueueSchedulingContext("b", 25, -1, -1);
+    AbstractQueue q = new ContainerQueue(rt, a1);
+    AbstractQueue ql = new ContainerQueue(rt, a2);
+    // level 2 children
+    QueueSchedulingContext a = new QueueSchedulingContext("aa", 50, -1, -1);
+    QueueSchedulingContext b = new QueueSchedulingContext("ab", 50, -1, -1);
+    QueueSchedulingContext c = new QueueSchedulingContext("ac", 50, -1, -1);
+    QueueSchedulingContext d = new QueueSchedulingContext("ad", 50, -1, -1);
+    AbstractQueue q1 = new JobQueue(q, a);
+    AbstractQueue q2 = new JobQueue(q, b);
+    AbstractQueue q3 = new JobQueue(ql, c);
+    AbstractQueue q4 = new JobQueue(ql, d);
+    rt.update(1000, 1000);
+    // share at level 0.
+    // (1000 * 25) / 100
+    assertEquals(q.getQueueSchedulingContext().getMapTSC().getCapacity(), 250);
+    assertEquals(ql.getQueueSchedulingContext().getMapTSC().getCapacity(), 250);
+    // share would be (1000 * 25 / 100 ) * (50 / 100)
+    assertEquals(q1.getQueueSchedulingContext().getMapTSC().getCapacity(), 125);
+    assertEquals(q2.getQueueSchedulingContext().getMapTSC().getCapacity(), 125);
+    assertEquals(q3.getQueueSchedulingContext().getMapTSC().getCapacity(), 125);
+    assertEquals(q4.getQueueSchedulingContext().getMapTSC().getCapacity(), 125);
+    // 
+    rt.update(1, 1);
+    assertEquals(q.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+    assertEquals(ql.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+    // share would be (1000 * 25 / 100 ) * (50 / 100)
+    assertEquals(q1.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+    assertEquals(q2.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+    assertEquals(q3.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+    assertEquals(q4.getQueueSchedulingContext().getMapTSC().getCapacity(), 0);
+</td> </tr></table></body></html>

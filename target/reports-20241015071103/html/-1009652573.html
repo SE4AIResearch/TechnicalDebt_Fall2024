@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5001</td> <td>-1009652573</td><td>apache/hadoop</td><td>Owen O'Malley</td><td>abe7be913432053f6d419ea4ca4f9cd2be938bc7</td> <td>None</td> <td>verify that after expunging the Trash, it really goes away</td> <td>SATD_ADDED</td> <td>writeFile(FileSystem, Path)</td> <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> <td>
+    DataOutputStream out = fs.create(f);
+    out.writeBytes("dhruba: " + f);
+    out.close();
+    assertTrue(fs.exists(f));
+    return f;
+</td> </tr></table></body></html>

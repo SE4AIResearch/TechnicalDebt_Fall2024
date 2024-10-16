@@ -1,0 +1,108 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3416</td> <td>-1422650169</td><td>apache/camel</td><td>Claus Ibsen</td><td>a9eb716950804b3bb01d52d2ea42e38104761490</td> <td>None</td> <td>TODO: put that info in the controller</td> <td>SATD_ADDED</td> <td>printStatistics(CamelController, PrintStream)</td> <td>protected void printStatistics(CamelController camelController, PrintStream out) throws Exception</td> <td>
+    out.println("");
+    out.println(stringEscape.unescapeJava("\u001B[1mStatistics\u001B[0m"));
+    String xml = camelController.getCamelContextStatsAsXml(context, true, false);
+    if (xml != null) {
+        JAXBContext context = JAXBContext.newInstance(CamelContextStatDump.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        CamelContextStatDump stat = (CamelContextStatDump) unmarshaller.unmarshal(new StringReader(xml));
+        long total = stat.getExchangesCompleted() + stat.getExchangesFailed();
+        out.println(stringEscape.unescapeJava("\tExchanges Total: " + total));
+        out.println(stringEscape.unescapeJava("\tExchanges Completed: " + stat.getExchangesCompleted()));
+        out.println(stringEscape.unescapeJava("\tExchanges Failed: " + stat.getExchangesFailed()));
+        out.println(stringEscape.unescapeJava("\tExchanges Inflight: " + stat.getExchangesInflight()));
+        out.println(stringEscape.unescapeJava("\tMin Processing Time: " + stat.getMinProcessingTime() + " ms"));
+        out.println(stringEscape.unescapeJava("\tMax Processing Time: " + stat.getMaxProcessingTime() + " ms"));
+        out.println(stringEscape.unescapeJava("\tMean Processing Time: " + stat.getMeanProcessingTime() + " ms"));
+        out.println(stringEscape.unescapeJava("\tTotal Processing Time: " + stat.getTotalProcessingTime() + " ms"));
+        out.println(stringEscape.unescapeJava("\tLast Processing Time: " + stat.getLastProcessingTime() + " ms"));
+        out.println(stringEscape.unescapeJava("\tDelta Processing Time: " + stat.getDeltaProcessingTime() + " ms"));
+        // Test for null to see if a any exchanges have been processed first to avoid NPE
+        if (isEmpty(stat.getResetTimestamp())) {
+            // Print an empty value for scripting
+            out.println(stringEscape.unescapeJava("\tReset Statistics Date:"));
+        } else {
+            Date date = new SimpleDateFormat(XML_TIMESTAMP_FORMAT).parse(stat.getResetTimestamp());
+            String text = new SimpleDateFormat(OUTPUT_TIMESTAMP_FORMAT).format(date);
+            out.println(stringEscape.unescapeJava("\tReset Statistics Date: " + text));
+        }
+        // Test for null to see if a any exchanges have been processed first to avoid NPE
+        if (isEmpty(stat.getFirstExchangeCompletedTimestamp())) {
+            // Print an empty value for scripting
+            out.println(stringEscape.unescapeJava("\tFirst Exchange Date:"));
+        } else {
+            Date date = new SimpleDateFormat(XML_TIMESTAMP_FORMAT).parse(stat.getFirstExchangeCompletedTimestamp());
+            String text = new SimpleDateFormat(OUTPUT_TIMESTAMP_FORMAT).format(date);
+            out.println(stringEscape.unescapeJava("\tFirst Exchange Date: " + text));
+        }
+        // Test for null to see if a any exchanges have been processed first to avoid NPE
+        if (isEmpty(stat.getLastExchangeCompletedTimestamp())) {
+            // Print an empty value for scripting
+            out.println(stringEscape.unescapeJava("\tLast Exchange Date:"));
+        } else {
+            Date date = new SimpleDateFormat(XML_TIMESTAMP_FORMAT).parse(stat.getLastExchangeCompletedTimestamp());
+            String text = new SimpleDateFormat(OUTPUT_TIMESTAMP_FORMAT).format(date);
+            out.println(stringEscape.unescapeJava("\tLast Exchange Date: " + text));
+        }
+    // TODO: put that info in the controller
+    /*
+                // add type converter statistics if enabled
+                if (camelContext.getTypeConverterRegistry().getStatistics().isStatisticsEnabled()) {
+                    out.println(stringEscape.unescapeJava(String.format("\tTypeConverterRegistry utilization: [attempts=%s, hits=%s, misses=%s, failures=%s]",
+                            camelContext.getTypeConverterRegistry().getStatistics().getAttemptCounter(),
+                            camelContext.getTypeConverterRegistry().getStatistics().getHitCounter(),
+                            camelContext.getTypeConverterRegistry().getStatistics().getMissCounter(),
+                            camelContext.getTypeConverterRegistry().getStatistics().getFailedCounter())));
+                }
+
+                // add stream caching details if enabled
+                if (camelContext.getStreamCachingStrategy().isEnabled()) {
+                    out.println(stringEscape.unescapeJava(
+                            String.format("\tStreamCachingStrategy: [spoolDirectory=%s, spoolChiper=%s, spoolThreshold=%s, spoolUsedHeapMemoryThreshold=%s, "
+                                            + "spoolUsedHeapMemoryLimit=%s, anySpoolRules=%s, bufferSize=%s, removeSpoolDirectoryWhenStopping=%s, statisticsEnabled=%s]",
+                                    camelContext.getStreamCachingStrategy().getSpoolDirectory(),
+                                    camelContext.getStreamCachingStrategy().getSpoolChiper(),
+                                    camelContext.getStreamCachingStrategy().getSpoolThreshold(),
+                                    camelContext.getStreamCachingStrategy().getSpoolUsedHeapMemoryThreshold(),
+                                    camelContext.getStreamCachingStrategy().getSpoolUsedHeapMemoryLimit(),
+                                    camelContext.getStreamCachingStrategy().isAnySpoolRules(),
+                                    camelContext.getStreamCachingStrategy().getBufferSize(),
+                                    camelContext.getStreamCachingStrategy().isRemoveSpoolDirectoryWhenStopping(),
+                                    camelContext.getStreamCachingStrategy().getStatistics().isStatisticsEnabled())));
+
+                    if (camelContext.getStreamCachingStrategy().getStatistics().isStatisticsEnabled()) {
+                        out.println(stringEscape.unescapeJava(
+                                String.format("\t                       [cacheMemoryCounter=%s, cacheMemorySize=%s, cacheMemoryAverageSize=%s, cacheSpoolCounter=%s, "
+                                                + "cacheSpoolSize=%s, cacheSpoolAverageSize=%s]",
+                                        camelContext.getStreamCachingStrategy().getStatistics().getCacheMemoryCounter(),
+                                        printUnitFromBytes(camelContext.getStreamCachingStrategy().getStatistics().getCacheMemorySize()),
+                                        printUnitFromBytes(camelContext.getStreamCachingStrategy().getStatistics().getCacheMemoryAverageSize()),
+                                        camelContext.getStreamCachingStrategy().getStatistics().getCacheSpoolCounter(),
+                                        printUnitFromBytes(camelContext.getStreamCachingStrategy().getStatistics().getCacheSpoolSize()),
+                                        printUnitFromBytes(camelContext.getStreamCachingStrategy().getStatistics().getCacheSpoolAverageSize()))));
+                    }
+                }
+
+                long activeRoutes = 0;
+                long inactiveRoutes = 0;
+                List<Route> routeList = camelContext.getRoutes();
+                for (Route route : routeList) {
+                    if (camelContext.getRouteStatus(route.getId()).isStarted()) {
+                        activeRoutes++;
+                    } else {
+                        inactiveRoutes++;
+                    }
+                }
+
+                out.println(stringEscape.unescapeJava("\tNumber of running routes: " + activeRoutes));
+                out.println(stringEscape.unescapeJava("\tNumber of not running routes: " + inactiveRoutes));
+            }*/
+    }
+</td> </tr></table></body></html>

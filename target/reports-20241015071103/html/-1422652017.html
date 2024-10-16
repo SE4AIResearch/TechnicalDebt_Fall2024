@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>34</td> <td>-1422652017</td><td>apache/camel</td><td>Hiram R. Chirino</td><td>515a2ec22718fd5f219ec873248253e6ae1659b7</td> <td>None</td> <td>TODO: we could support arrays one day soon.</td> <td>SATD_ADDED</td> <td>convertTo(ArrayList<Element>, Class)</td> <td>private Object convertTo(ArrayList<Element> elements, Class clazz)</td> <td>
+    if (clazz.isArray() || elements.size() > 1) {
+        // TODO: we could support arrays one day soon.
+        throw new IllegalStateException("We don't support injecting array values.");
+    } else {
+        Element element = elements.get(0);
+        String ref = element.getAttribute("ref");
+        if (StringUtils.hasText(ref)) {
+            return new RuntimeBeanReference(ref);
+        }
+        BuilderStatement statement = parseRouteElement(element);
+        if (!clazz.isAssignableFrom(statement.getReturnType())) {
+            throw new IllegalStateException("Builder does not produce object of expected type: " + clazz.getName());
+        }
+        return statement;
+    }
+</td> </tr></table></body></html>

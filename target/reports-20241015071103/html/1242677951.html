@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4712</td> 
+     <td>1242677951</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>0ddfb83db9c7993d8d1b16837d20615a11c0fd6c</td> 
+     <td>TODO info card hover</td> 
+     <td>TODO info card hover</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>renderOwner(ChangeInfo)</td> 
+     <td>private void renderOwner(ChangeInfo info)</td> 
+     <td> // TODO info card hover String name = info.owner().name() != null ? info.owner().name() : Gerrit.getConfig().getAnonymousCowardName(); if (info.owner().avatar(AvatarInfo.DEFAULT_SIZE) != null) { ownerPanel.insert(new AvatarImage(info.owner()), 0); } ownerLink.setText(name); ownerLink.setTitle(info.owner().email() != null ? info.owner().email() : name); ownerLink.setTargetHistoryToken(PageLinks.toAccountQuery(info.owner().name() != null ? info.owner().name() : info.owner().email() != null ? info.owner().email() : String.valueOf(info.owner()._account_id()), Change.Status.NEW)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4560</td> 
+     <td>1242677951</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>097b95791517008607f2332e6f4c2be621d6bf3e</td> 
+     <td>None</td> 
+     <td>TODO info card hover</td> 
+     <td>SATD_ADDED</td> 
+     <td>renderOwner(ChangeInfo)</td> 
+     <td>private void renderOwner(ChangeInfo info)</td> 
+     <td> // TODO info card hover ownerText.setInnerText(info.owner().name() != null ? info.owner().name() : Gerrit.getConfig().getAnonymousCowardName()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6040</td> 
+     <td>-1009652501</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>this is very ugly, but needed to avoid breaking hdfs tests... if a path has no authority, then the FileStatus from globStatus will add the \"-fs\" authority into the path, so we need to sub it back out to satisfy the tests</td> 
+     <td>this is very ugly, but needed to avoid breaking hdfs tests... if a path has no authority, then the FileStatus from globStatus will add the \"-fs\" authority into the path, so we need to sub it back out to satisfy the tests</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>expandAsGlob(String, Configuration)</td> 
+     <td>public static PathData[] expandAsGlob(String pattern, Configuration conf) throws IOException</td> 
+     <td> Path globPath = new Path(pattern); FileSystem fs = globPath.getFileSystem(conf); FileStatus[] stats = fs.globStatus(globPath); PathData[] items = null; if (stats == null) { // not a glob &amp; file not found, so add the path with a null stat items = new PathData[] { new PathData(fs, pattern, null) }; } else if (// this is very ugly, but needed to avoid breaking hdfs tests... // if a path has no authority, then the FileStatus from globStatus // will add the "-fs" authority into the path, so we need to sub // it back out to satisfy the tests stats.length == 1 &amp;&amp; stats[0].getPath().equals(fs.makeQualified(globPath))) { // if the fq path is identical to the pattern passed, use the pattern // to initialize the string value items = new PathData[] { new PathData(fs, pattern, stats[0]) }; } else { // convert stats to PathData items = new PathData[stats.length]; int i = 0; for (FileStatus stat : stats) { items[i++] = new PathData(fs, stat); } } return items; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5207</td> 
+     <td>-1009652501</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>this is very ugly, but needed to avoid breaking hdfs tests... if a path has no authority, then the FileStatus from globStatus will add the \"-fs\" authority into the path, so we need to sub it back out to satisfy the tests</td> 
+     <td>this is very ugly, but needed to avoid breaking hdfs tests... if a path has no authority, then the FileStatus from globStatus will add the \"-fs\" authority into the path, so we need to sub it back out to satisfy the tests</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>expandAsGlob(String, Configuration)</td> 
+     <td>public static PathData[] expandAsGlob(String pattern, Configuration conf) throws IOException</td> 
+     <td> Path globPath = new Path(pattern); FileSystem fs = globPath.getFileSystem(conf); FileStatus[] stats = fs.globStatus(globPath); PathData[] items = null; if (stats == null) { // not a glob &amp; file not found, so add the path with a null stat items = new PathData[] { new PathData(fs, pattern, null) }; } else if (// this is very ugly, but needed to avoid breaking hdfs tests... // if a path has no authority, then the FileStatus from globStatus // will add the "-fs" authority into the path, so we need to sub // it back out to satisfy the tests stats.length == 1 &amp;&amp; stats[0].getPath().equals(fs.makeQualified(globPath))) { // if the fq path is identical to the pattern passed, use the pattern // to initialize the string value items = new PathData[] { new PathData(fs, pattern, stats[0]) }; } else { // convert stats to PathData items = new PathData[stats.length]; int i = 0; for (FileStatus stat : stats) { items[i++] = new PathData(fs, stat); } } return items; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5119</td> 
+     <td>-1009652501</td>
+     <td>apache/hadoop</td>
+     <td>Jitendra Nath Pandey</td>
+     <td>369a20391555f9c0ca9bd5384435be12770942aa</td> 
+     <td>None</td> 
+     <td>this is very ugly, but needed to avoid breaking hdfs tests... if a path has no authority, then the FileStatus from globStatus will add the \"-fs\" authority into the path, so we need to sub it back out to satisfy the tests</td> 
+     <td>SATD_ADDED</td> 
+     <td>expandAsGlob(String, Configuration)</td> 
+     <td>public static PathData[] expandAsGlob(String pattern, Configuration conf) throws IOException</td> 
+     <td> Path globPath = new Path(pattern); FileSystem fs = globPath.getFileSystem(conf); FileStatus[] stats = fs.globStatus(globPath); PathData[] items = null; if (stats == null) { // not a glob &amp; file not found, so add the path with a null stat items = new PathData[] { new PathData(fs, pattern, null) }; } else if (// this is very ugly, but needed to avoid breaking hdfs tests... // if a path has no authority, then the FileStatus from globStatus // will add the "-fs" authority into the path, so we need to sub // it back out to satisfy the tests stats.length == 1 &amp;&amp; stats[0].getPath().equals(fs.makeQualified(globPath))) { // if the fq path is identical to the pattern passed, use the pattern // to initialize the string value items = new PathData[] { new PathData(fs, pattern, stats[0]) }; } else { // convert stats to PathData items = new PathData[stats.length]; int i = 0; for (FileStatus stat : stats) { items[i++] = new PathData(fs, stat); } } return items; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

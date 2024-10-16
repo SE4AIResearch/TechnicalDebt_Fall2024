@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>465</td> <td>-1422651797</td><td>apache/camel</td><td>James Strachan</td><td>6e9bbcec35c28b8a76336d4ba0dde4a2b0d56238</td> <td>None</td> <td>TODO - fixme when we allow XPath injection to do proper type conversion</td> <td>SATD_ADDED</td> <td>testSendMessageAndHaveItTransformed()</td> <td>public void testSendMessageAndHaveItTransformed() throws Exception</td> <td>
+    MockEndpoint endpoint = getMockEndpoint("mock:result");
+    endpoint.expectedMessageCount(1);
+    template.sendBody("direct:start", "<mail><subject>Hey</subject><body>Hello world!</body></mail>");
+    assertMockEndpointsSatisifed();
+    List<Exchange> list = endpoint.getReceivedExchanges();
+    Exchange exchange = list.get(0);
+    String xml = exchange.getIn().getBody(String.class);
+    System.out.println("Found: " + xml);
+    log.debug("Found: " + xml);
+    TestBean bean = getMandatoryBean(TestBean.class, "testBean");
+// TODO - fixme when we allow XPath injection to do proper type conversion
+// assertEquals("bean.subject", "Hey", bean.getSubject());
+</td> </tr></table></body></html>

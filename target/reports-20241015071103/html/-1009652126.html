@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5342</td> <td>-1009652126</td><td>apache/hadoop</td><td>Thomas White</td><td>a732ab38047299c545cfc978e25f6b2871b5a4b3</td> <td>None</td> <td>configure task jvm options if enabled
+this knob can be turned off if there is a mismatch between the
+target (simulation) cluster and the original cluster. Such a
+mismatch can result in job failures (due to memory issues) on the
+target (simulated) cluster.
+
+TODO If configured, scale the original task's JVM (heap related)
+options to suit the target (simulation) cluster</td> <td>SATD_ADDED</td> <td>initialValue()</td> <td>protected Formatter initialValue()</td> <td>
+    final StringBuilder sb = new StringBuilder(JOB_NAME_PREFIX.length() + 6);
+    sb.append(JOB_NAME_PREFIX);
+    return new Formatter(sb);
+</td> </tr></table></body></html>

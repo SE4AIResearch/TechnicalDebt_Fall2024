@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3274</td> <td>-1422650220</td><td>apache/camel</td><td>Jonathan Anstey</td><td>301153bb55afc839ca71e81254fc1c11cf07a6fe</td> <td>None</td> <td>TODO provide parameter values for untrash</td> <td>SATD_ADDED</td> <td>testUntrash()</td> <td>public void testUntrash() throws Exception</td> <td>
+    // using String message body for single parameter "fileId"
+    final com.google.api.services.drive.Drive.Files.Untrash result = requestBody("direct://UNTRASH", null);
+    assertNotNull("untrash result", result);
+    LOG.debug("untrash: " + result);
+</td> </tr></table></body></html>

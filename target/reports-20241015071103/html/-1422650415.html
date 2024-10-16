@@ -1,0 +1,55 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3019</td> <td>-1422650415</td><td>apache/camel</td><td>Willem Jiang</td><td>c1e6814643258c79775369e32ee40e074b935137</td> <td>None</td> <td>TODO consider using atmosphere's broadcast or a more configurable async send</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws Exception</td> <td>
+    Message in = exchange.getIn();
+    // TODO support binary data
+    Object message = in.getBody();
+    if (message == null) {
+        LOG.info("Ignoring a null message");
+        return;
+    }
+    if (!(message instanceof String || message instanceof byte[] || message instanceof Reader || message instanceof InputStream)) {
+        // fallback to use String
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Using String for unexpected message type {} ", message.getClass());
+        }
+        message = in.getBody(String.class);
+    }
+    // REVISIT Reader and InputStream handling at Producer
+    // special conversion for Reader and InputStream for now
+    if (message instanceof Reader) {
+        message = in.getBody(String.class);
+    } else if (message instanceof InputStream) {
+        message = in.getBody(byte[].class);
+    }
+    log.debug("Sending to {}", message);
+    if (getEndpoint().isSendToAll()) {
+        log.debug("Sending to all -> {}", message);
+        // TODO consider using atmosphere's broadcast or a more configurable async send
+        for (final WebSocket websocket : getEndpoint().getWebSocketStore().getAllWebSockets()) {
+            final Object msg = message;
+            executor.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    sendMessage(websocket, msg);
+                }
+            });
+        }
+    } else {
+        // look for connection key and get Websocket
+        String connectionKey = in.getHeader(WebsocketConstants.CONNECTION_KEY, String.class);
+        if (connectionKey != null) {
+            WebSocket websocket = getEndpoint().getWebSocketStore().getWebSocket(connectionKey);
+            log.debug("Sending to connection key {} -> {}", connectionKey, message);
+            sendMessage(websocket, message);
+        } else {
+            throw new IllegalArgumentException("Failed to send message to single connection; connetion key not set.");
+        }
+    }
+</td> </tr></table></body></html>

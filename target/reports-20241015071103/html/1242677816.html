@@ -1,0 +1,54 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4314</td> <td>1242677816</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>53ad356d9632fdfb544b708a02ad0e3aa01bfbab</td> <td>None</td> <td>If the git base path is itself a git repository working
+directory, this is a bit nonsensical for Gerrit Code Review.
+Skip the path and do the next one.</td> <td>SATD_ADDED</td> <td>importProjects(File, String, ReviewDb, Set<String>)</td> <td>private void importProjects(final File dir, final String prefix, final ReviewDb db, final Set<String> have) throws OrmException, IOException</td> <td>
+    final File[] ls = dir.listFiles();
+    if (ls == null) {
+        return;
+    }
+    for (File f : ls) {
+        String name = f.getName();
+        if (".".equals(name) || "..".equals(name)) {
+            continue;
+        }
+        if (FileKey.isGitRepository(f, FS.DETECTED)) {
+            if (name.equals(".git")) {
+                if ("".equals(prefix)) {
+                    // If the git base path is itself a git repository working
+                    // directory, this is a bit nonsensical for Gerrit Code Review.
+                    // Skip the path and do the next one.
+                    messages.warning("Skipping " + f.getAbsolutePath());
+                    continue;
+                }
+                name = prefix.substring(0, prefix.length() - 1);
+            } else if (name.endsWith(".git")) {
+                name = prefix + name.substring(0, name.length() - 4);
+            } else {
+                name = prefix + name;
+                if (!have.contains(name)) {
+                    messages.warning("Importing non-standard name '" + name + "'");
+                }
+            }
+            if (have.contains(name)) {
+                continue;
+            }
+            final Project.NameKey nameKey = new Project.NameKey(name);
+            final Project p = new Project(nameKey);
+            p.setDescription(repositoryManager.getProjectDescription(name));
+            p.setSubmitType(SubmitType.MERGE_IF_NECESSARY);
+            p.setUseContributorAgreements(false);
+            p.setUseSignedOffBy(false);
+            p.setUseContentMerge(false);
+            p.setRequireChangeID(false);
+            db.projects().insert(Collections.singleton(p));
+        } else if (f.isDirectory()) {
+            importProjects(f, prefix + f.getName() + "/", db, have);
+        }
+    }
+</td> </tr></table></body></html>

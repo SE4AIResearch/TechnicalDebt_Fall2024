@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4524</td> 
+     <td>1242677775</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>ce7b745e55a60cceb2fd5171ed7778465627fc98</td> 
+     <td>Serve static resources directly from our JAR. This way we don't need to unpack them into yet another temporary directory prior to serving to clients. </td> 
+     <td>Serve static resources directly from our JAR. This way we don't need to unpack them into yet another temporary directory prior to serving to clients. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>makeContext(String, JettyEnv, Config)</td> 
+     <td>private ContextHandler makeContext(final String contextPath, final JettyEnv env, final Config cfg) throws MalformedURLException, IOException</td> 
+     <td> final ServletContextHandler app = new ServletContextHandler(); // This enables the use of sessions in Jetty, feature available // for Gerrit plug-ins to enable user-level sessions. // app.setSessionHandler(new SessionHandler()); app.setErrorHandler(new HiddenErrorHandler()); // This is the path we are accessed by clients within our domain. // app.setContextPath(contextPath); // Serve static resources directly from our JAR. This way we don't // need to unpack them into yet another temporary directory prior to // serving to clients. // app.setBaseResource(getBaseResource()); // HTTP front-end filter to be used as surrogate of Apache HTTP // reverse-proxy filtering. // It is meant to be used as simpler tiny deployment of custom-made // security enforcement (Security tokens, IP-based security filtering, others) String filterClassName = cfg.getString("httpd", null, "filterClass"); if (filterClassName != null) { try { @SuppressWarnings("unchecked") Class<!--? extends Filter--> filterClass = (Class<!--? extends Filter-->) Class.forName(filterClassName); Filter filter = env.webInjector.getInstance(filterClass); app.addFilter(new FilterHolder(filter), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC)); } catch (Throwable e) { String errorMessage = "Unable to instantiate front-end HTTP Filter " + filterClassName; log.error(errorMessage, e); throw new IllegalArgumentException(errorMessage, e); } } // Perform the same binding as our web.xml would do, but instead // of using the listener to create the injector pass the one we // already have built. // GuiceFilter filter = env.webInjector.getInstance(GuiceFilter.class); app.addFilter(new FilterHolder(filter), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC)); app.addEventListener(new GuiceServletContextListener() { @Override protected Injector getInjector() { return env.webInjector; } }); // Jetty requires at least one servlet be bound before it will // bother running the filter above. Since the filter has all // of our URLs except the static resources, the only servlet // we need to bind is the default static resource servlet from // the Jetty container. // final ServletHolder ds = app.addServlet(DefaultServlet.class, "/"); ds.setInitParameter("dirAllowed", "false"); ds.setInitParameter("redirectWelcome", "false"); ds.setInitParameter("useFileMappedBuffer", "false"); ds.setInitParameter("gzip", "true"); app.setWelcomeFiles(new String[0]); return app; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4223</td> 
+     <td>1242677775</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>fa2486a39739dc103b3f57048f3f84ca8764779c</td> 
+     <td>None</td> 
+     <td>Serve static resources directly from our JAR. This way we don't need to unpack them into yet another temporary directory prior to serving to clients. </td> 
+     <td>SATD_ADDED</td> 
+     <td>makeContext(String, JettyEnv)</td> 
+     <td>private ContextHandler makeContext(final String contextPath, final JettyEnv env) throws MalformedURLException, IOException</td> 
+     <td> final ServletContextHandler app = new ServletContextHandler(); // This is the path we are accessed by clients within our domain. // app.setContextPath(contextPath); // Serve static resources directly from our JAR. This way we don't // need to unpack them into yet another temporary directory prior to // serving to clients. // final File war = GerritLauncher.getDistributionArchive(); app.setBaseResource(Resource.newResource("jar:" + war.toURI() + "!/")); // Perform the same binding as our web.xml would do, but instead // of using the listener to create the injector pass the one we // already have built. // app.addFilter(GuiceFilter.class, "/*", FilterMapping.DEFAULT); app.addEventListener(new GuiceServletContextListener() { @Override protected Injector getInjector() { return env.webInjector; } }); // Jetty requires at least one servlet be bound before it will // bother running the filter above. Since the filter has all // of our URLs except the static resources, the only servlet // we need to bind is the default static resource servlet from // the Jetty container. // app.addServlet(DefaultServlet.class, "/"); return app; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

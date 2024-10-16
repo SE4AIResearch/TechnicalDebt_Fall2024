@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>357</td> 
+     <td>-1422651907</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>7ff7e7017667cd44e79bc9fe22a8e3cd9326115e</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>SATD_CHANGED</td> 
+     <td>onNick(IRCUser, String)</td> 
+     <td>public void onNick(IRCUser user, String newNick)</td> 
+     <td> if (configuration.isOnNick()) { IrcExchange exchange = endpoint.createOnNickExchange(user, newNick); try { getProcessor().process(exchange); } catch (Exception e) { // TODO: what should we do when a processing failure // occurs?? e.printStackTrace(); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>260</td> 
+     <td>-1422651907</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>a4d9b16761e951bf209bfc31888636222511613c</td> 
+     <td>None</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>SATD_ADDED</td> 
+     <td>onNick(IRCUser, String)</td> 
+     <td>public void onNick(IRCUser user, String newNick)</td> 
+     <td> if (configuration.isOnNick()) { IrcExchange exchange = endpoint.createOnNickExchange(user, newNick); try { getProcessor().process(exchange); } catch (Exception e) { // TODO: what should we do when a processing failure occurs?? e.printStackTrace(); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3905</td> <td>-1422649929</td><td>apache/camel</td><td>Quinn Stevenson</td><td>b98c5c8b275741cc56caa1f201bfbe8400bcfba2</td> <td>None</td> <td>TODO:  Add tests for dataSetIndex URI parameters</td> <td>SATD_ADDED</td> <td>testWithDisableDataSetIndexUriParameterUnset()</td> <td>public void testWithDisableDataSetIndexUriParameterUnset() throws Exception</td> <td>
+    context.addRoutes(new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            from(dataSetUri).to(resultUri);
+        }
+    });
+    context.start();
+    MockEndpoint result = getMockEndpoint(resultUri);
+    result.expectedMessageCount((int) dataSet.getSize());
+    result.allMessages().header(Exchange.DATASET_INDEX).isNotNull();
+    result.expectsAscending(header(Exchange.DATASET_INDEX).convertTo(Number.class));
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

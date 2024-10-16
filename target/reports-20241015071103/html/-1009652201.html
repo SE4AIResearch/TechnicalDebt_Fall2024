@@ -1,0 +1,74 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5525</td> <td>-1009652201</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO: consider more tables and skip tables with non-temp projections</td> <td>SATD_ADDED</td> <td>optimize(Configuration)</td> <td>public static void optimize(Configuration conf) throws Exception</td> <td>
+    VerticaConfiguration vtconfig = new VerticaConfiguration(conf);
+    Connection conn = vtconfig.getConnection(true);
+    // TODO: consider more tables and skip tables with non-temp projections
+    String tableName = vtconfig.getOutputTableName();
+    Statement stmt = conn.createStatement();
+    ResultSet rs = null;
+    StringBuffer designTables = new StringBuffer(tableName);
+    HashSet<String> tablesWithTemp = new HashSet<String>();
+    // fully qualify the table name - defaults to public.<table>
+    if (tableName.indexOf(".") == -1) {
+        tableName = "public." + tableName;
+    }
+    // for now just add the single output table
+    tablesWithTemp.add(tableName);
+    // map from table name to set of projection names
+    HashMap<String, Collection<String>> tableProj = new HashMap<String, Collection<String>>();
+    rs = stmt.executeQuery("select schemaname, anchortablename, projname from vt_projection;");
+    while (rs.next()) {
+        String ptable = rs.getString(1) + "." + rs.getString(2);
+        if (!tableProj.containsKey(ptable)) {
+            tableProj.put(ptable, new HashSet<String>());
+        }
+        tableProj.get(ptable).add(rs.getString(3));
+    }
+    for (String table : tablesWithTemp) {
+        if (!tableProj.containsKey(table)) {
+            throw new RuntimeException("Cannot optimize table with no data: " + table);
+        }
+    }
+    String designName = (new Integer(conn.hashCode())).toString();
+    stmt.execute("select create_projection_design('" + designName + "', '', '" + designTables.toString() + "')");
+    if (VerticaUtil.verticaVersion(conf, true) >= VerticaConfiguration.VERSION_3_5) {
+        stmt.execute("select deploy_design('" + designName + "', '" + designName + "')");
+    } else {
+        rs = stmt.executeQuery("select get_design_script('" + designName + "', '" + designName + "')");
+        rs.next();
+        String[] projSet = rs.getString(1).split(";");
+        for (String proj : projSet) {
+            stmt.execute(proj);
+        }
+        stmt.execute("select start_refresh()");
+        // poll for refresh complete
+        boolean refreshing = true;
+        Long timeout = vtconfig.getOptimizePollTimeout();
+        while (refreshing) {
+            refreshing = false;
+            rs = stmt.executeQuery("select table_name, status from vt_projection_refresh");
+            while (rs.next()) {
+                String table = rs.getString(1);
+                String stat = rs.getString(2);
+                if (stat.equals("refreshing") && tablesWithTemp.contains(table))
+                    refreshing = true;
+            }
+            rs.close();
+            Thread.sleep(timeout);
+        }
+        // refresh done, move the ancient history mark (ahm) and drop the temp projections
+        stmt.execute("select make_ahm_now()");
+        for (String table : tablesWithTemp) {
+            for (String proj : tableProj.get(table)) {
+                stmt.execute("DROP PROJECTION " + proj);
+            }
+        }
+        stmt.close();
+    }
+</td> </tr></table></body></html>

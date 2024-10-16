@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1206</td> <td>-1422651425</td><td>apache/camel</td><td>James Strachan</td><td>5b1bc67eb9116b43570f4a7622f9051cb658b2b5</td> <td>None</td> <td>TODO: Until claus got the stream cache working nicely with TX</td> <td>SATD_ADDED</td> <td>testTransactionRollback()</td> <td>public void testTransactionRollback() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:error");
+    // TODO: Until claus got the stream cache working nicely with TX
+    // mock.expectedMessageCount(1);
+    mock.expectedMessageCount(2);
+    try {
+        template.sendBody("direct:fail", "Hello World");
+    } catch (RuntimeCamelException e) {
+        // expeced as we fail
+        assertTrue(e.getCause() instanceof IllegalArgumentException);
+        assertEquals("We don't have Donkeys, only Camels", e.getCause().getMessage());
+    }
+    assertMockEndpointsSatisfied();
+    int count = jdbc.queryForInt("select count(*) from books");
+// TODO: Until claus got the stream cache working nicely with TX
+// assertEquals("Number of books", 1, count);
+</td> </tr></table></body></html>

@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2005</td> <td>-1422651002</td><td>apache/camel</td><td>Claus Ibsen</td><td>6989ff8bf8961aff791d0715d083a654ed010a97</td> <td>None</td> <td>TODO: routes which doesnt support resume may have to leverage these callbacks</td> <td>SATD_ADDED</td> <td>resumeServices(Object)</td> <td>private void resumeServices(Object service) throws Exception</td> <td>
+    // it can be a collection so ensure we look inside it
+    if (service instanceof Collection<?>) {
+        for (Object element : (Collection<?>) service) {
+            resumeServices(element);
+        }
+    }
+    // and register startup aware so they can be notified when
+    // camel context has been started
+    if (service instanceof StartupListener) {
+        StartupListener listener = (StartupListener) service;
+        addStartupListener(listener);
+    }
+    // TODO: routes which doesnt support resume may have to leverage these callbacks
+    // and then start the service
+    ServiceHelper.resumeService(service);
+</td> </tr></table></body></html>

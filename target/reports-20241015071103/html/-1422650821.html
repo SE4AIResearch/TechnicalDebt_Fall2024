@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2330</td> 
+     <td>-1422650821</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>83de3618895d9e1570ce7ec9bf5a5045035c4328</td> 
+     <td>maybe its a FQN for simple name</td> 
+     <td>if qualify type indeed is a class, then it must be assignable with the parameter type</td> 
+     <td>SATD_REMOVED</td> 
+     <td>matchMethod(Method, String)</td> 
+     <td>private boolean matchMethod(Method method, String methodName)</td> 
+     <td> if (methodName == null) { return true; } if (methodName.contains("(") &amp;&amp; !methodName.endsWith(")")) { throw new IllegalArgumentException("Name must have both starting and ending parenthesis, was: " + methodName); } // do not use qualifier for name matching String name = methodName; if (name.contains("(")) { name = ObjectHelper.before(name, "("); } // must match name if (!name.equals(method.getName())) { return false; } // match qualifier types which is used to select among overloaded methods String types = ObjectHelper.between(methodName, "(", ")"); if (types != null) { // we must qualify based on types to match method Iterator it = ObjectHelper.createIterator(types); for (int i = 0; i &lt; method.getParameterTypes().length; i++) { if (it.hasNext()) { Class<!--?--> parameterType = method.getParameterTypes()[i]; String qualifyType = (String) it.next(); if (ObjectHelper.isEmpty(qualifyType)) { continue; } // trim the time qualifyType = qualifyType.trim(); if ("*".equals(qualifyType)) { // * is a wildcard so we accept and match that parameter type continue; } if (BeanHelper.isValidParameterValue(qualifyType)) { // its a parameter value, so continue to next parameter // as we should only check for FQN/type parameters continue; } // if qualify type indeed is a class, then it must be assignable with the parameter type Boolean assignable = BeanHelper.isAssignableToExpectedType(getCamelContext().getClassResolver(), qualifyType, parameterType); if (assignable != null &amp;&amp; !assignable) { return false; } } else { // there method has more parameters than was specified in the method name qualifiers return false; } } // if the method has no more types then we can only regard it as matched // if there are no more qualifiers if (it.hasNext()) { return false; } } // the method matched return true; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2329</td> 
+     <td>-1422650821</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>79997b76ff104ba13dab3cdb845077090779a49a</td> 
+     <td>None</td> 
+     <td>maybe its a FQN for simple name</td> 
+     <td>SATD_ADDED</td> 
+     <td>matchMethod(Method, String)</td> 
+     <td>private boolean matchMethod(Method method, String methodName)</td> 
+     <td> if (methodName == null) { return true; } if (methodName.contains("(") &amp;&amp; !methodName.endsWith(")")) { throw new IllegalArgumentException("Name must have both starting and ending parenthesis, was: " + methodName); } // do not use qualifier for name matching String name = methodName; if (name.contains("(")) { name = ObjectHelper.before(name, "("); } // must match name if (!name.equals(method.getName())) { return false; } // match qualifier types which is used to select among overloaded methods String types = ObjectHelper.between(methodName, "(", ")"); if (types != null) { // we must qualify based on types to match method Iterator it = ObjectHelper.createIterator(types); for (int i = 0; i &lt; method.getParameterTypes().length; i++) { if (it.hasNext()) { String qualifyType = (String) it.next(); if (ObjectHelper.isEmpty(qualifyType)) { continue; } qualifyType = qualifyType.trim(); if ("*".equals(qualifyType)) { // * is a wildcard so we accept and match that parameter type continue; } if (qualifyType.startsWith("'") || qualifyType.startsWith("\"")) { // if the type starts with a quote, then its a parameter value instead continue; } // so it can either be a type or a parameter value // - type: Boolean, String etc. // - value: true, 5, 'Hello World' etc Class<!--?--> qualifyClass = getCamelContext().getClassResolver().resolveClass(qualifyType); // class resolver will return null if not a class if (qualifyClass != null) { Class<!--?--> parameterClass = method.getParameterTypes()[i]; if (!parameterClass.isAssignableFrom(qualifyClass)) { return false; } } // maybe its a FQN for simple name if (qualifyType.equals(method.getParameterTypes()[i].getSimpleName())) { continue; } } else { // there method has more parameters than was specified in the method name qualifiers return false; } } // if the method has no more types then we can only regard it as matched // if there are no more qualifiers if (it.hasNext()) { return false; } } // the method matched return true; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

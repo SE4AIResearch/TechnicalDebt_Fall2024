@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>598</td> <td>-1422651719</td><td>apache/camel</td><td>Claus Ibsen</td><td>4aa4ac99e00fad91884b4ac8573a7ebdbb2809b6</td> <td>None</td> <td>TODO when we support multiple marshallers for messages
+we can support passing headers over files using serialized/XML files</td> <td>SATD_ADDED</td> <td>testFtpRoute()</td> <td>public void testFtpRoute() throws Exception</td> <td>
+    MockEndpoint resultEndpoint = getMockEndpoint("mock:result");
+    resultEndpoint.expectedBodiesReceived(expectedBody);
+    // TODO when we support multiple marshallers for messages
+    // we can support passing headers over files using serialized/XML files
+    // resultEndpoint.message(0).header("cheese").isEqualTo(123);
+    template.sendBodyAndHeader(ftpUrl, expectedBody, "cheese", 123);
+    resultEndpoint.assertIsSatisfied();
+</td> </tr></table></body></html>

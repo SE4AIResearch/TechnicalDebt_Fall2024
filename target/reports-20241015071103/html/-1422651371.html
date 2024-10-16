@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1308</td> <td>-1422651371</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>11492a188ba2166db3e777e61be9fb9780bb8cc8</td> <td>TODO: is needed when we add support for when predicate</td> <td>remove the moved from the original output, by just keeping the first one</td> <td>SATD_REMOVED</td> <td>afterPropertiesSet()</td> <td>public void afterPropertiesSet()</td> <td>
+    if (getOutputs().size() == 0) {
+        // no outputs
+        return;
+    }
+    ProcessorDefinition first = getOutputs().get(0);
+    if (first instanceof WhenDefinition) {
+        WhenDefinition when = (WhenDefinition) first;
+        // move this outputs to the when, expect the first one
+        // as the first one is the interceptor itself
+        for (int i = 1; i < outputs.size(); i++) {
+            ProcessorDefinition out = outputs.get(i);
+            when.addOutput(out);
+        }
+        // remove the moved from the original output, by just keeping the first one
+        ProcessorDefinition keep = outputs.get(0);
+        clearOutput();
+        outputs.add(keep);
+    }
+</td> </tr></table></body></html>

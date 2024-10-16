@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4227</td> <td>1242677763</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>Unused, but we need to force it to load before we do, otherwise we risk
+reading an empty database without the wild project being in the database.
+Asking for it should ensures Guice loads it first.</td> <td>SATD_ADDED</td> <td>get()</td> <td>public Project.NameKey get()</td> <td>
+    try {
+        final ReviewDb db = schema.open();
+        try {
+            final Project p = db.projects().get(WILD_PROJECT_ID);
+            if (p == null) {
+                throw new ProvisionException("No project " + WILD_PROJECT_ID);
+            }
+            return p.getNameKey();
+        } finally {
+            db.close();
+        }
+    } catch (OrmException e) {
+        throw new ProvisionException("Cannot load " + WILD_PROJECT_ID, e);
+    }
+</td> </tr></table></body></html>

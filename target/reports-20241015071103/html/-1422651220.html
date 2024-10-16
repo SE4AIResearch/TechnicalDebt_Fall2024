@@ -1,0 +1,35 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1604</td> <td>-1422651220</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>de31a627ca762ff1e36976bcd978a5144e2f3c29</td> <td>None</td> <td>get the camel template for Spring template style sending of messages (= producer)</td> <td>SATD_ADDED</td> <td>main(String[])</td> <td>public static void main(final String[] args) throws Exception</td> <td>
+    System.out.println("Notice this client requires that the CamelServer is already running!");
+    ApplicationContext context = new ClassPathXmlApplicationContext("camel-client.xml");
+    // get the camel template for Spring template style sending of messages (= producer)
+    final ProducerTemplate producer = (ProducerTemplate) context.getBean("camelTemplate");
+    // now send a lot of messages
+    System.out.println("Sending ...");
+    final CountDownLatch latch = new CountDownLatch(POOL);
+    ExecutorService executors = Executors.newFixedThreadPool(POOL);
+    for (int i = 0; i < POOL; i++) {
+        final Integer idx = i;
+        executors.execute(new Runnable() {
+
+            public void run() {
+                try {
+                    for (int j = 0; j < SIZE / POOL; j++) {
+                        producer.sendBody("jms:queue:inbox", "Message " + idx.intValue() * j + j);
+                    }
+                } finally {
+                    latch.countDown();
+                }
+            }
+        });
+    }
+    latch.await(300, TimeUnit.SECONDS);
+    System.out.println("... Send " + SIZE + " message to JMS broker");
+    System.exit(0);
+</td> </tr></table></body></html>

@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4622</td> <td>1242677981</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>132194e80ab616ab9ce910db256c5d1c0a1e3f58</td> <td>None</td> <td>Every comment appears in both side maps as a linked pair.
+It is only necessary to search one side to find a comment
+on either side of the editor pair.</td> <td>SATD_ADDED</td> <td>commentNav(CodeMirror, Direction)</td> <td>
+    return new Runnable() {
+
+        @Override
+        public void run() {
+            // Every comment appears in both side maps as a linked pair.
+            // It is only necessary to search one side to find a comment
+            // on either side of the editor pair.
+            SortedMap<Integer, CommentGroup> map = map(src.side());
+            int line = src.hasActiveLine() ? src.getLineNumber(src.getActiveLine()) + 1 : 0;
+            if (dir == Direction.NEXT) {
+                map = map.tailMap(line + 1);
+                if (map.isEmpty()) {
+                    return;
+                }
+                line = map.firstKey();
+            } else {
+                map = map.headMap(line);
+                if (map.isEmpty()) {
+                    return;
+                }
+                line = map.lastKey();
+            }
+            CommentGroup g = map.get(line);
+            if (g.getBoxCount() == 0) {
+                g = g.getPeer();
+            }
+            CodeMirror cm = g.getCm();
+            double y = cm.heightAtLine(g.getLine() - 1, "local");
+            cm.setCursor(LineCharacter.create(g.getLine() - 1));
+            cm.scrollToY(y - 0.5 * cm.getScrollbarV().getClientHeight());
+            cm.focus();
+        }
+    };
+</td> <td> Runnable commentNav(final CodeMirror src, final Direction dir)</td> </tr></table></body></html>

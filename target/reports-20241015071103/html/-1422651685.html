@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>647</td> <td>-1422651685</td><td>apache/camel</td><td>Claus Ibsen</td><td>9a9e8041610ec05e9a35987ed6b748c4de341901</td> <td>TODO: Reuse spring mail support to handle the attachment
+now convert the mail attachments and put it to the msg</td> <td>only add named attachments</td> <td>SATD_REMOVED</td> <td>extractAttachments(Message, Map<String, DataHandler>)</td> <td>protected static void extractAttachments(Message message, Map<String, DataHandler> map) throws javax.mail.MessagingException, IOException</td> <td>
+    Object content = message.getContent();
+    if (content instanceof Multipart) {
+        // mail with attachment
+        Multipart mp = (Multipart) content;
+        for (int i = 0; i < mp.getCount(); i++) {
+            Part part = mp.getBodyPart(i);
+            String disposition = part.getDisposition();
+            if (disposition != null) {
+                if (disposition.equalsIgnoreCase(Part.ATTACHMENT) || disposition.equalsIgnoreCase(Part.INLINE)) {
+                    // only add named attachments
+                    if (part.getFileName() != null) {
+                        // Parts marked with a disposition of Part.ATTACHMENT are clearly attachments
+                        CollectionHelper.appendValue(map, part.getFileName(), part.getDataHandler());
+                    }
+                }
+            }
+        }
+    }
+</td> </tr></table></body></html>

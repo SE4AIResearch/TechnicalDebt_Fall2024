@@ -1,0 +1,79 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4061</td> 
+     <td>1242677644</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>TODO populate the account role</td> 
+     <td>TODO populate the account role</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>displayRow(int, ApprovalDetail)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, changeapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, link(ad.getAccount())); // TODO populate the account role table.clearCell(row, col++); for (final ApprovalType type : types) { final ChangeApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, Gerrit.ICONS.redNot().createImage()); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, Gerrit.ICONS.greenCheck().createImage()); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.removeStyleName(row, col, "negscore"); fmt.addStyleName(row, col, "posscore"); } else { fmt.addStyleName(row, col, "negscore"); fmt.removeStyleName(row, col, "posscore"); } table.setText(row, col, vstr); } col++; } table.setText(row, col++, hint.toString()); 
+      </approvalcategory.id,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3960</td> 
+     <td>1242677644</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>f14a1ded658afedc4f2f98e4d25a1e065fee1d42</td> 
+     <td>TODO populate the account role</td> 
+     <td>TODO populate the account role</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>displayRow(int, ApprovalDetail)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, changeapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, link(ad.getAccount())); // TODO populate the account role table.clearCell(row, col++); for (final ApprovalType type : types) { final ChangeApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, Gerrit.ICONS.redNot().createImage()); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, Gerrit.ICONS.greenCheck().createImage()); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.removeStyleName(row, col, "negscore"); fmt.addStyleName(row, col, "posscore"); } else { fmt.addStyleName(row, col, "negscore"); fmt.removeStyleName(row, col, "posscore"); } table.setText(row, col, vstr); } col++; } table.setText(row, col++, hint.toString()); 
+      </approvalcategory.id,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3946</td> 
+     <td>1242677644</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>26da7ae1d2e557497631f33f25370775f7c5a702</td> 
+     <td>None</td> 
+     <td>TODO populate the account role</td> 
+     <td>SATD_ADDED</td> 
+     <td>displayRow(int, ApprovalDetail)</td> 
+     <td>private void displayRow(final int row, final ApprovalDetail ad)</td> 
+     <td> final CellFormatter fmt = table.getCellFormatter(); final Map<approvalcategory.id, changeapproval>
+        am = ad.getApprovalMap(); final StringBuilder hint = new StringBuilder(); int col = 0; table.setWidget(row, col++, new AccountDashboardLink(ad.getAccount())); // TODO populate the account role table.clearCell(row, col++); for (final ApprovalType type : types) { final ChangeApproval ca = am.get(type.getCategory().getId()); if (ca == null || ca.getValue() == 0) { table.clearCell(row, col); col++; continue; } final ApprovalCategoryValue acv = type.getValue(ca); if (acv != null) { if (hint.length() &gt; 0) { hint.append("; "); } hint.append(acv.getName()); } if (type.isMaxNegative(ca)) { table.setWidget(row, col, Gerrit.ICONS.redNot().createImage()); } else if (type.isMaxPositive(ca)) { table.setWidget(row, col, Gerrit.ICONS.greenCheck().createImage()); } else { String vstr = String.valueOf(ca.getValue()); if (ca.getValue() &gt; 0) { vstr = "+" + vstr; fmt.removeStyleName(row, col, "negscore"); fmt.addStyleName(row, col, "posscore"); } else { fmt.addStyleName(row, col, "negscore"); fmt.removeStyleName(row, col, "posscore"); } table.setText(row, col, vstr); } col++; } table.setText(row, col++, hint.toString()); 
+      </approvalcategory.id,></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

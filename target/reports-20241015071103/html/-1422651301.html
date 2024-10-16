@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1466</td> <td>-1422651301</td><td>apache/camel</td><td>Claus Ibsen</td><td>c4e2e255c550688b0d959fcf9b4c421e87bdf129</td> <td>None</td> <td>TODO use header filter strategy and cxfToCamelHeaderMap</td> <td>SATD_ADDED</td> <td>populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange, Exchange, Method, Object[])</td> <td>public void populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange cxfExchange, Exchange camelExchange, Method method, Object[] paramArray)</td> <td>
+    Message camelMessage = camelExchange.getIn();
+    // Copy the CXF message header into the Camel inMessage
+    org.apache.cxf.message.Message cxfMessage = cxfExchange.getInMessage();
+    // TODO use header filter strategy and cxfToCamelHeaderMap
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.REQUEST_URI, Exchange.HTTP_URI);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, Exchange.HTTP_METHOD);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.PATH_INFO, Exchange.HTTP_PATH);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.CONTENT_TYPE, Exchange.CONTENT_TYPE);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.ENCODING, Exchange.HTTP_CHARACTER_ENCODING);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.QUERY_STRING, Exchange.HTTP_QUERY);
+    copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, Exchange.ACCEPT_CONTENT_TYPE);
+    camelMessage.setHeader(CxfConstants.CAMEL_CXF_RS_RESPONSE_CLASS, method.getReturnType());
+    copyOperationResourceInfoStack(cxfMessage, camelMessage);
+    camelMessage.setHeader(CxfConstants.OPERATION_NAME, method.getName());
+    camelMessage.setBody(paramArray);
+</td> </tr></table></body></html>

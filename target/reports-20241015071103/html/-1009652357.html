@@ -1,0 +1,60 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>5977</td> 
+     <td>-1009652357</td>
+     <td>apache/hadoop</td>
+     <td>Steve Loughran</td>
+     <td>28e6a4e44a3e920dcaf858f9a74a6358226b3a63</td> 
+     <td> verify that 'format' really blew away all pre-existing files </td> 
+     <td> verify that 'format' really blew away all pre-existing files </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>setUp()</td> 
+     <td>public void setUp() throws IOException</td> 
+     <td> FileUtil.fullyDeleteContents(new File(MiniDFSCluster.getBaseDirectory())); ErrorSimulator.initializeErrorSimulationEvent(5); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5369</td> 
+     <td>-1009652357</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>None</td> 
+     <td> verify that 'format' really blew away all pre-existing files </td> 
+     <td>SATD_ADDED</td> 
+     <td>testCheckpoint()</td> 
+     <td>public void testCheckpoint() throws IOException</td> 
+     <td> Path file1 = new Path("checkpoint.dat"); Path file2 = new Path("checkpoint2.dat"); Collection<uri>
+        namedirs = null; Configuration conf = new HdfsConfiguration(); conf.set(DFSConfigKeys.DFS_NAMENODE_SECONDARY_HTTP_ADDRESS_KEY, "0.0.0.0:0"); replication = (short) conf.getInt(DFSConfigKeys.DFS_REPLICATION_KEY, 3); MiniDFSCluster cluster = new MiniDFSCluster.Builder(conf).numDataNodes(numDatanodes).build(); cluster.waitActive(); FileSystem fileSys = cluster.getFileSystem(); try { // // verify that 'format' really blew away all pre-existing files // assertTrue(!fileSys.exists(file1)); assertTrue(!fileSys.exists(file2)); namedirs = cluster.getNameDirs(0); // // Create file1 // writeFile(fileSys, file1, replication); checkFile(fileSys, file1, replication); // // Take a checkpoint // SecondaryNameNode secondary = startSecondaryNameNode(conf); ErrorSimulator.initializeErrorSimulationEvent(4); secondary.doCheckpoint(); secondary.shutdown(); } finally { fileSys.close(); cluster.shutdown(); } // // Restart cluster and verify that file1 still exist. // cluster = new MiniDFSCluster.Builder(conf).numDataNodes(numDatanodes).format(false).build(); cluster.waitActive(); fileSys = cluster.getFileSystem(); Path tmpDir = new Path("/tmp_tmp"); try { // check that file1 still exists checkFile(fileSys, file1, replication); cleanupFile(fileSys, file1); // create new file file2 writeFile(fileSys, file2, replication); checkFile(fileSys, file2, replication); // // Take a checkpoint // SecondaryNameNode secondary = startSecondaryNameNode(conf); secondary.doCheckpoint(); fileSys.delete(tmpDir, true); fileSys.mkdirs(tmpDir); secondary.doCheckpoint(); secondary.shutdown(); } finally { fileSys.close(); cluster.shutdown(); } // // Restart cluster and verify that file2 exists and // file1 does not exist. // cluster = new MiniDFSCluster.Builder(conf).numDataNodes(numDatanodes).format(false).build(); cluster.waitActive(); fileSys = cluster.getFileSystem(); assertTrue(!fileSys.exists(file1)); assertTrue(fileSys.exists(tmpDir)); try { // verify that file2 exists checkFile(fileSys, file2, replication); } finally { fileSys.close(); cluster.shutdown(); } // file2 is left behind. testNameNodeImageSendFail(conf); testSecondaryNamenodeError1(conf); testSecondaryNamenodeError2(conf); testSecondaryNamenodeError3(conf); testNamedirError(conf, namedirs); testSecondaryFailsToReturnImage(conf); testStartup(conf); 
+      </uri></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

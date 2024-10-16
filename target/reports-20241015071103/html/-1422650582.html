@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2733</td> <td>-1422650582</td><td>apache/camel</td><td>Babak Vahdat</td><td>b72c775fca015c8cc9b0226468d072c2e45a757c</td> <td>None</td> <td>start from somewhere in the 26xxx range</td> <td>SATD_ADDED</td> <td>initPort()</td> <td>public static void initPort() throws Exception</td> <td>
+    File file = new File("target/nettyport.txt");
+    if (!file.exists()) {
+        // start from somewhere in the 26xxx range
+        port = AvailablePortFinder.getNextAvailable(26000);
+    } else {
+        // read port number from file
+        String s = IOConverter.toString(file, null);
+        port = Integer.parseInt(s);
+        // use next free port
+        port = AvailablePortFinder.getNextAvailable(port + 1);
+    }
+</td> </tr></table></body></html>

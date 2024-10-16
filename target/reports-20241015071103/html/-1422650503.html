@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2855</td> <td>-1422650503</td><td>apache/camel</td><td>Claus Ibsen</td><td>b5c5c262f5304e6c4ca98fd165a62681f309b052</td> <td>None</td> <td>TODO: CAMEL-6455</td> <td>SATD_ADDED</td> <td>createRegistry()</td> <td>protected JndiRegistry createRegistry() throws Exception</td> <td>
+    JndiRegistry jndi = super.createRegistry();
+    jndi.bind("myBean", new MyBean());
+    return jndi;
+</td> </tr></table></body></html>

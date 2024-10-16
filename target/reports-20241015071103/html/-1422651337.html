@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1457</td> 
+     <td>-1422651337</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>8a5b728876dbfe1c19dc30621d32ebb8919a3e34</td> 
+     <td>TODO: correlationKey evalutated to null should be skipped by default</td> 
+     <td>TODO: correlationKey evaluated to null should be skipped by default</td> 
+     <td>SATD_CHANGED</td> 
+     <td>add(Exchange)</td> 
+     <td>public boolean add(Exchange exchange)</td> 
+     <td> // do not add exchange if it was filtered Boolean filtered = exchange.getProperty(Exchange.FILTERED, Boolean.class); if (filtered != null &amp;&amp; filtered) { if (LOG.isTraceEnabled()) { LOG.trace("Cannot aggregate exchange as its filtered: " + exchange); } return false; } Object correlationKey = correlationExpression.evaluate(exchange, Object.class); if (LOG.isTraceEnabled()) { LOG.trace("Evaluated expression: " + correlationExpression + " as correlation key: " + correlationKey); } // TODO: correlationKey evaluated to null should be skipped by default Exchange oldExchange = aggregated.get(correlationKey); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, Integer.class); ObjectHelper.notNull(size, Exchange.AGGREGATED_SIZE + " on " + oldExchange); size++; } // prepare the exchanges for aggregation ExchangeHelper.prepareAggregation(oldExchange, newExchange); newExchange = aggregationStrategy.aggregate(oldExchange, newExchange); newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); // update the index counter newExchange.setProperty(Exchange.AGGREGATED_INDEX, counter.getAndIncrement()); // the strategy may just update the old exchange and return it if (!newExchange.equals(oldExchange)) { if (LOG.isTraceEnabled()) { LOG.trace("Put exchange:" + newExchange + " with correlation key:" + correlationKey); } aggregated.put(correlationKey, newExchange); } onAggregation(correlationKey, newExchange); return true; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1394</td> 
+     <td>-1422651337</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a309d8edd967b38852b7b2359bd5acc2049971f4</td> 
+     <td>None</td> 
+     <td>TODO: correlationKey evalutated to null should be skipped by default</td> 
+     <td>SATD_ADDED</td> 
+     <td>add(Exchange)</td> 
+     <td>public boolean add(Exchange exchange)</td> 
+     <td> // do not add exchange if it was filtered Boolean filtered = exchange.getProperty(Exchange.FILTERED, Boolean.class); if (filtered != null &amp;&amp; filtered) { if (LOG.isTraceEnabled()) { LOG.trace("Cannot aggregate exchange as its filtered: " + exchange); } return false; } Object correlationKey = correlationExpression.evaluate(exchange, Object.class); if (LOG.isTraceEnabled()) { LOG.trace("Evaluated expression: " + correlationExpression + " as correlation key: " + correlationKey); } // TODO: correlationKey evalutated to null should be skipped by default Exchange oldExchange = aggregated.get(correlationKey); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, Integer.class); ObjectHelper.notNull(size, Exchange.AGGREGATED_SIZE + " on " + oldExchange); size++; } newExchange = aggregationStrategy.aggregate(oldExchange, newExchange); newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); // update the index counter newExchange.setProperty(Exchange.AGGREGATED_INDEX, counter.getAndIncrement()); // the strategy may just update the old exchange and return it if (!newExchange.equals(oldExchange)) { if (LOG.isTraceEnabled()) { LOG.trace("Put exchange:" + newExchange + " with correlation key:" + correlationKey); } aggregated.put(correlationKey, newExchange); } onAggregation(correlationKey, newExchange); return true; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4790</td> <td>1242678074</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>a828fedfba116d1f101cae10638c676ce4ff3b22</td> <td>None</td> <td>TODO: fix setMessage to work without init()</td> <td>SATD_ADDED</td> <td>insertPatchSet(RevCommit)</td> <td>private PatchSet insertPatchSet(RevCommit commit)</td> <td>
+    ProblemInfo p = problem("No patch set found for merged commit " + commit.name());
+    if (!user.get().isIdentifiedUser()) {
+        p.status = Status.FIX_FAILED;
+        p.outcome = "Must be called by an identified user to insert new patch set";
+        return null;
+    }
+    try {
+        ChangeControl ctl = changeControlFactory.controlFor(change, user.get());
+        PatchSetInserter inserter = patchSetInserterFactory.create(repo, rw, ctl, commit);
+        change = inserter.setValidatePolicy(ValidatePolicy.NONE).setRunHooks(false).setSendMail(false).setAllowClosed(true).setUploader(((IdentifiedUser) user.get()).getAccountId()).setMessage("Patch set for merged commit inserted by consistency checker").insert();
+        p.status = Status.FIXED;
+        p.outcome = "Inserted as patch set " + change.currentPatchSetId().get();
+        return inserter.getPatchSet();
+    } catch (InvalidChangeOperationException | OrmException | IOException | NoSuchChangeException e) {
+        warn(e);
+        p.status = Status.FIX_FAILED;
+        p.outcome = "Error inserting new patch set";
+        return null;
+    }
+</td> </tr></table></body></html>

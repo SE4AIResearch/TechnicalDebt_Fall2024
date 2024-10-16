@@ -1,0 +1,105 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>562</td> 
+     <td>-1422651819</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>7bba35c83985b84968398648c8bd7d5099d725ab</td> 
+     <td>invoke the message TODO need setup the call context here</td> 
+     <td>invoke the message prepare the context</td> 
+     <td>SATD_REMOVED</td> 
+     <td>process(CxfExchange)</td> 
+     <td>public void process(CxfExchange exchange)</td> 
+     <td> CxfBinding cxfBinding = endpoint.getBinding(); Message inMessage = cxfBinding.createCxfMessage(exchange); try { if (dataFormat.equals(DataFormat.POJO)) { // InputStream is = m.getContent(InputStream.class); // now we just deal with the POJO invocations List parameters = inMessage.getContent(List.class); if (parameters == null) { parameters = new ArrayList(); } String operationName = (String) inMessage.get(CxfConstants.OPERATION_NAME); String operationNameSpace = (String) inMessage.get(CxfConstants.OPERATION_NAMESPACE); Message response = new MessageImpl(); if (operationName != null) { // we need to check out the operation Namespace try { Object[] result = null; if (operationNameSpace == null) { result = client.invoke(operationName, parameters.toArray()); } else { QName operation = new QName(operationNameSpace, operationName); result = client.invoke(operation, parameters.toArray()); } response.setContent(Object[].class, result); cxfBinding.storeCxfResponse(exchange, response); } catch (Exception ex) { response.setContent(Exception.class, ex); cxfBinding.storeCxfFault(exchange, response); } } else { throw new RuntimeCamelException("Can't find the operation name in the message!"); } } else { // get the invocation context org.apache.cxf.message.Exchange ex = exchange.getExchange(); if (ex == null) { ex = (org.apache.cxf.message.Exchange) exchange.getProperty(CxfConstants.CXF_EXCHANGE); exchange.setExchange(ex); } if (ex == null) { ex = new ExchangeImpl(); exchange.setExchange(ex); } assert ex != null; InvokingContext invokingContext = ex.get(InvokingContext.class); if (invokingContext == null) { invokingContext = InvokingContextFactory.createContext(dataFormat); ex.put(InvokingContext.class, invokingContext); } Object params = invokingContext.getRequestContent(inMessage); // invoke the stream message with the exchange context CxfClient cxfClient = (CxfClient) client; // need to get the binding object to create the message BindingOperationInfo boi = ex.get(BindingOperationInfo.class); Message response = null; if (boi == null) { // it should be the raw message response = new MessageImpl(); } else { // create the message here Endpoint ep = ex.get(Endpoint.class); response = ep.getBinding().createMessage(); } response.setExchange(ex); // invoke the message prepare the context Map<string, object>
+        context = new HashMap 
+       <string, object>
+         (); Map 
+        <string, object>
+          requestContext = new HashMap 
+         <string, object>
+           (); Map 
+          <string, object>
+            responseContext = new HashMap 
+           <string, object>
+             (); // TODO Get the requestContext from the CamelExchange context.put(CxfClient.REQUEST_CONTEXT, requestContext); context.put(CxfClient.RESPONSE_CONTEXT, responseContext); try { Object result = cxfClient.dispatch(params, context, ex); ex.setOutMessage(response); invokingContext.setResponseContent(response, result); // copy the response context to the response response.putAll(responseContext); cxfBinding.storeCxfResponse(exchange, response); } catch (Exception e) { response.setContent(Exception.class, e); cxfBinding.storeCxfFault(exchange, response); } } } catch (Exception e) { // TODO add the fault message handling work throw new RuntimeCamelException(e); } 
+           </string,> 
+          </string,> 
+         </string,> 
+        </string,> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>533</td> 
+     <td>-1422651819</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>3398be11f96d7c6540536ed8303b684acbf3501e</td> 
+     <td>invoke the message TODO need setup the call context here TODO need to handle the one way message</td> 
+     <td>need to get the binding object to create the message</td> 
+     <td>SATD_REMOVED</td> 
+     <td>process(CxfExchange)</td> 
+     <td>public void process(CxfExchange exchange)</td> 
+     <td> CxfBinding cxfBinding = endpoint.getBinding(); Message inMessage = cxfBinding.createCxfMessage(exchange); try { if (dataFormat.equals(DataFormat.POJO)) { // InputStream is = m.getContent(InputStream.class); // now we just deal with the POJO invocations List parameters = inMessage.getContent(List.class); if (parameters == null) { parameters = new ArrayList(); } String operationName = (String) inMessage.get(CxfConstants.OPERATION_NAME); String operationNameSpace = (String) inMessage.get(CxfConstants.OPERATION_NAMESPACE); Message response = new MessageImpl(); if (operationName != null) { // we need to check out the operation Namespace try { Object[] result = null; if (operationNameSpace == null) { result = client.invoke(operationName, parameters.toArray()); } else { QName operation = new QName(operationNameSpace, operationName); result = client.invoke(operation, parameters.toArray()); } response.setContent(Object[].class, result); cxfBinding.storeCxfResponse(exchange, response); } catch (Exception ex) { response.setContent(Exception.class, ex); cxfBinding.storeCxfFault(exchange, response); } } else { throw new RuntimeCamelException("Can't find the operation name in the message!"); } } else { // get the invocation context org.apache.cxf.message.Exchange ex = exchange.getExchange(); if (ex == null) { ex = (org.apache.cxf.message.Exchange) exchange.getProperty(CxfConstants.CXF_EXCHANGE); exchange.setExchange(ex); } if (ex == null) { ex = new ExchangeImpl(); exchange.setExchange(ex); } assert ex != null; InvokingContext invokingContext = ex.get(InvokingContext.class); if (invokingContext == null) { invokingContext = InvokingContextFactory.createContext(dataFormat); ex.put(InvokingContext.class, invokingContext); } Object params = invokingContext.getRequestContent(inMessage); // invoke the stream message with the exchange context CxfClient cxfClient = (CxfClient) client; // invoke the message // TODO need setup the call context here Object result = cxfClient.dispatch(params, null, ex); // need to get the binding object to create the message BindingOperationInfo boi = ex.get(BindingOperationInfo.class); Message response = null; if (boi == null) { // it should be the raw message response = new MessageImpl(); } else { // create the message here Endpoint ep = ex.get(Endpoint.class); response = ep.getBinding().createMessage(); } response.setExchange(ex); ex.setOutMessage(response); invokingContext.setResponseContent(response, result); cxfBinding.storeCxfResponse(exchange, response); } } catch (Exception e) { // TODO add the falut message handling work throw new RuntimeCamelException(e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>532</td> 
+     <td>-1422651819</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>3398be11f96d7c6540536ed8303b684acbf3501e</td> 
+     <td>invoke the message TODO need setup the call context here TODO need to handle the one way message</td> 
+     <td>invoke the message TODO need setup the call context here</td> 
+     <td>SATD_CHANGED</td> 
+     <td>process(CxfExchange)</td> 
+     <td>public void process(CxfExchange exchange)</td> 
+     <td> CxfBinding cxfBinding = endpoint.getBinding(); Message inMessage = cxfBinding.createCxfMessage(exchange); try { if (dataFormat.equals(DataFormat.POJO)) { // InputStream is = m.getContent(InputStream.class); // now we just deal with the POJO invocations List parameters = inMessage.getContent(List.class); if (parameters == null) { parameters = new ArrayList(); } String operationName = (String) inMessage.get(CxfConstants.OPERATION_NAME); String operationNameSpace = (String) inMessage.get(CxfConstants.OPERATION_NAMESPACE); Message response = new MessageImpl(); if (operationName != null) { // we need to check out the operation Namespace try { Object[] result = null; if (operationNameSpace == null) { result = client.invoke(operationName, parameters.toArray()); } else { QName operation = new QName(operationNameSpace, operationName); result = client.invoke(operation, parameters.toArray()); } response.setContent(Object[].class, result); cxfBinding.storeCxfResponse(exchange, response); } catch (Exception ex) { response.setContent(Exception.class, ex); cxfBinding.storeCxfFault(exchange, response); } } else { throw new RuntimeCamelException("Can't find the operation name in the message!"); } } else { // get the invocation context org.apache.cxf.message.Exchange ex = exchange.getExchange(); if (ex == null) { ex = (org.apache.cxf.message.Exchange) exchange.getProperty(CxfConstants.CXF_EXCHANGE); exchange.setExchange(ex); } if (ex == null) { ex = new ExchangeImpl(); exchange.setExchange(ex); } assert ex != null; InvokingContext invokingContext = ex.get(InvokingContext.class); if (invokingContext == null) { invokingContext = InvokingContextFactory.createContext(dataFormat); ex.put(InvokingContext.class, invokingContext); } Object params = invokingContext.getRequestContent(inMessage); // invoke the stream message with the exchange context CxfClient cxfClient = (CxfClient) client; // invoke the message // TODO need setup the call context here Object result = cxfClient.dispatch(params, null, ex); // need to get the binding object to create the message BindingOperationInfo boi = ex.get(BindingOperationInfo.class); Message response = null; if (boi == null) { // it should be the raw message response = new MessageImpl(); } else { // create the message here Endpoint ep = ex.get(Endpoint.class); response = ep.getBinding().createMessage(); } response.setExchange(ex); ex.setOutMessage(response); invokingContext.setResponseContent(response, result); cxfBinding.storeCxfResponse(exchange, response); } } catch (Exception e) { // TODO add the falut message handling work throw new RuntimeCamelException(e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>427</td> 
+     <td>-1422651819</td>
+     <td>apache/camel</td>
+     <td>Hiram R. Chirino</td>
+     <td>64a4b6aa85a599505008fab00a8c498323469787</td> 
+     <td>None</td> 
+     <td>invoke the message TODO need setup the call context here TODO need to handle the one way message</td> 
+     <td>SATD_ADDED</td> 
+     <td>process(CxfExchange)</td> 
+     <td>public void process(CxfExchange exchange)</td> 
+     <td> CxfBinding cxfBinding = endpoint.getBinding(); Message inMessage = cxfBinding.createCxfMessage(exchange); try { if (dataFormat.equals(DataFormat.POJO)) { // InputStream is = m.getContent(InputStream.class); // now we just deal with the POJO invocations List paraments = inMessage.getContent(List.class); String operation = inMessage.getContent(String.class); Message response = new MessageImpl(); if (operation != null &amp;&amp; paraments != null) { // now we just deal with the invoking the paraments Object[] result = client.invoke(operation, paraments.toArray()); response.setContent(Object[].class, result); cxfBinding.storeCxfResponse(exchange, response); } } else { // get the invocation context org.apache.cxf.message.Exchange ex = exchange.getExchange(); InvokingContext invokingContext = ex.get(InvokingContext.class); Object params = invokingContext.getRequestContent(inMessage); // invoke the stream message with the exchange context CxfClient cxfClient = (CxfClient) client; // invoke the message // TODO need setup the call context here // TODO need to handle the one way message Object result = cxfClient.dispatch(params, null, ex); System.out.println("the result object is " + result); // need to get the binding object to create the message BindingOperationInfo boi = ex.get(BindingOperationInfo.class); Message response = null; System.out.println("the boi is " + boi); if (boi == null) { // it should be the raw message response = new MessageImpl(); } else { // create the message here Endpoint ep = ex.get(Endpoint.class); response = ep.getBinding().createMessage(); } response.setExchange(ex); ex.setOutMessage(response); invokingContext.setResponseContent(response, result); cxfBinding.storeCxfResponse(exchange, response); } } catch (Exception e) { // TODO add the falut message handling work throw new RuntimeCamelException(e); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

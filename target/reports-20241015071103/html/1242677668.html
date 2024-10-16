@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4057</td> 
+     <td>1242677668</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>No set of actions, perhaps the user is not signed in?</td> 
+     <td>No set of actions, perhaps the user is not signed in?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>populateActions(PatchSetDetail)</td> 
+     <td>private void populateActions(final PatchSetDetail detail)</td> 
+     <td> if (changeDetail.getChange().getStatus().isClosed()) { // Generic actions aren't allowed on closed changes. // return; } final Set<approvalcategory.id>
+        allowed = changeDetail.getCurrentActions(); if (allowed == null) { // No set of actions, perhaps the user is not signed in? return; } for (final ApprovalType at : Common.getGerritConfig().getActionTypes()) { final ApprovalCategoryValue max = at.getMax(); if (max == null || max.getValue() &lt;= 0) { // No positive assertion, don't draw a button. continue; } if (!allowed.contains(at.getCategory().getId())) { // User isn't permitted to invoke this. continue; } final Button b = new Button(Util.M.patchSetAction(at.getCategory().getName(), detail.getPatchSet().getPatchSetId())); b.addClickListener(new ClickListener() { public void onClick(Widget sender) { b.setEnabled(false); Util.MANAGE_SVC.patchSetAction(max.getId(), patchSet.getId(), new GerritCallback
+       <voidresult>
+        () { public void onSuccess(VoidResult result) { actionsPanel.remove(b); fireOnSuggestRefresh(); } @Override public void onFailure(Throwable caught) { b.setEnabled(true); super.onFailure(caught); } }); } }); actionsPanel.add(b); } 
+       </voidresult>
+      </approvalcategory.id></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3999</td> 
+     <td>1242677668</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>641f57a73c7adfcf7786f315b559da9e7cbe576a</td> 
+     <td>None</td> 
+     <td>No set of actions, perhaps the user is not signed in?</td> 
+     <td>SATD_ADDED</td> 
+     <td>populateActions(PatchSetDetail)</td> 
+     <td>private void populateActions(final PatchSetDetail detail)</td> 
+     <td> final Set<approvalcategory.id>
+        allowed = changeDetail.getCurrentActions(); if (allowed == null) { // No set of actions, perhaps the user is not signed in? return; } for (final ApprovalType at : Common.getGerritConfig().getActionTypes()) { final ApprovalCategoryValue max = at.getMax(); if (max == null || max.getValue() &lt;= 0) { // No positive assertion, don't draw a button. continue; } if (!allowed.contains(at.getCategory().getId())) { // User isn't permitted to invoke this. continue; } final Button b = new Button(Util.M.patchSetAction(at.getCategory().getName(), detail.getPatchSet().getPatchSetId())); b.addClickListener(new ClickListener() { public void onClick(Widget sender) { Util.MANAGE_SVC.patchSetAction(max.getId(), patchSet.getId(), new GerritCallback
+       <voidresult>
+        () { public void onSuccess(VoidResult result) { // TODO refresh change screen actionsPanel.remove(b); } }); } }); actionsPanel.add(b); } 
+       </voidresult>
+      </approvalcategory.id></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

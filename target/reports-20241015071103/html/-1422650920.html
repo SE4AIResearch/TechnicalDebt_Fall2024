@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2149</td> <td>-1422650920</td><td>apache/camel</td><td>Claus Ibsen</td><td>fd3732cc05de27053eaafb92ca15d4149ee33ea1</td> <td>None</td> <td>TODO: upgrade to Spring 3
+if we are on a new enough spring version we can assume CACHE_CONSUMER</td> <td>SATD_ADDED</td> <td>defaultCacheLevel(JmsEndpoint)</td> <td>protected int defaultCacheLevel(JmsEndpoint endpoint)</td> <td>
+    // TODO: upgrade to Spring 3
+    // if we are on a new enough spring version we can assume CACHE_CONSUMER
+    if (PackageHelper.isValidVersion("org.springframework.jms", 2.51D)) {
+        return DefaultMessageListenerContainer.CACHE_CONSUMER;
+    } else {
+        if (endpoint.isPubSubDomain() && !isSubscriptionDurable()) {
+            // we must cache the consumer or we will miss messages
+            // see https://issues.apache.org/activemq/browse/CAMEL-253
+            return DefaultMessageListenerContainer.CACHE_CONSUMER;
+        } else {
+            // to enable consuming and sending with a single JMS session (to
+            // avoid XA) we can only use CACHE_CONNECTION
+            // due to this bug :
+            // http://opensource.atlassian.com/projects/spring/browse/SPR-3890
+            return DefaultMessageListenerContainer.CACHE_CONNECTION;
+        }
+    }
+</td> </tr></table></body></html>

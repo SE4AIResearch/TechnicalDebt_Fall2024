@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>751</td> 
+     <td>-1422651628</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>d7873fc5cce2fabd028fc5157920f3d8944aa652</td> 
+     <td>TODO: This code could be neater</td> 
+     <td>cd to the folder of the filename</td> 
+     <td>SATD_REMOVED</td> 
+     <td>poll()</td> 
+     <td>protected void poll() throws Exception</td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Polling " + endpoint.getConfiguration()); } connectIfNecessary(); // If the attempt to connect isn't successful, then the thrown // exception will signify that we couldn't poll try { final String fileName = endpoint.getConfiguration().getFile(); if (endpoint.getConfiguration().isDirectory()) { pollDirectory(fileName); } else { int index = fileName.lastIndexOf('/'); if (index &gt; -1) { // cd to the folder of the filename channel.cd(fileName.substring(0, index)); } // list the files in the fold and poll the first file final Vector files = channel.ls(fileName.substring(index + 1)); final ChannelSftp.LsEntry file = (ChannelSftp.LsEntry) files.get(0); pollFile(file); } lastPollTime = System.currentTimeMillis(); } catch (Exception e) { if (isStopping() || isStopped()) { // if we are stopping then ignore any exception during a poll LOG.warn("Consumer is stopping. Ignoring caught exception: " + e.getClass().getCanonicalName() + " message: " + e.getMessage()); } else { LOG.warn("Exception occured during polling: " + e.getClass().getCanonicalName() + " message: " + e.getMessage()); disconnect(); // Rethrow to signify that we didn't poll throw e; } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>749</td> 
+     <td>-1422651628</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>f9bf17b73a0a807cca76a6532c7b2ca87faa996b</td> 
+     <td>None</td> 
+     <td>TODO: This code could be neater</td> 
+     <td>SATD_ADDED</td> 
+     <td>poll()</td> 
+     <td>protected void poll() throws Exception</td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Polling " + endpoint.getConfiguration()); } connectIfNecessary(); // If the attempt to connect isn't successful, then the thrown // exception will signify that we couldn't poll try { final String fileName = endpoint.getConfiguration().getFile(); if (endpoint.getConfiguration().isDirectory()) { pollDirectory(fileName); } else { // TODO: This code could be neater channel.cd(fileName.substring(0, fileName.lastIndexOf('/'))); final ChannelSftp.LsEntry file = (ChannelSftp.LsEntry) channel.ls(fileName.substring(fileName.lastIndexOf('/') + 1)).get(0); pollFile(file); } lastPollTime = System.currentTimeMillis(); } catch (Exception e) { if (isStopping() || isStopped()) { // if we are stopping then ignore any exception during a poll LOG.warn("Consumer is stopping. Ignoring caught exception: " + e.getClass().getCanonicalName() + " message: " + e.getMessage()); } else { LOG.warn("Exception occured during polling: " + e.getClass().getCanonicalName() + " message: " + e.getMessage()); disconnect(); // Rethrow to signify that we didn't poll throw e; } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

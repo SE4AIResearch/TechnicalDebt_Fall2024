@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>765</td> <td>-1422651620</td><td>apache/camel</td><td>Gert Vanthienen</td><td>6d2c99ec76469a635d8724396857007b9236a6b8</td> <td>None</td> <td>ignore provider specified JMS extension headers see page 39 of JMS 1.1 specification
+added \"JMSXRecvTimestamp\" as a workaround for an Oracle bug/typo in AqjmsMessage</td> <td>SATD_ADDED</td> <td>initialize()</td> <td>protected void initialize()</td> <td>
+    // ignore provider specified JMS extension headers see page 39 of JMS 1.1 specification
+    // added "JMSXRecvTimestamp" as a workaround for an Oracle bug/typo in AqjmsMessage
+    getOutFilter().add("JMSXUserID");
+    getOutFilter().add("JMSXAppID");
+    getOutFilter().add("JMSXDeliveryCount");
+    getOutFilter().add("JMSXProducerTXID");
+    getOutFilter().add("JMSXConsumerTXID");
+    getOutFilter().add("JMSXRcvTimestamp");
+    getOutFilter().add("JMSXRecvTimestamp");
+    getOutFilter().add("JMSXState");
+</td> </tr></table></body></html>

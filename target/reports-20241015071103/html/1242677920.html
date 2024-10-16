@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4512</td> 
+     <td>1242677920</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Edwin Kempin</td>
+     <td>07a5cd1b68613367cf7567b80bd1d67960525569</td> 
+     <td>TODO: Handle empty contents</td> 
+     <td>TODO: Handle empty contents</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>displaySide(DiffInfo.FileMeta, String, Element)</td> 
+     <td>private CodeMirror displaySide(DiffInfo.FileMeta meta, String contents, Element ele)</td> 
+     <td> if (meta == null) { // TODO: Handle empty contents return null; } Configuration cfg = Configuration.create().set("readOnly", true).set("lineNumbers", true).set("tabSize", 2).set("mode", getContentType(meta)).set("value", contents); final CodeMirror cm = CodeMirror.create(ele, cfg); cm.setWidth("100%"); cm.setHeight(Window.getClientHeight() - HEADER_FOOTER); return cm; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4511</td> 
+     <td>1242677920</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>0c0c026877b879947f0f759574c5efc89c84991a</td> 
+     <td>None</td> 
+     <td>TODO: Handle empty contents</td> 
+     <td>SATD_ADDED</td> 
+     <td>displaySide(DiffInfo.FileMeta, String)</td> 
+     <td>private CodeMirror displaySide(DiffInfo.FileMeta meta, String contents)</td> 
+     <td> if (meta == null) { // TODO: Handle empty contents return null; } Configuration cfg = Configuration.create().set("readOnly", true).set("lineNumbers", true).set("tabSize", 2).set("mode", getContentType(meta)).set("value", contents); Element child = DOM.createDiv(); editorContainer.getElement().appendChild(child); final CodeMirror cm = CodeMirror.create(child, cfg); cm.setWidth("100%"); cm.setHeight(Window.getClientHeight() - HEADER_FOOTER); return cm; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

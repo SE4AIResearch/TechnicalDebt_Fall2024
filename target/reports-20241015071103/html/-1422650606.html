@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2717</td> 
+     <td>-1422650606</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>6d35c09f59467035bcb7af898e286849a3f55a98</td> 
+     <td>TODO The separator in the beginning of the quoted field is still not handled. We may need to convert the separators in the quote into some kind of safe code</td> 
+     <td>TODO The separator in the beginning of the quoted field is still not handled. We may need to convert the separators in the quote into some kind of safe code</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testBindySeparatorsAround()</td> 
+     <td>public void testBindySeparatorsAround() throws Exception</td> 
+     <td> CamelContext ctx = new DefaultCamelContext(); // new ReconciliationRoute() ctx.addRoutes(createRoute()); ctx.start(); // TODO The separator in the beginning of the quoted field is still not handled. // We may need to convert the separators in the quote into some kind of safe code String addressLine1 = ",8506 SIX FORKS ROAD,"; MockEndpoint mock = ctx.getEndpoint("mock:result", MockEndpoint.class); mock.expectedPropertyReceived("addressLine1", addressLine1); String csvLine = "\"PROBLEM SOLVER\",\"" + addressLine1 + "\",\"SUITE 104\",\"RALEIGH\",\"NC\",\"27615\",\"US\""; ProducerTemplate template = ctx.createProducerTemplate(); template.sendBody("direct:fromCsv", csvLine.trim()); mock.assertIsSatisfied(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2689</td> 
+     <td>-1422650606</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>4ac13454501bb4657b64b4c90d05b303bd884ad2</td> 
+     <td>None</td> 
+     <td>TODO The separator in the beginning of the quoted field is still not handled. We may need to convert the separators in the quote into some kind of safe code</td> 
+     <td>SATD_ADDED</td> 
+     <td>testBindySeparatorsAround()</td> 
+     <td>public void testBindySeparatorsAround() throws Exception</td> 
+     <td> CamelContext ctx = new DefaultCamelContext(); // new ReconciliationRoute() ctx.addRoutes(createRoute()); ctx.start(); // TODO The separator in the beginning of the quoted field is still not handled. // We may need to convert the separators in the quote into some kind of safe code String addressLine1 = ",8506 SIX FORKS ROAD,"; MockEndpoint mock = ctx.getEndpoint("mock:result", MockEndpoint.class); mock.expectedPropertyReceived("addressLine1", addressLine1); String csvLine = "\"PROBLEM SOLVER\",\"" + addressLine1 + "\",\"SUITE 104\",\"RALEIGH\",\"NC\",\"27615\",\"US\""; ProducerTemplate template = ctx.createProducerTemplate(); template.sendBody("direct:fromCsv", csvLine.trim()); mock.assertIsSatisfied(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

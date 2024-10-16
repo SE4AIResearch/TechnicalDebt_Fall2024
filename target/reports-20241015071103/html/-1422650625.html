@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2657</td> <td>-1422650625</td><td>apache/camel</td><td>Claus Ibsen</td><td>add29213ed36802fa026f5aa388e1d82172001ce</td> <td>None</td> <td>start from somewhere in the 23xxx range</td> <td>SATD_ADDED</td> <td>initPort()</td> <td>public static void initPort() throws Exception</td> <td>
+    // start from somewhere in the 23xxx range
+    port = AvailablePortFinder.getNextAvailable(23000);
+    // find another ports for proxy route test
+    port2 = AvailablePortFinder.getNextAvailable(24000);
+</td> </tr></table></body></html>

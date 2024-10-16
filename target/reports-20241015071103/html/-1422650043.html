@@ -1,0 +1,35 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3732</td> <td>-1422650043</td><td>apache/camel</td><td>Andrea Cosentino</td><td>e33d97b6255f1b0ac6e9e86f8129dc71571c99c4</td> <td>None</td> <td>TODO: we do not yet have the classname of nested types</td> <td>SATD_ADDED</td> <td>testReaderRead()</td> <td>public void testReaderRead() throws Exception</td> <td>
+    BeanConfig config = new BeanConfig();
+    config.setHost("localhost:8080");
+    config.setSchemes(new String[] { "http" });
+    config.setBasePath("/api");
+    config.setTitle("Camel User store");
+    config.setLicense("Apache 2.0");
+    config.setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html");
+    RestSwaggerReader reader = new RestSwaggerReader();
+    Swagger swagger = reader.read(context.getRestDefinitions(), null, config, context.getName(), new DefaultClassResolver());
+    assertNotNull(swagger);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    String json = mapper.writeValueAsString(swagger);
+    log.info(json);
+    assertTrue(json.contains("\"host\" : \"localhost:8080\""));
+    assertTrue(json.contains("\"description\" : \"The order returned\""));
+    assertTrue(json.contains("\"BookOrder\""));
+    assertTrue(json.contains("\"LineItem\""));
+    assertTrue(json.contains("\"$ref\" : \"#/definitions/BookOrder\""));
+    assertTrue(json.contains("\"$ref\" : \"#/definitions/LineItem\""));
+    assertTrue(json.contains("\"x-className\""));
+    assertTrue(json.contains("\"format\" : \"org.apache.camel.swagger.BookOrder\""));
+    // TODO: we do not yet have the classname of nested types
+    // assertTrue(json.contains("\"format\" : \"org.apache.camel.swagger.LineItem\""));
+    context.stop();
+</td> </tr></table></body></html>

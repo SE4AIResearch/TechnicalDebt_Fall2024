@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1262</td> <td>-1422651395</td><td>apache/camel</td><td>Claus Ibsen</td><td>f6ab15b91c210cbcfd59a14736493406752c16a8</td> <td>None</td> <td>seda producer is async also (but this is ugly to need to cast)</td> <td>SATD_ADDED</td> <td>testAsyncWithSeda()</td> <td>public void testAsyncWithSeda() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(1);
+    Endpoint endpoint = context.getEndpoint("seda:start");
+    Producer producer = endpoint.createProducer();
+    Exchange exchange = producer.createExchange(ExchangePattern.InOut);
+    exchange.getIn().setBody("Hello World");
+    // seda producer is async also (but this is ugly to need to cast)
+    AsyncProcessor async = (AsyncProcessor) producer;
+    boolean sync = async.process(exchange, new AsyncCallback() {
+
+        public void done(boolean sync) {
+            // we expect 2 callbacks
+            // the first is when we have finished sending to the seda producer
+            if (sync) {
+                doneSync = true;
+            }
+            // and the async should occur when the mock endpoint is done
+            if (!sync) {
+                latchAsync.countDown();
+            }
+        }
+    });
+    // I should happen before mock
+    route = route + "send";
+    assertMockEndpointsSatisfied();
+    assertEquals("Send should occur before processor", "sendprocess", route);
+    assertTrue("Sync done should have occured", doneSync);
+    // TODO: The AsyncProcessor does not work as expected
+    // wait at most 2 seconds
+    boolean zero = latchAsync.await(2, TimeUnit.SECONDS);
+    // assertTrue("Async done should have occured", zero);
+    // how to get the response?
+    String response = exchange.getOut().getBody(String.class);
+// assertEquals("Bye World", response);
+</td> </tr></table></body></html>

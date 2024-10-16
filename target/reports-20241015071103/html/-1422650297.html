@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3178</td> <td>-1422650297</td><td>apache/camel</td><td>Claus Ibsen</td><td>14cd8d6b32d8f6b3eb4fe2fe62947c11c3a5c935</td> <td>None</td> <td>TODO: improve matching like we have done in camel-servlet, eg using candidates</td> <td>SATD_ADDED</td> <td>getHandler(HttpRequest)</td> <td>private HttpServerChannelHandler getHandler(HttpRequest request)</td> <td>
+    // need to strip out host and port etc, as we only need the context-path for matching
+    String method = request.getMethod().getName();
+    String path = request.getUri();
+    int idx = path.indexOf(token);
+    if (idx > -1) {
+        path = path.substring(idx + len);
+    }
+    // use the path as key to find the consumer handler to use
+    path = pathAsKey(path);
+    // TODO: improve matching like we have done in camel-servlet, eg using candidates
+    // find the one that matches
+    for (Map.Entry<ContextPathMatcher, HttpServerChannelHandler> entry : consumers.entrySet()) {
+        if (entry.getKey().matches(method, path)) {
+            return entry.getValue();
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

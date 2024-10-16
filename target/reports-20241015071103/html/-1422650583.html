@@ -1,0 +1,104 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2740</td> 
+     <td>-1422650583</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>618c234d8f1914f8482f416ea8c46400dc75be4f</td> 
+     <td>TODO: allow to turn mapMessage=true|false and rely on on-demand mapping TODO: netty http producer TODO: make it easy to turn keep-alive on|off on producer TODO: add logging</td> 
+     <td>TODO: netty http producer TODO: make it easy to turn keep-alive on|off on producer</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> NettyConfiguration config; if (getConfiguration() != null) { config = getConfiguration().copy(); } else { config = new NettyHttpConfiguration(); } config = parseConfiguration(config, remaining, parameters); // validate config config.validateConfiguration(); NettyHttpEndpoint answer = new NettyHttpEndpoint(remaining, this, config); answer.setTimer(getTimer()); setProperties(answer.getConfiguration(), parameters); // set component options on endpoint as defaults if (answer.getNettyHttpBinding() == null) { answer.setNettyHttpBinding(getNettyHttpBinding()); } if (answer.getHeaderFilterStrategy() == null) { answer.setHeaderFilterStrategy(getHeaderFilterStrategy()); } return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2739</td> 
+     <td>-1422650583</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>6de42101dec3ba2561a03aefcfc7aed7456be215</td> 
+     <td>TODO: allow to turn mapMessage=true|false TODO: netty http producer TODO: make it easy to turn chunked on|off TODO: make it easy to turn compression on|off TODO: add logging</td> 
+     <td>TODO: allow to turn mapMessage=true|false and rely on on-demand mapping TODO: netty http producer TODO: make it easy to turn keep-alive on|off on producer TODO: add logging</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> NettyConfiguration config; if (getConfiguration() != null) { config = getConfiguration().copy(); } else { config = new NettyHttpConfiguration(); } config = parseConfiguration(config, remaining, parameters); // validate config config.validateConfiguration(); NettyHttpEndpoint answer = new NettyHttpEndpoint(remaining, this, config); answer.setTimer(getTimer()); setProperties(answer.getConfiguration(), parameters); // set component options on endpoint as defaults if (answer.getNettyHttpBinding() == null) { answer.setNettyHttpBinding(getNettyHttpBinding()); } if (answer.getHeaderFilterStrategy() == null) { answer.setHeaderFilterStrategy(getHeaderFilterStrategy()); } return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2737</td> 
+     <td>-1422650583</td> 
+     <td>apache/camel</td> 
+     <td>Moulliard Charles</td> 
+     <td>7012efdef4ac214d3d125c5e3ec34c706ad54efd</td> 
+     <td>TODO: allow to turn mapMessage=true|false TODO: netty http producer TODO: make it easy to turn chunked on|off TODO: make it easy to turn compression on|off TODO: use HeaderFilterStrategy to filter headers TODO: add logging</td> 
+     <td>TODO: allow to turn mapMessage=true|false TODO: netty http producer TODO: make it easy to turn chunked on|off TODO: make it easy to turn compression on|off TODO: add logging</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+        ) 
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception 
+      </string,></td> 
+     <td> NettyConfiguration config; if (getConfiguration() != null) { config = getConfiguration().copy(); } else { config = new NettyHttpConfiguration(); } config = parseConfiguration(config, remaining, parameters); // validate config config.validateConfiguration(); NettyHttpEndpoint answer = new NettyHttpEndpoint(remaining, this, config); answer.setTimer(getTimer()); setProperties(answer.getConfiguration(), parameters); // set component options on endpoint as defaults if (answer.getNettyHttpBinding() == null) { answer.setNettyHttpBinding(getNettyHttpBinding()); } if (answer.getHeaderFilterStrategy() == null) { answer.setHeaderFilterStrategy(getHeaderFilterStrategy()); } return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2732</td> 
+     <td>-1422650583</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>b72c775fca015c8cc9b0226468d072c2e45a757c</td> 
+     <td>None</td> 
+     <td>TODO: allow to turn mapMessage=true|false TODO: netty http producer TODO: make it easy to turn chunked on|off TODO: make it easy to turn compression on|off TODO: use HeaderFilterStrategy to filter headers TODO: add logging</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(String, String, Map<string, object>
+       )
+      </string,></td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map<string, object>
+        parameters) throws Exception
+      </string,></td> 
+     <td> NettyConfiguration config; if (getConfiguration() != null) { config = getConfiguration().copy(); } else { config = new NettyHttpConfiguration(); } config = parseConfiguration(config, remaining, parameters); // validate config config.validateConfiguration(); NettyHttpEndpoint nettyEndpoint = new NettyHttpEndpoint(remaining, this, config); nettyEndpoint.setTimer(getTimer()); setProperties(nettyEndpoint.getConfiguration(), parameters); return nettyEndpoint; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

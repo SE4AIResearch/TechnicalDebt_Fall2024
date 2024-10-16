@@ -1,0 +1,58 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2530</td> <td>-1422650694</td><td>apache/camel</td><td>Claus Ibsen</td><td>288109b34d8511dbbdafcace8346e2eebf6ac83a</td> <td>None</td> <td>XXX Actually, returns any field length, not just output.</td> <td>SATD_ADDED</td> <td>getParameterList(Exchange)</td> <td>private ProgramParameter[] getParameterList(Exchange exchange) throws InvalidPayloadException, PropertyVetoException</td> <td>
+    Object body = exchange.getIn().getMandatoryBody();
+    Object[] params = (Object[]) body;
+    ProgramParameter[] parameterList = new ProgramParameter[params.length];
+    for (int i = 0; i < params.length; i++) {
+        Object param = params[i];
+        boolean input;
+        boolean output;
+        if (getISeriesEndpoint().isFieldIdxForOuput(i)) {
+            output = true;
+            input = param != null;
+        } else {
+            output = false;
+            input = true;
+        }
+        byte[] inputData = null;
+        // XXX Actually, returns any field length, not just output.
+        int length = getISeriesEndpoint().getOutputFieldLength(i);
+        if (input) {
+            if (param != null) {
+                AS400DataType typeConverter;
+                if (getISeriesEndpoint().getFormat() == Format.binary) {
+                    typeConverter = new AS400ByteArray(length);
+                } else {
+                    typeConverter = new AS400Text(length, getISeriesEndpoint().getiSeries());
+                }
+                inputData = typeConverter.toBytes(param);
+            }
+        // Else, inputData will remain null.
+        }
+        if (input && output) {
+            LOG.trace("Parameter {} is both input and output.", i);
+            parameterList[i] = new ProgramParameter(inputData, length);
+        } else if (input) {
+            LOG.trace("Parameter {} is input.", i);
+            if (inputData != null) {
+                parameterList[i] = new ProgramParameter(inputData);
+            } else {
+                parameterList[i] = new ProgramParameter();
+                parameterList[i].setParameterType(ProgramParameter.PASS_BY_REFERENCE);
+                // Just for self documentation.
+                parameterList[i].setNullParameter(true);
+            }
+        } else {
+            // output
+            LOG.trace("Parameter {} is output.", i);
+            parameterList[i] = new ProgramParameter(length);
+        }
+    }
+    return parameterList;
+</td> </tr></table></body></html>

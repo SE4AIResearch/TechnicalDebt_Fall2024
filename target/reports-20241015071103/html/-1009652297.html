@@ -1,0 +1,70 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5429</td> <td>-1009652297</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>the env key is note present anywhere .. simply set it
+example X=$X:/tmp or X=/tmp</td> <td>SATD_ADDED</td> <td>getVMEnvironment(String, File, JobConf, Map<String, String>, TaskAttemptID, long)</td> <td>private String getVMEnvironment(String errorInfo, File workDir, JobConf conf, Map<String, String> env, TaskAttemptID taskid, long logSize) throws Throwable</td> <td>
+    StringBuffer ldLibraryPath = new StringBuffer();
+    ldLibraryPath.append(workDir.toString());
+    String oldLdLibraryPath = null;
+    oldLdLibraryPath = System.getenv("LD_LIBRARY_PATH");
+    if (oldLdLibraryPath != null) {
+        ldLibraryPath.append(SYSTEM_PATH_SEPARATOR);
+        ldLibraryPath.append(oldLdLibraryPath);
+    }
+    env.put("LD_LIBRARY_PATH", ldLibraryPath.toString());
+    // put jobTokenFile name into env
+    String jobTokenFile = conf.get(TokenCache.JOB_TOKENS_FILENAME);
+    LOG.debug("putting jobToken file name into environment fn=" + jobTokenFile);
+    env.put(UserGroupInformation.HADOOP_TOKEN_FILE_LOCATION, jobTokenFile);
+    // for the child of task jvm, set hadoop.root.logger
+    env.put("HADOOP_ROOT_LOGGER", "INFO,TLA");
+    String hadoopClientOpts = System.getenv("HADOOP_CLIENT_OPTS");
+    if (hadoopClientOpts == null) {
+        hadoopClientOpts = "";
+    } else {
+        hadoopClientOpts = hadoopClientOpts + " ";
+    }
+    hadoopClientOpts = hadoopClientOpts + "-Dhadoop.tasklog.taskid=" + taskid + " -Dhadoop.tasklog.iscleanup=" + t.isTaskCleanupTask() + " -Dhadoop.tasklog.totalLogFileSize=" + logSize;
+    env.put("HADOOP_CLIENT_OPTS", hadoopClientOpts);
+    // add the env variables passed by the user
+    String mapredChildEnv = getChildEnv(conf);
+    if (mapredChildEnv != null && mapredChildEnv.length() > 0) {
+        String[] childEnvs = mapredChildEnv.split(",");
+        for (String cEnv : childEnvs) {
+            try {
+                // split on '='
+                String[] parts = cEnv.split("=");
+                String value = env.get(parts[0]);
+                if (value != null) {
+                    // replace $env with the child's env constructed by tt's
+                    // example LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp
+                    value = parts[1].replace("$" + parts[0], value);
+                } else {
+                    // this key is not configured by the tt for the child .. get it
+                    // from the tt's env
+                    // example PATH=$PATH:/tmp
+                    value = System.getenv(parts[0]);
+                    if (value != null) {
+                        // the env key is present in the tt's env
+                        value = parts[1].replace("$" + parts[0], value);
+                    } else {
+                        // the env key is note present anywhere .. simply set it
+                        // example X=$X:/tmp or X=/tmp
+                        value = parts[1].replace("$" + parts[0], "");
+                    }
+                }
+                env.put(parts[0], value);
+            } catch (Throwable t) {
+                // set the error msg
+                errorInfo = "Invalid User environment settings : " + mapredChildEnv + ". Failed to parse user-passed environment param." + " Expecting : env1=value1,env2=value2...";
+                LOG.warn(errorInfo);
+                throw t;
+            }
+        }
+    }
+    return errorInfo;
+</td> </tr></table></body></html>

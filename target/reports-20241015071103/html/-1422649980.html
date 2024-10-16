@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3830</td> 
+     <td>-1422649980</td>
+     <td>apache/camel</td>
+     <td>Sami Nurminen</td>
+     <td>3ee2bb467cafd810fb5bf78869a9ab117ac83114</td> 
+     <td>TODO: as rest of types. TODO: add test for each type.</td> 
+     <td>TODO: as rest of types. TODO: add test for each type.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>sqlTypeToJavaType(int, String)</td> 
+     <td>public static Class sqlTypeToJavaType(int sqlType, String sqlTypeStr)</td> 
+     <td> // TODO: as rest of types. // TODO: add test for each type. Class ret = null; switch(sqlType) { case Types.INTEGER: ret = Integer.class; break; case Types.VARCHAR: ret = String.class; break; case Types.BIGINT: ret = BigInteger.class; break; case Types.CHAR: ret = String.class; break; case Types.BOOLEAN: ret = Boolean.class; break; case Types.DATE: ret = Date.class; break; case Types.TIMESTAMP: ret = Date.class; break; } if (ret == null) { throw new ParseRuntimeException("Unable to map SQL type " + sqlTypeStr + " to Java type"); } return ret; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3828</td> 
+     <td>-1422649980</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>6dac645b89ac4c3e115137b08a079c822c935d1f</td> 
+     <td>None</td> 
+     <td>TODO: as rest of types. TODO: add test for each type.</td> 
+     <td>SATD_ADDED</td> 
+     <td>sqlTypeToJavaType(int, String)</td> 
+     <td>public static Class sqlTypeToJavaType(int sqlType, String sqlTypeStr)</td> 
+     <td> // TODO: as rest of types. // TODO: add test for each type. Class ret = null; switch(sqlType) { case Types.INTEGER: ret = Integer.class; break; case Types.VARCHAR: ret = String.class; break; case Types.BIGINT: ret = BigInteger.class; break; case Types.CHAR: ret = String.class; break; case Types.BOOLEAN: ret = Boolean.class; break; case Types.DATE: ret = Date.class; break; case Types.TIMESTAMP: ret = Date.class; break; } if (ret == null) { throw new ParseException("Unable to map SQL type " + sqlTypeStr + " to Java type"); } return ret; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

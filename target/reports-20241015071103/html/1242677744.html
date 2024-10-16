@@ -1,0 +1,163 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4206</td> <td>1242677744</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>We shouldn't have to do this extra decode pass, but somehow we
+are now receiving our \"^1\" suffix as \"%5E1\", which confuses us
+downstream. Other times we get our embedded \",\" as \"%2C\", which
+is equally bad. And yet when these happen a \"%2F\" is left as-is,
+rather than escaped as \"%252F\", which makes me feel really really
+uncomfortable with a blind decode right here.
+</td> <td>SATD_ADDED</td> <td>doGet(HttpServletRequest, HttpServletResponse)</td> <td>protected void doGet(final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> <td>
+    String keyStr = req.getPathInfo();
+    // We shouldn't have to do this extra decode pass, but somehow we
+    // are now receiving our "^1" suffix as "%5E1", which confuses us
+    // downstream. Other times we get our embedded "," as "%2C", which
+    // is equally bad. And yet when these happen a "%2F" is left as-is,
+    // rather than escaped as "%252F", which makes me feel really really
+    // uncomfortable with a blind decode right here.
+    // 
+    keyStr = URLDecoder.decode(keyStr, "UTF-8");
+    if (!keyStr.startsWith("/")) {
+        rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
+    }
+    keyStr = keyStr.substring(1);
+    final Patch.Key patchKey;
+    final int side;
+    {
+        final int c = keyStr.lastIndexOf('^');
+        if (c == 0) {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        if (c < 0) {
+            side = 0;
+        } else {
+            try {
+                side = Integer.parseInt(keyStr.substring(c + 1));
+                keyStr = keyStr.substring(0, c);
+            } catch (NumberFormatException e) {
+                rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+        }
+        try {
+            patchKey = Patch.Key.parse(keyStr);
+        } catch (NumberFormatException e) {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+    }
+    final Change.Id changeId = patchKey.getParentKey().getParentKey();
+    final Project project;
+    final PatchSet patchSet;
+    try {
+        final ReviewDb db = requestDb.get();
+        final ChangeControl control = changeControl.validateFor(changeId);
+        project = control.getProject();
+        patchSet = db.patchSets().get(patchKey.getParentKey());
+        if (patchSet == null) {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+    } catch (NoSuchChangeException e) {
+        rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
+    } catch (OrmException e) {
+        getServletContext().log("Cannot query database", e);
+        rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
+    }
+    final Repository repo;
+    try {
+        repo = repoManager.openRepository(project.getNameKey().get());
+    } catch (RepositoryNotFoundException e) {
+        getServletContext().log("Cannot open repository", e);
+        rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
+    }
+    final byte[] blobData;
+    final RevCommit fromCommit;
+    final String suffix;
+    final String path = patchKey.getFileName();
+    try {
+        final RevWalk rw = new RevWalk(repo);
+        final RevCommit c;
+        final TreeWalk tw;
+        c = rw.parseCommit(ObjectId.fromString(patchSet.getRevision().get()));
+        if (side == 0) {
+            fromCommit = c;
+            suffix = "new";
+        } else if (1 <= side && side - 1 < c.getParentCount()) {
+            fromCommit = rw.parseCommit(c.getParent(side - 1));
+            if (c.getParentCount() == 1) {
+                suffix = "old";
+            } else {
+                suffix = "old" + side;
+            }
+        } else {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        tw = TreeWalk.forPath(repo, path, fromCommit.getTree());
+        if (tw == null) {
+            rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        if (tw.getFileMode(0).getObjectType() == Constants.OBJ_BLOB) {
+            blobData = repo.openBlob(tw.getObjectId(0)).getCachedBytes();
+        } else {
+            rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+    } catch (IOException e) {
+        getServletContext().log("Cannot read repository", e);
+        rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
+    } catch (RuntimeException e) {
+        getServletContext().log("Cannot read repository", e);
+        rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return;
+    } finally {
+        repo.close();
+    }
+    final long when = fromCommit.getCommitTime() * 1000L;
+    MimeType contentType = registry.getMimeType(path, blobData);
+    final byte[] outData;
+    if (registry.isSafeInline(contentType)) {
+        outData = blobData;
+    } else {
+        // The content may not be safe to transmit inline, as a browser might
+        // interpret it as HTML or JavaScript hosted by this site. Such code
+        // might then run in the site's security domain, and may be able to use
+        // the user's cookies to perform unauthorized actions.
+        // 
+        // Usually, wrapping the content into a ZIP file forces the browser to
+        // save the content to the local system instead.
+        // 
+        final ByteArrayOutputStream zip = new ByteArrayOutputStream();
+        final ZipOutputStream zo = new ZipOutputStream(zip);
+        final ZipEntry e = new ZipEntry(safeFileName(path, rand(req, suffix)));
+        e.setComment(fromCommit.name() + ":" + path);
+        e.setSize(blobData.length);
+        e.setTime(when);
+        zo.putNextEntry(e);
+        zo.write(blobData);
+        zo.closeEntry();
+        zo.close();
+        outData = zip.toByteArray();
+        contentType = ZIP;
+        rsp.setHeader("Content-Disposition", "attachment; filename=\"" + safeFileName(path, suffix) + ".zip" + "\"");
+    }
+    rsp.setContentType(contentType.toString());
+    rsp.setContentLength(outData.length);
+    rsp.setDateHeader("Last-Modified", when);
+    rsp.setDateHeader("Expires", 0L);
+    rsp.setHeader("Pragma", "no-cache");
+    rsp.setHeader("Cache-Control", "no-cache, must-revalidate");
+    rsp.getOutputStream().write(outData);
+</td> </tr></table></body></html>

@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2677</td> <td>-1422650611</td><td>apache/camel</td><td>Christian Mueller</td><td>297d74dbebdb210ffef699231cabd1ce1230d23a</td> <td>None</td> <td>TODO we may need to throw exception for it</td> <td>SATD_ADDED</td> <td>createBeanMetadata(Element, ParserContext, Class<?>)</td> <td>public MutableBeanMetadata createBeanMetadata(Element element, ParserContext context, Class<?> runtimeClass)</td> <td>
+    MutableBeanMetadata answer = context.createMetadata(MutableBeanMetadata.class);
+    answer.setRuntimeClass(runtimeClass);
+    if (!StringUtils.isEmpty(getIdOrName(element))) {
+        answer.setId(getIdOrName(element));
+    } else {
+        // TODO we may need to throw exception for it
+        answer.setId("camel.cxf.transport." + runtimeClass.getSimpleName() + "." + context.generateId());
+    }
+    return answer;
+</td> </tr></table></body></html>

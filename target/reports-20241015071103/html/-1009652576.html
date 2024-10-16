@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6019</td> 
+     <td>-1009652576</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Following is brittle. Is there a better way?</td> 
+     <td>Following is brittle. Is there a better way?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>retrieveMetadata(String)</td> 
+     <td>public FileMetadata retrieveMetadata(String key) throws IOException</td> 
+     <td> try { S3Object object = s3Service.getObjectDetails(bucket, key); return new FileMetadata(key, object.getContentLength(), object.getLastModifiedDate().getTime()); } catch (S3ServiceException e) { // Following is brittle. Is there a better way? if (e.getMessage().contains("ResponseCode=404")) { return null; } handleServiceException(e); // never returned - keep compiler happy return null; } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5204</td> 
+     <td>-1009652576</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Following is brittle. Is there a better way?</td> 
+     <td>Following is brittle. Is there a better way?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>retrieveMetadata(String)</td> 
+     <td>public FileMetadata retrieveMetadata(String key) throws IOException</td> 
+     <td> try { S3Object object = s3Service.getObjectDetails(bucket, key); return new FileMetadata(key, object.getContentLength(), object.getLastModifiedDate().getTime()); } catch (S3ServiceException e) { // Following is brittle. Is there a better way? if (e.getMessage().contains("ResponseCode=404")) { return null; } handleServiceException(e); // never returned - keep compiler happy return null; } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

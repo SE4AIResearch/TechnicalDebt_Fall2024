@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1354</td> <td>-1422651354</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>93fe4ba1e5003ef9637e02eded81a19e461d6038</td> <td>None</td> <td>TODO we need revisit this test when the call back Done API is finished in Camel 2.0</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder() throws Exception</td> <td>
+    return new RouteBuilder() {
+
+        public void configure() {
+            from("jhc:http://localhost:8192/test1").transform(constant("<response> Test1<response/>"));
+            from("jhc:http://localhost:8192/test2").transform(constant("<response> Test2<response/>"));
+            // TODO we need revisit this test when the call back Done API is finished in Camel 2.0
+            from("direct:start").to("http://localhost:8192/test1/pom.xml").to("mock:results");
+        }
+    };
+</td> </tr></table></body></html>

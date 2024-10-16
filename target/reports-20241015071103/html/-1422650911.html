@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2165</td> <td>-1422650911</td><td>apache/camel</td><td>James Strachan</td><td>f12ee10163164eb7b78d692d3957d87686018f56</td> <td>None</td> <td>TODO: Fix me</td> <td>SATD_ADDED</td> <td>testQueryMbeans()</td> <td>public void testQueryMbeans() throws Exception</td> <td>
+    // whats the numbers before, because the JVM can have left overs when unit testing
+    int before = mbsc.queryNames(new ObjectName("org.apache.camel" + ":type=consumers,*"), null).size();
+    // start route should enlist the consumer to JMX
+    context.startRoute("foo");
+    // TODO: Fix me
+    int after = mbsc.queryNames(new ObjectName("org.apache.camel" + ":type=consumers,*"), null).size();
+// assertTrue("Should have added consumer to JMX, before: " + before + ", after: " + after, after > before);
+</td> </tr></table></body></html>

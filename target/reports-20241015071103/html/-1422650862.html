@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2247</td> <td>-1422650862</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>7f689ecb2db4cf235471fe88610a7b82da8ee732</td> <td>None</td> <td>TODO: probably not the best thing... use a LOG</td> <td>SATD_ADDED</td> <td>processInOutExchange()</td> <td>public void processInOutExchange() throws Exception</td> <td>
+    Mockito.when(mockExchange.getPattern()).thenReturn(ExchangePattern.InOut);
+    Mockito.when(mockExchange.getProperty(QuickfixjProducer.CORRELATION_CRITERIA_KEY)).thenReturn(new MessagePredicate(sessionID, MsgType.EMAIL));
+    Mockito.when(mockExchange.getProperty(QuickfixjProducer.CORRELATION_TIMEOUT_KEY, 1000L, Long.class)).thenReturn(5000L);
+    org.apache.camel.Message mockOutboundCamelMessage = Mockito.mock(org.apache.camel.Message.class);
+    Mockito.when(mockExchange.getOut()).thenReturn(mockOutboundCamelMessage);
+    final Message outboundFixMessage = new Email();
+    outboundFixMessage.getHeader().setString(SenderCompID.FIELD, "TARGET");
+    outboundFixMessage.getHeader().setString(TargetCompID.FIELD, "SENDER");
+    Session mockSession = Mockito.spy(TestSupport.createSession(sessionID));
+    Mockito.doReturn(mockSession).when(producer).getSession(MessageUtils.getSessionID(inboundFixMessage));
+    Mockito.doAnswer(new Answer<Boolean>() {
+
+        @Override
+        public Boolean answer(InvocationOnMock invocation) throws Throwable {
+            new Timer().schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    try {
+                        quickfixjEngine.getMessageCorrelator().onEvent(QuickfixjEventCategory.AppMessageReceived, sessionID, outboundFixMessage);
+                    } catch (Exception e) {
+                        // TODO: probably not the best thing... use a LOG
+                        e.printStackTrace();
+                    }
+                }
+            }, 10);
+            return true;
+        }
+    }).when(mockSession).send(Mockito.isA(Message.class));
+    producer.process(mockExchange);
+    Mockito.verify(mockExchange, Mockito.never()).setException(Matchers.isA(IllegalStateException.class));
+    Mockito.verify(mockSession).send(inboundFixMessage);
+    Mockito.verify(mockOutboundCamelMessage).setBody(outboundFixMessage);
+</td> </tr></table></body></html>

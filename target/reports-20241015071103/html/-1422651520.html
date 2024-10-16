@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>979</td> <td>-1422651520</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>fb34675d428f1893a8a07c8029c1506601ce42fc</td> <td>None</td> <td>TODO windows or unix slashes. Maybe we should replace all \ to /</td> <td>SATD_ADDED</td> <td>createFileName(Exchange)</td> <td>protected String createFileName(Exchange exchange)</td> <td>
+    String answer;
+    String name = exchange.getIn().getHeader(FileComponent.HEADER_FILE_NAME, String.class);
+    // expression support
+    Expression expression = getGenericFileEndpoint().getExpression();
+    if (name != null) {
+        // the header name can be an expression too, that should override
+        // whatever configured on the endpoint
+        if (name.indexOf("${") > -1) {
+            if (log.isDebugEnabled()) {
+                log.debug(FileComponent.HEADER_FILE_NAME + " contains a FileLanguage expression: " + name);
+            }
+            expression = FileLanguage.file(name);
+        }
+    }
+    if (expression != null) {
+        if (log.isDebugEnabled()) {
+            log.debug("Filename evaluated as expression: " + expression);
+        }
+        Object result = expression.evaluate(exchange);
+        name = exchange.getContext().getTypeConverter().convertTo(String.class, result);
+    }
+    String endpointFile = getGenericFileEndpoint().getConfiguration().getFile();
+    if (getGenericFileEndpoint().isDirectory() || getGenericFileEndpoint().getConfiguration().isDirectory()) {
+        // Its a directory so we should use it as a basepath for the filename
+        // If the path isn't empty, we need to add a trailing / if it isn't already there
+        String baseDir = "";
+        if (endpointFile.length() > 0) {
+            // TODO windows or unix slashes. Maybe we should replace all \ to /
+            baseDir = endpointFile + (endpointFile.endsWith("/") ? "" : "/");
+        }
+        if (name != null) {
+            answer = baseDir + name;
+        } else {
+            // use a generated filename if no name provided
+            answer = baseDir + getGenericFileEndpoint().getGeneratedFileName(exchange.getIn());
+        }
+    } else {
+        answer = endpointFile;
+    }
+    return answer;
+</td> </tr></table></body></html>

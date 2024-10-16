@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2815</td> <td>-1422650523</td><td>apache/camel</td><td>cmueller</td><td>98f9c066eed2075481d89a515348fe4f59d09d7b</td> <td>None</td> <td>TODO cmueller: remove the \"sslContextParametersRef\" look up in Camel 3.0</td> <td>SATD_ADDED</td> <td>createEndpoint(String, String, Map<String, Object>)</td> <td>protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception</td> <td>
+    // TODO cmueller: remove the "sslContextParametersRef" look up in Camel 3.0
+    SSLContextParameters sslContextParameters = resolveAndRemoveReferenceParameter(parameters, "sslContextParametersRef", SSLContextParameters.class);
+    if (sslContextParameters == null) {
+        sslContextParameters = resolveAndRemoveReferenceParameter(parameters, "sslContextParameters", SSLContextParameters.class);
+    }
+    Boolean enableJmx = getAndRemoveParameter(parameters, "enableJmx", Boolean.class);
+    String staticResources = getAndRemoveParameter(parameters, "staticResources", String.class);
+    int port = extractPortNumber(remaining);
+    String host = extractHostName(remaining);
+    WebsocketEndpoint endpoint = new WebsocketEndpoint(this, uri, remaining, parameters);
+    if (enableJmx != null) {
+        endpoint.setEnableJmx(enableJmx);
+    } else {
+        endpoint.setEnableJmx(isEnableJmx());
+    }
+    /*
+        if (sslContextParameters == null) {
+            sslContextParameters = this.sslContextParameters;
+        } */
+    // prefer to use endpoint configured over component configured
+    if (sslContextParameters == null) {
+        // fallback to component configured
+        sslContextParameters = getSslContextParameters();
+    }
+    if (sslContextParameters != null) {
+        endpoint.setSslContextParameters(sslContextParameters);
+    }
+    // prefer to use endpoint configured over component configured
+    if (staticResources == null) {
+        // fallback to component configured
+        staticResources = getStaticResources();
+    }
+    if (staticResources != null) {
+        endpoint.setStaticResources(staticResources);
+    }
+    endpoint.setSslContextParameters(sslContextParameters);
+    endpoint.setPort(port);
+    endpoint.setHost(host);
+    setProperties(endpoint, parameters);
+    return endpoint;
+</td> </tr></table></body></html>

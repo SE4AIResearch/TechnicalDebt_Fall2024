@@ -1,0 +1,83 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>907</td> 
+     <td>-1422651554</td> 
+     <td>apache/camel</td> 
+     <td>William Tam</td> 
+     <td>ff5c824476fbf30fd1394439e93a870f4b6e5411</td> 
+     <td>TODO: CAMEL-1112 having out-of-box sorters for by name, by filestamp, etc., maybe even a reverse order</td> 
+     <td>sort by using file language</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createEndpoint(String, String, Map)</td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map parameters) throws Exception</td> 
+     <td> File file = new File(remaining); FileEndpoint result = new FileEndpoint(file, uri, this); // lookup idempotent repository in registry if provided String ref = getAndRemoveParameter(parameters, "idempotentRepositoryRef", String.class); if (ref != null) { MessageIdRepository repository = mandatoryLookup(ref, MessageIdRepository.class); result.setIdempotentRepository(repository); } // lookup file filter in registry if provided ref = getAndRemoveParameter(parameters, "fileFilterRef", String.class); if (ref != null) { FileFilter filter = mandatoryLookup(ref, FileFilter.class); result.setFilter(filter); } // lookup sorter in registry if provided ref = getAndRemoveParameter(parameters, "sorterRef", String.class); if (ref != null) { Comparator<file>
+        sorter = mandatoryLookup(ref, Comparator.class); result.setFileSorter(sorter); } // sort by using file language String sortBy = getAndRemoveParameter(parameters, "sortBy", String.class); if (sortBy != null) { // we support nested sort groups so they should be chained String[] groups = sortBy.split(";"); Iterator 
+       <string>
+         it = ObjectHelper.createIterator(groups); Comparator 
+        <fileexchange>
+          comparator = createSortByComparator(it); result.setExchangeSorter(comparator); } setProperties(result, parameters); return result; 
+        </fileexchange> 
+       </string> 
+      </file></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>906</td> 
+     <td>-1422651554</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>4ef8b8962304f16061825f76a52c5cb6dcc6d29e</td> 
+     <td>TODO: CAMEL-1112 sorter and having out-of-box sorters for by name, by filestamp, etc. TODO: maybe even a reverse order</td> 
+     <td>TODO: CAMEL-1112 having out-of-box sorters for by name, by filestamp, etc., maybe even a reverse order</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createEndpoint(String, String, Map)</td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map parameters) throws Exception</td> 
+     <td> File file = new File(remaining); FileEndpoint result = new FileEndpoint(file, uri, this); // lookup idempotent repository in registry if provided String ref = getAndRemoveParameter(parameters, "idempotentRepositoryRef", String.class); if (ref != null) { MessageIdRepository repository = mandatoryLookup(ref, MessageIdRepository.class); result.setIdempotentRepository(repository); } // lookup file filter in registry if provided ref = getAndRemoveParameter(parameters, "fileFilterRef", String.class); if (ref != null) { FileFilter filter = mandatoryLookup(ref, FileFilter.class); result.setFilter(filter); } ref = getAndRemoveParameter(parameters, "sorterRef", String.class); if (ref != null) { Comparator<file>
+        sorter = mandatoryLookup(ref, Comparator.class); result.setSorter(sorter); } // TODO: CAMEL-1112 having out-of-box sorters for by name, by filestamp, etc., maybe even a reverse order setProperties(result, parameters); return result; 
+      </file></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>905</td> 
+     <td>-1422651554</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8c7f06e80c665492a6fcad3e3d85abd51aa74cf3</td> 
+     <td>None</td> 
+     <td>TODO: CAMEL-1112 sorter and having out-of-box sorters for by name, by filestamp, etc. TODO: maybe even a reverse order</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(String, String, Map)</td> 
+     <td>protected Endpoint createEndpoint(String uri, String remaining, Map parameters) throws Exception</td> 
+     <td> File file = new File(remaining); FileEndpoint result = new FileEndpoint(file, uri, this); // lookup idempotent repository in registry if provided String ref = getAndRemoveParameter(parameters, "idempotentRepositoryRef", String.class); if (ref != null) { MessageIdRepository repository = mandatoryLookup(ref, MessageIdRepository.class); result.setIdempotentRepository(repository); } // lookup file filter in registry if provided ref = getAndRemoveParameter(parameters, "fileFilterRef", String.class); if (ref != null) { FileFilter filter = mandatoryLookup(ref, FileFilter.class); result.setFilter(filter); } // TODO: CAMEL-1112 sorter and having out-of-box sorters for by name, by filestamp, etc. // TODO: maybe even a reverse order setProperties(result, parameters); return result; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

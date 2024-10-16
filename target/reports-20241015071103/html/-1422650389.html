@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3060</td> <td>-1422650389</td><td>apache/camel</td><td>Claus Ibsen</td><td>321ab9324c0ea9e9db4e15e39c5146d4bde0df3f</td> <td>None</td> <td>TODO: how to handle exchange failures</td> <td>SATD_ADDED</td> <td>handle(Request, Response)</td> <td>public Object handle(Request request, Response response)</td> <td>
+    Exchange exchange = endpoint.createExchange(ExchangePattern.InOut);
+    try {
+        Message in = endpoint.getSparkBinding().toCamelMessage(request, exchange, endpoint.getSparkConfiguration());
+        exchange.setIn(in);
+        processor.process(exchange);
+    } catch (Exception e) {
+        exchange.setException(e);
+    }
+    if (exchange.getException() != null) {
+    // TODO: how to handle exchange failures
+    }
+    if (exchange.hasOut()) {
+        return exchange.getOut().getBody();
+    } else {
+        return exchange.getIn().getBody();
+    }
+</td> </tr></table></body></html>

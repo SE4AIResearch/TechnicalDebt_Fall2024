@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>741</td> <td>-1422651631</td><td>apache/camel</td><td>Claus Ibsen</td><td>fd6b9193385070d036cc2aeb300cbb8ceb24db9f</td> <td>None</td> <td>maybe the full directory already exsits</td> <td>SATD_ADDED</td> <td>buildDirectory(FTPClient, String)</td> <td>protected static boolean buildDirectory(FTPClient ftpClient, String dirName) throws IOException</td> <td>
+    String originalDirectory = ftpClient.printWorkingDirectory();
+    boolean success = false;
+    try {
+        // maybe the full directory already exsits
+        success = ftpClient.changeWorkingDirectory(dirName);
+        if (!success) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Trying to build remote directory: " + dirName);
+            }
+            success = ftpClient.makeDirectory(dirName);
+        }
+    } finally {
+        // change back to original directory
+        ftpClient.changeWorkingDirectory(originalDirectory);
+    }
+    return success;
+</td> </tr></table></body></html>

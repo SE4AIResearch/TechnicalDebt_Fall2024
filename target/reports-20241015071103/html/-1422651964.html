@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>240</td> 
+     <td>-1422651964</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>process(Exchange)</td> 
+     <td>public void process(Exchange exchange)</td> 
+     <td> // TODO it would be nice if we could reuse the message from the exchange Message message = chat.createMessage(); message.setTo(room); message.setFrom(endpoint.getUser()); endpoint.getBinding().populateXmppMessage(message, exchange); if (log.isDebugEnabled()) { log.debug("&gt;&gt;&gt;&gt; message: " + message.getBody()); } try { chat.sendMessage(message); } catch (XMPPException e) { throw new RuntimeXmppException(e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>161</td> 
+     <td>-1422651964</td> 
+     <td>apache/camel</td> 
+     <td>Hiram R. Chirino</td> 
+     <td>a6cbe8419351fcd8d26f1660dd4b112a7cd64e0b</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>process(Exchange)</td> 
+     <td>public void process(Exchange exchange)</td> 
+     <td> // TODO it would be nice if we could reuse the message from the exchange Message message = chat.createMessage(); message.setTo(room); message.setFrom(endpoint.getUser()); endpoint.getBinding().populateXmppMessage(message, exchange); if (log.isDebugEnabled()) { log.debug("&gt;&gt;&gt;&gt; message: " + message.getBody()); } try { chat.sendMessage(message); } catch (XMPPException e) { throw new RuntimeXmppException(e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>119</td> 
+     <td>-1422651964</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>0d29c4b520c16eb14eb5d32dc5e8e8ee7079a59c</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>process(XmppExchange)</td> 
+     <td>public void process(XmppExchange exchange)</td> 
+     <td> // TODO it would be nice if we could reuse the message from the exchange Message message = chat.createMessage(); message.setTo(room); message.setFrom(endpoint.getUser()); endpoint.getBinding().populateXmppMessage(message, exchange); if (log.isDebugEnabled()) { log.debug("&gt;&gt;&gt;&gt; message: " + message.getBody()); } try { chat.sendMessage(message); } catch (XMPPException e) { throw new RuntimeXmppException(e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>109</td> 
+     <td>-1422651964</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>f5b93e1462dc2e3790b8cddc8c608bb0047f185a</td> 
+     <td>None</td> 
+     <td>TODO it would be nice if we could reuse the message from the exchange</td> 
+     <td>SATD_ADDED</td> 
+     <td>onExchange(XmppExchange)</td> 
+     <td>public void onExchange(XmppExchange exchange)</td> 
+     <td> // TODO it would be nice if we could reuse the message from the exchange Message message = chat.createMessage(); message.setTo(room); message.setFrom(endpoint.getUser()); endpoint.getBinding().populateXmppMessage(message, exchange); if (log.isDebugEnabled()) { log.debug("&gt;&gt;&gt;&gt; " + message); } try { chat.sendMessage(message); } catch (XMPPException e) { throw new RuntimeXmppException(e); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

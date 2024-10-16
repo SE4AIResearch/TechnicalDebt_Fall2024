@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1287</td> <td>-1422651387</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>b64e8a8c4b15c88b0cb86c5b64f1ed1c8d1292cd</td> <td>None</td> <td>TODO: It ought to be UnitOfWork that did the callback notification but we are planning
+to replace it with a brand new Async API so we leave it as is</td> <td>SATD_ADDED</td> <td>run()</td> <td>public void run()</td> <td>
+    BlockingQueue<Exchange> queue = endpoint.getQueue();
+    while (queue != null && isRunAllowed()) {
+        final Exchange exchange;
+        try {
+            exchange = queue.poll(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            LOG.debug("Sleep interrupted, are we stopping? " + (isStopping() || isStopped()));
+            continue;
+        }
+        if (exchange != null) {
+            if (isRunAllowed()) {
+                try {
+                    processor.process(exchange);
+                } catch (Exception e) {
+                    LOG.error("Seda queue caught: " + e, e);
+                }
+                // TODO: It ought to be UnitOfWork that did the callback notification but we are planning
+                // to replace it with a brand new Async API so we leave it as is
+                AsyncCallback callback = exchange.getProperty("CamelAsyncCallback", AsyncCallback.class);
+                if (callback != null) {
+                    // seda consumer is async so invoke the async done on the callback if its provided
+                    callback.done(false);
+                }
+            } else {
+                LOG.warn("This consumer is stopped during polling an exchange, so putting it back on the seda queue: " + exchange);
+                try {
+                    queue.put(exchange);
+                } catch (InterruptedException e) {
+                    LOG.debug("Sleep interrupted, are we stopping? " + (isStopping() || isStopped()));
+                }
+            }
+        }
+    }
+</td> </tr></table></body></html>

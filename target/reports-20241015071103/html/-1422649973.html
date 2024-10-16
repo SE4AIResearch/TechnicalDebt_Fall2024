@@ -1,0 +1,10 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3842</td> <td>-1422649973</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>TODO: reactivate when ARQ-1255 is fixed</td> <td>SATD_ADDED</td> <td>resolvePropertyFromLocation(CamelContext)</td> <td>public void resolvePropertyFromLocation(CamelContext context) throws Exception</td> <td>
+    assertThat("Property from classpath location does not resolve!", context.resolvePropertyPlaceholders("{{header.message}}"), is(equalTo("message from file")));
+</td> </tr></table></body></html>

@@ -1,0 +1,81 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2687</td> 
+     <td>-1422651888</td> 
+     <td>apache/camel</td> 
+     <td>Babak Vahdat</td> 
+     <td>5e336498420bab94e1f30eac0cb74bcc659ab792</td> 
+     <td>TODO we could use caching here but then we'd have possible concurrency issues so lets assume that the provider caches</td> 
+     <td>Create (if needed) the ExpressionFactory first from the CamelContext using FactoryFinder</td> 
+     <td>SATD_REMOVED</td> 
+     <td>evaluate(Exchange, Class<t>
+        ) 
+      </t></td> 
+     <td>public T evaluate(Exchange exchange, Class<t>
+        tClass) 
+      </t></td> 
+     <td> // Create (if needed) the ExpressionFactory first from the CamelContext using FactoryFinder ExpressionFactory factory = getExpressionFactory(exchange.getContext()); ELContext context = populateContext(createContext(), exchange); ValueExpression valueExpression = factory.createValueExpression(context, expression, type); Object value = valueExpression.getValue(context); LOG.trace("Value returned {}", value); return exchange.getContext().getTypeConverter().convertTo(tClass, value); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1216</td> 
+     <td>-1422651888</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>aaa8a95b135731f660c0ac1ba2f93b63deb024f6</td> 
+     <td>TODO we could use caching here but then we'd have possible concurrency issues so lets assume that the provider caches</td> 
+     <td>TODO we could use caching here but then we'd have possible concurrency issues so lets assume that the provider caches</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>evaluate(Exchange, Class<t>
+        ) 
+      </t></td> 
+     <td>public T evaluate(Exchange exchange, Class<t>
+        tClass) 
+      </t></td> 
+     <td> // TODO we could use caching here but then we'd have possible concurrency issues // so lets assume that the provider caches ELContext context = populateContext(createContext(), exchange); ValueExpression valueExpression = getExpressionFactory().createValueExpression(context, expression, type); Object value = valueExpression.getValue(context); return exchange.getContext().getTypeConverter().convertTo(tClass, value); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>284</td> 
+     <td>-1422651888</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>8db45b4f0dc2e7c5a7d40ad0eb6ae5938f6ed1c8</td> 
+     <td>None</td> 
+     <td>TODO we could use caching here but then we'd have possible concurrency issues so lets assume that the provider caches</td> 
+     <td>SATD_ADDED</td> 
+     <td>evaluate(Exchange)</td> 
+     <td>public Object evaluate(Exchange exchange)</td> 
+     <td> // TODO we could use caching here but then we'd have possible concurrency issues // so lets assume that the provider caches ELContext context = populateContext(createContext(), exchange); ValueExpression valueExpression = getExpressionFactory().createValueExpression(context, expression, type); return valueExpression.getValue(context); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

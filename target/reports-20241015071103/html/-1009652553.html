@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6018</td> 
+     <td>-1009652553</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Verify that skip trash option really skips the trash for rmr</td> 
+     <td>Verify that skip trash option really skips the trash for rmr</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5216</td> 
+     <td>-1009652553</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Verify that skip trash option really skips the trash for rmr</td> 
+     <td>Verify that skip trash option really skips the trash for rmr</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5029</td> 
+     <td>-1009652553</td>
+     <td>apache/hadoop</td>
+     <td>Christopher Douglas</td>
+     <td>4824a54419f1ccb24aa0af07edfbcf1539084089</td> 
+     <td>None</td> 
+     <td>Verify that skip trash option really skips the trash for rmr</td> 
+     <td>SATD_ADDED</td> 
+     <td>writeFile(FileSystem, Path)</td> 
+     <td>protected static Path writeFile(FileSystem fs, Path f) throws IOException</td> 
+     <td> DataOutputStream out = fs.create(f); out.writeBytes("dhruba: " + f); out.close(); assertTrue(fs.exists(f)); return f; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

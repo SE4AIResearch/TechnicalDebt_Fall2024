@@ -1,0 +1,33 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2831</td> <td>-1422650514</td><td>apache/camel</td><td>Henryk Konsek</td><td>0c401b9fba53837bdea3dc486880dd0e0c6e2d6f</td> <td>None</td> <td>TODO check that the generated code compiles</td> <td>SATD_ADDED</td> <td>testExecute()</td> <td>public void testExecute() throws Exception</td> <td>
+    CamelSalesforceMojo mojo = new CamelSalesforceMojo();
+    mojo.setLog(new SystemStreamLog());
+    // set login properties
+    setLoginProperties(mojo);
+    // set defaults
+    mojo.version = "27.0";
+    mojo.outputDirectory = new File("target/generated-sources/camel-salesforce");
+    mojo.packageName = "org.apache.camel.salesforce.dto";
+    // set code generation properties
+    mojo.includePattern = "(.*__c)|(PushTopic)";
+    // remove generated code directory
+    if (mojo.outputDirectory.exists()) {
+        // remove old files
+        for (File file : mojo.outputDirectory.listFiles()) {
+            file.delete();
+        }
+        mojo.outputDirectory.delete();
+    }
+    // generate code
+    mojo.execute();
+    // validate generated code
+    // check that it was generated
+    Assert.assertTrue("Output directory was not created", mojo.outputDirectory.exists());
+// TODO check that the generated code compiles
+</td> </tr></table></body></html>

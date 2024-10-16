@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>771</td> 
+     <td>-1422651669</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>7b53cc3ace36a8f538d9e091812a04155820e411</td> 
+     <td>TODO: Use ObjectHelper.loadClass instead</td> 
+     <td>TODO: Use ObjectHelper.loadClass instead</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>defaultOutputProperties()</td> 
+     <td>public Properties defaultOutputProperties()</td> 
+     <td> Properties properties = new Properties(); properties.put(OutputKeys.ENCODING, defaultCharset); properties.put(OutputKeys.OMIT_XML_DECLARATION, "yes"); return properties; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>674</td> 
+     <td>-1422651669</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>dbeffa0202470f272e7acd9dbb8a0d3d813b45f8</td> 
+     <td>None</td> 
+     <td>TODO: Use ObjectHelper.loadClass instead</td> 
+     <td>SATD_ADDED</td> 
+     <td>toResult(Source, Result)</td> 
+     <td>public void toResult(Source source, Result result) throws TransformerException</td> 
+     <td> if (source == null) { return; } Transformer transformer = createTransfomer(); if (transformer == null) { throw new TransformerException("Could not create a transformer - JAXP is misconfigured!"); } transformer.setOutputProperty(OutputKeys.ENCODING, defaultCharset); transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes"); transformer.transform(source, result); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>948</td> <td>-1422651537</td><td>apache/camel</td><td>Claus Ibsen</td><td>f69b5028a936015f227c4b36c97619f6f2b1cefe</td> <td>None</td> <td>now we should have a new slot that starts somewhere in the future</td> <td>SATD_ADDED</td> <td>testTimeSlotCalculus()</td> <td>public void testTimeSlotCalculus() throws Exception</td> <td>
+    Throttler throttler = new Throttler(null, 2, 1000);
+    TimeSlot slot = throttler.nextSlot();
+    // start a new time slot
+    assertNotNull(slot);
+    // make sure the same slot is used (2 exchanges per slot)
+    assertSame(slot, throttler.nextSlot());
+    assertTrue(slot.isFull());
+    TimeSlot next = throttler.nextSlot();
+    // now we should have a new slot that starts somewhere in the future
+    assertNotSame(slot, next);
+    assertFalse(next.isActive());
+</td> </tr></table></body></html>

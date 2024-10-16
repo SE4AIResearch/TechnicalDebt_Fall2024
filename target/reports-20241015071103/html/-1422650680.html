@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2577</td> 
+     <td>-1422650680</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>1221d553ad036b7869d236a857009a95bbe44645</td> 
+     <td> TODO since we only need a session pool for one use case, find a better way We only create a session pool when we are not transacted. Transacted listeners or producers need to be paired with the Session that created them.</td> 
+     <td>TODO fix the string hack</td> 
+     <td>SATD_CHANGED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> super.doStart(); // // TODO since we only need a session pool for one use case, find a better way // // We only create a session pool when we are not transacted. // Transacted listeners or producers need to be paired with the // Session that created them. if (!isTransacted()) { sessions = new SessionPool(getSessionCount(), getConnectionResource()); // TODO fix the string hack sessions.setAcknowledgeMode(SessionAcknowledgementType.valueOf(getAcknowledgementMode() + "")); getSessions().fillPool(); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2576</td> 
+     <td>-1422650680</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>1221d553ad036b7869d236a857009a95bbe44645</td> 
+     <td> TODO since we only need a session pool for one use case, find a better way We only create a session pool when we are not transacted. Transacted listeners or producers need to be paired with the Session that created them.</td> 
+     <td> TODO since we only need a session pool for one use case, find a better way We only create a session pool when we are not transacted. Transacted listeners or producers need to be paired with the Session that created them.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> super.doStart(); // // TODO since we only need a session pool for one use case, find a // better way // // We only create a session pool when we are not transacted. // Transacted listeners or producers need to be paired with the // Session that created them. if (!isTransacted() &amp;&amp; getExchangePattern().equals(ExchangePattern.InOnly)) { sessions = new SessionPool(getSessionCount(), getConnectionResource()); // TODO fix the string hack sessions.setAcknowledgeMode(SessionAcknowledgementType.valueOf(getAcknowledgementMode() + "")); getSessions().fillPool(); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2559</td> 
+     <td>-1422650680</td>
+     <td>apache/camel</td>
+     <td>Benjamin P. O'Day</td>
+     <td>9390d0039cce23f609825edc82af531deff0f7c0</td> 
+     <td>None</td> 
+     <td> TODO since we only need a session pool for one use case, find a better way We only create a session pool when we are not transacted. Transacted listeners or producers need to be paired with the Session that created them.</td> 
+     <td>SATD_ADDED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> super.doStart(); // // TODO since we only need a session pool for one use case, find a better way // // We only create a session pool when we are not transacted. // Transacted listeners or producers need to be paired with the // Session that created them. if (!isTransacted()) { sessions = new SessionPool(getSessionCount(), getConnectionResource()); // TODO fix the string hack sessions.setAcknowledgeMode(SessionAcknowledgementType.valueOf(getAcknowledgementMode() + "")); getSessions().fillPool(); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

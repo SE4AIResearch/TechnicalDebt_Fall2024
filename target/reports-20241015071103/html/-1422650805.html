@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2355</td> <td>-1422650805</td><td>apache/camel</td><td>Claus Ibsen</td><td>7e2a5dce600bcb03e14aee36a78b168d20e09c9f</td> <td>None</td> <td>must extract the absolute name before the begin strategy as the file could potentially be pre moved
+and then the file name would be changed</td> <td>SATD_ADDED</td> <td>customProcessExchange(Exchange, Processor)</td> <td>protected void customProcessExchange(final Exchange exchange, final Processor processor)</td> <td>
+    GenericFile<T> file = getExchangeFileProperty(exchange);
+    log.trace("Custom processing file: {}", file);
+    // must extract the absolute name before the begin strategy as the file could potentially be pre moved
+    // and then the file name would be changed
+    String absoluteFileName = file.getAbsoluteFilePath();
+    try {
+        // process using the custom processor
+        processor.process(exchange);
+    } catch (Exception e) {
+        if (log.isDebugEnabled()) {
+            log.debug(endpoint + " error custom processing: " + file + " due to: " + e.getMessage() + ". This exception will be ignored.", e);
+        }
+    } finally {
+        // always remove file from the in progress list as its no longer in progress
+        // use the original file name that was used to add it to the repository
+        // as the name can be different when using preMove option
+        endpoint.getInProgressRepository().remove(absoluteFileName);
+    }
+</td> </tr></table></body></html>

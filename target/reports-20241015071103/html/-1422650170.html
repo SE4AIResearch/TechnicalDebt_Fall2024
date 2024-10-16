@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3414</td> <td>-1422650170</td><td>apache/camel</td><td>Claus Ibsen</td><td>5e774fac8f832f02cfba5464cfecadc1059de05f</td> <td>None</td> <td>the statistics are in the mbeans
+TODO: use dump stats as xml</td> <td>SATD_ADDED</td> <td>execute(CamelController, PrintStream, PrintStream)</td> <td>public Object execute(CamelController camelController, PrintStream out, PrintStream err) throws Exception</td> <td>
+    Map<String, Object> row = camelController.getCamelContextInformation(context);
+    if (row == null || row.isEmpty()) {
+        err.println("Camel context " + context + " not found.");
+        return null;
+    }
+    out.println("");
+    out.println(stringEscape.unescapeJava("\u001B[1mCamel Context " + context + "\u001B[0m"));
+    out.println(stringEscape.unescapeJava("\tName: " + row.get("name")));
+    out.println(stringEscape.unescapeJava("\tManagementName: " + row.get("managementName")));
+    out.println(stringEscape.unescapeJava("\tVersion: " + row.get("version")));
+    out.println(stringEscape.unescapeJava("\tStatus: " + row.get("status")));
+    out.println(stringEscape.unescapeJava("\tUptime: " + row.get("uptime")));
+    out.println("");
+    out.println(stringEscape.unescapeJava("\u001B[1mMiscellaneous\u001B[0m"));
+    out.println(stringEscape.unescapeJava("\tAuto Startup: " + row.get("autoStartup")));
+    out.println(stringEscape.unescapeJava("\tStarting Routes: " + row.get("startingRoutes")));
+    out.println(stringEscape.unescapeJava("\tSuspended: " + row.get("suspended")));
+    out.println(stringEscape.unescapeJava("\tShutdown Timeout: " + row.get("shutdownTimeout") + " sec."));
+    out.println(stringEscape.unescapeJava("\tAllow UseOriginalMessage: " + row.get("allowUseOriginalMessage")));
+    out.println(stringEscape.unescapeJava("\tMessage History: " + row.get("messageHistory")));
+    out.println(stringEscape.unescapeJava("\tTracing: " + row.get("tracing")));
+    out.println("");
+    out.println(stringEscape.unescapeJava("\u001B[1mProperties\u001B[0m"));
+    for (Map.Entry<String, Object> entry : row.entrySet()) {
+        String key = entry.getKey();
+        if (key.startsWith("property.")) {
+            key = key.substring(9);
+            out.println(stringEscape.unescapeJava("\t" + key + " = " + entry.getValue()));
+        }
+    }
+    out.println("");
+    out.println(stringEscape.unescapeJava("\u001B[1mAdvanced\u001B[0m"));
+    out.println(stringEscape.unescapeJava("\tClassResolver: " + row.get("classResolver")));
+    out.println(stringEscape.unescapeJava("\tPackageScanClassResolver: " + row.get("packageScanClassResolver")));
+    out.println(stringEscape.unescapeJava("\tApplicationContextClassLoader: " + row.get("applicationContextClassLoader")));
+    // the statistics are in the mbeans
+    // TODO: use dump stats as xml
+    // printCamelManagedBeansStatus(camelContext, out);
+    return null;
+</td> </tr></table></body></html>

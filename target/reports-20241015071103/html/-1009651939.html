@@ -1,0 +1,82 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5707</td> <td>-1009651939</td><td>apache/hadoop</td><td>Tsz-wo Sze</td><td>cabec474e0f4c525ba80bd7c8dede1a8d76e4f39</td> <td>// verify policy deletes the correct blocks. companion blocks should be
+// evenly distributed.</td> <td>verify the result of getCompanionBlocks()</td> <td>SATD_REMOVED</td> <td>testDeleteReplica()</td> <td>public void testDeleteReplica() throws IOException</td> <td>
+    setupCluster();
+    try {
+        // Set the policy to default policy to place the block in the default way
+        setBlockPlacementPolicy(namesystem, new BlockPlacementPolicyDefault(conf, namesystem, namesystem.clusterMap));
+        DatanodeDescriptor datanode1 = NameNodeRaidTestUtil.getDatanodeMap(namesystem).values().iterator().next();
+        String source = "/dir/file";
+        String parity = xorPrefix + source;
+        final Path parityPath = new Path(parity);
+        DFSTestUtil.createFile(fs, parityPath, 3, (short) 1, 0L);
+        DFSTestUtil.waitReplication(fs, parityPath, (short) 1);
+        // start one more datanode
+        cluster.startDataNodes(conf, 1, true, null, rack2, host2, null);
+        DatanodeDescriptor datanode2 = null;
+        for (DatanodeDescriptor d : NameNodeRaidTestUtil.getDatanodeMap(namesystem).values()) {
+            if (!d.getName().equals(datanode1.getName())) {
+                datanode2 = d;
+            }
+        }
+        Assert.assertTrue(datanode2 != null);
+        cluster.waitActive();
+        final Path sourcePath = new Path(source);
+        DFSTestUtil.createFile(fs, sourcePath, 5, (short) 2, 0L);
+        DFSTestUtil.waitReplication(fs, sourcePath, (short) 2);
+        refreshPolicy();
+        Assert.assertEquals(parity, policy.getParityFile(source));
+        Assert.assertEquals(source, policy.getSourceFile(parity, xorPrefix));
+        List<LocatedBlock> sourceBlocks = getBlocks(namesystem, source);
+        List<LocatedBlock> parityBlocks = getBlocks(namesystem, parity);
+        Assert.assertEquals(5, sourceBlocks.size());
+        Assert.assertEquals(3, parityBlocks.size());
+        // verify the result of getCompanionBlocks()
+        Collection<LocatedBlock> companionBlocks;
+        companionBlocks = getCompanionBlocks(namesystem, policy, sourceBlocks.get(0).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 0, 1 }, new int[] { 0 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, sourceBlocks.get(1).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 0, 1 }, new int[] { 0 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, sourceBlocks.get(2).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 2, 3 }, new int[] { 1 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, sourceBlocks.get(3).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 2, 3 }, new int[] { 1 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, sourceBlocks.get(4).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 4 }, new int[] { 2 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, parityBlocks.get(0).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 0, 1 }, new int[] { 0 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, parityBlocks.get(1).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 2, 3 }, new int[] { 1 });
+        companionBlocks = getCompanionBlocks(namesystem, policy, parityBlocks.get(2).getBlock());
+        verifyCompanionBlocks(companionBlocks, sourceBlocks, parityBlocks, new int[] { 4 }, new int[] { 2 });
+        // Set the policy back to raid policy. We have to create a new object
+        // here to clear the block location cache
+        refreshPolicy();
+        setBlockPlacementPolicy(namesystem, policy);
+        // verify policy deletes the correct blocks. companion blocks should be
+        // evenly distributed.
+        fs.setReplication(sourcePath, (short) 1);
+        DFSTestUtil.waitReplication(fs, sourcePath, (short) 1);
+        Map<String, Integer> counters = new HashMap<String, Integer>();
+        refreshPolicy();
+        for (int i = 0; i < parityBlocks.size(); i++) {
+            companionBlocks = getCompanionBlocks(namesystem, policy, parityBlocks.get(i).getBlock());
+            counters = BlockPlacementPolicyRaid.countCompanionBlocks(companionBlocks, false);
+            Assert.assertTrue(counters.get(datanode1.getName()) >= 1 && counters.get(datanode1.getName()) <= 2);
+            Assert.assertTrue(counters.get(datanode1.getName()) + counters.get(datanode2.getName()) == companionBlocks.size());
+            counters = BlockPlacementPolicyRaid.countCompanionBlocks(companionBlocks, true);
+            Assert.assertTrue(counters.get(datanode1.getParent().getName()) >= 1 && counters.get(datanode1.getParent().getName()) <= 2);
+            Assert.assertTrue(counters.get(datanode1.getParent().getName()) + counters.get(datanode2.getParent().getName()) == companionBlocks.size());
+        }
+    } finally {
+        if (cluster != null) {
+            cluster.shutdown();
+        }
+    }
+</td> </tr></table></body></html>

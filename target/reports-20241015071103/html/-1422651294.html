@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1476</td> <td>-1422651294</td><td>apache/camel</td><td>Claus Ibsen</td><td>035e2c79a6105986f65a5f6709c9e86640cca387</td> <td>None</td> <td>TODO check this result</td> <td>SATD_ADDED</td> <td>testChoiceWithoutEnd()</td> <td>public void testChoiceWithoutEnd() throws Exception</td> <td>
+    String DSL = "from(\"direct:start\").split().body().choice()" + ".when().method(\"orderItemHelper\", \"isWidget\").to(\"bean:widgetInventory\", \"seda:aggregate\")" + ".otherwise().to(\"bean:gadgetInventory\", \"seda:aggregate\")";
+    // TODO check this result
+    String expectedDSL = "from(\"direct:start\").split(body()).choice()" + ".when().method(\"orderItemHelper\", \"isWidget\").to(\"bean:widgetInventory\").to(\"seda:aggregate\")" + ".otherwise().to(\"bean:gadgetInventory\").to(\"seda:aggregate\")" + ".end()";
+    assertEquals(expectedDSL, render(DSL));
+</td> </tr></table></body></html>

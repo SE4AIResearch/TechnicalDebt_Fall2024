@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4346</td> <td>1242677835</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>6ba66e0c9d37ce4b65dce7f47a38f2ac53e255e2</td> <td>None</td> <td>If exactly one change matches, link to that change.
+TODO Link to a specific patch set, if one matched.</td> <td>SATD_ADDED</td> <td>doGet(HttpServletRequest, HttpServletResponse)</td> <td>protected void doGet(final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> <td>
+    String query = req.getPathInfo();
+    HashSet<Change.Id> ids = new HashSet<Change.Id>();
+    try {
+        ChangeQueryBuilder builder = queryBuilder.create(currentUser.get());
+        Predicate<ChangeData> visibleToMe = builder.is_visible();
+        Predicate<ChangeData> q = builder.parse(query);
+        q = Predicate.and(q, builder.sortkey_before("z"), builder.limit(2), visibleToMe);
+        ChangeQueryRewriter rewriter = queryRewriter.get();
+        Predicate<ChangeData> s = rewriter.rewrite(q);
+        if (!(s instanceof ChangeDataSource)) {
+            s = rewriter.rewrite(Predicate.and(builder.status_open(), q));
+        }
+        if (s instanceof ChangeDataSource) {
+            for (ChangeData d : ((ChangeDataSource) s).read()) {
+                ids.add(d.getId());
+            }
+        }
+    } catch (QueryParseException e) {
+        log.warn("Received invalid query by URL: /r/" + query, e);
+    } catch (OrmException e) {
+        log.warn("Cannot process query by URL: /r/" + query, e);
+    }
+    String token;
+    if (ids.size() == 1) {
+        // If exactly one change matches, link to that change.
+        // TODO Link to a specific patch set, if one matched.
+        token = PageLinks.toChange(ids.iterator().next());
+    } else {
+        // Otherwise, link to the query page.
+        token = PageLinks.toChangeQuery(query);
+    }
+    UrlModule.toGerrit(token, req, rsp);
+</td> </tr></table></body></html>

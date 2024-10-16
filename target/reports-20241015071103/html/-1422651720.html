@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>596</td> <td>-1422651720</td><td>apache/camel</td><td>Claus Ibsen</td><td>b640efdd6c0f0a87895d951e4b36415ab1c15483</td> <td>None</td> <td>TODO - currently process().to() results in two separate operations which have their own error handler</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder()</td> <td>
+    final Processor processor = new Processor() {
+
+        public void process(Exchange exchange) {
+            Integer counter = exchange.getIn().getHeader(DeadLetterChannel.REDELIVERY_COUNTER, Integer.class);
+            int attempt = (counter == null) ? 1 : counter + 1;
+            if (attempt < failUntilAttempt) {
+                throw new RuntimeException("Failed to process due to attempt: " + attempt + " being less than: " + failUntilAttempt);
+            } else {
+                template.send("mock:success", exchange);
+            }
+        }
+    };
+    return new RouteBuilder() {
+
+        public void configure() {
+            from("direct:start").errorHandler(deadLetterChannel("mock:failed").maximumRedeliveries(2).initialRedeliveryDelay(1).loggingLevel(LoggingLevel.DEBUG)).process(processor);
+        // TODO - currently process().to() results in two separate operations which have their own error handler
+        // to("mock:success");
+        }
+    };
+</td> </tr></table></body></html>

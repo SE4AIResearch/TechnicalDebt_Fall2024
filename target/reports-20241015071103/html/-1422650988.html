@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2030</td> <td>-1422650988</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>e57790cfb1ba507baddf88a39edbd3028efa97df</td> <td>None</td> <td>handover completions and done them manually to ensure they are being executed</td> <td>SATD_ADDED</td> <td>doneUoW(Exchange)</td> <td>private static void doneUoW(Exchange exchange)</td> <td>
+    try {
+        if (exchange.getUnitOfWork() == null) {
+            // handover completions and done them manually to ensure they are being executed
+            List<Synchronization> synchronizations = exchange.handoverCompletions();
+            UnitOfWorkHelper.doneSynchronizations(exchange, synchronizations, LOG);
+        } else {
+            // done the unit of work
+            exchange.getUnitOfWork().done(exchange);
+        }
+    } catch (Throwable e) {
+        LOG.warn("Exception occurred during done UnitOfWork for Exchange: " + exchange + ". This exception will be ignored.", e);
+    }
+</td> </tr></table></body></html>

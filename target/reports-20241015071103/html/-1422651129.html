@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1752</td> 
+     <td>-1422651129</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>33219a9d6719e46a7e57efd3dca00c786b6ec1d7</td> 
+     <td>TODO: lock this based on keys so we can run in parallel groups</td> 
+     <td>when memory based then its fast using synchronized, but if the aggregation repository is IO bound such as JPA etc then concurrent aggregation per correlation key could improve performance as we can run aggregation repository get/add in parallel</td> 
+     <td>SATD_CHANGED</td> 
+     <td>doAggregation(Object, Exchange)</td> 
+     <td>private synchronized Exchange doAggregation(Object key, Exchange exchange)</td> 
+     <td> // when memory based then its fast using synchronized, but if the aggregation repository is IO // bound such as JPA etc then concurrent aggregation per correlation key could // improve performance as we can run aggregation repository get/add in parallel if (LOG.isTraceEnabled()) { LOG.trace("onAggregation +++ start +++ with correlation key: " + key); } Exchange answer; Exchange oldExchange = aggregationRepository.get(key); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, 0, Integer.class); size++; } // check if we are complete boolean complete = false; if (isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, newExchange); // remove it afterwards newExchange.removeProperty(Exchange.AGGREGATED_SIZE); } // prepare the exchanges for aggregation and aggregate it ExchangeHelper.prepareAggregation(oldExchange, newExchange); answer = onAggregation(oldExchange, exchange); answer.setProperty(Exchange.AGGREGATED_SIZE, size); // maybe we should check completion after the aggregation if (!isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check answer.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, answer); } // only need to update aggregation repository if we are not complete if (!complete) { if (LOG.isTraceEnabled()) { LOG.trace("In progress aggregated exchange: " + answer + " with correlation key:" + key); } aggregationRepository.add(key, answer); } if (complete) { onCompletion(key, answer, false); } if (LOG.isTraceEnabled()) { LOG.trace("onAggregation +++ end +++ with correlation key: " + key); } return answer; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1749</td> 
+     <td>-1422651129</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>3f3768deaa025a6e6e8ca160b23ff595fde2d758</td> 
+     <td>None</td> 
+     <td>TODO: lock this based on keys so we can run in parallel groups</td> 
+     <td>SATD_ADDED</td> 
+     <td>doAggregation(Object, Exchange)</td> 
+     <td>private synchronized Exchange doAggregation(Object key, Exchange exchange)</td> 
+     <td> // TODO: lock this based on keys so we can run in parallel groups if (LOG.isTraceEnabled()) { LOG.trace("+++ start +++ onAggregation for key " + key); } Exchange answer; Exchange oldExchange = aggregationRepository.get(key); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, 0, Integer.class); size++; } // check if we are complete boolean complete = false; if (isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, newExchange); // remove it afterwards newExchange.removeProperty(Exchange.AGGREGATED_SIZE); } // prepare the exchanges for aggregation and aggregate it ExchangeHelper.prepareAggregation(oldExchange, newExchange); answer = onAggregation(oldExchange, exchange); answer.setProperty(Exchange.AGGREGATED_SIZE, size); // maybe we should check completion after the aggregation if (!isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check answer.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, answer); } // only need to update aggregation repository if we are not complete if (!complete) { if (LOG.isTraceEnabled()) { LOG.trace("In progress aggregated exchange: " + answer + " with correlation key:" + key); } aggregationRepository.add(key, answer); } if (complete) { onCompletion(key, answer, false); } if (LOG.isTraceEnabled()) { LOG.trace("+++ end +++ onAggregation for key " + key + " with size " + size); } return answer; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3102</td> <td>-1422650350</td><td>apache/camel</td><td>Dhiraj Bokde</td><td>b35c335cf8ec94193189186a32e69ad909670b3f</td> <td>None</td> <td>TODO provide parameter values for getGroupMembershipSettings</td> <td>SATD_ADDED</td> <td>testGetGroupMembershipSettings()</td> <td>public void testGetGroupMembershipSettings() throws Exception</td> <td>
+    final Map<String, Object> headers = new HashMap<String, Object>();
+    headers.put("CamelLinkedIn.group_id", 0L);
+    // parameter type is String
+    headers.put("CamelLinkedIn.fields", null);
+    // parameter type is Long
+    headers.put("CamelLinkedIn.count", null);
+    // parameter type is Long
+    headers.put("CamelLinkedIn.start", null);
+    final org.apache.camel.component.linkedin.api.model.GroupMemberships result = requestBodyAndHeaders("direct://GETGROUPMEMBERSHIPSETTINGS", null, headers);
+    assertNotNull("getGroupMembershipSettings result", result);
+    LOG.debug("getGroupMembershipSettings: " + result);
+</td> </tr></table></body></html>

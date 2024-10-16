@@ -1,0 +1,72 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>574</td> 
+     <td>-1422651752</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>3b7edc8e4d885b188029167fe88b6e7b1a9ed056</td> 
+     <td>TODO not the best implementation in the world as we have to browse the entire queue, which could be massive</td> 
+     <td>TODO not the best implementation in the world as we have to browse the entire queue, which could be massive</td> 
+     <td>SATD_CHANGED</td> 
+     <td>getExchanges()</td> 
+     <td>public List<exchange>
+        getExchanges()
+      </exchange></td> 
+     <td> String queue = getDestination(); JmsOperations template = getConfiguration().createInOnlyTemplate(false, queue); // TODO not the best implementation in the world as we have to browse // the entire queue, which could be massive final List<exchange>
+        answer = new ArrayList
+       <exchange>
+        (); template.browse(queue, new BrowserCallback() { public Object doInJms(Session session, QueueBrowser browser) throws JMSException { Enumeration iter = browser.getEnumeration(); while (iter.hasMoreElements()) { Message message = (Message) iter.nextElement(); JmsExchange exchange = createExchange(message); answer.add(exchange); } return answer; } }); return answer; 
+       </exchange>
+      </exchange></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>539</td> 
+     <td>-1422651752</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>0383e469c41c1442ca8c2ae1ed25387bda683c67</td> 
+     <td>None</td> 
+     <td>TODO not the best implementation in the world as we have to browse the entire queue, which could be massive</td> 
+     <td>SATD_ADDED</td> 
+     <td>getExchanges()</td> 
+     <td>public List<exchange>
+        getExchanges()
+      </exchange></td> 
+     <td> String queue = getDestination(); JmsOperations template = getConfiguration().createInOnlyTemplate(false, queue); // TODO not the best implementation in the world as we have to browse the entire queue, which could be massive final List<exchange>
+        answer = new ArrayList
+       <exchange>
+        (); template.browse(queue, new BrowserCallback() { public Object doInJms(Session session, QueueBrowser browser) throws JMSException { Enumeration iter = browser.getEnumeration(); while (iter.hasMoreElements()) { Message message = (Message) iter.nextElement(); JmsExchange exchange = createExchange(message); answer.add(exchange); } return answer; } }); return answer; 
+       </exchange>
+      </exchange></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

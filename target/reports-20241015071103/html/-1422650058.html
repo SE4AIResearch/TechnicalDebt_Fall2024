@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3708</td> <td>-1422650058</td><td>apache/camel</td><td>Dhiraj Bokde</td><td>3818efe3ee2d1061134df37489d2f3a0dc100ea1</td> <td>None</td> <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> <td>SATD_ADDED</td> <td>findCamelContexts()</td> <td>public List<String> findCamelContexts() throws Exception</td> <td>
+    List<String> answer = new ArrayList<>();
+    MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+    Set<ObjectName> names = server.queryNames(new ObjectName("*:type=context,*"), null);
+    for (ObjectName on : names) {
+        String id = on.getKeyProperty("name");
+        if (id.startsWith("\"") && id.endsWith("\"")) {
+            id = id.substring(1, id.length() - 1);
+        }
+        // filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)
+        String version = (String) server.getAttribute(on, "CamelVersion");
+        if (CamelVersionHelper.isGE("2.15.0", version)) {
+            answer.add(id);
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4924</td> 
+     <td>1242678117</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>8fac6e1cbf6420079e8d76132abf3358ff471b93</td> 
+     <td>TODO(dborowitz): Can't use repo from ctx due to canMergeFlag.</td> 
+     <td>TODO(dborowitz): Can't use repo from ctx due to canMergeFlag.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>updateRepoImpl(RepoContext)</td> 
+     <td>public void updateRepoImpl(RepoContext ctx) throws IntegrationException, IOException</td> 
+     <td> // There are multiple parents, so this is a merge commit. We don't want // to rebase the merge as clients can't easily rebase their history with // that merge present and replaced by an equivalent merge with a different // first parent. So instead behave as though MERGE_IF_NECESSARY was // configured. MergeTip mergeTip = args.mergeTip; if (args.rw.isMergedInto(mergeTip.getCurrentTip(), toMerge)) { mergeTip.moveTipTo(toMerge, toMerge); acceptMergeTip(mergeTip); } else { // TODO(dborowitz): Can't use repo from ctx due to canMergeFlag. CodeReviewCommit newTip = args.mergeUtil.mergeOneCommit(args.serverIdent, args.serverIdent, args.repo, args.rw, args.inserter, args.canMergeFlag, args.destBranch, mergeTip.getCurrentTip(), toMerge); mergeTip.moveTipTo(newTip, toMerge); } args.mergeUtil.markCleanMerges(args.rw, args.canMergeFlag, mergeTip.getCurrentTip(), args.alreadyAccepted); acceptMergeTip(mergeTip); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4904</td> 
+     <td>1242678117</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>f2839d7c16af534e208e2d2d10833d2e036ff62b</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Can't use repo from ctx due to canMergeFlag.</td> 
+     <td>SATD_ADDED</td> 
+     <td>updateRepo(RepoContext)</td> 
+     <td>public void updateRepo(RepoContext ctx) throws IntegrationException, IOException</td> 
+     <td> // There are multiple parents, so this is a merge commit. We don't want // to rebase the merge as clients can't easily rebase their history with // that merge present and replaced by an equivalent merge with a different // first parent. So instead behave as though MERGE_IF_NECESSARY was // configured. if (args.rw.isMergedInto(mergeTip.getCurrentTip(), toMerge)) { mergeTip.moveTipTo(toMerge, toMerge); acceptMergeTip(mergeTip); } else { PersonIdent myIdent = args.serverIdent.get(); // TODO(dborowitz): Can't use repo from ctx due to canMergeFlag. CodeReviewCommit newTip = args.mergeUtil.mergeOneCommit(myIdent, myIdent, args.repo, args.rw, args.inserter, args.canMergeFlag, args.destBranch, mergeTip.getCurrentTip(), toMerge); mergeTip.moveTipTo(newTip, toMerge); } args.mergeUtil.markCleanMerges(args.rw, args.canMergeFlag, mergeTip.getCurrentTip(), args.alreadyAccepted); acceptMergeTip(mergeTip); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

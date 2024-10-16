@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1164</td> 
+     <td>-1422651589</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>b0bbfe3a5d7b06b53850f33c99f0c4072df15829</td> 
+     <td>an exception occurred while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>an exception occurred while processing</td> 
+     <td>SATD_REMOVED</td> 
+     <td>onMessage(Message)</td> 
+     <td>public void onMessage(final Message message)</td> 
+     <td> if (LOG.isDebugEnabled()) { LOG.debug(endpoint + " consumer receiving JMS message: " + message); } RuntimeCamelException rce = null; try { Destination replyDestination = getReplyToDestination(message); final JmsExchange exchange = createExchange(message, replyDestination); if (eagerLoadingOfProperties) { exchange.getIn().getHeaders(); } // process the exchange processor.process(exchange); // get the correct jms message to send as reply JmsMessage body = null; Exception cause = null; boolean sendReply = false; if (exchange.isFailed()) { if (exchange.getException() != null) { // an exception occurred while processing if (endpoint.isTransferException()) { // send the exception as reply body = null; cause = exchange.getException(); sendReply = true; } else { // only throw exception if endpoint is not configured to transfer exceptions // back to caller rce = wrapRuntimeCamelException(exchange.getException()); } } else if (exchange.getFault().getBody() != null) { // a fault occurred while processing body = exchange.getFault(); sendReply = true; } } else { // process OK so get the reply body = exchange.getOut(false); sendReply = true; } // send the reply if we got a response and the exchange is out capable if (sendReply &amp;&amp; !disableReplyTo &amp;&amp; exchange.getPattern().isOutCapable()) { sendReply(replyDestination, message, exchange, body, cause); } } catch (Exception e) { rce = wrapRuntimeCamelException(e); } if (rce != null) { getExceptionHandler().handleException(rce); throw rce; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1007</td> 
+     <td>-1422651589</td> 
+     <td>apache/camel</td> 
+     <td>Jonathan Anstey</td> 
+     <td>d8e9209defead241372ab77746a155110dcd76e8</td> 
+     <td>an exception occured while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>an exception occurred while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>SATD_CHANGED</td> 
+     <td>onMessage(Message)</td> 
+     <td>public void onMessage(final Message message)</td> 
+     <td> RuntimeCamelException rce = null; try { if (LOG.isDebugEnabled()) { LOG.debug(endpoint + " consumer receiving JMS message: " + message); } Destination replyDestination = getReplyToDestination(message); final JmsExchange exchange = createExchange(message, replyDestination); if (eagerLoadingOfProperties) { exchange.getIn().getHeaders(); } // process the exchange processor.process(exchange); // get the correct jms message to send as reply JmsMessage body = null; if (exchange.isFailed()) { if (exchange.getException() != null) { // an exception occurred while processing // TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client // or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback rce = wrapRuntimeCamelException(exchange.getException()); } else if (exchange.getFault().getBody() != null) { // a fault occurred while processing body = exchange.getFault(); } } else { // process OK so get the reply body = exchange.getOut(false); } // send the reply if (rce == null &amp;&amp; body != null &amp;&amp; !disableReplyTo) { sendReply(replyDestination, message, exchange, body); } } catch (Exception e) { rce = wrapRuntimeCamelException(e); } if (rce != null) { LOG.warn(endpoint + " consumer caught an exception while processing " + "JMS message: " + message, rce); throw rce; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>823</td> 
+     <td>-1422651589</td> 
+     <td>apache/camel</td> 
+     <td>Gert Vanthienen</td> 
+     <td>32587052509c1371c7efb20d938b126e49a8887e</td> 
+     <td>an exception occured while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as new wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>an exception occured while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>SATD_CHANGED</td> 
+     <td>onMessage(Message)</td> 
+     <td>public void onMessage(final Message message)</td> 
+     <td> RuntimeCamelException rce = null; try { if (LOG.isDebugEnabled()) { LOG.debug(endpoint + " consumer receiving JMS message: " + message); } Destination replyDestination = getReplyToDestination(message); final JmsExchange exchange = createExchange(message, replyDestination); if (eagerLoadingOfProperties) { exchange.getIn().getHeaders(); } // process the exchange processor.process(exchange); // get the correct jms message to send as reply JmsMessage body = null; if (exchange.isFailed()) { if (exchange.getException() != null) { // an exception occured while processing // TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client // or do as now where we wrap as runtime exception to be thrown back to spring so it can do rollback rce = wrapRuntimeCamelException(exchange.getException()); } else if (exchange.getFault().getBody() != null) { // a fault occured while processing body = exchange.getFault(); } } else { // process OK so get the reply body = exchange.getOut(false); } // send the reply if (rce == null &amp;&amp; body != null &amp;&amp; !disableReplyTo) { sendReply(replyDestination, message, exchange, body); } } catch (Exception e) { rce = wrapRuntimeCamelException(e); } if (rce != null) { LOG.warn(endpoint + " consumer caught an exception while processing " + "JMS message: " + message, rce); throw rce; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>820</td> 
+     <td>-1422651589</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>0a7458148693c7c114a17eeecaeb5f71bd61886b</td> 
+     <td>None</td> 
+     <td>an exception occured while processing TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client or do as new wrap as runtime exception to be thrown back to spring so it can do rollback</td> 
+     <td>SATD_ADDED</td> 
+     <td>onMessage(Message)</td> 
+     <td>public void onMessage(final Message message)</td> 
+     <td> RuntimeCamelException rce = null; try { if (LOG.isDebugEnabled()) { LOG.debug(endpoint + " consumer receiving JMS message: " + message); } Destination replyDestination = getReplyToDestination(message); final JmsExchange exchange = createExchange(message, replyDestination); if (eagerLoadingOfProperties) { exchange.getIn().getHeaders(); } // process the exchange processor.process(exchange); // get the correct jms message to send as reply JmsMessage body = null; if (exchange.isFailed()) { if (exchange.getException() != null) { // an exception occured while processing // TODO: Camel-585 somekind of flag to determine if we should send the exchange back to the client // or do as new wrap as runtime exception to be thrown back to spring so it can do rollback rce = wrapRuntimeCamelException(exchange.getException()); } else if (exchange.getFault().getBody() != null) { // a fault occured while processing body = exchange.getFault(); } } else { // process OK so get the reply body = exchange.getOut(false); } // send the reply if (rce == null &amp;&amp; body != null &amp;&amp; !disableReplyTo) { sendReply(replyDestination, message, exchange, body); } } catch (Exception e) { rce = wrapRuntimeCamelException(e); } if (rce != null) { LOG.warn(endpoint + " consumer caught an exception while processing " + "JMS message: " + message, rce); throw rce; } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

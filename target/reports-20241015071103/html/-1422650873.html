@@ -1,0 +1,125 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2223</td> <td>-1422650873</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>44f214a1f2617dc289bf81f26f3772d02d61e89c</td> <td>None</td> <td>iterator to only walk which selectXXX matches</td> <td>SATD_ADDED</td> <td>createMatchByIterator(RouteDefinition, MatchBy, boolean, boolean, int, int)</td> <td>private static Iterator<ProcessorDefinition> createMatchByIterator(final RouteDefinition route, final MatchBy matchBy, final boolean selectFirst, final boolean selectLast, final int selectFrom, final int selectTo)</td> <td>
+    // iterator to walk all nodes
+    final Iterator<ProcessorDefinition> itAll = ProcessorDefinitionHelper.filterTypeInOutputs(route.getOutputs(), ProcessorDefinition.class);
+    // iterator to only walk nodes which matchBy matches
+    final Iterator<ProcessorDefinition> itMatchBy = new Iterator<ProcessorDefinition>() {
+
+        private ProcessorDefinition next;
+
+        @Override
+        public boolean hasNext() {
+            if (next == null) {
+                // compute next
+                next = next();
+            }
+            return next != null;
+        }
+
+        @Override
+        public ProcessorDefinition next() {
+            // grab the next if its ready
+            if (next != null) {
+                ProcessorDefinition answer = next;
+                next = null;
+                return answer;
+            }
+            // find the next which matchBy matches
+            boolean found = false;
+            while (!found && itAll.hasNext()) {
+                ProcessorDefinition def = itAll.next();
+                if (matchBy.match(def)) {
+                    found = true;
+                    next = def;
+                }
+            }
+            ProcessorDefinition answer = next;
+            next = null;
+            return answer;
+        }
+
+        @Override
+        public void remove() {
+        }
+    };
+    // iterator to only walk which selectXXX matches
+    return new Iterator<ProcessorDefinition>() {
+
+        private int current;
+
+        private ProcessorDefinition next;
+
+        @Override
+        public boolean hasNext() {
+            if (next == null) {
+                // compute next
+                next = next();
+            }
+            return next != null;
+        }
+
+        public ProcessorDefinition next() {
+            // grab the next if its ready
+            if (next != null) {
+                ProcessorDefinition answer = next;
+                next = null;
+                return answer;
+            }
+            // a bit complicated logic to ensure selectFirst/selectLast,selectFrom/selectTo
+            // filter out unwanted nodes
+            // we use the matchBy iterator as the nodes mush at first match this iterator
+            // before we can do any selection
+            if (selectFrom >= 0 && current <= selectFrom) {
+                // spool until we should start
+                while (current <= selectFrom) {
+                    current++;
+                    if (itMatchBy.hasNext()) {
+                        next = itMatchBy.next();
+                    } else {
+                        next = null;
+                    }
+                }
+            } else if (selectTo >= 0 && current <= selectTo) {
+                // are we in range
+                current++;
+                if (itMatchBy.hasNext()) {
+                    next = itMatchBy.next();
+                } else {
+                    next = null;
+                }
+            } else if (selectLast) {
+                // spool until the last matching
+                while (itMatchBy.hasNext()) {
+                    current++;
+                    next = itMatchBy.next();
+                }
+            } else if (selectFirst) {
+                // only match the first
+                current++;
+                if (itMatchBy.hasNext() && current == 1) {
+                    next = itMatchBy.next();
+                } else {
+                    next = null;
+                }
+            } else if (!selectFirst && !selectLast && selectFrom < 0 && selectTo < 0) {
+                // regular without any selectFirst,selectLast,selectFrom/selectTo stuff
+                current++;
+                if (itMatchBy.hasNext()) {
+                    next = itMatchBy.next();
+                }
+            }
+            return next;
+        }
+
+        @Override
+        public void remove() {
+        // noop
+        }
+    };
+</td> </tr></table></body></html>

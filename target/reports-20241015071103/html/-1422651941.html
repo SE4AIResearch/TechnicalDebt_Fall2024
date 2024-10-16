@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>233</td> 
+     <td>-1422651941</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>processPacket(Packet)</td> 
+     <td>public void processPacket(Packet packet)</td> 
+     <td> if (packet instanceof Message) { Message message = (Message) packet; if (log.isDebugEnabled()) { log.debug("&lt;&lt;&lt;&lt; message: " + message.getBody()); } XmppExchange exchange = endpoint.createExchange(message); try { getProcessor().process(exchange); } catch (Exception e) { // TODO: what should we do when a processing failure occurs?? e.printStackTrace(); } } else if (packet instanceof RosterPacket) { RosterPacket rosterPacket = (RosterPacket) packet; if (log.isDebugEnabled()) { log.debug("Roster packet with : " + rosterPacket.getRosterItemCount() + " item(s)"); Iterator rosterItems = rosterPacket.getRosterItems(); while (rosterItems.hasNext()) { Object item = rosterItems.next(); log.debug("Roster item: " + item); } } } else { if (log.isDebugEnabled()) { log.debug("&lt;&lt;&lt;&lt; ignored packet: " + packet); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>156</td> 
+     <td>-1422651941</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>6f3d48a205a8ccc9cde67d3bad4002f912f7ad66</td> 
+     <td>None</td> 
+     <td>TODO: what should we do when a processing failure occurs??</td> 
+     <td>SATD_ADDED</td> 
+     <td>processPacket(Packet)</td> 
+     <td>public void processPacket(Packet packet)</td> 
+     <td> if (packet instanceof Message) { Message message = (Message) packet; if (log.isDebugEnabled()) { log.debug("&lt;&lt;&lt;&lt; message: " + message.getBody()); } XmppExchange exchange = endpoint.createExchange(message); try { getProcessor().process(exchange); } catch (Exception e) { // TODO: what should we do when a processing failure occurs?? e.printStackTrace(); } } else if (packet instanceof RosterPacket) { RosterPacket rosterPacket = (RosterPacket) packet; if (log.isDebugEnabled()) { log.debug("Roster packet with : " + rosterPacket.getRosterItemCount() + " item(s)"); Iterator rosterItems = rosterPacket.getRosterItems(); while (rosterItems.hasNext()) { Object item = rosterItems.next(); log.debug("Roster item: " + item); } } } else { if (log.isDebugEnabled()) { log.debug("&lt;&lt;&lt;&lt; ignored packet: " + packet); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

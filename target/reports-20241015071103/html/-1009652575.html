@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4999</td> <td>-1009652575</td><td>apache/hadoop</td><td>Owen O'Malley</td><td>abe7be913432053f6d419ea4ca4f9cd2be938bc7</td> <td>None</td> <td>the directory better be empty</td> <td>SATD_ADDED</td> <td>rmdir(String)</td> <td>public int rmdir(String path) throws IOException</td> <td>
+    if (isDirectory(path)) {
+        // the directory better be empty
+        String[] dirEntries = readdir(path);
+        if ((dirEntries.length <= 2) && (localFS.delete(new Path(path), true)))
+            return 0;
+    }
+    return -1;
+</td> </tr></table></body></html>

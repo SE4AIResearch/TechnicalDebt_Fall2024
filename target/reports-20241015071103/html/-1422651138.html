@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1734</td> <td>-1422651138</td><td>apache/camel</td><td>Claus Ibsen</td><td>4dff106ac2f72f7b4b40f76fdc32286c45ee42a8</td> <td>None</td> <td>TODO: Enable to test locally</td> <td>SATD_ADDED</td> <td>xxxTestConsumeFromAbsolutePath()</td> <td>public void xxxTestConsumeFromAbsolutePath() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:report");
+    mock.expectedBodiesReceived("Hello Paris");
+    mock.expectedFileExists(base + "/.camel/paris.txt");
+    template.sendBodyAndHeader("file:" + base, "Hello Paris", Exchange.FILE_NAME, "paris.txt");
+    mock.assertIsSatisfied();
+</td> </tr></table></body></html>

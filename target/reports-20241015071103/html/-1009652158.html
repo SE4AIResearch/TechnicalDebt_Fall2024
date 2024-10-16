@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5568</td> <td>-1009652158</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>ideally would add some offsets/shifts in here (e.g., via extra fields
+of various sizes), but...significant work to hand-generate each header</td> <td>SATD_ADDED</td> <td>doMultipleGzipBufferSizes(JobConf, boolean)</td> <td>private static void doMultipleGzipBufferSizes(JobConf jConf, boolean useNative) throws IOException</td> <td>
+    System.out.println(COLOR_YELLOW + "doMultipleGzipBufferSizes() using " + (useNative ? "GzipZlibDecompressor" : "BuiltInGzipDecompressor") + COLOR_NORMAL);
+    jConf.setBoolean("io.native.lib.available", useNative);
+    int bufferSize;
+    // ideally would add some offsets/shifts in here (e.g., via extra fields
+    // of various sizes), but...significant work to hand-generate each header
+    for (bufferSize = 1; bufferSize < 34; ++bufferSize) {
+        jConf.setInt("io.file.buffer.size", bufferSize);
+        doSingleGzipBufferSize(jConf);
+    }
+    bufferSize = 512;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 2 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 4 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 63 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 64 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 65 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 127 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 128 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+    bufferSize = 129 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleGzipBufferSize(jConf);
+</td> </tr></table></body></html>

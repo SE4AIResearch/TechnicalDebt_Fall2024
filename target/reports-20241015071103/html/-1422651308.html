@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1536</td> 
+     <td>-1422651308</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>541e9912a3ba39b2d065057b219177e569afb26a</td> 
+     <td>TODO need to keep the track of Service and call ungetService when the camel context is closed</td> 
+     <td>Need to keep the track of Service and call ungetService when the camel context is closed</td> 
+     <td>SATD_REMOVED</td> 
+     <td>lookup(String)</td> 
+     <td>public Object lookup(String name)</td> 
+     <td> Object service = serviceCacheMap.get(name); if (service == null) { ServiceReference sr = bundleContext.getServiceReference(name); if (sr != null) { // Need to keep the track of Service // and call ungetService when the camel context is closed serviceReferenceQueue.add(sr); service = bundleContext.getService(sr); if (service != null) { serviceCacheMap.put(name, service); } } } return service; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1451</td> 
+     <td>-1422651308</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>8f4cb0486b6e6ab48e6df6b2e3e44a7eca27c911</td> 
+     <td>None</td> 
+     <td>TODO need to keep the track of Service and call ungetService when the camel context is closed</td> 
+     <td>SATD_ADDED</td> 
+     <td>lookup(String)</td> 
+     <td>public Object lookup(String name)</td> 
+     <td> Object service = serviceCacheMap.get(name); if (service == null) { ServiceReference sr = bundleContext.getServiceReference(name); if (sr != null) { // TODO need to keep the track of Service // and call ungetService when the camel context is closed service = bundleContext.getService(sr); if (service != null) { serviceCacheMap.put(name, service); } } } return service; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1161</td> <td>-1422651450</td><td>apache/camel</td><td>William Tam</td><td>db2f1f737874c555f8c144e514c34fdc83dcabef</td> <td>None</td> <td>TODO: As DLC we need a timer task, eg something in Util to help us</td> <td>SATD_ADDED</td> <td>delayBeforeRedelivery()</td> <td>protected void delayBeforeRedelivery()</td> <td>
+    long delay = 0;
+    if (redeliveryPolicy != null) {
+        delay = redeliveryPolicy.getDelay();
+    } else if (delayPolicy != null) {
+        delay = delayPolicy.getDelay();
+    }
+    if (delay > 0) {
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sleeping for: " + delay + " millis until attempting redelivery");
+            }
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            // TODO: As DLC we need a timer task, eg something in Util to help us
+            Thread.currentThread().interrupt();
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4995</td> <td>1242678172</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>cf2fa7983f4046a97f01d58ae6dcd4f8bc095386</td> <td>None</td> <td>TODO(dborowitz): Use a ThreadLocal or use Joda.</td> <td>SATD_ADDED</td> <td>changeRefName(Change.Id)</td> <td>public static String changeRefName(Change.Id id)</td> <td>
+    StringBuilder r = new StringBuilder();
+    r.append(RefNames.REFS_CHANGES);
+    int n = id.get();
+    int m = n % 100;
+    if (m < 10) {
+        r.append('0');
+    }
+    r.append(m);
+    r.append('/');
+    r.append(n);
+    r.append(RefNames.META_SUFFIX);
+    return r.toString();
+</td> </tr></table></body></html>

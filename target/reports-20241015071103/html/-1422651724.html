@@ -1,0 +1,12 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>589</td> <td>-1422651724</td><td>apache/camel</td><td>James Strachan</td><td>ab5552890cc96c1bba52f0929062c353e63b235a</td> <td>None</td> <td>TODO deprecate method?</td> <td>SATD_ADDED</td> <td>convertFaultBodyTo(Class)</td> <td>public Type convertFaultBodyTo(Class type)</td> <td>
+    // TODO deprecate method?
+    // return process(ProcessorBuilder.setFaultBody(Builder.faultBody().convertTo(type)));
+    return process(new ConvertBodyProcessor(type));
+</td> </tr></table></body></html>

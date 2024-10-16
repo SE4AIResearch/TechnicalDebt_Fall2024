@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4737</td> <td>1242678047</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>9e158756e51480dcf145bddedb2286d2c4218850</td> <td>None</td> <td>In theory we could still unload the plugin even if the rename
+failed. However, it would be reloaded on the next server startup,
+which is probably not what the user expects.</td> <td>SATD_ADDED</td> <td>disablePlugins(Set<String>)</td> <td>public void disablePlugins(Set<String> names)</td> <td>
+    if (!isRemoteAdminEnabled()) {
+        log.warn("Remote plugin administration is disabled," + " ignoring disablePlugins(" + names + ")");
+        return;
+    }
+    synchronized (this) {
+        for (String name : names) {
+            Plugin active = running.get(name);
+            if (active == null) {
+                continue;
+            }
+            log.info(String.format("Disabling plugin %s", active.getName()));
+            Path off = active.getSrcFile().resolveSibling(active.getSrcFile().getFileName() + ".disabled");
+            try {
+                Files.move(active.getSrcFile(), off);
+            } catch (IOException e) {
+                log.error("Failed to disable plugin", e);
+                // In theory we could still unload the plugin even if the rename
+                // failed. However, it would be reloaded on the next server startup,
+                // which is probably not what the user expects.
+                continue;
+            }
+            unloadPlugin(active);
+            try {
+                FileSnapshot snapshot = FileSnapshot.save(off.toFile());
+                Plugin offPlugin = loadPlugin(name, off, snapshot);
+                disabled.put(name, offPlugin);
+            } catch (Throwable e) {
+                // This shouldn't happen, as the plugin was loaded earlier.
+                log.warn(String.format("Cannot load disabled plugin %s", active.getName()), e.getCause());
+            }
+        }
+        cleanInBackground();
+    }
+</td> </tr></table></body></html>

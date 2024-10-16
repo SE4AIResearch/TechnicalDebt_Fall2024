@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3988</td> 
+     <td>1242677665</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>fb1c1f2c2e63ed260808ca1eb8e68f575af505a9</td> 
+     <td>Should never happen, the core receive process would have identified the missing object earlier before we got control. </td> 
+     <td>Should never happen, the core receive process would have identified the missing object earlier before we got control. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createNewChanges()</td> 
+     <td>private void createNewChanges()</td> 
+     <td> if (newChange == null) { return; } final List<revcommit>
+        toCreate = new ArrayList
+       <revcommit>
+        (); final RevWalk walk = rp.getRevWalk(); walk.reset(); walk.sort(RevSort.TOPO); walk.sort(RevSort.REVERSE, true); try { walk.markStart(walk.parseCommit(newChange.getNewId())); for (final Ref r : rp.getAdvertisedRefs().values()) { try { walk.markUninteresting(walk.parseCommit(r.getObjectId())); } catch (IOException e) { continue; } } for (; ; ) { final RevCommit c = walk.next(); if (c == null) { break; } if (addByCommit.containsKey(c.copy())) { // This commit is slated to replace an existing PatchSet. // continue; } toCreate.add(c); } } catch (IOException e) { // Should never happen, the core receive process would have // identified the missing object earlier before we got control. // newChange.setResult(Result.REJECTED_MISSING_OBJECT); } try { for (final RevCommit c : toCreate) { createChange(walk, c); } newChange.setResult(ReceiveCommand.Result.OK); } catch (IOException e) { reject(newChange, "diff error"); } catch (OrmException e) { reject(newChange, "database error"); } 
+       </revcommit>
+      </revcommit></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3986</td> 
+     <td>1242677665</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>ada1c272078cbc958359189d3aa4c69faa368fdb</td> 
+     <td>None</td> 
+     <td>Should never happen, the core receive process would have identified the missing object earlier before we got control. </td> 
+     <td>SATD_ADDED</td> 
+     <td>createNewChanges(ReceivePack)</td> 
+     <td>private void createNewChanges(final ReceivePack rp)</td> 
+     <td> if (newChange == null) { return; } final List<revcommit>
+        toCreate = new ArrayList
+       <revcommit>
+        (); final RevWalk walk = rp.getRevWalk(); walk.reset(); walk.sort(RevSort.TOPO); walk.sort(RevSort.REVERSE, true); try { walk.markStart(walk.parseCommit(newChange.getNewId())); for (final Ref r : rp.getAdvertisedRefs().values()) { try { walk.markUninteresting(walk.parseCommit(r.getObjectId())); } catch (IOException e) { continue; } } for (; ; ) { final RevCommit c = walk.next(); if (c == null) { break; } if (addByCommit.containsKey(c.copy())) { // This commit is slated to replace an existing PatchSet. // continue; } toCreate.add(c); } } catch (IOException e) { // Should never happen, the core receive process would have // identified the missing object earlier before we got control. // newChange.setResult(Result.REJECTED_MISSING_OBJECT); } try { for (final RevCommit c : toCreate) { createChange(walk, c); } newChange.setResult(ReceiveCommand.Result.OK); } catch (IOException e) { reject(newChange, "diff error"); } catch (OrmException e) { reject(newChange, "database error"); } 
+       </revcommit>
+      </revcommit></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

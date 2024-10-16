@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5488</td> <td>-1009652238</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO cache</td> <td>SATD_ADDED</td> <td>getInputFiles(long, Collection<FileStatus>)</td> <td>public long getInputFiles(long minSize, Collection<FileStatus> files) throws IOException</td> <td>
+    updateLock.readLock().lock();
+    try {
+        return root.selectFiles(minSize, files);
+    } finally {
+        updateLock.readLock().unlock();
+    }
+</td> </tr></table></body></html>

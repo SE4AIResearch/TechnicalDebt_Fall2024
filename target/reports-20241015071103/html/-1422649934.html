@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3898</td> <td>-1422649934</td><td>apache/camel</td><td>Daniel Kulp</td><td>701651e9f3b318ccb4b8a8872c1e8e989fcf3ffd</td> <td>None</td> <td>TODO: check parallel execution</td> <td>SATD_ADDED</td> <td>apply(Statement, Description)</td> <td>public Statement apply(final Statement base, Description description)</td> <td>
+    return new Statement() {
+
+        @Override
+        public void evaluate() throws Throwable {
+            WeldContainer container = weld.initialize();
+            context.setBeanManager(container.getBeanManager());
+            try {
+                base.evaluate();
+            } finally {
+                container.shutdown();
+                context.unsetBeanManager();
+            }
+        }
+    };
+</td> </tr></table></body></html>

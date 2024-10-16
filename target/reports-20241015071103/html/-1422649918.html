@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3922</td> <td>-1422649918</td><td>apache/camel</td><td>Claus Ibsen</td><td>88f01405d5c644b3b9d297be1d5b3514a42abccb</td> <td>None</td> <td>do not refresh bundles causing out bundle context to be invalid
+TODO: see if we can find a way maybe to install camel.xml as bundle/feature instead of part of unit test (see src/test/resources/OSGI-INF/blueprint)</td> <td>SATD_ADDED</td> <td>testComponent(String, String)</td> <td>protected void testComponent(String mainFeature, String component) throws Exception</td> <td>
+    LOG.info("Looking up CamelContext(myCamel) in OSGi Service Registry");
+    LOG.info("Install main feature: {}", mainFeature);
+    // do not refresh bundles causing out bundle context to be invalid
+    // TODO: see if we can find a way maybe to install camel.xml as bundle/feature instead of part of unit test (see src/test/resources/OSGI-INF/blueprint)
+    featuresService.installFeature(mainFeature, EnumSet.of(FeaturesService.Option.NoAutoRefreshBundles));
+    CamelContext camelContext = getOsgiService(bundleContext, CamelContext.class, "(camel.context.name=myCamel)", 20000);
+    assertNotNull("Cannot find CamelContext with name myCamel", camelContext);
+    LOG.info("Getting Camel component: {}", component);
+    Component comp = camelContext.getComponent(component);
+    assertNotNull("Cannot get component with name: " + component, comp);
+    LOG.info("Found Camel component: {} instance: {} with className: {}", component, comp, comp.getClass());
+</td> </tr></table></body></html>

@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3351</td> <td>-1422650208</td><td>apache/camel</td><td>Jonathan Anstey</td><td>58a9ffb4a2950c91760406aad302b53985301165</td> <td>None</td> <td>TODO maybe separate this out as custom drive API ex. google-drive://download...</td> <td>SATD_ADDED</td> <td>download(com.google.api.services.drive.model.File, Exchange)</td> <td>public static InputStream download(com.google.api.services.drive.model.File fileMetadata, Exchange exchange) throws Exception</td> <td>
+    if (fileMetadata.getDownloadUrl() != null && fileMetadata.getDownloadUrl().length() > 0) {
+        try {
+            // TODO maybe separate this out as custom drive API ex. google-drive://download...
+            HttpResponse resp = getClient(exchange).getRequestFactory().buildGetRequest(new GenericUrl(fileMetadata.getDownloadUrl())).execute();
+            return resp.getContent();
+        } catch (IOException e) {
+            LOG.debug("Could not download file.", e);
+            return null;
+        }
+    } else {
+        // The file doesn't have any content stored on Drive.
+        return null;
+    }
+</td> </tr></table></body></html>

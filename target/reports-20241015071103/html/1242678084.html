@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4815</td> <td>1242678084</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>8792bd67d75fcff96acdf0656bf841b532eb75ce</td> <td>None</td> <td>TODO:  Check the committer, too.</td> <td>SATD_ADDED</td> <td>submitWithCherryPick()</td> <td>public void submitWithCherryPick() throws Exception</td> <td>
+    RevCommit initialHead = getRemoteHead();
+    PushOneCommit.Result change = createChange("Change 1", "a.txt", "content");
+    submit(change.getChangeId());
+    RevCommit oldHead = getRemoteHead();
+    testRepo.reset(initialHead);
+    PushOneCommit.Result change2 = createChange("Change 2", "b.txt", "other content");
+    submit(change2.getChangeId());
+    assertCherryPick(testRepo, false);
+    RevCommit newHead = getRemoteHead();
+    assertThat(newHead.getParentCount()).isEqualTo(1);
+    assertThat(newHead.getParent(0)).isEqualTo(oldHead);
+    assertCurrentRevision(change2.getChangeId(), 2, newHead);
+    assertSubmitter(change2.getChangeId(), 1);
+    assertSubmitter(change2.getChangeId(), 2);
+    assertPersonEquals(admin.getIdent(), newHead.getAuthorIdent());
+// TODO:  Check the committer, too.
+// assertPersonEquals(admin.getIdent(), newHead.getCommitterIdent());
+</td> </tr></table></body></html>

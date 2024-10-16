@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3011</td> <td>-1422650420</td><td>apache/camel</td><td>Willem Jiang</td><td>c09a757bc6e131cef469b47eed41b4012f86923c</td> <td>None</td> <td>TODO add the throw exception in the method</td> <td>SATD_ADDED</td> <td>probeClass(String)</td> <td>private static boolean probeClass(String name)</td> <td>
+    try {
+        Class.forName(name, true, WsEndpoint.class.getClassLoader());
+        return true;
+    } catch (Throwable t) {
+        return false;
+    }
+</td> </tr></table></body></html>

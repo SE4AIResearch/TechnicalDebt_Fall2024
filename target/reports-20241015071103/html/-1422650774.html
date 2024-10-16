@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2394</td> 
+     <td>-1422650774</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>d0e5cc2d62fcf3327a3463fa73ca72b75c24073e</td> 
+     <td>Should we be ok with URIs not properly encoded? (that method may need a bit of refactoring too)</td> 
+     <td>Should we be ok with URIs not properly encoded? (that method may need a bit of refactoring too)</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createConfiguration(String, CamelContext)</td> 
+     <td>public static EndpointConfiguration createConfiguration(String uri, CamelContext context) throws Exception</td> 
+     <td> int schemeSeparator = uri.indexOf(':'); if (schemeSeparator == -1) { // not an URIConfiguration return null; } String scheme = uri.substring(0, schemeSeparator); /* Temporary (maybe) workaround for unclear differentiation between URLs and URNs in Camel String schemeSpecificPart = uri.substring(schemeSeparator + 1); if (!schemeSpecificPart.startsWith("//")) { uri = scheme + "://" + schemeSpecificPart; } */ Component component = context.getComponent(scheme); LOG.trace("Lookup for Component handling \"{}:\" configuration returned {}", scheme, component != null ? component.getClass().getName() : "<null>
+       "); DefaultEndpointConfiguration cfg = (DefaultEndpointConfiguration) component.createConfiguration(scheme); // Should we be ok with URIs not properly encoded? (that method may need a bit of refactoring too) cfg.setURI(new URI(UnsafeUriCharactersEncoder.encode(uri))); return cfg; 
+      </null></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2393</td> 
+     <td>-1422650774</td>
+     <td>apache/camel</td>
+     <td>Hadrian Zbarcea</td>
+     <td>b116eb2de2195b6e2a20deefacc27dc19ab72c13</td> 
+     <td>None</td> 
+     <td>Should we be ok with URIs not properly encoded? (that method may need a bit of refactoring too)</td> 
+     <td>SATD_ADDED</td> 
+     <td>createConfiguration(String, CamelContext)</td> 
+     <td>public static EndpointConfiguration createConfiguration(String uri, CamelContext context) throws Exception</td> 
+     <td> int schemeSeparator = uri.indexOf(':'); if (schemeSeparator == -1) { // not an URIConfiguration return null; } String scheme = uri.substring(0, schemeSeparator); /* Temporary (maybe) workaround for unclear differentiation between URLs and URNs in Camel String schemeSpecificPart = uri.substring(schemeSeparator + 1); if (!schemeSpecificPart.startsWith("//")) { uri = scheme + "://" + schemeSpecificPart; } */ Component component = context.getComponent(scheme); LOG.trace("Lookup for Component handling \"{}:\" configuration returned {}", scheme, component != null ? component.getClass().getName() : "<null>
+       "); DefaultEndpointConfiguration cfg = (DefaultEndpointConfiguration) component.createConfiguration(scheme); // Should we be ok with URIs not properly encoded? (that method may need a bit of refactoring too) cfg.setURI(new URI(UnsafeUriCharactersEncoder.encode(uri))); return cfg; 
+      </null></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

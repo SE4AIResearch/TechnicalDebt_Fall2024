@@ -1,0 +1,69 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3612</td> 
+     <td>-1422650441</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>8fe4288f2a19d1b8894f65b04a7ac871983b8938</td> 
+     <td>TODO: Add support for a HeaderFilterStrategy. See: org.apache.camel.component.jms.JmsBinding#shouldOutputHeader</td> 
+     <td>must use the classloader from the application context when creating reply manager, as it should inherit the classloader from app context and not the current which may be a different classloader</td> 
+     <td>SATD_REMOVED</td> 
+     <td>initReplyManager()</td> 
+     <td>protected void initReplyManager()</td> 
+     <td> if (!started.get()) { synchronized (this) { if (started.get()) { return; } log.debug("Starting reply manager"); // must use the classloader from the application context when creating reply manager, // as it should inherit the classloader from app context and not the current which may be // a different classloader ClassLoader current = Thread.currentThread().getContextClassLoader(); ClassLoader ac = getEndpoint().getCamelContext().getApplicationContextClassLoader(); try { if (ac != null) { Thread.currentThread().setContextClassLoader(ac); } // validate that replyToType and replyTo is configured accordingly if (getEndpoint().getReplyToType() != null) { // setting temporary with a fixed replyTo is not supported if (getEndpoint().getReplyTo() != null &amp;&amp; getEndpoint().getReplyToType().equals(ReplyToType.Temporary.name())) { throw new IllegalArgumentException("ReplyToType " + ReplyToType.Temporary + " is not supported when replyTo " + getEndpoint().getReplyTo() + " is also configured."); } } if (getEndpoint().getReplyTo() != null) { // specifying reply queues is not currently supported throw new IllegalArgumentException("Specifying replyTo " + getEndpoint().getReplyTo() + " is currently not supported."); } else { replyManager = createReplyManager(); log.debug("Using RabbitMQReplyManager: {} to process replies from temporary queue", replyManager); } } catch (Exception e) { throw new FailedToCreateProducerException(getEndpoint(), e); } finally { if (ac != null) { Thread.currentThread().setContextClassLoader(current); } } started.set(true); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2970</td> 
+     <td>-1422650441</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>2f3e58688d91115264418bd5de9d03edbdded3be</td> 
+     <td>None</td> 
+     <td>TODO: Add support for a HeaderFilterStrategy. See: org.apache.camel.component.jms.JmsBinding#shouldOutputHeader</td> 
+     <td>SATD_ADDED</td> 
+     <td>buildProperties(Exchange)</td> 
+     <td> AMQP.BasicProperties.Builder properties = new AMQP.BasicProperties.Builder(); final Object contentType = exchange.getIn().getHeader(RabbitMQConstants.CONTENT_TYPE); if (contentType != null) { properties.contentType(contentType.toString()); } final Object priority = exchange.getIn().getHeader(RabbitMQConstants.PRIORITY); if (priority != null) { properties.priority(Integer.parseInt(priority.toString())); } final Object messageId = exchange.getIn().getHeader(RabbitMQConstants.MESSAGE_ID); if (messageId != null) { properties.messageId(messageId.toString()); } final Object clusterId = exchange.getIn().getHeader(RabbitMQConstants.CLUSTERID); if (clusterId != null) { properties.clusterId(clusterId.toString()); } final Object replyTo = exchange.getIn().getHeader(RabbitMQConstants.REPLY_TO); if (replyTo != null) { properties.replyTo(replyTo.toString()); } final Object correlationId = exchange.getIn().getHeader(RabbitMQConstants.CORRELATIONID); if (correlationId != null) { properties.correlationId(correlationId.toString()); } final Object deliveryMode = exchange.getIn().getHeader(RabbitMQConstants.DELIVERY_MODE); if (deliveryMode != null) { properties.deliveryMode(Integer.parseInt(deliveryMode.toString())); } final Object userId = exchange.getIn().getHeader(RabbitMQConstants.USERID); if (userId != null) { properties.userId(userId.toString()); } final Object type = exchange.getIn().getHeader(RabbitMQConstants.TYPE); if (type != null) { properties.type(type.toString()); } final Object contentEncoding = exchange.getIn().getHeader(RabbitMQConstants.CONTENT_ENCODING); if (contentEncoding != null) { properties.contentEncoding(contentEncoding.toString()); } final Object expiration = exchange.getIn().getHeader(RabbitMQConstants.EXPIRATION); if (expiration != null) { properties.expiration(expiration.toString()); } final Object appId = exchange.getIn().getHeader(RabbitMQConstants.APP_ID); if (appId != null) { properties.appId(appId.toString()); } final Object timestamp = exchange.getIn().getHeader(RabbitMQConstants.TIMESTAMP); if (timestamp != null) { properties.timestamp(new Date(Long.parseLong(timestamp.toString()))); } final Map<string, object>
+        headers = exchange.getIn().getHeaders(); Map
+       <string, object>
+         filteredHeaders = new HashMap
+        <string, object>
+         (); // TODO: Add support for a HeaderFilterStrategy. See: org.apache.camel.component.jms.JmsBinding#shouldOutputHeader for (Map.Entry
+         <string, object>
+           header : headers.entrySet()) { // filter header values. Object value = getValidRabbitMQHeaderValue(header.getValue()); if (value != null) { filteredHeaders.put(header.getKey(), header.getValue()); } else if (log.isDebugEnabled()) { log.debug("Ignoring header: {} of class: {} with value: {}", new Object[] { header.getKey(), header.getValue().getClass().getName(), header.getValue() }); } } properties.headers(filteredHeaders); return properties; 
+         </string,>
+        </string,>
+       </string,>
+      </string,></td> 
+     <td> AMQP.BasicProperties.Builder buildProperties(Exchange exchange)</td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

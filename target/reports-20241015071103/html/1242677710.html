@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4111</td> <td>1242677710</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>3281f53d9ee01a977fe09e8576cd2a5f27f29d80</td> <td>None</td> <td>Get all the reviewed patches in one query</td> <td>SATD_ADDED</td> <td>load(ReviewDb, PatchSet)</td> <td>public void load(final ReviewDb db, final PatchSet ps) throws OrmException</td> <td>
+    PatchSet.Id patchSetKey = ps.getId();
+    patchSet = ps;
+    info = db.patchSetInfo().get(patchSetKey);
+    patches = db.patches().byPatchSet(patchSetKey).toList();
+    final Account.Id me = Common.getAccountId();
+    if (me != null) {
+        // If we are signed in, compute the number of draft comments by the
+        // current user on each of these patch files. This way they can more
+        // quickly locate where they have pending drafts, and review them.
+        // 
+        final List<PatchLineComment> comments = db.patchComments().draft(patchSetKey, me).toList();
+        if (!comments.isEmpty()) {
+            final Map<Patch.Key, Patch> byKey = db.patches().toMap(patches);
+            for (final PatchLineComment c : comments) {
+                final Patch p = byKey.get(c.getKey().getParentKey());
+                if (p != null) {
+                    p.setDraftCount(p.getDraftCount() + 1);
+                }
+            }
+        }
+        // Get all the reviewed patches in one query
+        ResultSet<AccountPatchReview> reviews = db.accountPatchReviews().byReviewer(me, patchSetKey);
+        HashSet<Patch.Key> reviewedPatches = new HashSet<Patch.Key>();
+        for (AccountPatchReview review : reviews) {
+            reviewedPatches.add(review.getKey().getPatchKey());
+        }
+        // Initialize the reviewed status of each patch
+        for (Patch p : patches) {
+            if (reviewedPatches.contains(p.getKey()))
+                p.setReviewedByCurrentUser(true);
+        }
+    }
+</td> </tr></table></body></html>

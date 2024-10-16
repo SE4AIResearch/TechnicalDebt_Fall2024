@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4400</td> <td>1242677865</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>00aa4f05ee0f56f9548b17781f527a0a1307edee</td> <td>None</td> <td>We cannot merge n as it would bring something we
+aren't permitted to merge at this time. Drop n.
+</td> <td>SATD_ADDED</td> <td>sort(Collection<CodeReviewCommit>)</td> <td>
+    final List<CodeReviewCommit> sorted = new ArrayList<CodeReviewCommit>();
+    final Set<CodeReviewCommit> sort = new HashSet<CodeReviewCommit>(incoming);
+    while (!sort.isEmpty()) {
+        final CodeReviewCommit n = removeOne(sort);
+        rw.resetRetain(canMergeFlag);
+        rw.markStart(n);
+        for (RevCommit c : accepted) {
+            rw.markUninteresting(c);
+        }
+        CodeReviewCommit c;
+        final List<CodeReviewCommit> contents = new ArrayList<CodeReviewCommit>();
+        while ((c = (CodeReviewCommit) rw.next()) != null) {
+            if (!c.has(canMergeFlag) || !incoming.contains(c)) {
+                // We cannot merge n as it would bring something we
+                // aren't permitted to merge at this time. Drop n.
+                // 
+                if (n.missing == null) {
+                    n.statusCode = CommitMergeStatus.MISSING_DEPENDENCY;
+                    n.missing = new ArrayList<CodeReviewCommit>();
+                }
+                n.missing.add((CodeReviewCommit) c);
+            } else {
+                contents.add(c);
+            }
+        }
+        if (n.statusCode == CommitMergeStatus.MISSING_DEPENDENCY) {
+            continue;
+        }
+        sort.removeAll(contents);
+        Collections.reverse(contents);
+        sorted.removeAll(contents);
+        sorted.addAll(contents);
+    }
+    return sorted;
+</td> <td> List<CodeReviewCommit> sort(Collection<CodeReviewCommit> incoming) throws IOException</td> </tr></table></body></html>

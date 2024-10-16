@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4365</td> <td>1242677845</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>77199942c53e70b9cc54f9164e7602cdaee3019b</td> <td>None</td> <td>TODO(sop): Highlight changes I haven't reviewed on my dashboard.</td> <td>SATD_ADDED</td> <td>onClick(ClickEvent)</td> <td>public void onClick(final ClickEvent event)</td> <td>
+    final Cell cell = table.getCellForEvent(event);
+    if (cell == null) {
+        return;
+    }
+    if (cell.getCellIndex() == C_STAR) {
+    // Don't do anything (handled by star itself).
+    } else if (cell.getCellIndex() == C_OWNER) {
+    // Don't do anything.
+    } else if (getRowItem(cell.getRowIndex()) != null) {
+        movePointerTo(cell.getRowIndex());
+    }
+</td> </tr></table></body></html>

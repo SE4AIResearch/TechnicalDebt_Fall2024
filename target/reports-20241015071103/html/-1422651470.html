@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1120</td> <td>-1422651470</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>2ed747e89f6ae700bedcadf914c3fe3565331521</td> <td>None</td> <td>TODO: absolute also</td> <td>SATD_ADDED</td> <td>assertFileEndpoint(String, String, boolean)</td> <td>private void assertFileEndpoint(String endpointUri, String expectedPath, boolean absolute) throws IOException</td> <td>
+    FileEndpoint endpoint = resolveMandatoryEndpoint(endpointUri, FileEndpoint.class);
+    assertNotNull("Could not find endpoint: " + endpointUri, endpoint);
+    // TODO: absolute also
+    if (!absolute) {
+        File file = endpoint.getFile();
+        String path = file.getPath();
+        assertDirectoryEquals("For uri: " + endpointUri + " the file is not equal", expectedPath, path);
+        file = new File(expectedPath + (expectedPath.endsWith(File.separator) ? "" : File.separator) + EXPECT_FILE);
+        GenericFile<File> consumedFile = FileConsumer.asGenericFile(endpoint.getFile().getPath(), file);
+        assertEquals(EXPECT_FILE, consumedFile.getRelativeFilePath());
+    }
+</td> </tr></table></body></html>

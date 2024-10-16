@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5701</td> <td>-1009651942</td><td>apache/hadoop</td><td>Tsz-wo Sze</td><td>cabec474e0f4c525ba80bd7c8dede1a8d76e4f39</td> <td>// verify policy deletes the correct blocks. companion blocks should be
+// evenly distributed.</td> <td>Set the policy to default policy to place the block in the default way</td> <td>SATD_CHANGED</td> <td>testGetCompanionBLocks()</td> <td>public void testGetCompanionBLocks() throws IOException</td> <td>
+    setupCluster();
+    try {
+        String file1 = "/dir/file1";
+        String file2 = "/raid/dir/file2";
+        String file3 = "/raidrs/dir/file3";
+        // Set the policy to default policy to place the block in the default way
+        setBlockPlacementPolicy(namesystem, new BlockPlacementPolicyDefault(conf, namesystem, namesystem.clusterMap));
+        DFSTestUtil.createFile(fs, new Path(file1), 3, (short) 1, 0L);
+        DFSTestUtil.createFile(fs, new Path(file2), 4, (short) 1, 0L);
+        DFSTestUtil.createFile(fs, new Path(file3), 8, (short) 1, 0L);
+        Collection<LocatedBlock> companionBlocks;
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file1).get(0).getBlock());
+        Assert.assertTrue(companionBlocks == null || companionBlocks.size() == 0);
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file1).get(2).getBlock());
+        Assert.assertTrue(companionBlocks == null || companionBlocks.size() == 0);
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file2).get(0).getBlock());
+        Assert.assertEquals(1, companionBlocks.size());
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file2).get(3).getBlock());
+        Assert.assertEquals(1, companionBlocks.size());
+        int rsParityLength = RaidNode.rsParityLength(conf);
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file3).get(0).getBlock());
+        Assert.assertEquals(rsParityLength, companionBlocks.size());
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file3).get(4).getBlock());
+        Assert.assertEquals(rsParityLength, companionBlocks.size());
+        companionBlocks = getCompanionBlocks(namesystem, policy, getBlocks(namesystem, file3).get(6).getBlock());
+        Assert.assertEquals(2, companionBlocks.size());
+    } finally {
+        if (cluster != null) {
+            cluster.shutdown();
+        }
+    }
+</td> </tr></table></body></html>

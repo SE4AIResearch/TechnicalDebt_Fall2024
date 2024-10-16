@@ -1,0 +1,97 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1957</td> 
+     <td>-1422651042</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>929e9c5e220264821a2683ec32f271c687f7628a</td> 
+     <td>maybe there are more processors to multicast</td> 
+     <td>maybe there are more processors to multicast</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>doProcessSequential(Exchange, AtomicExchange, Iterable<processorexchangepair>
+        , Iterator 
+       <processorexchangepair>
+         , ProcessorExchangePair, AsyncCallback, AtomicInteger) 
+       </processorexchangepair> 
+      </processorexchangepair></td> 
+     <td>private boolean doProcessSequential(final Exchange original, final AtomicExchange result, final Iterable<processorexchangepair>
+        pairs, final Iterator 
+       <processorexchangepair>
+         it, final ProcessorExchangePair pair, final AsyncCallback callback, final AtomicInteger total) 
+       </processorexchangepair> 
+      </processorexchangepair></td> 
+     <td> boolean sync = true; final Exchange exchange = pair.getExchange(); Processor processor = pair.getProcessor(); Producer producer = pair.getProducer(); TracedRouteNodes traced = exchange.getUnitOfWork() != null ? exchange.getUnitOfWork().getTracedRouteNodes() : null; // compute time taken if sending to another endpoint StopWatch watch = null; if (producer != null) { watch = new StopWatch(); } try { // prepare tracing starting from a new block if (traced != null) { traced.pushBlock(); } // let the prepared process it, remember to begin the exchange pair AsyncProcessor async = AsyncProcessorTypeConverter.convert(processor); pair.begin(); sync = AsyncProcessorHelper.process(async, exchange, new AsyncCallback() { public void done(boolean doneSync) { // we are done with the exchange pair pair.done(); // we only have to handle async completion of the routing slip if (doneSync) { return; } // continue processing the multicast asynchronously Exchange subExchange = exchange; // remember to test for stop on exception and aggregate before copying back results if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // and do the done work doDone(original, subExchange, callback, false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // and do the done work doDone(original, subExchange, callback, false); return; } total.incrementAndGet(); // maybe there are more processors to multicast while (it.hasNext()) { // prepare and run the next ProcessorExchangePair pair = it.next(); subExchange = pair.getExchange(); updateNewExchange(subExchange, total.get(), pairs, it); boolean sync = doProcessSequential(original, result, pairs, it, pair, callback, total); if (!sync) { if (LOG.isTraceEnabled()) { LOG.trace("Processing exchangeId: " + original.getExchangeId() + " is continued being processed asynchronously"); } return; } if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // and do the done work doDone(original, subExchange, callback, false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // and do the done work doDone(original, subExchange, callback, false); return; } total.incrementAndGet(); } // do the done work subExchange = result.get() != null ? result.get() : null; doDone(original, subExchange, callback, false); } }); } finally { // pop the block so by next round we have the same staring point and thus the tracing looks accurate if (traced != null) { traced.popBlock(); } if (producer != null) { long timeTaken = watch.stop(); Endpoint endpoint = producer.getEndpoint(); // emit event that the exchange was sent to the endpoint EventHelper.notifyExchangeSent(exchange.getContext(), exchange, endpoint, timeTaken); } } return sync; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1945</td> 
+     <td>-1422651042</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>e1075d8b853f28337465fd7dc3767270de92394f</td> 
+     <td>maybe there are more processors to multicast</td> 
+     <td>maybe there are more processors to multicast</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>doProcess(Exchange, AtomicExchange, Iterable<processorexchangepair>
+        , Iterator 
+       <processorexchangepair>
+         , ProcessorExchangePair, AsyncCallback, AtomicInteger) 
+       </processorexchangepair> 
+      </processorexchangepair></td> 
+     <td>private boolean doProcess(final Exchange original, final AtomicExchange result, final Iterable<processorexchangepair>
+        pairs, final Iterator 
+       <processorexchangepair>
+         it, final ProcessorExchangePair pair, final AsyncCallback callback, final AtomicInteger total) 
+       </processorexchangepair> 
+      </processorexchangepair></td> 
+     <td> boolean sync = true; final Exchange exchange = pair.getExchange(); Processor processor = pair.getProcessor(); Producer producer = pair.getProducer(); TracedRouteNodes traced = exchange.getUnitOfWork() != null ? exchange.getUnitOfWork().getTracedRouteNodes() : null; // compute time taken if sending to another endpoint StopWatch watch = null; if (producer != null) { watch = new StopWatch(); } try { // prepare tracing starting from a new block if (traced != null) { traced.pushBlock(); } // let the prepared process it, remember to begin the exchange pair AsyncProcessor async = AsyncProcessorTypeConverter.convert(processor); pair.begin(); sync = async.process(exchange, new AsyncCallback() { public void done(boolean doneSync) { // we are done with the exchange pair pair.done(); // we only have to handle async completion of the routing slip if (doneSync) { return; } // continue processing the multicast asynchronously Exchange subExchange = exchange; // remember to test for stop on exception and aggregate before copying back results if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // and do the done work doDone(original, subExchange, callback, false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // and do the done work doDone(original, subExchange, callback, false); return; } total.incrementAndGet(); // maybe there are more processors to multicast while (it.hasNext()) { // prepare and run the next ProcessorExchangePair pair = it.next(); subExchange = pair.getExchange(); updateNewExchange(subExchange, total.get(), pairs, it); boolean sync = doProcess(original, result, pairs, it, pair, callback, total); if (!sync) { if (LOG.isTraceEnabled()) { LOG.trace("Processing exchangeId: " + original.getExchangeId() + " is continued being processed asynchronously"); } return; } if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // and do the done work doDone(original, subExchange, callback, false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // and do the done work doDone(original, subExchange, callback, false); return; } total.incrementAndGet(); } // do the done work subExchange = result.get() != null ? result.get() : null; doDone(original, subExchange, callback, false); } }); } finally { // pop the block so by next round we have the same staring point and thus the tracing looks accurate if (traced != null) { traced.popBlock(); } if (producer != null) { long timeTaken = watch.stop(); Endpoint endpoint = producer.getEndpoint(); // emit event that the exchange was sent to the endpoint EventHelper.notifyExchangeSent(exchange.getContext(), exchange, endpoint, timeTaken); } } return sync; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1924</td> 
+     <td>-1422651042</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>66a871f94b33f48caa59910dd54c97ce0ec7c077</td> 
+     <td>None</td> 
+     <td>maybe there are more processors to multicast</td> 
+     <td>SATD_ADDED</td> 
+     <td>doProcess(Exchange, AtomicExchange, Iterator<processorexchangepair>
+       , ProcessorExchangePair, AsyncCallback, AtomicInteger)
+      </processorexchangepair></td> 
+     <td>private boolean doProcess(final Exchange original, final AtomicExchange result, final Iterator<processorexchangepair>
+        it, final ProcessorExchangePair pair, final AsyncCallback callback, final AtomicInteger total)
+      </processorexchangepair></td> 
+     <td> boolean sync = true; final Exchange exchange = pair.getExchange(); Processor processor = pair.getProcessor(); Producer producer = pair.getProducer(); TracedRouteNodes traced = exchange.getUnitOfWork() != null ? exchange.getUnitOfWork().getTracedRouteNodes() : null; // compute time taken if sending to another endpoint StopWatch watch = null; if (producer != null) { watch = new StopWatch(); } try { // prepare tracing starting from a new block if (traced != null) { traced.pushBlock(); } // let the prepared process it, remember to begin the exchange pair AsyncProcessor async = AsyncProcessorTypeConverter.convert(processor); pair.begin(); sync = async.process(exchange, new AsyncCallback() { public void done(boolean doneSync) { // we are done with the exchange pair pair.done(); // we only have to handle async completion of the routing slip if (doneSync) { return; } // continue processing the multicast asynchronously Exchange subExchange = exchange; // remember to test for stop on exception and aggregate before copying back results if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice exchange.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // and copy the current result to original so it will contain this exception // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } total.incrementAndGet(); // maybe there are more processors to multicast while (it.hasNext()) { // prepare and run the next ProcessorExchangePair pair = it.next(); subExchange = pair.getExchange(); updateNewExchange(subExchange, total.get(), null); boolean sync = doProcess(original, result, it, pair, callback, total); if (!sync) { if (LOG.isTraceEnabled()) { LOG.trace("Processing exchangeId: " + original.getExchangeId() + " is continued being processed asynchronously"); } return; } if (stopOnException &amp;&amp; subExchange.getException() != null) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, subExchange.getException())); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } try { doAggregate(getAggregationStrategy(subExchange), result, subExchange); } catch (Throwable e) { // wrap in exception to explain where it failed subExchange.setException(new CamelExchangeException("Sequential processing failed for number " + total, subExchange, e)); // multicast uses error handling on its output processors and they have tried to redeliver // so we shall signal back to the other error handlers that we are exhausted and they should not // also try to redeliver as we will then do that twice original.setProperty(Exchange.REDELIVERY_EXHAUSTED, Boolean.TRUE); // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // and copy the current result to original so it will contain this exception ExchangeHelper.copyResults(original, subExchange); callback.done(false); return; } total.incrementAndGet(); } // cleanup any per exchange aggregation strategy original.removeProperty(Exchange.AGGREGATION_STRATEGY); // multicasting complete so copy results back to the original exchange if (result.get() != null) { ExchangeHelper.copyResults(original, result.get()); } callback.done(false); } }); } finally { // pop the block so by next round we have the same staring point and thus the tracing looks accurate if (traced != null) { traced.popBlock(); } if (producer != null) { long timeTaken = watch.stop(); Endpoint endpoint = producer.getEndpoint(); // emit event that the exchange was sent to the endpoint EventHelper.notifyExchangeSent(exchange.getContext(), exchange, endpoint, timeTaken); } } return sync; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

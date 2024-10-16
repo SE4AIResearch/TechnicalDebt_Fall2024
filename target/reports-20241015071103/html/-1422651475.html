@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1095</td> <td>-1422651475</td><td>apache/camel</td><td>Claus Ibsen</td><td>a50b228409f4a3c29addddfbfdca0fabc1fe7b34</td> <td>None</td> <td>let java.io.File deal with it as its better than me</td> <td>SATD_ADDED</td> <td>isAbsolutePath(String)</td> <td>private boolean isAbsolutePath(String path)</td> <td>
+    if (file instanceof File) {
+        // let java.io.File deal with it as its better than me
+        return new File(path).isAbsolute();
+    }
+    // otherwise absolute is considered if we start with the separator
+    return path.startsWith(getFileSeparator());
+</td> </tr></table></body></html>

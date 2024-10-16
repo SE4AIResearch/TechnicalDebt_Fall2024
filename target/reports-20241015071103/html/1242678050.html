@@ -1,0 +1,74 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4754</td> 
+     <td>1242678050</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Pursehouse</td>
+     <td>7273df290a812f28c28e2fbd3dcaccb1e34b4d76</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Use try/finally when this doesn't double-close the repo.</td> 
+     <td>SATD_ADDED</td> 
+     <td>testEmptyCommit()</td> 
+     <td>public void testEmptyCommit() throws Exception</td> 
+     <td> expect(schemaFactory.open()).andReturn(schema); try (Repository realDb = createWorkRepository()) { // TODO(dborowitz): Use try/finally when this doesn't double-close the repo. @SuppressWarnings("resource") final Git git = new Git(realDb); final RevCommit mergeTip = git.commit().setMessage("test").call(); final Branch.NameKey branchNameKey = new Branch.NameKey(new Project.NameKey("test-project"), "test-branch"); expect(urlProvider.get()).andReturn("http://localhost:8080"); expect(schema.submoduleSubscriptions()).andReturn(subscriptions); final ResultSet<submodulesubscription>
+        emptySubscriptions = new ListResultSet&lt;&gt;(new ArrayList
+       <submodulesubscription>
+        ()); expect(subscriptions.bySubmodule(branchNameKey)).andReturn(emptySubscriptions); schema.close(); doReplay(); final SubmoduleOp submoduleOp = new SubmoduleOp(branchNameKey, mergeTip, new RevWalk(realDb), urlProvider, schemaFactory, realDb, null, new ArrayList
+        <change>
+         (), null, null, null, null, null, null); submoduleOp.update(); doVerify(); } 
+        </change>
+       </submodulesubscription>
+      </submodulesubscription></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4741</td> 
+     <td>1242678050</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>16f552165aac8497576a5fded23d7027e951c547</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Use try/finally when this doesn't double-close the repo.</td> 
+     <td>SATD_ADDED</td> 
+     <td>testEmptyCommit()</td> 
+     <td>public void testEmptyCommit() throws Exception</td> 
+     <td> expect(schemaFactory.open()).andReturn(schema); try (Repository realDb = createWorkRepository()) { // TODO(dborowitz): Use try/finally when this doesn't double-close the repo. @SuppressWarnings("resource") final Git git = new Git(realDb); final RevCommit mergeTip = git.commit().setMessage("test").call(); final Branch.NameKey branchNameKey = new Branch.NameKey(new Project.NameKey("test-project"), "test-branch"); expect(urlProvider.get()).andReturn("http://localhost:8080"); expect(schema.submoduleSubscriptions()).andReturn(subscriptions); final ResultSet<submodulesubscription>
+        emptySubscriptions = new ListResultSet&lt;&gt;(new ArrayList
+       <submodulesubscription>
+        ()); expect(subscriptions.bySubmodule(branchNameKey)).andReturn(emptySubscriptions); schema.close(); doReplay(); final SubmoduleOp submoduleOp = new SubmoduleOp(branchNameKey, mergeTip, new RevWalk(realDb), urlProvider, schemaFactory, realDb, null, new ArrayList
+        <change>
+         (), null, null, null, null, null, null); submoduleOp.update(); doVerify(); } 
+        </change>
+       </submodulesubscription>
+      </submodulesubscription></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

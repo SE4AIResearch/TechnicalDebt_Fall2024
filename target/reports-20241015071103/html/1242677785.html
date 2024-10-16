@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4277</td> 
+     <td>1242677785</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>8fa42c6cc84c4d79dec5464ea11845d802a68ccd</td> 
+     <td>If one of the user's groups had denied them access, but this group grants them access, prefer the grant over the denial. We have to break the tie somehow and we prefer being \"more open\" to being \"more closed\". </td> 
+     <td>Sort in descending refPattern length</td> 
+     <td>SATD_REMOVED</td> 
+     <td>canPerform(ApprovalCategory.Id, short)</td> 
+     <td> final Set<accountgroup.id>
+        groups = getCurrentUser().getEffectiveGroups(); int val = Integer.MIN_VALUE; List
+       <refright>
+         allRights = new ArrayList
+        <refright>
+         (); allRights.addAll(getLocalRights(actionId)); if (actionId.canInheritFromWildProject()) { allRights.addAll(getInheritedRights(actionId)); } // Sort in descending refPattern length Collections.sort(allRights, RefRight.REF_PATTERN_ORDER); for (RefRight right : filterMostSpecific(allRights)) { if (groups.contains(right.getAccountGroupId())) { val = Math.max(right.getMaxValue(), val); } } return val &gt;= level; 
+        </refright>
+       </refright>
+      </accountgroup.id></td> 
+     <td> boolean canPerform(ApprovalCategory.Id actionId, short level)</td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4254</td> 
+     <td>1242677785</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>75afdfdc843b7dfb4c9dc2676e162b21d7df7684</td> 
+     <td>None</td> 
+     <td>If one of the user's groups had denied them access, but this group grants them access, prefer the grant over the denial. We have to break the tie somehow and we prefer being \"more open\" to being \"more closed\". </td> 
+     <td>SATD_ADDED</td> 
+     <td>canPerform(ApprovalCategory.Id, short)</td> 
+     <td>private boolean canPerform(ApprovalCategory.Id actionId, short level)</td> 
+     <td> final Set<accountgroup.id>
+        groups = getCurrentUser().getEffectiveGroups(); int val = Integer.MIN_VALUE; for (final RefRight right : getLocalRights()) { if (right.getApprovalCategoryId().equals(actionId) &amp;&amp; groups.contains(right.getAccountGroupId())) { if (val &lt; 0 &amp;&amp; right.getMaxValue() &gt; 0) { // If one of the user's groups had denied them access, but // this group grants them access, prefer the grant over // the denial. We have to break the tie somehow and we // prefer being "more open" to being "more closed". // val = right.getMaxValue(); } else { // Otherwise we use the largest value we can get. // val = Math.max(right.getMaxValue(), val); } } } if (val == Integer.MIN_VALUE &amp;&amp; actionId.canInheritFromWildProject()) { for (final RefRight pr : getInheritedRights()) { if (actionId.equals(pr.getApprovalCategoryId()) &amp;&amp; groups.contains(pr.getAccountGroupId())) { val = Math.max(pr.getMaxValue(), val); } } } return val &gt;= level; 
+      </accountgroup.id></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

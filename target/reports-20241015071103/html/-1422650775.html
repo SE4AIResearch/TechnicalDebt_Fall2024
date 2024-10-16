@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2392</td> <td>-1422650775</td><td>apache/camel</td><td>Claus Ibsen</td><td>f659853b62c1cfff15777f25f789861c74ce95a0</td> <td>call completed to properly stop as we count down the waiting latch</td> <td>call completed to properly stop as we count down the waiting latch</td> <td>SATD_MOVED_FILE</td> <td>run()</td> <td>public void run()</td> <td>
+    log.info("Received hang up - stopping the main instance.");
+    try {
+        mainInstance.stop();
+    } catch (Exception ex) {
+        log.warn("Error during stopping the main instance.", ex);
+    }
+</td> </tr></table></body></html>

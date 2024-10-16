@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5400</td> <td>-1009652326</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>This method iteratively does the following:
+it first selects a block to move,
+then sends a request to the proxy source to start the block move
+when the source's block list falls below a threshold, it asks
+the namenode for more blocks.
+It terminates when it has dispatch enough block move tasks or
+it has received enough blocks from the namenode, or
+the elapsed time of the iteration has exceeded the max time limit.</td> <td>SATD_ADDED</td> <td>chooseBlockAndProxy()</td> <td>private boolean chooseBlockAndProxy()</td> <td>
+    // iterate all source's blocks until find a good one
+    for (Iterator<BalancerBlock> blocks = source.getBlockIterator(); blocks.hasNext(); ) {
+        if (markMovedIfGoodBlock(blocks.next())) {
+            blocks.remove();
+            return true;
+        }
+    }
+    return false;
+</td> </tr></table></body></html>

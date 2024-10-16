@@ -1,0 +1,48 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4282</td> <td>1242677798</td><td>GerritCodeReview/gerrit</td><td>Anatol Pomazau</td><td>51d008d693226816380a97dc4575902a97103803</td> <td>None</td> <td>TODO(spearce) This probably should be more lazy.
+</td> <td>SATD_ADDED</td> <td>read()</td> <td>public ResultSet<ChangeData> read() throws OrmException</td> <td>
+    ChangeDataSource source = source();
+    if (source == null) {
+        throw new OrmException("No ChangeDataSource: " + this);
+    }
+    // TODO(spearce) This probably should be more lazy.
+    // 
+    ArrayList<ChangeData> r = new ArrayList<ChangeData>();
+    ChangeData last = null;
+    boolean skipped = false;
+    for (ChangeData data : source.read()) {
+        if (match(data)) {
+            r.add(data);
+        } else {
+            skipped = true;
+        }
+        last = data;
+    }
+    if (skipped && last != null && source instanceof Paginated) {
+        // If we our source is a paginated source and we skipped at
+        // least one of its results, we may not have filled the full
+        // limit the caller wants.  Restart the source and continue.
+        // 
+        Paginated p = (Paginated) source;
+        while (skipped && r.size() < p.limit()) {
+            ChangeData lastBeforeRestart = last;
+            skipped = false;
+            last = null;
+            for (ChangeData data : p.restart(lastBeforeRestart)) {
+                if (match(data)) {
+                    r.add(data);
+                } else {
+                    skipped = true;
+                }
+                last = data;
+            }
+        }
+    }
+    return new ListResultSet<ChangeData>(r);
+</td> </tr></table></body></html>

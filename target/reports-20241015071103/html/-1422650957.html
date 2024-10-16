@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3027</td> 
+     <td>-1422650957</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>0a60bfdf1c977e66e4ac297faeb85d2558218f31</td> 
+     <td>TODO Support to set the timeout in case the Camel can't send the response back on time. The continuation could be called before the suspend is called</td> 
+     <td>Now we don't set up the timeout value</td> 
+     <td>SATD_REMOVED</td> 
+     <td>asyncInvoke(Exchange, Continuation)</td> 
+     <td>private Object asyncInvoke(Exchange cxfExchange, final Continuation continuation)</td> 
+     <td> synchronized (continuation) { if (continuation.isNew()) { final org.apache.camel.Exchange camelExchange = perpareCamelExchange(cxfExchange); // Now we don't set up the timeout value if (LOG.isTraceEnabled()) { LOG.trace("Suspending continuation of exchangeId: " + camelExchange.getExchangeId()); } // TODO Support to set the timeout in case the Camel can't send the response back on time. // The continuation could be called before the suspend is called continuation.suspend(0); // use the asynchronous API to process the exchange getAsyncProcessor().process(camelExchange, new AsyncCallback() { public void done(boolean doneSync) { // make sure the continuation resume will not be called before the suspend method in other thread synchronized (continuation) { if (LOG.isTraceEnabled()) { LOG.trace("Resuming continuation of exchangeId: " + camelExchange.getExchangeId()); } // resume processing after both, sync and async callbacks continuation.setObject(camelExchange); continuation.resume(); } } }); } if (continuation.isResumed()) { org.apache.camel.Exchange camelExchange = (org.apache.camel.Exchange) continuation.getObject(); setResponseBack(cxfExchange, camelExchange); } } return null; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2079</td> 
+     <td>-1422650957</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>77a55753e3bf2a3947222f2741d5140681c3aa53</td> 
+     <td>TODO we need to use the CXF 2.3.0 new Continuation API in CAMEL 3.0.0 The below code should work for CXF 2.2.x and CXF 2.3.x at the same time use the asynchronous API to process the exchange</td> 
+     <td>TODO Support to set the timeout in case the Camel can't send the response back on time. The continuation could be called before the suspend is called</td> 
+     <td>SATD_CHANGED</td> 
+     <td>asyncInvoke(Exchange, Continuation)</td> 
+     <td>private Object asyncInvoke(Exchange cxfExchange, final Continuation continuation)</td> 
+     <td> synchronized (continuation) { if (continuation.isNew()) { final org.apache.camel.Exchange camelExchange = perpareCamelExchange(cxfExchange); // Now we don't set up the timeout value if (LOG.isTraceEnabled()) { LOG.trace("Suspending continuation of exchangeId: " + camelExchange.getExchangeId()); } // TODO Support to set the timeout in case the Camel can't send the response back on time. // The continuation could be called before the suspend is called continuation.suspend(0); // use the asynchronous API to process the exchange getAsyncProcessor().process(camelExchange, new AsyncCallback() { public void done(boolean doneSync) { // make sure the continuation resume will not be called before the suspend method in other thread synchronized (continuation) { if (LOG.isTraceEnabled()) { LOG.trace("Resuming continuation of exchangeId: " + camelExchange.getExchangeId()); } // resume processing after both, sync and async callbacks continuation.setObject(camelExchange); continuation.resume(); } } }); } if (continuation.isResumed()) { org.apache.camel.Exchange camelExchange = (org.apache.camel.Exchange) continuation.getObject(); setResponseBack(cxfExchange, camelExchange); } } return null; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

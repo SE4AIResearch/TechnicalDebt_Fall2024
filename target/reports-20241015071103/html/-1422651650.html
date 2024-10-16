@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>708</td> <td>-1422651650</td><td>apache/camel</td><td>Claus Ibsen</td><td>4541371d6a17c749facf62d201c729661e20d7c1</td> <td>None</td> <td>Changes in default resource name may break
+clients program assuming the default \"Camel\" resource name
+so it is better to avoid changing it.</td> <td>SATD_ADDED</td> <td>testDefaultResource()</td> <td>public void testDefaultResource() throws Exception</td> <td>
+    Endpoint endpoint = context.getEndpoint("xmpp://camel-user@im.google.com?password=secret");
+    assertTrue("Endpoint not an XmppEndpoint: " + endpoint, endpoint instanceof XmppEndpoint);
+    XmppEndpoint xmppEndpoint = (XmppEndpoint) endpoint;
+    assertEquals("Camel", xmppEndpoint.getResource());
+</td> </tr></table></body></html>

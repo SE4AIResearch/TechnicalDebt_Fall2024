@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4693</td> 
+     <td>1242678014</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Edwin Kempin</td>
+     <td>b7da2a97d4798de64a25354e9484e152a383094e</td> 
+     <td>None</td> 
+     <td>Previously there was a bug where having a '1' in a refname would cause a glob pattern's Levenshtein distance to decrease by 1. These two patterns should be a Levenshtein distance of 12 from the both of the refnames, where previously the 'branch1' refname would be a distance of 11 from 'refs/heads/abc/*'</td> 
+     <td>SATD_ADDED</td> 
+     <td>higherNumberOfTransitionsWins()</td> 
+     <td>public void higherNumberOfTransitionsWins()</td> 
+     <td> cmp = new MostSpecificComparator("refs/heads/x"); moreSpecificFirst("^refs/heads/[a-z].*", "refs/heads/*"); // Previously there was a bug where having a '1' in a refname would cause a // glob pattern's Levenshtein distance to decrease by 1. These two // patterns should be a Levenshtein distance of 12 from the both of the // refnames, where previously the 'branch1' refname would be a distance of // 11 from 'refs/heads/abc/*' cmp = new MostSpecificComparator("refs/heads/abc/spam/branch2"); moreSpecificFirst("^refs/heads/.*spam.*", "refs/heads/abc/*"); cmp = new MostSpecificComparator("refs/heads/abc/spam/branch1"); moreSpecificFirst("^refs/heads/.*spam.*", "refs/heads/abc/*"); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4678</td> 
+     <td>1242678014</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Ostrovsky</td>
+     <td>2a53365ce37189542daa18820c68ad94405f619b</td> 
+     <td>None</td> 
+     <td>Previously there was a bug where having a '1' in a refname would cause a glob pattern's Levenshtein distance to decrease by 1. These two patterns should be a Levenshtein distance of 12 from the both of the refnames, where previously the 'branch1' refname would be a distance of 11 from 'refs/heads/abc/*'</td> 
+     <td>SATD_ADDED</td> 
+     <td>higherNumberOfTransitionsWins()</td> 
+     <td>public void higherNumberOfTransitionsWins()</td> 
+     <td> cmp = new MostSpecificComparator("refs/heads/x"); moreSpecificFirst("^refs/heads/[a-z].*", "refs/heads/*"); // Previously there was a bug where having a '1' in a refname would cause a // glob pattern's Levenshtein distance to decrease by 1. These two // patterns should be a Levenshtein distance of 12 from the both of the // refnames, where previously the 'branch1' refname would be a distance of // 11 from 'refs/heads/abc/*' cmp = new MostSpecificComparator("refs/heads/abc/spam/branch2"); moreSpecificFirst("^refs/heads/.*spam.*", "refs/heads/abc/*"); cmp = new MostSpecificComparator("refs/heads/abc/spam/branch1"); moreSpecificFirst("^refs/heads/.*spam.*", "refs/heads/abc/*"); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

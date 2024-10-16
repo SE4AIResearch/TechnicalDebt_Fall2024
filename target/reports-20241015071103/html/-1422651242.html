@@ -1,0 +1,63 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1862</td> 
+     <td>-1422651242</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>69b644cee878e1380e5e241abdc55ae8acd1da55</td> 
+     <td>do special preparation for some concepts such as interceptors and policies this is needed as JAXB does not build excaclty the same model definition as Spring DSL would do using route builders. So we have here a little custom code to fix the JAXB gaps</td> 
+     <td>To change body of implemented methods use File | Settings | File Templates.</td> 
+     <td>SATD_REMOVED</td> 
+     <td>getBeanForType(Class)</td> 
+     <td>protected Object getBeanForType(Class clazz)</td> 
+     <td> // To change body of implemented methods use File | Settings | File Templates. return null; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1571</td> 
+     <td>-1422651242</td>
+     <td>apache/camel</td>
+     <td>Guillaume Nodet</td>
+     <td>6ce48340730165cecb0633d611a1a90ba9e789f8</td> 
+     <td>None</td> 
+     <td>do special preparation for some concepts such as interceptors and policies this is needed as JAXB does not build excaclty the same model definition as Spring DSL would do using route builders. So we have here a little custom code to fix the JAXB gaps</td> 
+     <td>SATD_ADDED</td> 
+     <td>init()</td> 
+     <td>public void init() throws Exception</td> 
+     <td> if (properties != null) { getContext().setProperties(properties.asMap()); } // setup JMX agent at first initJMXAgent(); // set the resolvers first PackageScanClassResolver packageResolver = getBeanForType(PackageScanClassResolver.class); if (packageResolver != null) { LOG.info("Using custom PackageScanClassResolver: " + packageResolver); getContext().setPackageScanClassResolver(packageResolver); } ClassResolver classResolver = getBeanForType(ClassResolver.class); if (classResolver != null) { LOG.info("Using custom ClassResolver: " + classResolver); getContext().setClassResolver(classResolver); } FactoryFinderResolver factoryFinderResolver = getBeanForType(FactoryFinderResolver.class); if (factoryFinderResolver != null) { LOG.info("Using custom FactoryFinderResolver: " + factoryFinderResolver); getContext().setFactoryFinderResolver(factoryFinderResolver); } // set the strategy if defined Registry registry = getBeanForType(Registry.class); if (registry != null) { LOG.info("Using custom Registry: " + registry); getContext().setRegistry(registry); } Tracer tracer = getBeanForType(Tracer.class); if (tracer != null) { // use formatter if there is a TraceFormatter bean defined TraceFormatter formatter = getBeanForType(TraceFormatter.class); if (formatter != null) { tracer.setFormatter(formatter); } LOG.info("Using custom Tracer: " + tracer); getContext().addInterceptStrategy(tracer); } HandleFault handleFault = getBeanForType(HandleFault.class); if (handleFault != null) { LOG.info("Using custom HandleFault: " + handleFault); getContext().addInterceptStrategy(handleFault); } Delayer delayer = getBeanForType(Delayer.class); if (delayer != null) { LOG.info("Using custom Delayer: " + delayer); getContext().addInterceptStrategy(delayer); } InflightRepository inflightRepository = getBeanForType(InflightRepository.class); if (delayer != null) { LOG.info("Using custom InflightRepository: " + inflightRepository); getContext().setInflightRepository(inflightRepository); } ManagementStrategy managementStrategy = getBeanForType(ManagementStrategy.class); if (managementStrategy != null) { LOG.info("Using custom ManagementStrategy: " + managementStrategy); getContext().setManagementStrategy(managementStrategy); } EventFactory eventFactory = getBeanForType(EventFactory.class); if (eventFactory != null) { LOG.info("Using custom EventFactory: " + eventFactory); getContext().getManagementStrategy().setEventFactory(eventFactory); } EventNotifier eventNotifier = getBeanForType(EventNotifier.class); if (eventNotifier != null) { LOG.info("Using custom EventNotifier: " + eventNotifier); getContext().getManagementStrategy().setEventNotifier(eventNotifier); } // add global interceptors Map<string, interceptstrategy>
+        interceptStrategies = getContext().getRegistry().lookupByType(InterceptStrategy.class); if (interceptStrategies != null &amp;&amp; !interceptStrategies.isEmpty()) { for (String id : interceptStrategies.keySet()) { InterceptStrategy strategy = interceptStrategies.get(id); // do not add if already added, for instance a tracer that is also an InterceptStrategy class if (!getContext().getInterceptStrategies().contains(strategy)) { LOG.info("Using custom intercept strategy with id: " + id + " and implementation: " + strategy); getContext().addInterceptStrategy(strategy); } } } // set the lifecycle strategy if defined Map
+       <string, lifecyclestrategy>
+         lifecycleStrategies = getContext().getRegistry().lookupByType(LifecycleStrategy.class); if (lifecycleStrategies != null &amp;&amp; !lifecycleStrategies.isEmpty()) { for (String id : lifecycleStrategies.keySet()) { LifecycleStrategy strategy = lifecycleStrategies.get(id); // do not add if already added, for instance a tracer that is also an InterceptStrategy class if (!getContext().getLifecycleStrategies().contains(strategy)) { LOG.info("Using custom lifecycle strategy with id: " + id + " and implementation: " + strategy); getContext().addLifecycleStrategy(strategy); } } } // Set the application context and camelContext for the beanPostProcessor // if (beanPostProcessor != null) { // if (beanPostProcessor instanceof ApplicationContextAware) { // ((ApplicationContextAware)beanPostProcessor).setApplicationContext(applicationContext); // } // if (beanPostProcessor instanceof CamelBeanPostProcessor) { // ((CamelBeanPostProcessor)beanPostProcessor).setCamelContext(getContext()); // } // } // do special preparation for some concepts such as interceptors and policies // this is needed as JAXB does not build excaclty the same model definition as Spring DSL would do // using route builders. So we have here a little custom code to fix the JAXB gaps for (RouteDefinition route : routes) { // interceptors should be first initInterceptors(route); // then on completion initOnCompletions(route); // then polices initPolicies(route); // and last on exception initOnExceptions(route); } if (dataFormats != null) { getContext().setDataFormats(dataFormats.asMap()); } // lets force any lazy creation getContext().addRouteDefinitions(routes); if (LOG.isDebugEnabled()) { LOG.debug("Found JAXB created routes: " + getRoutes()); } findRouteBuilders(); installRoutes(); 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

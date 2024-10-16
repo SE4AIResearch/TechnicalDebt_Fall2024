@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3359</td> <td>-1422650203</td><td>apache/camel</td><td>Claus Ibsen</td><td>a4ff6b626eceea4271bdf60a5d0983bc0b282b04</td> <td>None</td> <td>FIXME: There is a problem in JavaBeanstalkClient 1.4.4 (at least in 1.4.4),
+when using uniqueConnectionPerThread=false. The symptom is that ProtocolHandler
+breaks the protocol, reading incomplete messages. To be investigated.</td> <td>SATD_ADDED</td> <td>newWritingClient()</td> <td>public Client newWritingClient() throws IllegalArgumentException</td> <td>
+    if (tubes.length > 1) {
+        throw new IllegalArgumentException("There must be only one tube specified for Beanstalk producer");
+    }
+    final String tube = tubes.length > 0 ? tubes[0] : BeanstalkComponent.DEFAULT_TUBE;
+    final ClientImpl client = new ClientImpl(host, port);
+    /* FIXME: There is a problem in JavaBeanstalkClient 1.4.4 (at least in 1.4.4),
+           when using uniqueConnectionPerThread=false. The symptom is that ProtocolHandler
+           breaks the protocol, reading incomplete messages. To be investigated. */
+    // client.setUniqueConnectionPerThread(false);
+    client.useTube(tube);
+    return client;
+</td> </tr></table></body></html>

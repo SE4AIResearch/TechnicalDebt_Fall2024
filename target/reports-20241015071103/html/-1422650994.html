@@ -1,0 +1,107 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2016</td> <td>-1422650994</td><td>apache/camel</td><td>Claus Ibsen</td><td>5021ca2efa123aa57a4d0fd535246c814ad35604</td> <td>None</td> <td>we could potentially also be interrupted during sleep</td> <td>SATD_ADDED</td> <td>connect(RemoteFileConfiguration)</td> <td>public boolean connect(RemoteFileConfiguration configuration) throws GenericFileOperationFailedException</td> <td>
+    if (log.isTraceEnabled()) {
+        log.trace("Connecting using FTPClient: " + client);
+    }
+    String host = configuration.getHost();
+    int port = configuration.getPort();
+    String username = configuration.getUsername();
+    if (clientConfig != null) {
+        log.trace("Configuring FTPClient with config: " + clientConfig);
+        client.configure(clientConfig);
+    }
+    if (log.isTraceEnabled()) {
+        log.trace("Connecting to " + configuration.remoteServerInformation() + " using connection timeout: " + client.getConnectTimeout());
+    }
+    boolean connected = false;
+    int attempt = 0;
+    while (!connected) {
+        try {
+            if (log.isTraceEnabled() && attempt > 0) {
+                log.trace("Reconnect attempt #" + attempt + " connecting to + " + configuration.remoteServerInformation());
+            }
+            client.connect(host, port);
+            // must check reply code if we are connected
+            int reply = client.getReplyCode();
+            if (FTPReply.isPositiveCompletion(reply)) {
+                // yes we could connect
+                connected = true;
+            } else {
+                // throw an exception to force the retry logic in the catch exception block
+                throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), "Server refused connection");
+            }
+        } catch (Exception e) {
+            // check if we are interrupted so we can break out
+            if (Thread.currentThread().isInterrupted()) {
+                throw new GenericFileOperationFailedException("Interrupted during connecting", new InterruptedException("Interrupted during connecting"));
+            }
+            GenericFileOperationFailedException failed;
+            if (e instanceof GenericFileOperationFailedException) {
+                failed = (GenericFileOperationFailedException) e;
+            } else {
+                failed = new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), e.getMessage(), e);
+            }
+            if (log.isTraceEnabled()) {
+                log.trace("Cannot connect due: " + failed.getMessage());
+            }
+            attempt++;
+            if (attempt > endpoint.getMaximumReconnectAttempts()) {
+                throw failed;
+            }
+            if (endpoint.getReconnectDelay() > 0) {
+                try {
+                    Thread.sleep(endpoint.getReconnectDelay());
+                } catch (InterruptedException ie) {
+                    // we could potentially also be interrupted during sleep
+                    Thread.currentThread().interrupt();
+                    throw new GenericFileOperationFailedException("Interrupted during sleeping", ie);
+                }
+            }
+        }
+    }
+    // must enter passive mode directly after connect
+    if (configuration.isPassiveMode()) {
+        log.trace("Using passive mode connections");
+        client.enterLocalPassiveMode();
+    }
+    // must set soTimeout after connect
+    if (endpoint instanceof FtpEndpoint) {
+        FtpEndpoint ftpEndpoint = (FtpEndpoint) endpoint;
+        if (ftpEndpoint.getSoTimeout() > 0) {
+            log.trace("Using SoTimeout=" + ftpEndpoint.getSoTimeout());
+            try {
+                client.setSoTimeout(ftpEndpoint.getSoTimeout());
+            } catch (IOException e) {
+                throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), e.getMessage(), e);
+            }
+        }
+    }
+    try {
+        boolean login;
+        if (username != null) {
+            if (log.isTraceEnabled()) {
+                log.trace("Attempting to login user: " + username + " using password: " + configuration.getPassword());
+            }
+            login = client.login(username, configuration.getPassword());
+        } else {
+            log.trace("Attempting to login anonymous");
+            login = client.login("anonymous", null);
+        }
+        if (log.isTraceEnabled()) {
+            log.trace("User " + (username != null ? username : "anonymous") + " logged in: " + login);
+        }
+        if (!login) {
+            throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString());
+        }
+        client.setFileType(configuration.isBinary() ? FTPClient.BINARY_FILE_TYPE : FTPClient.ASCII_FILE_TYPE);
+    } catch (IOException e) {
+        throw new GenericFileOperationFailedException(client.getReplyCode(), client.getReplyString(), e.getMessage(), e);
+    }
+    return true;
+</td> </tr></table></body></html>

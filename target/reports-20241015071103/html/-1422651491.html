@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2986</td> 
+     <td>-1422651491</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>f21e2299b1d3151bc2420fa44b881ee87d0a7378</td> 
+     <td>TODO propagate security context</td> 
+     <td>TODO propagate security context</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createCxfMessageFromCamelExchange(Exchange, HeaderFilterStrategy)</td> 
+     <td>public Message createCxfMessageFromCamelExchange(Exchange camelExchange, HeaderFilterStrategy headerFilterStrategy)</td> 
+     <td> org.apache.cxf.message.Message answer = CxfMessageHelper.getCxfInMessage(headerFilterStrategy, camelExchange, false); org.apache.camel.Message camelMessage = camelExchange.getIn(); String requestContentType = getRequestContentType(camelMessage); String acceptContentTypes = camelMessage.getHeader("Accept", String.class); if (acceptContentTypes == null) { acceptContentTypes = "*/*"; } String enc = getCharacterEncoding(camelMessage); String requestURI = getRequestURI(camelMessage); String path = getPath(camelMessage); String basePath = getBasePath(camelExchange); String verb = getVerb(camelMessage); String queryString = getQueryString(camelMessage); answer.put(org.apache.cxf.message.Message.REQUEST_URI, requestURI); answer.put(org.apache.cxf.message.Message.BASE_PATH, basePath); answer.put(org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, verb); answer.put(org.apache.cxf.message.Message.PATH_INFO, path); answer.put(org.apache.cxf.message.Message.CONTENT_TYPE, requestContentType); answer.put(org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, acceptContentTypes); answer.put(org.apache.cxf.message.Message.ENCODING, enc); answer.put(org.apache.cxf.message.Message.QUERY_STRING, queryString); Object request = camelMessage.getHeader(Exchange.HTTP_SERVLET_REQUEST); answer.put(CXF_HTTP_REQUEST, request); Object response = camelMessage.getHeader(Exchange.HTTP_SERVLET_RESPONSE); answer.put(CXF_HTTP_RESPONSE, response); // TODO propagate security context LOG.trace("Processing {}, requestContentType = {}, acceptContentTypes = {}, encoding = {}, path = {}, basePath = {}, verb = {}", new Object[] { camelExchange, requestContentType, acceptContentTypes, enc, path, basePath, verb }); return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2244</td> 
+     <td>-1422651491</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>3b2a5d373a23b94525a0392fc45fa8f69b6f509b</td> 
+     <td>TODO propagate security context</td> 
+     <td>TODO propagate security context</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createCxfMessageFromCamelExchange(Exchange, HeaderFilterStrategy)</td> 
+     <td>public Message createCxfMessageFromCamelExchange(Exchange camelExchange, HeaderFilterStrategy headerFilterStrategy)</td> 
+     <td> org.apache.cxf.message.Message answer = CxfMessageHelper.getCxfInMessage(headerFilterStrategy, camelExchange, false); org.apache.camel.Message camelMessage = camelExchange.getIn(); String requestContentType = getRequestContentType(camelMessage); String acceptContentTypes = camelMessage.getHeader("Accept", String.class); if (acceptContentTypes == null) { acceptContentTypes = "*/*"; } String enc = getCharacterEncoding(camelMessage); String path = getPath(camelMessage); String basePath = getBasePath(camelExchange); String verb = getVerb(camelMessage); String queryString = getQueryString(camelMessage); answer.put(org.apache.cxf.message.Message.REQUEST_URI, path); answer.put(org.apache.cxf.message.Message.BASE_PATH, basePath); answer.put(org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, verb); answer.put(org.apache.cxf.message.Message.PATH_INFO, path); answer.put(org.apache.cxf.message.Message.CONTENT_TYPE, requestContentType); answer.put(org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, acceptContentTypes); answer.put(org.apache.cxf.message.Message.ENCODING, enc); answer.put(org.apache.cxf.message.Message.QUERY_STRING, queryString); // TODO propagate security context LOG.trace("Processing {}, requestContentType = {}, acceptContentTypes = {}, encoding = {}, path = {}, basePath = {}, verb = {}", new Object[] { camelExchange, requestContentType, acceptContentTypes, enc, path, basePath, verb }); return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2239</td> 
+     <td>-1422651491</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>10b00d875c171b15b2fbf2416a904b0839baa116</td> 
+     <td>TODO propagate security context</td> 
+     <td>TODO propagate security context</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createCxfMessageFromCamelExchange(Exchange, HeaderFilterStrategy)</td> 
+     <td>public Message createCxfMessageFromCamelExchange(Exchange camelExchange, HeaderFilterStrategy headerFilterStrategy)</td> 
+     <td> org.apache.cxf.message.Message answer = CxfMessageHelper.getCxfInMessage(headerFilterStrategy, camelExchange, false); org.apache.camel.Message camelMessage = camelExchange.getIn(); String requestContentType = getRequestContentType(camelMessage); String acceptContentTypes = camelMessage.getHeader("Accept", String.class); if (acceptContentTypes == null) { acceptContentTypes = "*/*"; } String enc = getCharacterEncoding(camelMessage); String path = getPath(camelMessage); String basePath = getBasePath(camelExchange); String verb = getVerb(camelMessage); String queryString = getQueryString(camelMessage); answer.put(org.apache.cxf.message.Message.REQUEST_URI, path); answer.put(org.apache.cxf.message.Message.BASE_PATH, basePath); answer.put(org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, verb); answer.put(org.apache.cxf.message.Message.PATH_INFO, path); answer.put(org.apache.cxf.message.Message.CONTENT_TYPE, requestContentType); answer.put(org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, acceptContentTypes); answer.put(org.apache.cxf.message.Message.ENCODING, enc); answer.put(org.apache.cxf.message.Message.QUERY_STRING, queryString); // TODO propagate security context LOG.trace("Processing {}, requestContentType = {}, acceptContentTypes = {}, encoding = {}, path = {}, basePath = {}, verb = {}", new Object[] { camelExchange, requestContentType, acceptContentTypes, enc, path, basePath, verb }); return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1062</td> 
+     <td>-1422651491</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>f79a494c7ed66e66323adb8eb9919f9152f375a8</td> 
+     <td>None</td> 
+     <td>TODO propagate security context</td> 
+     <td>SATD_ADDED</td> 
+     <td>createCxfMessageFromCamelExchange(Exchange, HeaderFilterStrategy)</td> 
+     <td>public Message createCxfMessageFromCamelExchange(Exchange camelExchange, HeaderFilterStrategy headerFilterStrategy)</td> 
+     <td> org.apache.camel.Message camelMessage = camelExchange.getIn(); // request content types String requestContentType = getRequestContentType(camelMessage); // accept content types String acceptContentTypes = camelMessage.getHeader("Accept", String.class); if (acceptContentTypes == null) { acceptContentTypes = "*/*"; } String enc = getCharacterEncoding(camelMessage); // path String path = getPath(camelMessage); // base path String basePath = getBasePath(camelExchange); // verb String verb = getVerb(camelMessage); if (LOG.isTraceEnabled()) { LOG.trace("Processing " + camelExchange + ", requestContentType = " + requestContentType + ", acceptContentTypes = " + acceptContentTypes + ", encoding = " + enc + ", path = " + path + ", basePath = " + basePath + ", verb = " + verb); } org.apache.cxf.message.Message answer = CxfSoapBinding.getCxfInMessage(headerFilterStrategy, camelExchange, false); answer.put(org.apache.cxf.message.Message.REQUEST_URI, path); answer.put(org.apache.cxf.message.Message.BASE_PATH, basePath); answer.put(org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, verb); answer.put(org.apache.cxf.message.Message.PATH_INFO, path); answer.put(org.apache.cxf.message.Message.CONTENT_TYPE, requestContentType); answer.put(org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, acceptContentTypes); answer.put(org.apache.cxf.message.Message.ENCODING, enc); // TODO propagate security context return answer; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

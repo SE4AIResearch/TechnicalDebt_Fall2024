@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1613</td> <td>-1422651214</td><td>apache/camel</td><td>Claus Ibsen</td><td>a378d2405114825bfab0a799375737dcd4e6f8be</td> <td>None</td> <td>TODO: allow jetty producer configuration from uri</td> <td>SATD_ADDED</td> <td>getJettyHttpClient()</td> <td>public HttpClient getJettyHttpClient() throws Exception</td> <td>
+    HttpClient answer = getComponent().getHttpClient();
+    if (answer == null) {
+        answer = new HttpClient();
+        answer.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+        if (System.getProperty("http.proxyHost") != null && System.getProperty("http.proxyPort") != null) {
+            String host = System.getProperty("http.proxyHost");
+            int port = Integer.parseInt(System.getProperty("http.proxyPort"));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Java System Property http.proxyHost and http.proxyPort detected. Using http proxy host: " + host + " port: " + port);
+            }
+            answer.setProxy(new Address(host, port));
+        }
+        // TODO: allow jetty producer configuration from uri
+        answer.start();
+    }
+    return answer;
+</td> </tr></table></body></html>

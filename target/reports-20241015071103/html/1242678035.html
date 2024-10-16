@@ -1,0 +1,68 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4719</td> <td>1242678035</td><td>GerritCodeReview/gerrit</td><td>Saša Živkov</td><td>c20148c8e20d62744c3654e73fb9d7256f30a205</td> <td>None</td> <td>TODO(dborowitz): This message is also used by all new patch set ref</td> <td>SATD_ADDED</td> <td>updateBranch(SubmitStrategy, BatchRefUpdate)</td> <td>private BatchRefUpdate updateBranch(SubmitStrategy strategy, BatchRefUpdate branchUpdate) throws MergeException</td> <td>
+    CodeReviewCommit currentTip = mergeTip != null ? mergeTip.getCurrentTip() : null;
+    if (branchTip == currentTip) {
+        logDebug("Branch already at merge tip {}, no update to perform", currentTip.name());
+        return null;
+    } else if (currentTip == null) {
+        logDebug("No merge tip, no update to perform");
+        return null;
+    }
+    if (RefNames.REFS_CONFIG.equals(destBranch.get())) {
+        logDebug("Loading new configuration from {}", RefNames.REFS_CONFIG);
+        try {
+            ProjectConfig cfg = new ProjectConfig(destProject.getProject().getNameKey());
+            cfg.load(repo, currentTip);
+        } catch (Exception e) {
+            throw new MergeException("Submit would store invalid" + " project configuration " + currentTip.name() + " for " + destProject.getProject().getName(), e);
+        }
+    }
+    try {
+        inserter.flush();
+    } catch (IOException e) {
+        throw new MergeException("Cannot flush merge results", e);
+    }
+    branchUpdate.setRefLogIdent(refLogIdent);
+    branchUpdate.setAllowNonFastForwards(false);
+    // TODO(dborowitz): This message is also used by all new patch set ref
+    // updates; find a better wording that works for that case too.
+    branchUpdate.setRefLogMessage("merged", true);
+    ReceiveCommand cmd = new ReceiveCommand(oldBranchTip, currentTip, destBranch.get());
+    branchUpdate.addCommand(cmd);
+    try {
+        branchUpdate.execute(rw, NullProgressMonitor.INSTANCE);
+        logDebug("Executed batch update: {}", branchUpdate);
+        switch(cmd.getResult()) {
+            case OK:
+                if (cmd.getType() == ReceiveCommand.Type.UPDATE) {
+                    tagCache.updateFastForward(destBranch.getParentKey(), destBranch.get(), oldBranchTip, currentTip);
+                }
+                if (RefNames.REFS_CONFIG.equals(destBranch.get())) {
+                    Project p = destProject.getProject();
+                    projectCache.evict(p);
+                    destProject = projectCache.get(p.getNameKey());
+                    repoManager.setProjectDescription(p.getNameKey(), p.getDescription());
+                }
+                return branchUpdate;
+            case LOCK_FAILURE:
+                String msg;
+                if (strategy.retryOnLockFailure()) {
+                    mergeQueue.recheckAfter(destBranch, LOCK_FAILURE_RETRY_DELAY, MILLISECONDS);
+                    msg = "will retry";
+                } else {
+                    msg = "will not retry";
+                }
+                throw new IOException(cmd.getResult().name() + ", " + msg);
+            default:
+                throw new IOException(cmd.getResult().name());
+        }
+    } catch (IOException e) {
+        throw new MergeException("Cannot update " + destBranch.get(), e);
+    }
+</td> </tr></table></body></html>

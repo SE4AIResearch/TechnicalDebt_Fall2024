@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1736</td> <td>-1422651136</td><td>apache/camel</td><td>Claus Ibsen</td><td>e095e00c31bedfca6421b10bd31576c2bcdd1fe1</td> <td>None</td> <td>TODO: support usage of proxy (via endpoint parameters or GLoginData object)</td> <td>SATD_ADDED</td> <td>createURLConnection(String, boolean)</td> <td>private static HttpURLConnection createURLConnection(String url, boolean dev) throws Exception</td> <td>
+    // TODO: support usage of proxy (via endpoint parameters or GLoginData object)
+    HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+    connection.setInstanceFollowRedirects(false);
+    if (dev) {
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+    }
+    return connection;
+</td> </tr></table></body></html>

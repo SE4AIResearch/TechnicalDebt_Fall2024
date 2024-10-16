@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1227</td> <td>-1422651416</td><td>apache/camel</td><td>Claus Ibsen</td><td>76c5f3354fdb339b5dd8c8bcae459f86f4e4ee62</td> <td>None</td> <td>TODO: when we get the internal API reworked we should be able to receive in this order</td> <td>SATD_ADDED</td> <td>testRedeliverWithDelay()</td> <td>public void testRedeliverWithDelay() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    // TODO: when we get the internal API reworked we should be able to receive in this order
+    // mock.expectedBodiesReceived("Message 2", "Message 1");
+    mock.expectedBodiesReceived("Message 1", "Message 2");
+    mock.expectedHeaderReceived("foo", "bar");
+    template.sendBody("seda:start", "Message 1");
+    template.sendBody("seda:start", "Message 2");
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

@@ -1,0 +1,131 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2215</td> <td>-1422650879</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>ecb84affb8c0f25e90ba2a74c0ecb7e99f5846fe</td> <td>None</td> <td>BeanInvocation would be stored directly as the message body
+do not force any type conversion attempts as it would just be unnecessary and cost a bit performance
+so a regular instanceof check is sufficient</td> <td>SATD_ADDED</td> <td>process(Exchange, AsyncCallback)</td> <td>public boolean process(Exchange exchange, AsyncCallback callback)</td> <td>
+    // do we have an explicit method name we always should invoke
+    boolean isExplicitMethod = ObjectHelper.isNotEmpty(method);
+    Object bean;
+    BeanInfo beanInfo;
+    try {
+        bean = beanHolder.getBean();
+        beanInfo = beanHolder.getBeanInfo();
+    } catch (Throwable e) {
+        exchange.setException(e);
+        callback.done(true);
+        return true;
+    }
+    // do we have a custom adapter for this POJO to a Processor
+    // should not be invoked if an explicit method has been set
+    Processor processor = getProcessor();
+    if (!isExplicitMethod && processor != null) {
+        LOG.trace("Using a custom adapter as bean invocation: {}", processor);
+        try {
+            processor.process(exchange);
+        } catch (Throwable e) {
+            exchange.setException(e);
+        }
+        callback.done(true);
+        return true;
+    }
+    Message in = exchange.getIn();
+    // is the message proxied using a BeanInvocation?
+    BeanInvocation beanInvoke = null;
+    if (in.getBody() != null && in.getBody() instanceof BeanInvocation) {
+        // BeanInvocation would be stored directly as the message body
+        // do not force any type conversion attempts as it would just be unnecessary and cost a bit performance
+        // so a regular instanceof check is sufficient
+        beanInvoke = (BeanInvocation) in.getBody();
+    }
+    if (beanInvoke != null) {
+        // Now it gets a bit complicated as ProxyHelper can proxy beans which we later
+        // intend to invoke (for example to proxy and invoke using spring remoting).
+        // and therefore the message body contains a BeanInvocation object.
+        // However this can causes problem if we in a Camel route invokes another bean,
+        // so we must test whether BeanHolder and BeanInvocation is the same bean or not
+        LOG.trace("Exchange IN body is a BeanInvocation instance: {}", beanInvoke);
+        Class<?> clazz = beanInvoke.getMethod().getDeclaringClass();
+        boolean sameBean = clazz.isInstance(bean);
+        LOG.debug("BeanHolder bean: {} and beanInvocation bean: {} is same instance: {}", new Object[] { bean.getClass(), clazz, sameBean });
+        if (sameBean) {
+            beanInvoke.invoke(bean, exchange);
+            // propagate headers
+            exchange.getOut().getHeaders().putAll(exchange.getIn().getHeaders());
+            callback.done(true);
+            return true;
+        }
+    }
+    // set temporary header which is a hint for the bean info that introspect the bean
+    if (in.getHeader(Exchange.BEAN_MULTI_PARAMETER_ARRAY) == null) {
+        in.setHeader(Exchange.BEAN_MULTI_PARAMETER_ARRAY, isMultiParameterArray());
+    }
+    String prevMethod = null;
+    MethodInvocation invocation;
+    if (methodObject != null) {
+        invocation = beanInfo.createInvocation(methodObject, bean, exchange);
+    } else {
+        // we just override the bean's invocation method name here
+        if (isExplicitMethod) {
+            prevMethod = in.getHeader(Exchange.BEAN_METHOD_NAME, String.class);
+            in.setHeader(Exchange.BEAN_METHOD_NAME, method);
+        }
+        try {
+            invocation = beanInfo.createInvocation(bean, exchange);
+        } catch (Throwable e) {
+            exchange.setException(e);
+            callback.done(true);
+            return true;
+        }
+    }
+    if (invocation == null) {
+        throw new IllegalStateException("No method invocation could be created, no matching method could be found on: " + bean);
+    }
+    // remove temporary header
+    in.removeHeader(Exchange.BEAN_MULTI_PARAMETER_ARRAY);
+    Object value = null;
+    try {
+        AtomicBoolean sync = new AtomicBoolean(true);
+        value = invocation.proceed(callback, sync);
+        if (!sync.get()) {
+            LOG.trace("Processing exchangeId: {} is continued being processed asynchronously", exchange.getExchangeId());
+            // the remainder of the routing will be completed async
+            // so we break out now, then the callback will be invoked which then continue routing from where we left here
+            return false;
+        }
+        LOG.trace("Processing exchangeId: {} is continued being processed synchronously", exchange.getExchangeId());
+    } catch (InvocationTargetException e) {
+        // lets unwrap the exception when its an invocation target exception
+        exchange.setException(e.getCause());
+        callback.done(true);
+        return true;
+    } catch (Throwable e) {
+        exchange.setException(e);
+        callback.done(true);
+        return true;
+    } finally {
+        if (isExplicitMethod) {
+            in.setHeader(Exchange.BEAN_METHOD_NAME, prevMethod);
+        }
+    }
+    // if the method returns something then set the value returned on the Exchange
+    if (!invocation.getMethod().getReturnType().equals(Void.TYPE) && value != Void.TYPE) {
+        if (exchange.getPattern().isOutCapable()) {
+            // force out creating if not already created (as its lazy)
+            LOG.debug("Setting bean invocation result on the OUT message: {}", value);
+            exchange.getOut().setBody(value);
+            // propagate headers
+            exchange.getOut().getHeaders().putAll(exchange.getIn().getHeaders());
+        } else {
+            // if not out then set it on the in
+            LOG.debug("Setting bean invocation result on the IN message: {}", value);
+            exchange.getIn().setBody(value);
+        }
+    }
+    callback.done(true);
+    return true;
+</td> </tr></table></body></html>

@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6030</td> 
+     <td>-1009652559</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Verify fix of bug identified in HADOOP-6004</td> 
+     <td>Verify fix of bug identified in HADOOP-6004</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testDeserialization()</td> 
+     <td>public void testDeserialization() throws IOException</td> 
+     <td> // Create a test BlockLocation String[] names = { "one", "two" }; String[] hosts = { "three", "four" }; String[] topologyPaths = { "five", "six" }; long offset = 25l; long length = 55l; BlockLocation bl = new BlockLocation(names, hosts, topologyPaths, offset, length); DataOutputBuffer dob = new DataOutputBuffer(); // Serialize it try { bl.write(dob); } catch (IOException e) { fail("Unable to serialize data: " + e.getMessage()); } byte[] bytes = dob.getData(); DataInput da = new DataInputStream(new ByteArrayInputStream(bytes)); // Try to re-create the BlockLocation the same way as is done during // deserialization BlockLocation bl2 = new BlockLocation(); try { bl2.readFields(da); } catch (IOException e) { fail("Unable to deserialize BlockLocation: " + e.getMessage()); } // Check that we got back what we started with verifyDeserialization(bl2.getHosts(), hosts); verifyDeserialization(bl2.getNames(), names); verifyDeserialization(bl2.getTopologyPaths(), topologyPaths); assertEquals(bl2.getOffset(), offset); assertEquals(bl2.getLength(), length); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5229</td> 
+     <td>-1009652559</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Verify fix of bug identified in HADOOP-6004</td> 
+     <td>Verify fix of bug identified in HADOOP-6004</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testDeserialization()</td> 
+     <td>public void testDeserialization() throws IOException</td> 
+     <td> // Create a test BlockLocation String[] names = { "one", "two" }; String[] hosts = { "three", "four" }; String[] topologyPaths = { "five", "six" }; long offset = 25l; long length = 55l; BlockLocation bl = new BlockLocation(names, hosts, topologyPaths, offset, length); DataOutputBuffer dob = new DataOutputBuffer(); // Serialize it try { bl.write(dob); } catch (IOException e) { fail("Unable to serialize data: " + e.getMessage()); } byte[] bytes = dob.getData(); DataInput da = new DataInputStream(new ByteArrayInputStream(bytes)); // Try to re-create the BlockLocation the same way as is done during // deserialization BlockLocation bl2 = new BlockLocation(); try { bl2.readFields(da); } catch (IOException e) { fail("Unable to deserialize BlockLocation: " + e.getMessage()); } // Check that we got back what we started with verifyDeserialization(bl2.getHosts(), hosts); verifyDeserialization(bl2.getNames(), names); verifyDeserialization(bl2.getTopologyPaths(), topologyPaths); assertEquals(bl2.getOffset(), offset); assertEquals(bl2.getLength(), length); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5023</td> 
+     <td>-1009652559</td>
+     <td>apache/hadoop</td>
+     <td>Owen O'Malley</td>
+     <td>fb6308f280ad30a61757f988e21b424e64fce03f</td> 
+     <td>None</td> 
+     <td>Verify fix of bug identified in HADOOP-6004</td> 
+     <td>SATD_ADDED</td> 
+     <td>testDeserialization()</td> 
+     <td>public void testDeserialization() throws IOException</td> 
+     <td> // Create a test BlockLocation String[] names = { "one", "two" }; String[] hosts = { "three", "four" }; String[] topologyPaths = { "five", "six" }; long offset = 25l; long length = 55l; BlockLocation bl = new BlockLocation(names, hosts, topologyPaths, offset, length); DataOutputBuffer dob = new DataOutputBuffer(); // Serialize it try { bl.write(dob); } catch (IOException e) { fail("Unable to serialize data: " + e.getMessage()); } byte[] bytes = dob.getData(); DataInput da = new DataInputStream(new ByteArrayInputStream(bytes)); // Try to re-create the BlockLocation the same way as is done during // deserialization BlockLocation bl2 = new BlockLocation(); try { bl2.readFields(da); } catch (IOException e) { fail("Unable to deserialize BlockLocation: " + e.getMessage()); } // Check that we got back what we started with verifyDeserialization(bl2.getHosts(), hosts); verifyDeserialization(bl2.getNames(), names); verifyDeserialization(bl2.getTopologyPaths(), topologyPaths); assertEquals(bl2.getOffset(), offset); assertEquals(bl2.getLength(), length); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3635</td> <td>-1422650096</td><td>apache/camel</td><td>Daniel Kulp</td><td>fdcf9182fb59929dd9239406f1db6dc8bc0c22b3</td> <td>None</td> <td>FIXME- configure the network stuff</td> <td>SATD_ADDED</td> <td>getServer(int)</td> <td>public synchronized CoapServer getServer(int port)</td> <td>
+    CoapServer server = servers.get(port);
+    if (server == null) {
+        NetworkConfig config = new NetworkConfig();
+        // FIXME- configure the network stuff
+        server = new CoapServer(config, port);
+        servers.put(port, server);
+        if (this.isStarted()) {
+            server.start();
+        }
+    }
+    return server;
+</td> </tr></table></body></html>

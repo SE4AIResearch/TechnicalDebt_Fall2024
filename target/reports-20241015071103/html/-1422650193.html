@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3372</td> <td>-1422650193</td><td>apache/camel</td><td>Claus Ibsen</td><td>7bba46564cdb7782ee3ddc9e8c711c2f8ed80834</td> <td>None</td> <td>TODO: add support for enum and array</td> <td>SATD_ADDED</td> <td>toJson(String, String, String)</td> <td>public static String toJson(String name, String type, String description)</td> <td>
+    String typeName = JsonSchemaHelper.getType(type);
+    // TODO: add support for enum and array
+    StringBuilder sb = new StringBuilder();
+    sb.append(doubleQuote(name));
+    sb.append(": { \"type\":");
+    sb.append(doubleQuote(typeName));
+    if (!Strings.isNullOrEmpty(description)) {
+        sb.append(", \"description\":");
+        String text = sanitizeDescription(description);
+        sb.append(doubleQuote(text));
+    }
+    if ("object".equals(typeName)) {
+        // for object then include the javaType as a description so we know that
+        sb.append(", \"properties\": { \"javaType\": { \"description\": \"" + type + "\", \"type\": \"string\" } }");
+    }
+    sb.append(" }");
+    return sb.toString();
+// if (type.isEnum()) {
+// String typeName = "string";
+// CollectionStringBuffer sb = new CollectionStringBuffer();
+// for (Object value : parameterType.getEnumConstants()) {
+// sb.append(doubleQuote(value.toString()));
+// }
+// return doubleQuote(name) + ": { \"type\": " + doubleQuote(type) + ", \"enum\": [ " + sb.toString() + " ] }";
+// } else if (parameterType.isArray()) {
+// String typeName = "array";
+// return doubleQuote(name) + ": { \"type\": " + doubleQuote(type) + " }";
+// } else {
+// if ("object".equals(typeName)) {
+// for object then include the javaType as a description so we know that
+// return doubleQuote(name) + ": { \"type\": " + doubleQuote(typeName)
+// + ", \"properties\": { \"javaType\": { \"description\": \"" + type + "\", \"type\": \"string\" } } }";
+// } else {
+// return doubleQuote(name) + ": { \"type\": " + doubleQuote(typeName) + " }";
+// }
+// }
+</td> </tr></table></body></html>

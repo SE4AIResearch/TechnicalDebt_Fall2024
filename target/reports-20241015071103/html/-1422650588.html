@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2725</td> <td>-1422650588</td><td>apache/camel</td><td>Christian Mueller</td><td>e0e834619f9c46861c709ea5ac37e16b524109dd</td> <td>None</td> <td>This code is not my fault, it seems to honestly be the hacky way to find a class name in APT :)</td> <td>SATD_ADDED</td> <td>writeHtmlDocumentation(PrintWriter, RoundEnvironment, TypeElement, UriEndpoint)</td> <td>protected void writeHtmlDocumentation(PrintWriter writer, RoundEnvironment roundEnv, TypeElement classElement, UriEndpoint uriEndpoint)</td> <td>
+    writer.println("<html>");
+    writer.println("<header>");
+    String scheme = uriEndpoint.scheme();
+    String title = scheme + " endpoint";
+    writer.println("<title>" + "</title>");
+    writer.println("</header>");
+    writer.println("<body>");
+    writer.println("<h1>" + title + "</h1>");
+    showDocumentationAndFieldInjections(writer, roundEnv, classElement, "");
+    // This code is not my fault, it seems to honestly be the hacky way to find a class name in APT :)
+    TypeMirror consumerType = null;
+    try {
+        uriEndpoint.consumerClass();
+    } catch (MirroredTypeException mte) {
+        consumerType = mte.getTypeMirror();
+    }
+    boolean found = false;
+    String consumerClassName = null;
+    String consumerPrefix = Strings.getOrElse(uriEndpoint.consumerPrefix(), "");
+    if (consumerType != null) {
+        consumerClassName = consumerType.toString();
+        TypeElement consumerElement = findTypeElement(roundEnv, consumerClassName);
+        if (consumerElement != null) {
+            writer.println("<h2>" + scheme + " consumer" + "</h2>");
+            showDocumentationAndFieldInjections(writer, roundEnv, consumerElement, consumerPrefix);
+            found = true;
+        }
+    }
+    if (!found && consumerClassName != null) {
+        warning("APT could not find consumer class " + consumerClassName);
+    }
+    writer.println("</body>");
+    writer.println("</html>");
+</td> </tr></table></body></html>

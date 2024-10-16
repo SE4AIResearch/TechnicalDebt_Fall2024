@@ -1,0 +1,84 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5464</td> <td>-1009652262</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>HACK ALERT!! It's possible for a Job end line to end a
+job for which we have a config file
+image [ a ParsedConfigFile ] in jobconf.
+
+processParsedLine handles this.</td> <td>SATD_ADDED</td> <td>run()</td> <td>
+    Pair<String, String> line = readBalancedLine();
+    while (line != null) {
+        if (debug && (lineNumber < 1000000L && lineNumber % 1000L == 0 || lineNumber % 1000000L == 0)) {
+            LOG.debug("" + lineNumber + " " + line.second());
+        }
+        if (line.first() == null) {
+            try {
+                // HACK ALERT!! It's possible for a Job end line to end a
+                // job for which we have a config file
+                // image [ a ParsedConfigFile ] in jobconf.
+                // 
+                // processParsedLine handles this.
+                processParsedLine(new ParsedLine(line.second(), version));
+            } catch (StringIndexOutOfBoundsException e) {
+                LOG.warn("anomalous line #" + lineNumber + ":" + line, e);
+            }
+        } else {
+            jobconf = new ParsedConfigFile(line.first(), line.second());
+            if (jobconf.valid == false) {
+                jobconf = null;
+            }
+            maybeMateJobAndConf();
+        }
+        line = readBalancedLine();
+    }
+    finalizeJob();
+    if (collecting) {
+        String[] typeNames = LogRecordType.lineTypes();
+        for (int i = 0; i < typeNames.length; ++i) {
+            statisticalOutput.print(typeNames[i]);
+            statisticalOutput.print('\n');
+        }
+    } else {
+        if (delays) {
+            printDistributionSet("Job start delay spectrum:", delayTimeDists);
+        }
+        if (runtimes) {
+            printDistributionSet("Job run time spectrum:", runTimeDists);
+        }
+        if (spreading) {
+            String ratioDescription = "(" + spreadMax + "/1000 %ile) to (" + spreadMin + "/1000 %ile) scaled by 1000000";
+            printDistributionSet("Map task success times " + ratioDescription + ":", mapTimeSpreadDists);
+            printDistributionSet("Shuffle success times " + ratioDescription + ":", shuffleTimeSpreadDists);
+            printDistributionSet("Sort success times " + ratioDescription + ":", sortTimeSpreadDists);
+            printDistributionSet("Reduce success times " + ratioDescription + ":", reduceTimeSpreadDists);
+        }
+        if (collectTaskTimes) {
+            printDistributionSet("Global map task success times:", mapTimeDists);
+            printDistributionSet("Global shuffle task success times:", shuffleTimeDists);
+            printDistributionSet("Global sort task success times:", sortTimeDists);
+            printDistributionSet("Global reduce task success times:", reduceTimeDists);
+        }
+    }
+    if (topologyGen != null) {
+        LoggedNetworkTopology topo = new LoggedNetworkTopology(allHosts, "<root>", 0);
+        topologyGen.writeObject(topo);
+        topologyGen.close();
+    }
+    if (jobTraceGen != null) {
+        jobTraceGen.close();
+    }
+    if (input != null) {
+        input.close();
+        input = null;
+    }
+    if (inputCodec != null) {
+        CodecPool.returnDecompressor(inputDecompressor);
+        inputDecompressor = null;
+        inputCodec = null;
+    }
+    return 0;
+</td> <td> int run() throws IOException</td> </tr></table></body></html>

@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3264</td> <td>-1422650230</td><td>apache/camel</td><td>Jonathan Anstey</td><td>301153bb55afc839ca71e81254fc1c11cf07a6fe</td> <td>None</td> <td>TODO create API proxy, set connection properties, etc.</td> <td>SATD_ADDED</td> <td>afterConfigureProperties()</td> <td>protected void afterConfigureProperties()</td> <td>
+    // TODO create API proxy, set connection properties, etc.
+    switch((GoogleDriveApiName) apiName) {
+        case DRIVE_FILES:
+            apiProxy = getClient().files();
+            break;
+        // TODO add extra APIs here
+        default:
+            throw new IllegalArgumentException("Invalid API name " + apiName);
+    }
+</td> </tr></table></body></html>

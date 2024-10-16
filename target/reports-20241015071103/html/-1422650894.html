@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3511</td> 
+     <td>-1422650894</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>TODO: CAMEL-3839: need to convert the body to a String as the tmp file will be deleted before the producer template can convert the result back</td> 
+     <td>TODO: CAMEL-3839: need to convert the body to a String as the tmp file will be deleted before the producer template can convert the result back</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // enable stream caching and use a low threshold so its forced to write to file context.getProperties().put(CachedOutputStream.TEMP_DIR, "target/cachedir"); context.getProperties().put(CachedOutputStream.THRESHOLD, "16"); context.setStreamCaching(true); // use a route so we got an unit of work from("direct:start").to("http://localhost:{{port}}/myserver").process(new Processor() { public void process(Exchange exchange) throws Exception { // there should be a temp cache file File file = new File("target/cachedir"); String[] files = file.list(); assertTrue("There should be a temp cache file", files.length &gt; 0); } }).convertBodyTo(String.class).to("mock:result"); from("jetty://http://localhost:{{port}}/myserver").transform().constant(body); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2197</td> 
+     <td>-1422650894</td>
+     <td>apache/camel</td>
+     <td>Gert Vanthienen</td>
+     <td>a91b5797dfc13b84099d6631b25a47b03026c5d0</td> 
+     <td>None</td> 
+     <td>TODO: CAMEL-3839: need to convert the body to a String as the tmp file will be deleted before the producer template can convert the result back</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // enable stream caching and use a low threshold so its forced to write to file context.getProperties().put(CachedOutputStream.TEMP_DIR, "./target/cachedir"); context.getProperties().put(CachedOutputStream.THRESHOLD, "16"); context.setStreamCaching(true); // use a route so we got an unit of work from("direct:start").to("http://localhost:{{port}}/myserver").process(new Processor() { public void process(Exchange exchange) throws Exception { // there should be a temp cache file File file = new File("./target/cachedir"); String[] files = file.list(); assertTrue("There should be a temp cache file", files.length &gt; 0); } }).convertBodyTo(String.class).to("mock:result"); from("jetty://http://localhost:{{port}}/myserver").transform().constant(body); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

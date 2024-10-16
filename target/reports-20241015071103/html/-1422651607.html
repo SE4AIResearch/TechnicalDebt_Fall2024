@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>783</td> <td>-1422651607</td><td>apache/camel</td><td>James Strachan</td><td>b3608389dacf9b83aa2ba8daf5f3beba8d9da424</td> <td>None</td> <td>set any props in the url
+TODO</td> <td>SATD_ADDED</td> <td>start()</td> <td>public void start() throws IOException</td> <td>
+    try {
+        service = new CamelServiceExporter();
+        service.setCamelContext(getCamelContext());
+        service.setServiceInterface(MBeanCamelServerConnection.class);
+        service.setUri(endpointUri);
+        this.serverConnection = new MBeanCamelServerConnectionImpl(getMBeanServer(), /* TODO */
+        null);
+        service.setService(serverConnection);
+        service.afterPropertiesSet();
+        stopped = false;
+    } catch (Exception e) {
+        log.error("Failed to start ", e);
+        throw new IOException(e.toString());
+    }
+</td> </tr></table></body></html>

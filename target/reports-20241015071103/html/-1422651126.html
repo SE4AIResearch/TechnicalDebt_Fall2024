@@ -1,0 +1,34 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1755</td> <td>-1422651126</td><td>apache/camel</td><td>Claus Ibsen</td><td>3bbca07bad4aa3ef0a6f8a5e2e9cd22d6e47b1bf</td> <td>None</td> <td>TODO: producers are not managed due they can lead to memory leak CAMEL-2484</td> <td>SATD_ADDED</td> <td>testUnregisterProducer()</td> <td>public void testUnregisterProducer() throws Exception</td> <td>
+    // send a message so the managed producer is started
+    // do this "manually" to avoid camel manageging the direct:start producer as well
+    // this makes the unit test easier as we only have 1 managed producer = mock:result
+    Endpoint endpoint = context.getEndpoint("direct:start");
+    Producer producer = endpoint.createProducer();
+    Exchange exchange = endpoint.createExchange();
+    exchange.getIn().setBody("Hello World");
+    producer.start();
+    producer.process(exchange);
+    producer.stop();
+    // TODO: producers are not managed due they can lead to memory leak CAMEL-2484
+    // MBeanServer mbeanServer = context.getManagementStrategy().getManagementAgent().getMBeanServer();
+    // Set<ObjectName> set = mbeanServer.queryNames(new ObjectName("*:type=producers,*"), null);
+    // assertEquals(0, set.size());
+    // ObjectName on = set.iterator().next();
+    // assertTrue("Should be registered", mbeanServer.isRegistered(on));
+    // String uri = (String) mbeanServer.getAttribute(on, "EndpointUri");
+    // assertEquals("mock://result", uri);
+    // TODO: populating route id on producers is not implemented yet
+    // String routeId = (String) mbeanServer.getAttribute(on, "RouteId");
+    // assertEquals("route1", routeId);
+    // Boolean singleton = (Boolean) mbeanServer.getAttribute(on, "Singleton");
+    // assertEquals(Boolean.TRUE, singleton);
+    context.stop();
+// assertFalse("Should no longer be registered", mbeanServer.isRegistered(on));
+</td> </tr></table></body></html>

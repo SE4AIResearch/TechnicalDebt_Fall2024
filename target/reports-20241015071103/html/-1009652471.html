@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5242</td> <td>-1009652471</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>move to current trash</td> <td>move to current trash</td> <td>FILE_PATH_CHANGED</td> <td>moveToAppropriateTrash(FileSystem, Path, Configuration)</td> <td>public static boolean moveToAppropriateTrash(FileSystem fs, Path p, Configuration conf) throws IOException</td> <td>
+    Path fullyResolvedPath = fs.resolvePath(p);
+    Trash trash = new Trash(FileSystem.get(fullyResolvedPath.toUri(), conf), conf);
+    boolean success = trash.moveToTrash(fullyResolvedPath);
+    if (success) {
+        System.out.println("Moved: '" + p + "' to trash at: " + trash.getCurrentTrashDir());
+    }
+    return success;
+</td> </tr></table></body></html>

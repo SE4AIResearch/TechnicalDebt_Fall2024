@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1590</td> <td>-1422651229</td><td>apache/camel</td><td>Claus Ibsen</td><td>f9958cac99d31ebf47040a110f9b1b6ebcd0c7da</td> <td>None</td> <td>maybe from is already the type we want</td> <td>SATD_ADDED</td> <td>convertTo(Class<?>, Exchange, Object, TypeConverterRegistry)</td> <td>public static Object convertTo(Class<?> type, Exchange exchange, Object value, TypeConverterRegistry registry)</td> <td>
+    // use a fallback type converter so we can convert the embedded body if the value is GenericFile
+    if (BeanInvocation.class.isAssignableFrom(value.getClass())) {
+        BeanInvocation bi = (BeanInvocation) value;
+        if (bi.getArgs() == null || bi.getArgs().length != 1) {
+            // not possible to convert as we try to convert the data passed in at first argument
+            return null;
+        }
+        Class from = bi.getArgs()[0].getClass();
+        Object body = bi.getArgs()[0];
+        // maybe from is already the type we want
+        if (from.isAssignableFrom(type)) {
+            return body;
+        }
+        // no then try to lookup a type converter
+        TypeConverter tc = registry.lookup(type, from);
+        if (tc != null) {
+            return tc.convertTo(type, exchange, body);
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

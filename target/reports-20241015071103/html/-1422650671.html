@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2568</td> <td>-1422650671</td><td>apache/camel</td><td>Christian Mueller</td><td>f115331bf23ff6448d0aee45177476058dc5435c</td> <td>None</td> <td>wait a bit so that the server resumes properly</td> <td>SATD_ADDED</td> <td>testFromFileToFtp()</td> <td>public void testFromFileToFtp() throws Exception</td> <td>
+    // suspect serve so we cannot connect
+    ftpServer.suspend();
+    // put a file in the folder (do not use ftp as we then will connect)
+    template.sendBodyAndHeader("file:" + FTP_ROOT_DIR + "/reconnect", "Hello World", Exchange.FILE_NAME, "hello.txt");
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(0);
+    // let it run a little
+    Thread.sleep(3000);
+    assertMockEndpointsSatisfied();
+    mock.reset();
+    mock.expectedMessageCount(1);
+    // resume the server so we can connect
+    ftpServer.resume();
+    // wait a bit so that the server resumes properly
+    Thread.sleep(3000);
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

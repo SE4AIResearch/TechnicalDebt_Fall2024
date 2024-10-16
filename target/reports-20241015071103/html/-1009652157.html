@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5569</td> <td>-1009652157</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>work around 2-byte splits issue
+[135 splits for a 208-byte file and a 62-byte file(!)]</td> <td>SATD_ADDED</td> <td>testBzip2()</td> <td>public void testBzip2() throws IOException</td> <td>
+    JobConf jobConf = new JobConf(defaultConf);
+    CompressionCodec bzip2 = new BZip2Codec();
+    ReflectionUtils.setConf(bzip2, jobConf);
+    localFs.delete(workDir, true);
+    System.out.println(COLOR_BR_CYAN + "testBzip2() using non-native CBZip2InputStream (presumably)" + COLOR_NORMAL);
+    // copy prebuilt (correct!) version of concat.bz2 to HDFS
+    final String fn = "concat" + bzip2.getDefaultExtension();
+    Path fnLocal = new Path(System.getProperty("test.concat.data", "/tmp"), fn);
+    Path fnHDFS = new Path(workDir, fn);
+    localFs.copyFromLocalFile(fnLocal, fnHDFS);
+    writeFile(localFs, new Path(workDir, "part2.txt.bz2"), bzip2, "this is a test\nof bzip2\n");
+    FileInputFormat.setInputPaths(jobConf, workDir);
+    // extends FileInputFormat
+    TextInputFormat format = new TextInputFormat();
+    format.configure(jobConf);
+    // work around 2-byte splits issue
+    format.setMinSplitSize(256);
+    // [135 splits for a 208-byte file and a 62-byte file(!)]
+    InputSplit[] splits = format.getSplits(jobConf, 100);
+    assertEquals("compressed splits == 2", 2, splits.length);
+    FileSplit tmp = (FileSplit) splits[0];
+    if (tmp.getPath().getName().equals("part2.txt.bz2")) {
+        splits[0] = splits[1];
+        splits[1] = tmp;
+    }
+    List<Text> results = readSplit(format, splits[0], jobConf);
+    assertEquals("splits[0] num lines", 6, results.size());
+    assertEquals("splits[0][5]", "member #3", results.get(5).toString());
+    results = readSplit(format, splits[1], jobConf);
+    assertEquals("splits[1] num lines", 2, results.size());
+    assertEquals("splits[1][0]", "this is a test", results.get(0).toString());
+    assertEquals("splits[1][1]", "of bzip2", results.get(1).toString());
+</td> </tr></table></body></html>

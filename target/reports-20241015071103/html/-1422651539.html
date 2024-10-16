@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>944</td> <td>-1422651539</td><td>apache/camel</td><td>Claus Ibsen</td><td>d3a2c771d8d0ee8c4cf9ed9060c8479bf5ed8597</td> <td>None</td> <td>assert the file is moved</td> <td>SATD_ADDED</td> <td>testPollFileAndShouldBeMoved()</td> <td>public void testPollFileAndShouldBeMoved() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(1);
+    mock.expectedBodiesReceived("Hello World this file will be moved");
+    mock.assertIsSatisfied();
+    // give some time to move the file after we recieved it on mock
+    Thread.sleep(1000);
+    // assert the file is moved
+    File file = new File("./res/home/movefile/hello.txt.old");
+    file = file.getAbsoluteFile();
+    assertTrue("The file should have been moved", file.exists());
+</td> </tr></table></body></html>

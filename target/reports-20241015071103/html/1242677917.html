@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4952</td> 
+     <td>1242677917</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>8ea575a35bd343248dcf4efdc7583cd786ac1e30</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>controlFor(Project.NameKey, Change.Id, CurrentUser)</td> 
+     <td>public ChangeControl controlFor(Project.NameKey project, Change.Id changeId, CurrentUser user) throws NoSuchChangeException, OrmException</td> 
+     <td> return controlFor(notesFactory.create(db.get(), project, changeId), user); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4950</td> 
+     <td>1242677917</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>4b2384b5827fb9d1b315077f2a3ef3db668e3fcc</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>controlFor(Project.NameKey, Change.Id, CurrentUser)</td> 
+     <td>public ChangeControl controlFor(Project.NameKey project, Change.Id changeId, CurrentUser user) throws NoSuchChangeException, OrmException</td> 
+     <td> return controlFor(notesFactory.create(db.get(), project, changeId), user); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4708</td> 
+     <td>1242677917</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>53a5ccd4df2f86c75a2023fff3206c276adb996f</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>TODO: propagate this exception</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>controlFor(Change.Id, CurrentUser)</td> 
+     <td>public ChangeControl controlFor(Change.Id changeId, CurrentUser user) throws NoSuchChangeException, OrmException</td> 
+     <td> Change change = db.get().changes().get(changeId); if (change == null) { throw new NoSuchChangeException(changeId); } return controlFor(change, user); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

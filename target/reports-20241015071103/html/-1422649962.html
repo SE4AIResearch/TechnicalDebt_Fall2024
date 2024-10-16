@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3853</td> <td>-1422649962</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>TODO: would that be possible to propagate the event metadata?</td> <td>SATD_ADDED</td> <td>notify(T)</td> <td> void notify(T event)</td> <td>
+    logger.debug("Consuming CDI event [{}] with {}", event, this);
+    Exchange exchange = getEndpoint().createExchange();
+    // TODO: would that be possible to propagate the event metadata?
+    exchange.getIn().setBody(event);
+    // Avoid infinite loop of exchange events
+    if (event instanceof AbstractExchangeEvent) {
+        exchange.setProperty(Exchange.NOTIFY_EVENT, Boolean.TRUE);
+    }
+    try {
+        getProcessor().process(exchange);
+    } catch (Exception cause) {
+        throw new RuntimeExchangeException("Error while processing CDI event", exchange, cause);
+    } finally {
+        if (event instanceof AbstractExchangeEvent) {
+            exchange.setProperty(Exchange.NOTIFY_EVENT, Boolean.FALSE);
+        }
+    }
+</td> </tr></table></body></html>

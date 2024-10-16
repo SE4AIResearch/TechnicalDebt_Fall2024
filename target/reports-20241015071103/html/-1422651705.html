@@ -1,0 +1,38 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>613</td> <td>-1422651705</td><td>apache/camel</td><td>Claus Ibsen</td><td>c655fe797305ec1af60800915dead3b5fb4d4840</td> <td>TODO: is there a way to avoid copy-pasting the reconnect logic?</td> <td>TODO: is there a way to avoid copy-pasting the reconnect logic?</td> <td>SATD_MOVED_FILE</td> <td>poll()</td> <td>protected void poll() throws Exception</td> <td>
+    // TODO: is there a way to avoid copy-pasting the reconnect logic?
+    connectIfNecessary();
+    // If the attempt to connect isn't successful, then the thrown
+    // exception will signify that we couldn't poll
+    try {
+        final String fileName = endpoint.getConfiguration().getFile();
+        if (endpoint.getConfiguration().isDirectory()) {
+            pollDirectory(fileName);
+        } else {
+            channel.cd(fileName.substring(0, fileName.lastIndexOf('/')));
+            final ChannelSftp.LsEntry file = (ChannelSftp.LsEntry) channel.ls(fileName.substring(fileName.lastIndexOf('/') + 1)).get(0);
+            pollFile(file);
+        }
+        lastPollTime = System.currentTimeMillis();
+    } catch (JSchException e) {
+        // If the connection has gone stale, then we must manually disconnect
+        // the client before attempting to reconnect
+        LOG.warn("Disconnecting due to exception: " + e.toString());
+        disconnect();
+        // Rethrow to signify that we didn't poll
+        throw e;
+    } catch (SftpException e) {
+        // Still not sure if/when these come up and what we should do about them
+        // client.disconnect();
+        LOG.warn("Caught SftpException:" + e.toString());
+        LOG.warn("Doing nothing for now, need to determine an appropriate action");
+        // Rethrow to signify that we didn't poll
+        throw e;
+    }
+</td> </tr></table></body></html>

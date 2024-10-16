@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2202</td> <td>-1422650889</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>35048bfde70971822165087b4884920f75ae6177</td> <td>None</td> <td>TODO: use false due CAMEL-3826 until root cause is fixed in hawtdb</td> <td>SATD_ADDED</td> <td>start()</td> <td>public void start()</td> <td>
+    if (getFile() == null) {
+        throw new IllegalArgumentException("A file must be configured");
+    }
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Starting HawtDB using file: " + getFile());
+    }
+    open();
+    pageFile = getTxPageFile();
+    execute(new Work<Boolean>() {
+
+        public Boolean execute(Transaction tx) {
+            if (!tx.allocator().isAllocated(0)) {
+                // if we just created the file, first allocated page should be 0
+                ROOT_INDEXES_FACTORY.create(tx);
+                LOG.info("Aggregation repository data store created using file: " + getFile());
+            } else {
+                SortedIndex<String, Integer> indexes = ROOT_INDEXES_FACTORY.open(tx);
+                LOG.info("Aggregation repository data store loaded using file: " + getFile() + " containing " + indexes.size() + " repositories.");
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "Allocation repository file: " + getFile();
+        }
+    });
+</td> </tr></table></body></html>

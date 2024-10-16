@@ -1,0 +1,77 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2929</td> 
+     <td>-1422650522</td>
+     <td>apache/camel</td>
+     <td>cmueller</td>
+     <td>53575ff76f93a9b4eb73bd35a85311256dfaf3c8</td> 
+     <td>None</td> 
+     <td>FIXME: fix required in JSMPP. See http://code.google.com/p/jsmpp/issues/detail?id=140</td> 
+     <td>SATD_ADDED</td> 
+     <td>executeWithOptionalParameter()</td> 
+     <td>public void executeWithOptionalParameter() throws Exception</td> 
+     <td> Exchange exchange = new DefaultExchange(new DefaultCamelContext(), ExchangePattern.InOut); exchange.getIn().setHeader(SmppConstants.COMMAND, "DataSm"); Map<string, string>
+        optionalParameters = new LinkedHashMap
+       <string, string>
+        (); optionalParameters.put("SOURCE_SUBADDRESS", "1292"); optionalParameters.put("ADDITIONAL_STATUS_INFO_TEXT", "urgent"); optionalParameters.put("DEST_ADDR_SUBUNIT", "4"); optionalParameters.put("DEST_TELEMATICS_ID", "2"); optionalParameters.put("QOS_TIME_TO_LIVE", "3600000"); optionalParameters.put("ALERT_ON_MESSAGE_DELIVERY", null); // fall back test for vendor specific optional parameter optionalParameters.put("0x2150", "0815"); optionalParameters.put("0x2151", "0816"); optionalParameters.put("0x2152", "6"); optionalParameters.put("0x2153", "9"); optionalParameters.put("0x2154", "7400000"); optionalParameters.put("0x2155", null); exchange.getIn().setHeader(SmppConstants.OPTIONAL_PARAMETERS, optionalParameters); expect(session.dataShortMessage(eq("CMT"), eq(TypeOfNumber.UNKNOWN), eq(NumberingPlanIndicator.UNKNOWN), eq("1616"), eq(TypeOfNumber.UNKNOWN), eq(NumberingPlanIndicator.UNKNOWN), eq("1717"), eq(new ESMClass()), eq(new RegisteredDelivery((byte) 1)), eq(DataCoding.newInstance((byte) 0)), eq(new OptionalParameter.OctetString(Tag.SOURCE_SUBADDRESS, "1292")), eq(new OptionalParameter.COctetString(Tag.ADDITIONAL_STATUS_INFO_TEXT.code(), "urgent")), eq(new OptionalParameter.Byte(Tag.DEST_ADDR_SUBUNIT, (byte) 4)), eq(new OptionalParameter.Short(Tag.DEST_TELEMATICS_ID.code(), (short) 2)), eq(new OptionalParameter.Int(Tag.QOS_TIME_TO_LIVE, 3600000)), eq(new OptionalParameter.Null(Tag.ALERT_ON_MESSAGE_DELIVERY)))).andReturn(new DataSmResult(new MessageId("1"), new OptionalParameter[] { new OptionalParameter.OctetString(Tag.SOURCE_SUBADDRESS, "1292"), new OptionalParameter.COctetString(Tag.ADDITIONAL_STATUS_INFO_TEXT.code(), "urgent"), new OptionalParameter.Byte(Tag.DEST_ADDR_SUBUNIT, (byte) 4), new OptionalParameter.Short(Tag.DEST_TELEMATICS_ID.code(), (short) 2), new OptionalParameter.Int(Tag.QOS_TIME_TO_LIVE, 3600000), new OptionalParameter.Null(Tag.ALERT_ON_MESSAGE_DELIVERY) })); replay(session); command.execute(exchange); verify(session); assertEquals(3, exchange.getOut().getHeaders().size()); assertEquals("1", exchange.getOut().getHeader(SmppConstants.ID)); Map
+        <string, string>
+          optParamMap = exchange.getOut().getHeader(SmppConstants.OPTIONAL_PARAMETERS, Map.class); assertEquals(6, optParamMap.size()); assertEquals("1292", optParamMap.get("SOURCE_SUBADDRESS")); // FIXME: fix required in JSMPP. See http://code.google.com/p/jsmpp/issues/detail?id=140 // assertEquals("urgent", optParamMap.get("ADDITIONAL_STATUS_INFO_TEXT")); assertEquals("4", optParamMap.get("DEST_ADDR_SUBUNIT")); assertEquals("2", optParamMap.get("DEST_TELEMATICS_ID")); assertEquals("3600000", optParamMap.get("QOS_TIME_TO_LIVE")); assertNull(optParamMap.get("ALERT_ON_MESSAGE_DELIVERY")); Map
+         <short, object>
+           optionalResultParameter = exchange.getOut().getHeader(SmppConstants.OPTIONAL_PARAMETER, Map.class); assertEquals(6, optionalResultParameter.size()); assertArrayEquals("1292".getBytes("UTF-8"), (byte[]) optionalResultParameter.get(Short.valueOf((short) 0x0202))); // FIXME: fix required in JSMPP. See http://code.google.com/p/jsmpp/issues/detail?id=140 // assertEquals("urgent", optionalResultParameter.get(Short.valueOf((short) 0x001D))); assertEquals(Byte.valueOf((byte) 4), optionalResultParameter.get(Short.valueOf((short) 0x0005))); assertEquals(Short.valueOf((short) 2), optionalResultParameter.get(Short.valueOf((short) 0x0008))); assertEquals(Integer.valueOf(3600000), optionalResultParameter.get(Short.valueOf((short) 0x0017))); assertNull(optionalResultParameter.get(Short.valueOf((short) 0x130C))); 
+         </short,>
+        </string,>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2822</td> 
+     <td>-1422650522</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>09ceee6009facb660d8f1329656a84e39c2e86ff</td> 
+     <td>None</td> 
+     <td>FIXME: fix required in JSMPP. See http://code.google.com/p/jsmpp/issues/detail?id=140</td> 
+     <td>SATD_ADDED</td> 
+     <td>executeWithOptionalParameter()</td> 
+     <td>public void executeWithOptionalParameter() throws Exception</td> 
+     <td> Exchange exchange = new DefaultExchange(new DefaultCamelContext(), ExchangePattern.InOut); exchange.getIn().setHeader(SmppConstants.COMMAND, "DataSm"); Map<string, string>
+        optionalParameters = new LinkedHashMap
+       <string, string>
+        (); optionalParameters.put("SOURCE_SUBADDRESS", "1292"); optionalParameters.put("ADDITIONAL_STATUS_INFO_TEXT", "urgent"); optionalParameters.put("DEST_ADDR_SUBUNIT", "4"); optionalParameters.put("DEST_TELEMATICS_ID", "2"); optionalParameters.put("QOS_TIME_TO_LIVE", "3600000"); optionalParameters.put("ALERT_ON_MESSAGE_DELIVERY", null); exchange.getIn().setHeader(SmppConstants.OPTIONAL_PARAMETERS, optionalParameters); expect(session.dataShortMessage(eq("CMT"), eq(TypeOfNumber.UNKNOWN), eq(NumberingPlanIndicator.UNKNOWN), eq("1616"), eq(TypeOfNumber.UNKNOWN), eq(NumberingPlanIndicator.UNKNOWN), eq("1717"), eq(new ESMClass()), eq(new RegisteredDelivery((byte) 1)), eq(DataCoding.newInstance((byte) 0)), eq(new OptionalParameter.OctetString(Tag.SOURCE_SUBADDRESS, "1292")), eq(new OptionalParameter.COctetString(Tag.ADDITIONAL_STATUS_INFO_TEXT.code(), "urgent")), eq(new OptionalParameter.Byte(Tag.DEST_ADDR_SUBUNIT, (byte) 4)), eq(new OptionalParameter.Short(Tag.DEST_TELEMATICS_ID.code(), (short) 2)), eq(new OptionalParameter.Int(Tag.QOS_TIME_TO_LIVE, 3600000)), eq(new OptionalParameter.Null(Tag.ALERT_ON_MESSAGE_DELIVERY)))).andReturn(new DataSmResult(new MessageId("1"), new OptionalParameter[] { new OptionalParameter.OctetString(Tag.SOURCE_SUBADDRESS, "1292"), new OptionalParameter.COctetString(Tag.ADDITIONAL_STATUS_INFO_TEXT.code(), "urgent"), new OptionalParameter.Byte(Tag.DEST_ADDR_SUBUNIT, (byte) 4), new OptionalParameter.Short(Tag.DEST_TELEMATICS_ID.code(), (short) 2), new OptionalParameter.Int(Tag.QOS_TIME_TO_LIVE, 3600000), new OptionalParameter.Null(Tag.ALERT_ON_MESSAGE_DELIVERY) })); replay(session); command.execute(exchange); verify(session); assertEquals("1", exchange.getOut().getHeader(SmppConstants.ID)); Map
+        <string, string>
+          optParamMap = exchange.getOut().getHeader(SmppConstants.OPTIONAL_PARAMETERS, Map.class); assertEquals(6, optParamMap.size()); assertEquals("1292", optParamMap.get("SOURCE_SUBADDRESS")); // FIXME: fix required in JSMPP. See http://code.google.com/p/jsmpp/issues/detail?id=140 // assertEquals("urgent", optParamMap.get("ADDITIONAL_STATUS_INFO_TEXT")); assertEquals("4", optParamMap.get("DEST_ADDR_SUBUNIT")); assertEquals("2", optParamMap.get("DEST_TELEMATICS_ID")); assertEquals("3600000", optParamMap.get("QOS_TIME_TO_LIVE")); assertNull(optParamMap.get("ALERT_ON_MESSAGE_DELIVERY")); 
+        </string,>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

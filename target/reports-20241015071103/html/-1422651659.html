@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1296</td> 
+     <td>-1422651659</td> 
+     <td>apache/camel</td> 
+     <td>Hadrian Zbarcea</td> 
+     <td>ca7ec898a5b5256fb886e00dca71a2bc8c006ed6</td> 
+     <td>hack: now we need to replace the proceed of the proxy with its own a bit ugly, operating based on the assumption that the proceed is in its outputs (if proceed() was called) and/or in the outputs of the otherwise or last when clause for the predicated version.</td> 
+     <td>hack: now we need to replace the proceed of the proxy with its own a bit ugly, operating based on the assumption that the proceed is in its outputs (if proceed() was called) and/or in the outputs of the otherwise or last when clause for the predicated version.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createProxy()</td> 
+     <td>public InterceptFromDefinition createProxy()</td> 
+     <td> InterceptFromDefinition answer = new InterceptFromDefinition(); answer.getOutputs().addAll(this.getOutputs()); answer.setStopIntercept(getStopIntercept()); // hack: now we need to replace the proceed of the proxy with its own // a bit ugly, operating based on the assumption that the proceed is // in its outputs (if proceed() was called) and/or in the // outputs of the otherwise or last when clause for the predicated version. if (answer.getOutputs().size() &gt; 0) { // this is for the predicate version or if a choice() is present ChoiceDefinition choice = null; for (ProcessorDefinition processor : answer.getOutputs()) { if (processor instanceof ChoiceDefinition) { // special cases for predicates (choices) choice = (ChoiceDefinition) processor; // for the predicated version we add the proceed() to otherwise() // before knowing if stop() will follow, so let's make a small adjustment if (usePredicate &amp;&amp; getStopIntercept()) { WhenDefinition when = choice.getWhenClauses().get(0); when.getOutputs().remove(this.getProceed()); } // add proceed to the when clause addProceedProxy(this.getProceed(), answer.getProceed(), choice.getWhenClauses().get(choice.getWhenClauses().size() - 1), usePredicate &amp;&amp; !getStopIntercept()); // force adding a proceed at the end (otherwise) if its not a stop type addProceedProxy(this.getProceed(), answer.getProceed(), choice.getOtherwise(), !getStopIntercept()); if (getStopIntercept()) { // must add proceed to when clause if stop is explictiy declared, otherwise when the // predicate test fails then there is no proceed // See example: InterceptFromSimpleRouteTest (City Paris is never proceeded) addProceedProxy(this.getProceed(), answer.getProceed(), choice.getWhenClauses().get(choice.getWhenClauses().size() - 1), usePredicate); } break; } } if (choice == null) { // force adding a proceed at the end if its not a stop type addProceedProxy(this.getProceed(), answer.getProceed(), answer, !getStopIntercept()); } } return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1104</td> 
+     <td>-1422651659</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>5acafd76210d7f314fbeb6a3a3a0f358ad100adb</td> 
+     <td>hack: now we need to replace the proceed of the proxy with its own a bit ugly, operating based on the assumption that the proceed is in its outputs (if proceed() was called) and/or in the outputs of the otherwise or last when clause for the predicated version.</td> 
+     <td>hack: now we need to replace the proceed of the proxy with its own a bit ugly, operating based on the assumption that the proceed is in its outputs (if proceed() was called) and/or in the outputs of the otherwise or last when clause for the predicated version.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createProxy()</td> 
+     <td>public InterceptDefinition createProxy()</td> 
+     <td> InterceptDefinition answer = new InterceptDefinition(); answer.getOutputs().addAll(this.getOutputs()); answer.setStopIntercept(getStopIntercept()); // hack: now we need to replace the proceed of the proxy with its own // a bit ugly, operating based on the assumption that the proceed is // in its outputs (if proceed() was called) and/or in the // outputs of the otherwise or last when clause for the predicated version. if (answer.getOutputs().size() &gt; 0) { // this is for the predicate version or if a choice() is present ChoiceDefinition choice = null; for (ProcessorDefinition processor : answer.getOutputs()) { if (processor instanceof ChoiceDefinition) { // special cases for predicates (choices) choice = (ChoiceDefinition) processor; // for the predicated version we add the proceed() to otherwise() // before knowing if stop() will follow, so let's make a small adjustment if (usePredicate &amp;&amp; getStopIntercept()) { WhenDefinition when = choice.getWhenClauses().get(0); when.getOutputs().remove(this.getProceed()); } // add proceed to the when clause addProceedProxy(this.getProceed(), answer.getProceed(), choice.getWhenClauses().get(choice.getWhenClauses().size() - 1), usePredicate &amp;&amp; !getStopIntercept()); // force adding a proceed at the end (otherwise) if its not a stop type addProceedProxy(this.getProceed(), answer.getProceed(), choice.getOtherwise(), !getStopIntercept()); if (getStopIntercept()) { // must add proceed to when clause if stop is explictiy declared, otherwise when the // predicate test fails then there is no proceed // See example: InterceptorSimpleRouteTest (City Paris is never proceeded) addProceedProxy(this.getProceed(), answer.getProceed(), choice.getWhenClauses().get(choice.getWhenClauses().size() - 1), usePredicate); } break; } } if (choice == null) { // force adding a proceed at the end if its not a stop type addProceedProxy(this.getProceed(), answer.getProceed(), answer, !getStopIntercept()); } } return answer; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>695</td> 
+     <td>-1422651659</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>5f3d672667e1559d597d32a6e24cafa326658963</td> 
+     <td>None</td> 
+     <td>hack: now we need to replace the proceed of the proxy with its own a bit ugly, operating based on the assumption that the proceed is in its outputs (if proceed() was called) and/or in the outputs of the otherwise or last when clause for the predicated version.</td> 
+     <td>SATD_ADDED</td> 
+     <td>createProxy()</td> 
+     <td>public InterceptType createProxy()</td> 
+     <td> InterceptType answer = new InterceptType(); answer.getOutputs().addAll(this.getOutputs()); // hack: now we need to replace the proceed of the proxy with its own // a bit ugly, operating based on the assumption that the proceed is // in its outputs (if proceed() was called) and/or in the // outputs of the otherwise or last when clause for the predicated version. proxifyProceed(this.getProceed(), answer.getProceed(), answer); if (answer.getOutputs().size() &gt; 0) { // this is for the predicate version ProcessorType<!--?--> processor = answer; processor = (ProcessorType<!--?-->) answer.getOutputs().get(0); if (processor instanceof ChoiceType) { ChoiceType choice = (ChoiceType) processor; proxifyProceed(this.getProceed(), answer.getProceed(), choice.getWhenClauses().get(choice.getWhenClauses().size() - 1)); proxifyProceed(this.getProceed(), answer.getProceed(), choice.getOtherwise()); } } return answer; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

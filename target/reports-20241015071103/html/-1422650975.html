@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2051</td> <td>-1422650975</td><td>apache/camel</td><td>Claus Ibsen</td><td>b8b37f7d9499f164ffdf280958d9f52914dd9d8f</td> <td>start from somewhere in the 21xxx range</td> <td>start from somewhere in the 21xxx range</td> <td>SATD_MOVED_FILE</td> <td>initPort()</td> <td>public static void initPort() throws Exception</td> <td>
+    File file = new File("./target/ftpport.txt");
+    file = file.getAbsoluteFile();
+    if (!file.exists()) {
+        // start from somewhere in the 21xxx range
+        port = 21000 + new Random().nextInt(900);
+    } else {
+        // read port number from file
+        String s = IOConverter.toString(file, null);
+        port = Integer.parseInt(s);
+        // use next number
+        port++;
+    }
+    // save to file, do not append
+    FileOutputStream fos = new FileOutputStream(file, false);
+    try {
+        fos.write(String.valueOf(port).getBytes());
+    } finally {
+        fos.close();
+    }
+</td> </tr></table></body></html>

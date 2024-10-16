@@ -1,0 +1,98 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1706</td> <td>-1422651154</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>ef2f9b71cadfb26cd5cb7224fa4905014fc1028c</td> <td>None</td> <td>TODO: shutdownRunningTask should be implemented in various consumers</td> <td>SATD_ADDED</td> <td>run()</td> <td>public void run()</td> <td>
+    // the strategy in this run method is to
+    // 1) go over the routes and shutdown those routes which can be shutdown asap
+    // some routes will be deferred to shutdown at the end, as they are needed
+    // by other routes so they can complete their tasks
+    // 2) wait until all inflight and pending exchanges has been completed
+    // 3) shutdown the deferred routes
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("There are " + routes.size() + " routes to shutdown");
+    }
+    // list of deferred consumers to shutdown when all exchanges has been completed routed
+    // and thus there are no more inflight exchanges so they can be safely shutdown at that time
+    List<ShutdownDeferredConsumer> deferredConsumers = new ArrayList<ShutdownDeferredConsumer>();
+    for (RouteStartupOrder order : routes) {
+        ShutdownRoute shutdownRoute = order.getRoute().getRouteContext().getShutdownRoute();
+        ShutdownRunningTask shutdownRunningTask = order.getRoute().getRouteContext().getShutdownRunningTask();
+        // TODO: shutdownRunningTask should be implemented in various consumers
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Shutting down route: " + order.getRoute().getId() + " with options [" + shutdownRoute + "," + shutdownRunningTask + "]");
+        }
+        for (Consumer consumer : order.getInputs()) {
+            boolean suspend = false;
+            // assume we should shutdown if we are not deferred
+            boolean shutdown = shutdownRoute != ShutdownRoute.Defer;
+            if (shutdown) {
+                // if we are to shutdown then check whether we can suspend instead as its a more
+                // gentle wat to graceful shutdown
+                // some consumers do not support shutting down so let them decide
+                // if a consumer is suspendable then prefer to use that and then shutdown later
+                if (consumer instanceof ShutdownAware) {
+                    shutdown = ((ShutdownAware) consumer).deferShutdown();
+                } else if (consumer instanceof SuspendableService) {
+                    suspend = true;
+                }
+            }
+            if (suspend) {
+                // only suspend it and then later shutdown it
+                suspendNow((SuspendableService) consumer, consumer);
+                // add it to the deferred list so the route will be shutdown later
+                deferredConsumers.add(new ShutdownDeferredConsumer(order.getRoute(), consumer));
+                LOG.info("Route: " + order.getRoute().getId() + " suspended and shutdown deferred.");
+            } else if (shutdown) {
+                shutdownNow(consumer);
+                LOG.info("Route: " + order.getRoute().getId() + " shutdown complete.");
+            } else {
+                // we will stop it later, but for now it must run to be able to help all inflight messages
+                // be safely completed
+                deferredConsumers.add(new ShutdownDeferredConsumer(order.getRoute(), consumer));
+                LOG.info("Route: " + order.getRoute().getId() + " shutdown deferred.");
+            }
+        }
+    }
+    // wait till there are no more pending and inflight messages
+    boolean done = false;
+    while (!done) {
+        int size = 0;
+        for (RouteStartupOrder order : routes) {
+            for (Consumer consumer : order.getInputs()) {
+                int inflight = context.getInflightRepository().size(consumer.getEndpoint());
+                // include any additional pending exchanges on some consumers which may have internal
+                // memory queues such as seda
+                if (consumer instanceof ShutdownAware) {
+                    inflight += ((ShutdownAware) consumer).getPendingExchangesSize();
+                }
+                if (inflight > 0) {
+                    size += inflight;
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(inflight + " inflight and pending exchanges for consumer: " + consumer);
+                    }
+                }
+            }
+        }
+        if (size > 0) {
+            try {
+                LOG.info("Waiting as there are still " + size + " inflight and pending exchanges to complete before we can shutdown");
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOG.warn("Interrupted while waiting during graceful shutdown, will force shutdown now.");
+                Thread.currentThread().interrupt();
+                break;
+            }
+        } else {
+            done = true;
+        }
+    }
+    // now all messages has been completed then stop the deferred consumers
+    for (ShutdownDeferredConsumer deferred : deferredConsumers) {
+        shutdownNow(deferred.getConsumer());
+        LOG.info("Route: " + deferred.getRoute().getId() + " shutdown complete.");
+    }
+</td> </tr></table></body></html>

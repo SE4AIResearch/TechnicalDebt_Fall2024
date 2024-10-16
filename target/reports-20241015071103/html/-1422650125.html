@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3566</td> <td>-1422650125</td><td>apache/camel</td><td>Willem Jiang</td><td>9f893d83e50d25b4a8571705f13c34f8981c0af6</td> <td>None</td> <td>TODO Do we need to setup the args for the DeadLetter?</td> <td>SATD_ADDED</td> <td>declareExchangeAndQueue(Channel)</td> <td>public void declareExchangeAndQueue(Channel channel) throws IOException</td> <td>
+    Map<String, Object> queueArgs = new HashMap<String, Object>();
+    Map<String, Object> exchangeArgs = new HashMap<String, Object>();
+    if (deadLetterExchange != null) {
+        queueArgs.put(RabbitMQConstants.RABBITMQ_DEAD_LETTER_EXCHANGE, getDeadLetterExchange());
+        queueArgs.put(RabbitMQConstants.RABBITMQ_DEAD_LETTER_ROUTING_KEY, getDeadLetterRoutingKey());
+        // TODO Do we need to setup the args for the DeadLetter?
+        channel.exchangeDeclare(getDeadLetterExchange(), getDeadLetterExchangeType(), isDurable(), isAutoDelete(), new HashMap<String, Object>());
+        channel.queueDeclare(getDeadLetterQueue(), isDurable(), false, isAutoDelete(), null);
+        channel.queueBind(getDeadLetterQueue(), getDeadLetterExchange(), getDeadLetterRoutingKey() == null ? "" : getDeadLetterRoutingKey());
+    }
+    if (getQueueArgsConfigurer() != null) {
+        getQueueArgsConfigurer().configurArgs(queueArgs);
+    }
+    if (getExchangeArgsConfigurer() != null) {
+        getExchangeArgsConfigurer().configurArgs(exchangeArgs);
+    }
+    channel.exchangeDeclare(getExchangeName(), getExchangeType(), isDurable(), isAutoDelete(), exchangeArgs);
+    if (getQueue() != null) {
+        // need to make sure the queueDeclare is same with the exchange declare
+        channel.queueDeclare(getQueue(), isDurable(), false, isAutoDelete(), queueArgs);
+        channel.queueBind(getQueue(), getExchangeName(), getRoutingKey() == null ? "" : getRoutingKey());
+    }
+</td> </tr></table></body></html>

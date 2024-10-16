@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5339</td> <td>-1009652384</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Enable queue and job level authorization</td> <td>SATD_ADDED</td> <td>startCluster(boolean)</td> <td>private void startCluster(boolean reStart) throws Exception</td> <td>
+    // Configure job queues
+    String[] queueNames = { "default" };
+    createQueuesConfigFile(queueNames, new String[] { jobSubmitter }, new String[] { qAdmin });
+    JobConf conf = new JobConf();
+    // Enable queue and job level authorization
+    conf.setBoolean(MRConfig.MR_ACLS_ENABLED, true);
+    // Enable CompletedJobStore
+    FileSystem fs = FileSystem.getLocal(conf);
+    if (!reStart) {
+        fs.delete(TEST_DIR, true);
+    }
+    conf.set(JTConfig.JT_PERSIST_JOBSTATUS_DIR, fs.makeQualified(TEST_DIR).toString());
+    conf.setBoolean(JTConfig.JT_PERSIST_JOBSTATUS, true);
+    conf.set(JTConfig.JT_PERSIST_JOBSTATUS_HOURS, "1");
+    UserGroupInformation MR_UGI = UserGroupInformation.getLoginUser();
+    mr = new MiniMRCluster(0, 0, 1, "file:///", 1, null, null, MR_UGI, conf);
+</td> </tr></table></body></html>

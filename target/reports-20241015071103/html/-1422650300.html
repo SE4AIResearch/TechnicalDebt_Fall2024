@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3172</td> <td>-1422650300</td><td>apache/camel</td><td>Claus Ibsen</td><td>7db64fcd7446abf928b58150ae1b4e51e8955cbc</td> <td>None</td> <td>not the best implementation in the world as we have to browse
+the entire queue, which could be massive</td> <td>SATD_ADDED</td> <td>browseSelected(String, JmsOperations, String, JmsQueueEndpoint)</td> <td>public List<Exchange> browseSelected(final String selector, final JmsOperations template, final String queue, final JmsQueueEndpoint endpoint)</td> <td>
+    return template.browseSelected(queue, selector, new BrowserCallback<List<Exchange>>() {
+
+        public List<Exchange> doInJms(Session session, QueueBrowser browser) throws JMSException {
+            int size = endpoint.getMaximumBrowseSize();
+            if (size <= 0) {
+                size = Integer.MAX_VALUE;
+            }
+            // not the best implementation in the world as we have to browse
+            // the entire queue, which could be massive
+            List<Exchange> answer = new ArrayList<Exchange>();
+            Enumeration<?> iter = browser.getEnumeration();
+            for (int i = 0; i < size && iter.hasMoreElements(); i++) {
+                Message message = (Message) iter.nextElement();
+                Exchange exchange = endpoint.createExchange(message);
+                answer.add(exchange);
+            }
+            return answer;
+        }
+    });
+</td> </tr></table></body></html>

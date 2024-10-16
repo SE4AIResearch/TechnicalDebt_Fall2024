@@ -1,0 +1,73 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5550</td> <td>-1009652176</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Currently, authorization is not done for jobtracker page. So allow
+everyone to view it.</td> <td>SATD_ADDED</td> <td>testWebUIAuthorization()</td> <td>public void testWebUIAuthorization() throws Exception</td> <td>
+    setupGroupsProvider();
+    Properties props = new Properties();
+    props.setProperty("hadoop.http.filter.initializers", DummyFilterInitializer.class.getName());
+    props.setProperty(MRConfig.MR_ACLS_ENABLED, String.valueOf(true));
+    props.setProperty("dfs.permissions.enabled", "false");
+    props.setProperty(JTConfig.PRIVATE_ACTIONS_KEY, "true");
+    props.setProperty(MRJobConfig.SETUP_CLEANUP_NEEDED, "false");
+    props.setProperty(MRConfig.MR_SUPERGROUP, "superGroup");
+    props.setProperty(MRConfig.MR_ADMINS, mrAdminUser + " " + mrAdminGroup);
+    String[] queueNames = { "default" };
+    String[] submitAclStrings = { jobSubmitter + "," + jobSubmitter1 + "," + jobSubmitter2 + "," + jobSubmitter3 };
+    String[] adminsAclStrings = new String[] { qAdmin };
+    startCluster(props, queueNames, submitAclStrings, adminsAclStrings);
+    MiniMRCluster cluster = getMRCluster();
+    int infoPort = cluster.getJobTrackerRunner().getJobTrackerInfoPort();
+    JobConf clusterConf = cluster.createJobConf();
+    JobConf conf = new JobConf(clusterConf);
+    conf.set(MRJobConfig.JOB_ACL_VIEW_JOB, viewColleague + " group3");
+    // Let us add group1 and group3 to modify-job-acl. So modifyColleague and
+    // viewAndModifyColleague will be able to modify the job
+    conf.set(MRJobConfig.JOB_ACL_MODIFY_JOB, " group1,group3");
+    Job job = startSleepJobAsUser(jobSubmitter, conf);
+    org.apache.hadoop.mapreduce.JobID jobid = job.getJobID();
+    String jtURL = "http://localhost:" + infoPort;
+    String jobTrackerJSP = jtURL + "/jobtracker.jsp?a=b";
+    try {
+        // Currently, authorization is not done for jobtracker page. So allow
+        // everyone to view it.
+        validateJobTrackerJSPAccess(jtURL);
+        validateJobDetailsJSPAccess(jobid, jtURL);
+        validateTaskGraphServletAccess(jobid, jtURL);
+        validateJobTasksJSPAccess(jobid, jtURL);
+        validateJobConfJSPAccess(jobid, jtURL);
+        validateJobFailuresJSPAccess(jobid, jtURL);
+        valiateJobBlacklistedTrackerJSPAccess(jobid, jtURL);
+        validateJobTrackerJSPSetPriorityAction(jobid, jtURL);
+        // Wait for the tip to start so as to test task related JSP
+        TaskID tipId = getTIPId(cluster, jobid);
+        validateTaskStatsJSPAccess(jobid, jtURL, tipId);
+        validateTaskDetailsJSPAccess(jobid, jtURL, tipId);
+        validateJobTrackerJSPKillJobAction(jobid, jtURL);
+    } finally {
+        if (!job.isComplete()) {
+            // kill the job(as jobSubmitter) if needed
+            LOG.info("Killing job " + jobid + " from finally block");
+            assertEquals(HttpURLConnection.HTTP_OK, getHttpStatusCode(jobTrackerJSP + "&killJobs=true&jobCheckBox=" + jobid.toString(), jobSubmitter, "GET"));
+        }
+    }
+    // validate killJob of jobdetails.jsp
+    validateJobDetailsJSPKillJob(cluster, clusterConf, jtURL);
+    // validate killJob of jobtracker.jsp as users viewAndModifyColleague,
+    // jobSubmitter, mrOwner, mrAdmin and superGroupMember
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, viewAndModifyColleague);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, jobSubmitter);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, mrOwner);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, superGroupMember);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, mrAdminUser);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, mrAdminGroupMember);
+    confirmJobTrackerJSPKillJobAsUser(cluster, conf, jtURL, qAdmin);
+    // validate killing of multiple jobs using jobtracker jsp and check
+    // if all the jobs which can be killed by user are actually the ones that
+    // got killed
+    validateKillMultipleJobs(cluster, conf, jtURL);
+</td> </tr></table></body></html>

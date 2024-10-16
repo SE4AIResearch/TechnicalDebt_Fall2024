@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1704</td> <td>-1422651156</td><td>apache/camel</td><td>Claus Ibsen</td><td>a011f55e8898741aa296efbc79bcbd3f91ab80f0</td> <td>None</td> <td>TODO which exception should be thrown here?</td> <td>SATD_ADDED</td> <td>unmarshal(Exchange, InputStream)</td> <td>public Object unmarshal(Exchange exchange, InputStream inputStream) throws Exception</td> <td>
+    if (this.defaultInstance == null) {
+        throw new CamelException("There is not defaultInstance for protobuf unmarshaling");
+    }
+    Builder builder = this.defaultInstance.newBuilderForType().mergeFrom(inputStream);
+    if (!builder.isInitialized()) {
+        // TODO which exception should be thrown here?
+        throw new InvalidPayloadException(exchange, this.defaultInstance.getClass());
+    }
+    return builder.build();
+</td> </tr></table></body></html>

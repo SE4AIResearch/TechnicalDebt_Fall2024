@@ -1,0 +1,48 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4405</td> <td>1242677869</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>ea6d0b5a2706dfc47bbc94587196b6ab26138998</td> <td>None</td> <td>Hard-code a default maximum number of queries to prevent
+users from submitting too much to the server in a single call.</td> <td>SATD_ADDED</td> <td>query()</td> <td>private List<List<ChangeInfo>> query() throws OrmException, QueryParseException</td> <td>
+    if (imp.isDisabled()) {
+        throw new QueryParseException("query disabled");
+    }
+    if (queries == null || queries.isEmpty()) {
+        queries = Collections.singletonList("status:open");
+    } else if (queries.size() > 10) {
+        // Hard-code a default maximum number of queries to prevent
+        // users from submitting too much to the server in a single call.
+        throw new QueryParseException("limit of 10 queries");
+    }
+    int cnt = queries.size();
+    BitSet more = new BitSet(cnt);
+    List<List<ChangeData>> data = Lists.newArrayListWithCapacity(cnt);
+    for (int n = 0; n < cnt; n++) {
+        String query = queries.get(n);
+        List<ChangeData> changes = imp.queryChanges(query);
+        if (imp.getLimit() > 0 && changes.size() > imp.getLimit()) {
+            if (reverse) {
+                changes = changes.subList(1, changes.size());
+            } else {
+                changes = changes.subList(0, imp.getLimit());
+            }
+            more.set(n, true);
+        }
+        data.add(changes);
+    }
+    List<List<ChangeInfo>> res = json.addOptions(options).formatList2(data);
+    for (int n = 0; n < cnt; n++) {
+        List<ChangeInfo> info = res.get(n);
+        if (more.get(n) && !info.isEmpty()) {
+            if (reverse) {
+                info.get(0)._moreChanges = true;
+            } else {
+                info.get(info.size() - 1)._moreChanges = true;
+            }
+        }
+    }
+    return res;
+</td> </tr></table></body></html>

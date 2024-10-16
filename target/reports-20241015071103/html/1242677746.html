@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4252</td> 
+     <td>1242677746</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>75afdfdc843b7dfb4c9dc2676e162b21d7df7684</td> 
+     <td>If one of the user's groups had denied them access, but this group grants them access, prefer the grant over the denial. We have to break the tie somehow and we prefer being \"more open\" to being \"more closed\". </td> 
+     <td>If one of the user's groups had denied them access, but this group grants them access, prefer the grant over the denial. We have to break the tie somehow and we prefer being \"more open\" to being \"more closed\". </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>canPerform(ApprovalCategory.Id, short, String)</td> 
+     <td>private boolean canPerform(final ApprovalCategory.Id actionId, final short requireValue, final String refPattern)</td> 
+     <td> final Set<accountgroup.id>
+        groups = user.getEffectiveGroups(); int val = Integer.MIN_VALUE; for (final RefRight pr : state.getLocalRights()) { if (actionId.equals(pr.getApprovalCategoryId()) &amp;&amp; (refPattern == null || refPattern.equals(pr.getRefPattern())) &amp;&amp; groups.contains(pr.getAccountGroupId())) { if (val &lt; 0 &amp;&amp; pr.getMaxValue() &gt; 0) { // If one of the user's groups had denied them access, but // this group grants them access, prefer the grant over // the denial. We have to break the tie somehow and we // prefer being "more open" to being "more closed". // val = pr.getMaxValue(); } else { // Otherwise we use the largest value we can get. // val = Math.max(pr.getMaxValue(), val); } } } if (val == Integer.MIN_VALUE &amp;&amp; actionId.canInheritFromWildProject()) { for (final RefRight pr : state.getInheritedRights()) { if (actionId.equals(pr.getApprovalCategoryId()) &amp;&amp; (refPattern == null || refPattern.equals(pr.getRefPattern())) &amp;&amp; groups.contains(pr.getAccountGroupId())) { val = Math.max(pr.getMaxValue(), val); } } } return val &gt;= requireValue; 
+      </accountgroup.id></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4208</td> 
+     <td>1242677746</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Ulrik Sjolin</td>
+     <td>44671f5c6929a8f05223dd359182610286ceb98a</td> 
+     <td>None</td> 
+     <td>If one of the user's groups had denied them access, but this group grants them access, prefer the grant over the denial. We have to break the tie somehow and we prefer being \"more open\" to being \"more closed\". </td> 
+     <td>SATD_ADDED</td> 
+     <td>canPerform(ApprovalCategory.Id, short)</td> 
+     <td>public boolean canPerform(final ApprovalCategory.Id actionId, final short requireValue)</td> 
+     <td> final Set<accountgroup.id>
+        groups = user.getEffectiveGroups(); int val = Integer.MIN_VALUE; for (final ProjectRight pr : state.getLocalRights()) { if (actionId.equals(pr.getApprovalCategoryId()) &amp;&amp; groups.contains(pr.getAccountGroupId())) { if (val &lt; 0 &amp;&amp; pr.getMaxValue() &gt; 0) { // If one of the user's groups had denied them access, but // this group grants them access, prefer the grant over // the denial. We have to break the tie somehow and we // prefer being "more open" to being "more closed". // val = pr.getMaxValue(); } else { // Otherwise we use the largest value we can get. // val = Math.max(pr.getMaxValue(), val); } } } if (val == Integer.MIN_VALUE &amp;&amp; actionId.canInheritFromWildProject()) { for (final ProjectRight pr : state.getInheritedRights()) { if (actionId.equals(pr.getApprovalCategoryId()) &amp;&amp; groups.contains(pr.getAccountGroupId())) { val = Math.max(pr.getMaxValue(), val); } } } return val &gt;= requireValue; 
+      </accountgroup.id></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

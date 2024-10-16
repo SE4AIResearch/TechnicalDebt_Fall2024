@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>58</td> <td>-1422651997</td><td>apache/camel</td><td>Robert Davies</td><td>f3f792e763685511088a10afb2d58a75ac131421</td> <td>None</td> <td>lets expose this endpoint now in JBI
+TODO there could already be a component registered in JBI for this??</td> <td>SATD_ADDED</td> <td>resolveEndpoint(CamelContext, String)</td> <td>public Endpoint resolveEndpoint(CamelContext context, String uri) throws Exception</td> <td>
+    if (uri.startsWith("jbi:")) {
+        uri = uri.substring("jbi:".length());
+        JbiEndpoint camelEndpoint = new JbiEndpoint(uri, context, getComponentContext(), getBinding());
+        // lets expose this endpoint now in JBI
+        // TODO there could already be a component registered in JBI for this??
+        CamelJbiEndpoint jbiEndpoint = new CamelJbiEndpoint(camelEndpoint, getBinding());
+        addEndpoint(jbiEndpoint);
+        return camelEndpoint;
+    }
+    return null;
+</td> </tr></table></body></html>

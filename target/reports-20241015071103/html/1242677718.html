@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4125</td> 
+     <td>1242677718</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>b9e93f7ad5639dd15ee480c5e38fb60cd6c9d8b8</td> 
+     <td>Temporary hack to make Common.getAccountId() honor the Guice managed request state in either SSH or HTTP environments. </td> 
+     <td>Temporary hack to make Common.getAccountId() honor the Guice managed request state in either SSH or HTTP environments. </td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>contextInitialized(ServletContextEvent)</td> 
+     <td>public void contextInitialized(final ServletContextEvent event)</td> 
+     <td> super.contextInitialized(event); init(); // Temporary hack to make Common.getAccountId() honor the Guice // managed request state in either SSH or HTTP environments. // Common.setCurrentAccountImpl(new CurrentAccountImpl() { private final Provider<identifieduser>
+        sshUser = sshInjector.getProvider(IdentifiedUser.class); private final Provider
+       <currentuser>
+         webUser = webInjector.getProvider(CurrentUser.class); public Account.Id getAccountId() { try { return sshUser.get().getAccountId(); } catch (ProvisionException notSsh) { if (!(notSsh.getCause() instanceof OutOfScopeException)) { throw notSsh; } } CurrentUser u = webUser.get(); if (u instanceof IdentifiedUser) { return ((IdentifiedUser) u).getAccountId(); } else if (u == CurrentUser.ANONYMOUS) { return null; } else { throw new OutOfScopeException("Cannot determine current user"); } } }); try { sysInjector.getInstance(PushAllProjectsOp.Factory.class).create(null).start(30, TimeUnit.SECONDS); } catch (ConfigurationException e) { log.error("Unable to restart replication queue", e); } catch (ProvisionException e) { log.error("Unable to restart replication queue", e); } try { sysInjector.getInstance(ReloadSubmitQueueOp.Factory.class).create().start(15, TimeUnit.SECONDS); } catch (ConfigurationException e) { log.error("Unable to restart merge queue", e); } catch (ProvisionException e) { log.error("Unable to restart merge queue", e); } try { sshInjector.getInstance(SshDaemon.class).start(); } catch (ConfigurationException e) { log.error("Unable to start SSHD", e); } catch (ProvisionException e) { log.error("Unable to start SSHD", e); } catch (IOException e) { log.error("Unable to start SSHD", e); } 
+       </currentuser>
+      </identifieduser></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4124</td> 
+     <td>1242677718</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>84096cae16b292f09f207e5ae4eb509bcaff2a67</td> 
+     <td>None</td> 
+     <td>Temporary hack to make Common.getAccountId() honor the Guice managed request state in either SSH or HTTP environments. </td> 
+     <td>SATD_ADDED</td> 
+     <td>contextInitialized(ServletContextEvent)</td> 
+     <td>public void contextInitialized(final ServletContextEvent event)</td> 
+     <td> super.contextInitialized(event); // Temporary hack to make Common.getAccountId() honor the Guice // managed request state in either SSH or HTTP environments. // Common.setCurrentAccountImpl(new CurrentAccountImpl() { private final Provider<identifieduser>
+        sshUser = sshInjector.getProvider(IdentifiedUser.class); private final Provider
+       <currentuser>
+         webUser = webInjector.getProvider(CurrentUser.class); public Account.Id getAccountId() { try { return sshUser.get().getAccountId(); } catch (ProvisionException notSsh) { if (!(notSsh.getCause() instanceof OutOfScopeException)) { throw notSsh; } } CurrentUser u = webUser.get(); if (u instanceof IdentifiedUser) { return ((IdentifiedUser) u).getAccountId(); } else if (u == CurrentUser.ANONYMOUS) { return null; } else { throw new OutOfScopeException("Cannot determine current user"); } } }); try { rootInjector.getInstance(PushAllProjectsOp.Factory.class).create(null).start(30, TimeUnit.SECONDS); } catch (ConfigurationException e) { log.error("Unable to restart replication queue", e); } catch (ProvisionException e) { log.error("Unable to restart replication queue", e); } try { rootInjector.getInstance(ReloadSubmitQueueOp.Factory.class).create().start(15, TimeUnit.SECONDS); } catch (ConfigurationException e) { log.error("Unable to restart merge queue", e); } catch (ProvisionException e) { log.error("Unable to restart merge queue", e); } try { sshInjector.getInstance(Sshd.class).start(); } catch (ConfigurationException e) { log.error("Unable to start SSHD", e); } catch (ProvisionException e) { log.error("Unable to start SSHD", e); } catch (IOException e) { log.error("Unable to start SSHD", e); } 
+       </currentuser>
+      </identifieduser></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

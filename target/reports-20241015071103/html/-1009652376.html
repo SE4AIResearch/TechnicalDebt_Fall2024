@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5350</td> <td>-1009652376</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>As we already know current Capacity percent of this queue
+make children distribute unconfigured Capacity.</td> <td>SATD_ADDED</td> <td>distributeUnConfiguredCapacity()</td> <td> void distributeUnConfiguredCapacity()</td> <td>
+    List<AbstractQueue> unConfiguredQueues = new ArrayList<AbstractQueue>();
+    float totalCapacity = 0;
+    for (AbstractQueue q : children) {
+        if (q.qsc.getCapacityPercent() == -1) {
+            // Add into unConfigured queue.
+            unConfiguredQueues.add(q);
+        } else {
+            // If capacity is set , then add that to totalCapacity.
+            LOG.info(" the capacity percent of the queue " + q.getName() + "  is " + "" + q.qsc.getCapacityPercent());
+            totalCapacity += q.qsc.getCapacityPercent();
+            // As we already know current Capacity percent of this queue
+            // make children distribute unconfigured Capacity.
+            q.distributeUnConfiguredCapacity();
+        }
+    }
+    if (!unConfiguredQueues.isEmpty()) {
+        LOG.info("Total capacity to be distributed among the others are  " + "" + (100 - totalCapacity));
+        // We have list of queues at this level which are unconfigured.
+        // 100 - totalCapacity is the capacity remaining.
+        // Divide it equally among all the un configured queues.
+        float capacityShare = (100 - totalCapacity) / unConfiguredQueues.size();
+        // We dont have to check for 100 - totalCapacity being -ve , as
+        // we already do it while loading.
+        for (AbstractQueue q : unConfiguredQueues) {
+            if (q.qsc.getMaxCapacityPercent() > 0) {
+                if (q.qsc.getMaxCapacityPercent() < capacityShare) {
+                    throw new IllegalStateException(" Capacity share (" + capacityShare + ")for unconfigured queue " + q.getName() + " is greater than its maximum-capacity percentage " + q.qsc.getMaxCapacityPercent());
+                }
+            }
+            q.qsc.setCapacityPercent(capacityShare);
+            LOG.info("Capacity share for un configured queue " + q.getName() + "" + " is " + capacityShare);
+            // we have q's capacity now.
+            // make children also distribute it among themselves.
+            q.distributeUnConfiguredCapacity();
+        }
+    }
+</td> </tr></table></body></html>

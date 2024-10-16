@@ -1,0 +1,103 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3772</td> 
+     <td>-1422650123</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>8210db4439c6953ff945d2aa88b54dd75a908399</td> 
+     <td>need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, as &amp; can be used in a parameter value as well.</td> 
+     <td>need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, as &amp; can be used in a parameter value as well.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>Object&gt; parseQuery(String, boolean)</td> 
+     <td>public static Map<string, object>
+        parseQuery(String uri, boolean useRaw) throws URISyntaxException 
+      </string,></td> 
+     <td> // must check for trailing &amp; as the uri.split("&amp;") will ignore those if (uri != null &amp;&amp; uri.endsWith("&amp;")) { throw new URISyntaxException(uri, "Invalid uri syntax: Trailing &amp; marker found. " + "Check the uri and remove the trailing &amp; marker."); } if (isEmpty(uri)) { // return an empty map return new LinkedHashMap<string, object>
+        (0); } // need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, // as &amp; can be used in a parameter value as well. try { // use a linked map so the parameters is in the same order Map 
+       <string, object>
+         rc = new LinkedHashMap 
+        <string, object>
+          (); boolean isKey = true; boolean isValue = false; boolean isRaw = false; StringBuilder key = new StringBuilder(); StringBuilder value = new StringBuilder(); // parse the uri parameters char by char for (int i = 0; i &lt; uri.length(); i++) { // current char char ch = uri.charAt(i); // look ahead of the next char char next; if (i &lt;= uri.length() - 2) { next = uri.charAt(i + 1); } else { next = '\u0000'; } // are we a raw value isRaw = value.toString().startsWith(RAW_TOKEN_START); // if we are in raw mode, then we keep adding until we hit the end marker if (isRaw) { if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } // we only end the raw marker if its )&amp; or at the end of the value boolean end = ch == RAW_TOKEN_END.charAt(0) &amp;&amp; (next == '&amp;' || next == '\u0000'); if (end) { // raw value end, so add that as a parameter, and reset flags addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; // skip to next as we are in raw mode and have already added the value i++; } continue; } // if its a key and there is a = sign then the key ends and we are in value mode if (isKey &amp;&amp; ch == '=') { isKey = false; isValue = true; isRaw = false; continue; } // the &amp; denote parameter is ended if (ch == '&amp;') { // parameter is ended, as we hit &amp; separator addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; continue; } // regular char so add it to the key or value if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } } // any left over parameters, then add that if (key.length() &gt; 0) { addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); } return rc; } catch (UnsupportedEncodingException e) { URISyntaxException se = new URISyntaxException(e.toString(), "Invalid encoding"); se.initCause(e); throw se; } 
+        </string,> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3771</td> 
+     <td>-1422650123</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>bf1e1b2ebf3ee80d07065a1da0382e81eca863f9</td> 
+     <td>need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, as &amp; can be used in a parameter value as well.</td> 
+     <td>need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, as &amp; can be used in a parameter value as well.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>Object&gt; parseQuery(String, boolean)</td> 
+     <td>public static Map<string, object>
+        parseQuery(String uri, boolean useRaw) throws URISyntaxException 
+      </string,></td> 
+     <td> // must check for trailing &amp; as the uri.split("&amp;") will ignore those if (uri != null &amp;&amp; uri.endsWith("&amp;")) { throw new URISyntaxException(uri, "Invalid uri syntax: Trailing &amp; marker found. " + "Check the uri and remove the trailing &amp; marker."); } if (isEmpty(uri)) { // return an empty map return new LinkedHashMap<string, object>
+        (0); } // need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, // as &amp; can be used in a parameter value as well. try { // use a linked map so the parameters is in the same order Map 
+       <string, object>
+         rc = new LinkedHashMap 
+        <string, object>
+          (); boolean isKey = true; boolean isValue = false; boolean isRaw = false; StringBuilder key = new StringBuilder(); StringBuilder value = new StringBuilder(); // parse the uri parameters char by char for (int i = 0; i &lt; uri.length(); i++) { // current char char ch = uri.charAt(i); // look ahead of the next char char next; if (i &lt;= uri.length() - 2) { next = uri.charAt(i + 1); } else { next = '\u0000'; } // are we a raw value isRaw = value.toString().startsWith(RAW_TOKEN_START); // if we are in raw mode, then we keep adding until we hit the end marker if (isRaw) { if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } // we only end the raw marker if its )&amp; or at the end of the value boolean end = ch == RAW_TOKEN_END.charAt(0) &amp;&amp; (next == '&amp;' || next == '\u0000'); if (end) { // raw value end, so add that as a parameter, and reset flags addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; // skip to next as we are in raw mode and have already added the value i++; } continue; } // if its a key and there is a = sign then the key ends and we are in value mode if (isKey &amp;&amp; ch == '=') { isKey = false; isValue = true; isRaw = false; continue; } // the &amp; denote parameter is ended if (ch == '&amp;') { // parameter is ended, as we hit &amp; separator addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; continue; } // regular char so add it to the key or value if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } } // any left over parameters, then add that if (key.length() &gt; 0) { addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); } return rc; } catch (UnsupportedEncodingException e) { URISyntaxException se = new URISyntaxException(e.toString(), "Invalid encoding"); se.initCause(e); throw se; } 
+        </string,> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3568</td> 
+     <td>-1422650123</td>
+     <td>apache/camel</td>
+     <td>Henryk Konsek</td>
+     <td>d0597fefd54392f640dcc751a328841f052799bf</td> 
+     <td>None</td> 
+     <td>need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, as &amp; can be used in a parameter value as well.</td> 
+     <td>SATD_ADDED</td> 
+     <td>Object&gt; parseQuery(String, boolean)</td> 
+     <td>public static Map<string, object>
+        parseQuery(String uri, boolean useRaw) throws URISyntaxException
+      </string,></td> 
+     <td> // must check for trailing &amp; as the uri.split("&amp;") will ignore those if (uri != null &amp;&amp; uri.endsWith("&amp;")) { throw new URISyntaxException(uri, "Invalid uri syntax: Trailing &amp; marker found. " + "Check the uri and remove the trailing &amp; marker."); } if (isEmpty(uri)) { // return an empty map return new LinkedHashMap<string, object>
+       (0); } // need to parse the uri query parameters manually as we cannot rely on splitting by &amp;, // as &amp; can be used in a parameter value as well. try { // use a linked map so the parameters is in the same order Map
+       <string, object>
+         rc = new LinkedHashMap
+        <string, object>
+         (); boolean isKey = true; boolean isValue = false; boolean isRaw = false; StringBuilder key = new StringBuilder(); StringBuilder value = new StringBuilder(); // parse the uri parameters char by char for (int i = 0; i &lt; uri.length(); i++) { // current char char ch = uri.charAt(i); // look ahead of the next char char next; if (i &lt;= uri.length() - 2) { next = uri.charAt(i + 1); } else { next = '\u0000'; } // are we a raw value isRaw = value.toString().startsWith(RAW_TOKEN_START); // if we are in raw mode, then we keep adding until we hit the end marker if (isRaw) { if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } // we only end the raw marker if its )&amp; or at the end of the value boolean end = ch == RAW_TOKEN_END.charAt(0) &amp;&amp; (next == '&amp;' || next == '\u0000'); if (end) { // raw value end, so add that as a parameter, and reset flags addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; // skip to next as we are in raw mode and have already added the value i++; } continue; } // if its a key and there is a = sign then the key ends and we are in value mode if (isKey &amp;&amp; ch == '=') { isKey = false; isValue = true; isRaw = false; continue; } // the &amp; denote parameter is ended if (ch == '&amp;') { // parameter is ended, as we hit &amp; separator addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); key.setLength(0); value.setLength(0); isKey = true; isValue = false; isRaw = false; continue; } // regular char so add it to the key or value if (isKey) { key.append(ch); } else if (isValue) { value.append(ch); } } // any left over parameters, then add that if (key.length() &gt; 0) { addParameter(key.toString(), value.toString(), rc, useRaw || isRaw); } return rc; } catch (UnsupportedEncodingException e) { URISyntaxException se = new URISyntaxException(e.toString(), "Invalid encoding"); se.initCause(e); throw se; } 
+        </string,>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

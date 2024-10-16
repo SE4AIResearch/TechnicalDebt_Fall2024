@@ -1,0 +1,40 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5526</td> <td>-1009652200</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>scan all policies once every 5 second</td> <td>SATD_ADDED</td> <td>mySetup(int, int)</td> <td>private void mySetup(int stripeLength, int timeBeforeHar) throws Exception</td> <td>
+    // Make sure data directory exists
+    new File(TEST_DIR).mkdirs();
+    conf = new Configuration();
+    conf.set("raid.config.file", CONFIG_FILE);
+    conf.setBoolean("raid.config.reload", true);
+    conf.setLong("raid.config.reload.interval", RELOAD_INTERVAL);
+    // scan all policies once every 5 second
+    conf.setLong("raid.policy.rescan.interval", 5000);
+    // make all deletions not go through Trash
+    conf.set("fs.shell.delete.classname", "org.apache.hadoop.hdfs.DFSClient");
+    // do not use map-reduce cluster for Raiding
+    conf.set("raid.classname", "org.apache.hadoop.raid.LocalRaidNode");
+    conf.set("raid.server.address", "localhost:0");
+    conf.setInt("hdfs.raid.stripeLength", stripeLength);
+    conf.set("hdfs.raid.locations", "/destraid");
+    dfs = new MiniDFSCluster.Builder(conf).numDataNodes(NUM_DATANODES).build();
+    dfs.waitActive();
+    fileSys = dfs.getFileSystem();
+    namenode = fileSys.getUri().toString();
+    FileSystem.setDefaultUri(conf, namenode);
+    hftp = "hftp://localhost.localdomain:" + dfs.getNameNodePort();
+    FileSystem.setDefaultUri(conf, namenode);
+    FileWriter fileWriter = new FileWriter(CONFIG_FILE);
+    fileWriter.write("<?xml version=\"1.0\"?>\n");
+    String str = "<configuration> " + "<srcPath prefix=\"/user/dhruba/raidtest\"> " + "<policy name = \"RaidTest1\"> " + "<erasureCode>xor</erasureCode> " + "<destPath> /destraid</destPath> " + "<property> " + "<name>targetReplication</name> " + "<value>1</value> " + "<description>after RAIDing, decrease the replication factor of a file to this value." + "</description> " + "</property> " + "<property> " + "<name>metaReplication</name> " + "<value>1</value> " + "<description> replication factor of parity file" + "</description> " + "</property> " + "<property> " + "<name>modTimePeriod</name> " + "<value>2000</value> " + "<description> time (milliseconds) after a file is modified to make it " + "a candidate for RAIDing " + "</description> " + "</property> ";
+    if (timeBeforeHar >= 0) {
+        str += "<property> " + "<name>time_before_har</name> " + "<value>" + timeBeforeHar + "</value> " + "<description> amount of time waited before har'ing parity files" + "</description> " + "</property> ";
+    }
+    str += "</policy>" + "</srcPath>" + "</configuration>";
+    fileWriter.write(str);
+    fileWriter.close();
+</td> </tr></table></body></html>

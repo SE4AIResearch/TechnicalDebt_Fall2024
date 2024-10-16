@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2112</td> <td>-1422650932</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>64adb11bcec37a097cf962755eb83eafb3f7080e</td> <td>None</td> <td>wait a bit so we complete on the next poll</td> <td>SATD_ADDED</td> <td>testJdbcAggregateCompletionInterval()</td> <td>public void testJdbcAggregateCompletionInterval() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:aggregated");
+    mock.setResultWaitTime(30 * 1000L);
+    mock.expectedBodiesReceived("ABCD", "E");
+    // wait a bit so we complete on the next poll
+    Thread.sleep(2000);
+    template.sendBodyAndHeader("direct:start", "A", "id", 123);
+    template.sendBodyAndHeader("direct:start", "B", "id", 123);
+    template.sendBodyAndHeader("direct:start", "C", "id", 123);
+    template.sendBodyAndHeader("direct:start", "D", "id", 123);
+    Thread.sleep(6000);
+    template.sendBodyAndHeader("direct:start", "E", "id", 123);
+    assertMockEndpointsSatisfied();
+    // from endpoint should be preserved
+    assertEquals("direct://start", mock.getReceivedExchanges().get(0).getFromEndpoint().getEndpointUri());
+</td> </tr></table></body></html>

@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1720</td> <td>-1422651146</td><td>apache/camel</td><td>Claus Ibsen</td><td>f04d7f82f234be41f6c77e4485eea4a82c3143a7</td> <td>None</td> <td>some platform cannot test using Castor as it uses a SUN dependent Xerces</td> <td>SATD_ADDED</td> <td>testUnmarshalDomainObject()</td> <td>public void testUnmarshalDomainObject() throws Exception</td> <td>
+    // some platform cannot test using Castor as it uses a SUN dependent Xerces
+    if (isPlatform("aix")) {
+        return;
+    }
+    MockEndpoint mock = getMockEndpoint("mock:unmarshal");
+    mock.expectedMessageCount(1);
+    String xml = "<student><name>Sagara Gunathunga</name><age>27</age></student>";
+    template.sendBody("direct:unmarshal", xml);
+    Student student = new Student();
+    student.setStuName("Sagara Gunathunga");
+    student.setStuAge(27);
+    mock.assertIsSatisfied();
+    mock.message(0).body().isInstanceOf(Student.class);
+    mock.message(0).body().equals(student);
+</td> </tr></table></body></html>

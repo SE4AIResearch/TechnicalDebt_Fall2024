@@ -1,0 +1,200 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>5624</td> 
+     <td>-1009652351</td> 
+     <td>apache/hadoop</td> 
+     <td>Tsz-wo Sze</td> 
+     <td>09b6f98de431628c80bc8a6faf0070eeaf72ff2a</td> 
+     <td>move block to the head of the list</td> 
+     <td>move block to the head of the list</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>reportDiff(DatanodeDescriptor, BlockListAsLongs, Collection<blockinfo>
+        , Collection 
+       <block>
+         , Collection 
+        <block>
+          , Collection 
+         <blockinfo>
+           , Collection 
+          <statefulblockinfo>
+            ) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> void reportDiff(DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<blockinfo>
+        toAdd, Collection 
+       <block>
+         toRemove, Collection 
+        <block>
+          toInvalidate, Collection 
+         <blockinfo>
+           toCorrupt, Collection 
+          <statefulblockinfo>
+            toUC) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> // add to under-construction list // place a delimiter in the list which separates blocks // that have been reported from those that have not BlockInfo delimiter = new BlockInfo(new Block(), 1); boolean added = dn.addBlock(delimiter); assert added : "Delimiting block cannot be present in the node"; if (newReport == null) newReport = new BlockListAsLongs(); // scan the report and process newly reported blocks BlockReportIterator itBR = newReport.getBlockReportIterator(); while (itBR.hasNext()) { Block iblk = itBR.next(); ReplicaState iState = itBR.getCurrentReplicaState(); BlockInfo storedBlock = processReportedBlock(dn, iblk, iState, toAdd, toInvalidate, toCorrupt, toUC); // move block to the head of the list if (storedBlock != null &amp;&amp; storedBlock.findDatanode(dn) &gt;= 0) dn.moveBlockToHead(storedBlock); } // collect blocks that have not been reported // all of them are next to the delimiter Iterator<!--? extends Block--> it = new DatanodeDescriptor.BlockIterator(delimiter.getNext(0), dn); while (it.hasNext()) toRemove.add(it.next()); dn.removeBlock(delimiter); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5617</td> 
+     <td>-1009652351</td> 
+     <td>apache/hadoop</td> 
+     <td>Tsz-wo Sze</td> 
+     <td>97b6ca4dd7d1233e8f8c90b1c01e47228c044e13</td> 
+     <td>move block to the head of the list</td> 
+     <td>move block to the head of the list</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>reportDiff(DatanodeDescriptor, BlockListAsLongs, Collection<blockinfo>
+        , Collection 
+       <block>
+         , Collection 
+        <block>
+          , Collection 
+         <blockinfo>
+           , Collection 
+          <statefulblockinfo>
+            ) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> void reportDiff(DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<blockinfo>
+        toAdd, Collection 
+       <block>
+         toRemove, Collection 
+        <block>
+          toInvalidate, Collection 
+         <blockinfo>
+           toCorrupt, Collection 
+          <statefulblockinfo>
+            toUC) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> // add to under-construction list // place a delimiter in the list which separates blocks // that have been reported from those that have not BlockInfo delimiter = new BlockInfo(new Block(), 1); boolean added = dn.addBlock(delimiter); assert added : "Delimiting block cannot be present in the node"; if (newReport == null) newReport = new BlockListAsLongs(); // scan the report and process newly reported blocks BlockReportIterator itBR = newReport.getBlockReportIterator(); while (itBR.hasNext()) { Block iblk = itBR.next(); ReplicaState iState = itBR.getCurrentReplicaState(); BlockInfo storedBlock = processReportedBlock(dn, iblk, iState, toAdd, toInvalidate, toCorrupt, toUC); // move block to the head of the list if (storedBlock != null &amp;&amp; storedBlock.findDatanode(dn) &gt;= 0) dn.moveBlockToHead(storedBlock); } // collect blocks that have not been reported // all of them are next to the delimiter Iterator<!--? extends Block--> it = new DatanodeDescriptor.BlockIterator(delimiter.getNext(0), dn); while (it.hasNext()) toRemove.add(it.next()); dn.removeBlock(delimiter); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5598</td> 
+     <td>-1009652351</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>1bcfe45e47775b98cce5541f328c4fd46e5eb13d</td> 
+     <td>move block to the head of the list</td> 
+     <td>move block to the head of the list</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>reportDiff(DatanodeDescriptor, BlockListAsLongs, Collection<blockinfo>
+        , Collection 
+       <block>
+         , Collection 
+        <block>
+          , Collection 
+         <blockinfo>
+           , Collection 
+          <statefulblockinfo>
+            ) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> void reportDiff(DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<blockinfo>
+        toAdd, Collection 
+       <block>
+         toRemove, Collection 
+        <block>
+          toInvalidate, Collection 
+         <blockinfo>
+           toCorrupt, Collection 
+          <statefulblockinfo>
+            toUC) 
+          </statefulblockinfo> 
+         </blockinfo> 
+        </block> 
+       </block> 
+      </blockinfo></td> 
+     <td> // add to under-construction list // place a delimiter in the list which separates blocks // that have been reported from those that have not BlockInfo delimiter = new BlockInfo(new Block(), 1); boolean added = dn.addBlock(delimiter); assert added : "Delimiting block cannot be present in the node"; if (newReport == null) newReport = new BlockListAsLongs(); // scan the report and process newly reported blocks BlockReportIterator itBR = newReport.getBlockReportIterator(); while (itBR.hasNext()) { Block iblk = itBR.next(); ReplicaState iState = itBR.getCurrentReplicaState(); BlockInfo storedBlock = processReportedBlock(dn, iblk, iState, toAdd, toInvalidate, toCorrupt, toUC); // move block to the head of the list if (storedBlock != null &amp;&amp; storedBlock.findDatanode(dn) &gt;= 0) dn.moveBlockToHead(storedBlock); } // collect blocks that have not been reported // all of them are next to the delimiter Iterator<!--? extends Block--> it = new DatanodeDescriptor.BlockIterator(delimiter.getNext(0), dn); while (it.hasNext()) toRemove.add(it.next()); dn.removeBlock(delimiter); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5375</td> 
+     <td>-1009652351</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>None</td> 
+     <td>move block to the head of the list</td> 
+     <td>SATD_ADDED</td> 
+     <td>reportDiff(DatanodeDescriptor, BlockListAsLongs, Collection<blockinfo>
+       , Collection
+       <block>
+        , Collection
+        <block>
+         , Collection
+         <blockinfo>
+          , Collection
+          <statefulblockinfo>
+           )
+          </statefulblockinfo>
+         </blockinfo>
+        </block>
+       </block>
+      </blockinfo></td> 
+     <td> void reportDiff(DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<blockinfo>
+        toAdd, Collection
+       <block>
+         toRemove, Collection
+        <block>
+          toInvalidate, Collection
+         <blockinfo>
+           toCorrupt, Collection
+          <statefulblockinfo>
+            toUC)
+          </statefulblockinfo>
+         </blockinfo>
+        </block>
+       </block>
+      </blockinfo></td> 
+     <td> // add to under-construction list // place a delimiter in the list which separates blocks // that have been reported from those that have not BlockInfo delimiter = new BlockInfo(new Block(), 1); boolean added = dn.addBlock(delimiter); assert added : "Delimiting block cannot be present in the node"; if (newReport == null) newReport = new BlockListAsLongs(); // scan the report and process newly reported blocks BlockReportIterator itBR = newReport.getBlockReportIterator(); while (itBR.hasNext()) { Block iblk = itBR.next(); ReplicaState iState = itBR.getCurrentReplicaState(); BlockInfo storedBlock = processReportedBlock(dn, iblk, iState, toAdd, toInvalidate, toCorrupt, toUC); // move block to the head of the list if (storedBlock != null &amp;&amp; storedBlock.findDatanode(dn) &gt;= 0) dn.moveBlockToHead(storedBlock); } // collect blocks that have not been reported // all of them are next to the delimiter Iterator<!--? extends Block--> it = new DatanodeDescriptor.BlockIterator(delimiter.getNext(0), dn); while (it.hasNext()) toRemove.add(it.next()); dn.removeBlock(delimiter); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2262</td> <td>-1422650854</td><td>apache/camel</td><td>Claus Ibsen</td><td>5abd9476ea6a864d01af3b3f79d6feac6e6c40ef</td> <td>None</td> <td>goes directly to mock:dead but we want the caused exception propagated</td> <td>SATD_ADDED</td> <td>testDLCPropagateCaused()</td> <td>public void testDLCPropagateCaused() throws Exception</td> <td>
+    context.addRoutes(new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            // goes directly to mock:dead but we want the caused exception propagated
+            errorHandler(deadLetterChannel("mock:dead"));
+            from("direct:start").to("mock:a").throwException(new IllegalArgumentException("Damn"));
+        }
+    });
+    context.start();
+    getMockEndpoint("mock:a").expectedMessageCount(1);
+    getMockEndpoint("mock:dead").expectedMessageCount(1);
+    template.sendBody("direct:start", "Hello World");
+    assertMockEndpointsSatisfied();
+    // the caused exception should be propagated
+    Exception cause = getMockEndpoint("mock:dead").getReceivedExchanges().get(0).getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+    assertNotNull(cause);
+    assertIsInstanceOf(IllegalArgumentException.class, cause);
+    assertEquals("Damn", cause.getMessage());
+</td> </tr></table></body></html>

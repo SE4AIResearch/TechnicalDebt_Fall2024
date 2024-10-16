@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>389</td> <td>-1422651846</td><td>apache/camel</td><td>James Strachan</td><td>1cd0a168e74cae7099dcd76a084c915cf8eee9b1</td> <td>None</td> <td>TODO categories, authors etc</td> <td>SATD_ADDED</td> <td>getDocument(Exchange)</td> <td>protected Document<Feed> getDocument(Exchange exchange) throws IRISyntaxException, IOException</td> <td>
+    Document<Feed> document = endpoint.parseDocument();
+    Feed root = document.getRoot();
+    Entry entry = root.addEntry();
+    entry.setPublished(org.apache.camel.util.ExchangeHelper.getExchangeProperty(exchange, "org.apache.camel.atom.published", Date.class, new Date()));
+    String id = exchange.getProperty("org.apache.camel.atom.id", String.class);
+    if (id != null) {
+        entry.setId(id);
+    }
+    String content = exchange.getProperty("org.apache.camel.atom.content", String.class);
+    if (content != null) {
+        entry.setContent(content);
+    }
+    String summary = exchange.getProperty("org.apache.camel.atom.summary", String.class);
+    if (summary != null) {
+        entry.setSummary(summary);
+    }
+    String title = exchange.getProperty("org.apache.camel.atom.title", String.class);
+    if (title != null) {
+        entry.setTitle(title);
+    }
+    // TODO categories, authors etc
+    return document;
+</td> </tr></table></body></html>

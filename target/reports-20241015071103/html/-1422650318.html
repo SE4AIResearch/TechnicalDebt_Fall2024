@@ -1,0 +1,48 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3142</td> <td>-1422650318</td><td>apache/camel</td><td>Willem Jiang</td><td>6cfee23d93b0dcb10f6337d0655a27f8c6b14b39</td> <td>None</td> <td>TODO how can we make sure the server is bind rightly</td> <td>SATD_ADDED</td> <td>startServerBootstrap()</td> <td>protected void startServerBootstrap()</td> <td>
+    // prefer using explicit configured thread pools
+    EventLoopGroup bg = configuration.getBossGroup();
+    EventLoopGroup wg = configuration.getWorkerGroup();
+    if (bg == null) {
+        // create new pool which we should shutdown when stopping as its not shared
+        bossGroup = new NettyServerBossPoolBuilder().withBossCount(configuration.getBossCount()).withName("NettyServerTCPBoss").build();
+        bg = bossGroup;
+    }
+    if (wg == null) {
+        // create new pool which we should shutdown when stopping as its not shared
+        workerGroup = new NettyWorkerPoolBuilder().withWorkerCount(configuration.getWorkerCount()).withName("NettyServerTCPWorker").build();
+        wg = workerGroup;
+    }
+    // channelFactory = new NioServerSocketChannelFactory(bg, wg);
+    serverBootstrap = new ServerBootstrap();
+    serverBootstrap.group(bg, wg).channel(NioServerSocketChannel.class);
+    serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, configuration.isKeepAlive());
+    serverBootstrap.childOption(ChannelOption.TCP_NODELAY, configuration.isTcpNoDelay());
+    serverBootstrap.option(ChannelOption.SO_REUSEADDR, configuration.isReuseAddress());
+    serverBootstrap.childOption(ChannelOption.SO_REUSEADDR, configuration.isReuseAddress());
+    serverBootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, configuration.getConnectTimeout());
+    if (configuration.getBacklog() > 0) {
+        serverBootstrap.option(ChannelOption.SO_BACKLOG, configuration.getBacklog());
+    }
+    // TODO set any additional netty options and child options
+    /*if (configuration.getOptions() != null) {
+            for (Map.Entry<String, Object> entry : configuration.getOptions().entrySet()) {
+                serverBootstrap.setOption(entry.getKey(), entry.getValue());
+            }
+        }*/
+    // set the pipeline factory, which creates the pipeline for each newly created channels
+    serverBootstrap.handler(pipelineFactory);
+    LOG.debug("Created ServerBootstrap {}", serverBootstrap);
+    LOG.info("ServerBootstrap binding to {}:{}", configuration.getHost(), configuration.getPort());
+    ChannelFuture channelFutrue = serverBootstrap.bind(new InetSocketAddress(configuration.getHost(), configuration.getPort()));
+    // TODO how can we make sure the server is bind rightly
+    channel = channelFutrue.channel();
+    // to keep track of all channels in use
+    allChannels.add(channel);
+</td> </tr></table></body></html>

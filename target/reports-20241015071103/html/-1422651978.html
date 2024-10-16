@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>242</td> 
+     <td>-1422651978</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO we could allow a spring container to auto-inject these objects?</td> 
+     <td>TODO we could allow a spring container to auto-inject these objects?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>chooseMessageListenerContainerImplementation()</td> 
+     <td>protected AbstractMessageListenerContainer chooseMessageListenerContainerImplementation()</td> 
+     <td> // TODO we could allow a spring container to auto-inject these objects? switch(consumerType) { case Simple: return isUseVersion102() ? new SimpleMessageListenerContainer102() : new SimpleMessageListenerContainer(); case ServerSessionPool: return isUseVersion102() ? new ServerSessionMessageListenerContainer102() : new ServerSessionMessageListenerContainer(); case Default: return isUseVersion102() ? new DefaultMessageListenerContainer102() : new DefaultMessageListenerContainer(); default: throw new IllegalArgumentException("Unknown consumer type: " + consumerType); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>93</td> 
+     <td>-1422651978</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>92248ac5bcdda73631fe42f4aae017088554dda8</td> 
+     <td>TODO use an enum to auto-switch container types?</td> 
+     <td>TODO we could allow a spring container to auto-inject these objects?</td> 
+     <td>SATD_CHANGED</td> 
+     <td>chooseMessageListenerContainerImplementation()</td> 
+     <td>protected AbstractMessageListenerContainer chooseMessageListenerContainerImplementation()</td> 
+     <td> // TODO we could allow a spring container to auto-inject these objects? switch(consumerType) { case Simple: return isUseVersion102() ? new SimpleMessageListenerContainer102() : new SimpleMessageListenerContainer(); case ServerSessionPool: return isUseVersion102() ? new ServerSessionMessageListenerContainer102() : new ServerSessionMessageListenerContainer(); case Default: return isUseVersion102() ? new DefaultMessageListenerContainer102() : new DefaultMessageListenerContainer(); default: throw new IllegalArgumentException("Unknown consumer type: " + consumerType); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>88</td> 
+     <td>-1422651978</td>
+     <td>apache/camel</td>
+     <td>Hiram R. Chirino</td>
+     <td>f062d553a704e2d707205e0855ac023a8c44a40e</td> 
+     <td>TODO use an enum to auto-switch container types?</td> 
+     <td>TODO use an enum to auto-switch container types?</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>chooseMessageListenerContainerImplementation()</td> 
+     <td>protected AbstractMessageListenerContainer chooseMessageListenerContainerImplementation()</td> 
+     <td> // TODO use an enum to auto-switch container types? // return new SimpleMessageListenerContainer(); return new DefaultMessageListenerContainer(); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

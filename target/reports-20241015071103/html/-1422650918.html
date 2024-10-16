@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2152</td> <td>-1422650918</td><td>apache/camel</td><td>Christian Mueller</td><td>4f7005671c61b4a5b38195e6f829dad2d2e2bbe4</td> <td>None</td> <td>maybe we can convert via an InputStream</td> <td>SATD_ADDED</td> <td>convertTo(Class<T>, Exchange, Object, TypeConverterRegistry)</td> <td>public static T convertTo(Class<T> type, Exchange exchange, Object value, TypeConverterRegistry registry)</td> <td>
+    // use fallback type converter, so we can probably convert into
+    // CxfPayloads from other types
+    if (type.isAssignableFrom(CxfPayload.class)) {
+        TypeConverter tc = registry.lookup(NodeList.class, value.getClass());
+        if (tc != null) {
+            NodeList nodeList = tc.convertTo(NodeList.class, exchange, value);
+            return (T) nodeListToCxfPayload(nodeList, exchange);
+        }
+        tc = registry.lookup(Document.class, value.getClass());
+        if (tc != null) {
+            Document document = tc.convertTo(Document.class, exchange, value);
+            return (T) documentToCxfPayload(document, exchange);
+        }
+        // maybe we can convert via an InputStream
+        CxfPayload<?> p = null;
+        p = convertVia(InputStream.class, exchange, value, registry);
+        if (p != null) {
+            return (T) p;
+        }
+        // String is the converter of last resort
+        p = convertVia(String.class, exchange, value, registry);
+        if (p != null) {
+            return (T) p;
+        }
+    }
+    // Convert a CxfPayload into something else
+    if (CxfPayload.class.isAssignableFrom(value.getClass())) {
+        TypeConverter tc = registry.lookup(type, NodeList.class);
+        if (tc != null) {
+            return tc.convertTo(type, cxfPayloadToNodeList((CxfPayload<?>) value, exchange));
+        }
+        // we cannot convert a node list, so we try the first item from the
+        // node list
+        tc = registry.lookup(type, Node.class);
+        if (tc != null) {
+            NodeList nodeList = cxfPayloadToNodeList((CxfPayload<?>) value, exchange);
+            if (nodeList.getLength() > 0) {
+                return tc.convertTo(type, nodeList.item(0));
+            }
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

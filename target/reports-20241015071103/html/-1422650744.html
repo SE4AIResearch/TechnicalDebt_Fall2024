@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2443</td> <td>-1422650744</td><td>apache/camel</td><td>Claus Ibsen</td><td>4a2ab56e660a828e1d543c6d270258f72cc95e8e</td> <td>None</td> <td>moved the super configuration to the bottom so that the namespace init picks up the newly set XPath Factory</td> <td>SATD_ADDED</td> <td>configurePredicate(CamelContext, Predicate)</td> <td>protected void configurePredicate(CamelContext camelContext, Predicate predicate)</td> <td>
+    if (resultType != null) {
+        setProperty(predicate, "resultType", resultType);
+    }
+    if (isSaxon()) {
+        ObjectHelper.cast(XPathBuilder.class, predicate).enableSaxon();
+    }
+    if (xpathFactory != null) {
+        setProperty(predicate, "xPathFactory", xpathFactory);
+    }
+    if (objectModel != null) {
+        setProperty(predicate, "objectModelUri", objectModel);
+    }
+    if (isTraceNamespaces()) {
+        ObjectHelper.cast(XPathBuilder.class, predicate).setTraceNamespaces(true);
+    }
+    // moved the super configuration to the bottom so that the namespace init picks up the newly set XPath Factory
+    super.configurePredicate(camelContext, predicate);
+</td> </tr></table></body></html>

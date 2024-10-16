@@ -1,0 +1,93 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>159</td> 
+     <td>-1422652011</td> 
+     <td>apache/camel</td> 
+     <td>Hiram R. Chirino</td> 
+     <td>a6cbe8419351fcd8d26f1660dd4b112a7cd64e0b</td> 
+     <td>TODO</td> 
+     <td>TODO</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createConsumer(Processor<httpexchange>
+        ) 
+      </httpexchange></td> 
+     <td>public Consumer<httpexchange>
+        createConsumer(Processor 
+       <httpexchange>
+         processor) throws Exception 
+       </httpexchange> 
+      </httpexchange></td> 
+     <td> // TODO return startService(new DefaultConsumer<httpexchange>
+        (this, processor) { }); 
+      </httpexchange></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>77</td> 
+     <td>-1422652011</td> 
+     <td>apache/camel</td> 
+     <td>Hiram R. Chirino</td> 
+     <td>85d7a943d131caba64f097163f59759be101ba5c</td> 
+     <td>we need an external HTTP client such as commons-httpclient TODO</td> 
+     <td>TODO</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createConsumer(Processor<httpexchange>
+        ) 
+      </httpexchange></td> 
+     <td>public Consumer<httpexchange>
+        createConsumer(Processor 
+       <httpexchange>
+         processor) throws Exception 
+       </httpexchange> 
+      </httpexchange></td> 
+     <td> // TODO return startService(new DefaultConsumer<httpexchange>
+        (this, processor) { }); 
+      </httpexchange></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>39</td> 
+     <td>-1422652011</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>4b2c522354ef4242b34bd727d6d3d2a36a0b268d</td> 
+     <td>None</td> 
+     <td>we need an external HTTP client such as commons-httpclient TODO</td> 
+     <td>SATD_ADDED</td> 
+     <td>onExchange(HttpExchange)</td> 
+     <td>public void onExchange(HttpExchange exchange)</td> 
+     <td> Processor<httpexchange>
+        processor = getInboundProcessor(); if (processor != null) { // lets route straight to our processor processor.onExchange(exchange); } else { // we need an external HTTP client such as commons-httpclient // TODO } 
+      </httpexchange></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

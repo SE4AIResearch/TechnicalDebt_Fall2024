@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3849</td> <td>-1422649966</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>FIXME: the above call should not override explicit strategies provided by the end user or should decorate them instead of overriding them completely</td> <td>SATD_ADDED</td> <td>produce(CreationalContext<T>)</td> <td>public T produce(CreationalContext<T> ctx)</td> <td>
+    T context = super.produce(ctx);
+    // Register the context in the OSGi registry
+    BundleContext bundle = BundleContextUtils.getBundleContext(getClass());
+    context.getManagementStrategy().addEventNotifier(new OsgiCamelContextPublisher(bundle));
+    if (!(context instanceof DefaultCamelContext)) {
+        // Fail fast for the time being to avoid side effects by some methods get declared on the CamelContext interface
+        throw new InjectionException("Camel CDI requires Camel context [" + context.getName() + "] to be a subtype of DefaultCamelContext");
+    }
+    DefaultCamelContext adapted = context.adapt(DefaultCamelContext.class);
+    adapted.setRegistry(OsgiCamelContextHelper.wrapRegistry(context, context.getRegistry(), bundle));
+    CamelContextNameStrategy strategy = context.getNameStrategy();
+    OsgiCamelContextHelper.osgiUpdate(adapted, bundle);
+    // FIXME: the above call should not override explicit strategies provided by the end user or should decorate them instead of overriding them completely
+    if (!(strategy instanceof DefaultCamelContextNameStrategy)) {
+        context.setNameStrategy(strategy);
+    }
+    return context;
+</td> </tr></table></body></html>

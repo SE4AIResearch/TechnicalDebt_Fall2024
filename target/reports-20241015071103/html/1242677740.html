@@ -1,0 +1,91 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4166</td> <td>1242677740</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>af8991f85d472316e49ee395035b9b692c25c719</td> <td>None</td> <td>It is impossible to submit this change as-is. The author
+needs to rebase it in order to work around the missing
+dependencies.
+</td> <td>SATD_ADDED</td> <td>dependencyError(CodeReviewCommit)</td> <td>private void dependencyError(final CodeReviewCommit commit)</td> <td>
+    final Change c = commit.change;
+    if (commit.missing == null) {
+        commit.missing = new ArrayList<CodeReviewCommit>();
+    }
+    boolean submitStillPossible = commit.missing.size() > 0;
+    for (CodeReviewCommit missingCommit : commit.missing) {
+        loadChangeInfo(missingCommit);
+        if (missingCommit.patchsetId == null) {
+            // The commit doesn't have a patch set, so it cannot be
+            // submitted to the branch.
+            // 
+            submitStillPossible = false;
+            break;
+        }
+        if (!missingCommit.change.currentPatchSetId().equals(missingCommit.patchsetId)) {
+            // If the missing commit is not the current patch set,
+            // the change must be rebased to use the proper parent.
+            // 
+            submitStillPossible = false;
+            break;
+        }
+    }
+    final long now = System.currentTimeMillis();
+    final long waitUntil = c.getLastUpdatedOn().getTime() + DEPENDENCY_DELAY;
+    if (submitStillPossible && now < waitUntil) {
+        // If we waited a short while we might still be able to get
+        // this change submitted. Reschedule an attempt in a bit.
+        // 
+        mergeQueue.recheckAfter(destBranch, waitUntil - now, MILLISECONDS);
+    } else if (submitStillPossible) {
+        // It would be possible to submit the change if the missing
+        // dependencies are also submitted. Perhaps the user just
+        // forgot to submit those.
+        // 
+        String txt = "Change could not be merged because of a missing dependency.";
+        if (!isAlreadySent(c, txt)) {
+            StringBuilder m = new StringBuilder();
+            m.append(txt);
+            m.append("\n");
+            m.append("\n");
+            m.append("The following changes must also be submitted:\n");
+            m.append("\n");
+            for (CodeReviewCommit missingCommit : commit.missing) {
+                m.append("* ");
+                m.append(missingCommit.change.getKey().get());
+                m.append("\n");
+            }
+            txt = m.toString();
+        }
+        sendMergeFail(c, message(c, txt), false);
+    } else {
+        // It is impossible to submit this change as-is. The author
+        // needs to rebase it in order to work around the missing
+        // dependencies.
+        // 
+        StringBuilder m = new StringBuilder();
+        m.append("Change cannot be merged due" + " to unsatisfiable dependencies.\n");
+        m.append("\n");
+        m.append("The following dependency errors were found:\n");
+        m.append("\n");
+        for (CodeReviewCommit missingCommit : commit.missing) {
+            if (missingCommit.patchsetId != null) {
+                m.append("* Depends on patch set ");
+                m.append(missingCommit.patchsetId.get());
+                m.append(" of ");
+                m.append(missingCommit.change.getKey().abbreviate());
+                m.append(", however the current patch set is ");
+                m.append(missingCommit.change.currentPatchSetId().get());
+                m.append(".\n");
+            } else {
+                m.append("* Depends on commit ");
+                m.append(missingCommit.name());
+                m.append(" which has no change associated with it.\n");
+            }
+        }
+        m.append("\n");
+        m.append("Please rebase the change and upload a replacement commit.");
+        setNew(c, message(c, m.toString()));
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2467</td> <td>-1422650728</td><td>apache/camel</td><td>Christian Schneider</td><td>d66d63361c73b5d28de11ad83456791b722835e4</td> <td>None</td> <td>X TODO Java-EE5 support needs to be discussed</td> <td>SATD_ADDED</td> <td>setBeanManager(AfterBeanDiscovery, BeanManager)</td> <td>protected void setBeanManager(@Observes AfterBeanDiscovery afterBeanDiscovery, BeanManager beanManager)</td> <td>
+    BeanManagerProvider bmpFirst = setBeanManagerProvider(this);
+    ClassLoader cl = getClassLoader();
+    bmpFirst.bms.put(cl, beanManager);
+// X TODO Java-EE5 support needs to be discussed
+// CodiStartupBroadcaster.broadcastStartup();
+</td> </tr></table></body></html>

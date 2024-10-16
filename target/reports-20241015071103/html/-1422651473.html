@@ -1,0 +1,114 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2237</td> 
+     <td>-1422651473</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>85ef9382c775850f93c6c7f52be6f67e09bf2ff6</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(PackageScanFilter, String, ClassLoader, Set<class> <!--?-->&gt;) 
+      </class></td> 
+     <td>protected void find(PackageScanFilter test, String packageName, ClassLoader loader, Set<class> <!--?-->&gt; classes) 
+      </class></td> 
+     <td> if (log.isTraceEnabled()) { log.trace("Searching for: {} in package: {} using classloader: {}", new Object[] { test, packageName, loader.getClass().getName() }); } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { log.trace("No URLs returned by classloader"); } } catch (IOException ioe) { log.warn("Cannot read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); log.trace("URL from classloader: {}", url); url = customResourceLocator(url); String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (log.isTraceEnabled()) { log.trace("Decoded urlPath: {} with protocol: {}", urlPath, url.getProtocol()); } // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { // file path can be temporary folder which uses characters that the URLDecoder decodes wrong // for example + being decoded to something else (+ can be used in temp folders on Mac OS) // to remedy this then create new path without using the URLDecoder try { urlPath = new URI(url.getFile()).getPath(); } catch (URISyntaxException e) { // fallback to use as it was given from the URLDecoder // this allows us to work on Windows if users have spaces in paths } if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } } // osgi bundles should be skipped if (url.toString().startsWith("bundle:") || urlPath.startsWith("bundle:")) { log.trace("Skipping OSGi bundle: {}", url); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } log.trace("Scanning for classes in: {} matching criteria: {}", urlPath, test); File file = new File(urlPath); if (file.isDirectory()) { log.trace("Loading from directory using file: {}", file); loadImplementationsInDirectory(test, packageName, file, classes); } else { InputStream stream; if (urlPath.startsWith("http:") || urlPath.startsWith("https:") || urlPath.startsWith("sonicfs:") || isAcceptableScheme(urlPath)) { // load resources using http/https, sonicfs and other acceptable scheme // sonic ESB requires to be loaded using a regular URLConnection log.trace("Loading from jar using url: {}", urlPath); URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { log.trace("Loading from jar using file: {}", file); stream = new FileInputStream(file); } loadImplementationsInJar(test, packageName, stream, urlPath, classes, jarCache); } } catch (IOException e) { // use debug logging to avoid being to noisy in logs log.debug("Cannot read entries in url: " + url, e); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2235</td> 
+     <td>-1422651473</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>c8b6dfc5adb7bc33b46841fb5684a3508109450f</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(PackageScanFilter, String, ClassLoader, Set<class> <!--?-->&gt;, Map 
+       <string, list<string>
+         &gt;) 
+       </string,> 
+      </class></td> 
+     <td>protected void find(PackageScanFilter test, String packageName, ClassLoader loader, Set<class> <!--?-->&gt; classes, Map 
+       <string, list<string>
+         &gt; jarCache) 
+       </string,> 
+      </class></td> 
+     <td> if (log.isTraceEnabled()) { log.trace("Searching for: {} in package: {} using classloader: {}", new Object[] { test, packageName, loader.getClass().getName() }); } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { log.trace("No URLs returned by classloader"); } } catch (IOException ioe) { log.warn("Cannot read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); log.trace("URL from classloader: {}", url); url = customResourceLocator(url); String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (log.isTraceEnabled()) { log.trace("Decoded urlPath: {} with protocol: {}", urlPath, url.getProtocol()); } // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { // file path can be temporary folder which uses characters that the URLDecoder decodes wrong // for example + being decoded to something else (+ can be used in temp folders on Mac OS) // to remedy this then create new path without using the URLDecoder try { urlPath = new URI(url.getFile()).getPath(); } catch (URISyntaxException e) { // fallback to use as it was given from the URLDecoder // this allows us to work on Windows if users have spaces in paths } if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } } // osgi bundles should be skipped if (url.toString().startsWith("bundle:") || urlPath.startsWith("bundle:")) { log.trace("Skipping OSGi bundle: {}", url); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } log.trace("Scanning for classes in [{}] matching criteria: {}", urlPath, test); File file = new File(urlPath); if (file.isDirectory()) { log.trace("Loading from directory using file: {}", file); loadImplementationsInDirectory(test, packageName, file, classes); } else { InputStream stream; if (urlPath.startsWith("http:") || urlPath.startsWith("https:") || urlPath.startsWith("sonicfs:") || isAcceptableScheme(urlPath)) { // load resources using http/https, sonicfs and other acceptable scheme // sonic ESB requires to be loaded using a regular URLConnection log.trace("Loading from jar using url: {}", urlPath); URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { log.trace("Loading from jar using file: {}", file); stream = new FileInputStream(file); } loadImplementationsInJar(test, packageName, stream, urlPath, classes, jarCache); } } catch (IOException e) { // use debug logging to avoid being to noisy in logs log.debug("Cannot read entries in url: " + url, e); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1630</td> 
+     <td>-1422651473</td> 
+     <td>apache/camel</td> 
+     <td>Hadrian Zbarcea</td> 
+     <td>b1de11c24f9ef5dd28aecd402f5b9acf9f7603b6</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>find(PackageScanFilter, String, ClassLoader, Set<class>
+        ) 
+      </class></td> 
+     <td>protected void find(PackageScanFilter test, String packageName, ClassLoader loader, Set<class>
+        classes) 
+      </class></td> 
+     <td> if (log.isTraceEnabled()) { log.trace("Searching for: " + test + " in package: " + packageName + " using classloader: " + loader.getClass().getName()); } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { log.trace("No URLs returned by classloader"); } } catch (IOException ioe) { log.warn("Cannot read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); if (log.isTraceEnabled()) { log.trace("URL from classloader: " + url); } String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (log.isTraceEnabled()) { log.trace("Decoded urlPath: " + urlPath + " with protocol: " + url.getProtocol()); } boolean isLocalFileSystem = "file".equals(url.getProtocol()); // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { // file path can be temporary folder which uses characters that the URLDecoder decodes wrong // for example + being decoded to something else (+ can be used in temp folders on Mac OS) // to remedy this then create new path without using the URLDecoder try { urlPath = new URI(url.getFile()).getPath(); } catch (URISyntaxException e) { // fallback to use as it was given from the URLDecoder // this allows us to work on Windows if users have spaces in paths } if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } isLocalFileSystem = true; } // osgi bundles should be skipped if (url.toString().startsWith("bundle:") || urlPath.startsWith("bundle:")) { log.trace("It's a virtual osgi bundle, skipping"); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } if (log.isTraceEnabled()) { log.trace("isLocalFileSystem: " + isLocalFileSystem); log.trace("Scanning for classes in [" + urlPath + "] matching criteria: " + test); } File file = new File(urlPath); if (file.isDirectory()) { if (log.isTraceEnabled()) { log.trace("Loading from directory using file: " + file); } loadImplementationsInDirectory(test, packageName, file, classes); } else { InputStream stream; if (!isLocalFileSystem) { // load resources using http (and other protocols) such as java webstart if (log.isTraceEnabled()) { log.trace("Loading from jar using http/https: " + urlPath); } URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { if (log.isTraceEnabled()) { log.trace("Loading from jar using file: " + file); } stream = new FileInputStream(file); } loadImplementationsInJar(test, packageName, stream, urlPath, classes); } } catch (IOException e) { // use debug logging to avoid being to noisy in logs log.debug("Cannot read entries in url: " + url, e); } } 
+      </url></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1097</td> 
+     <td>-1422651473</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>14305a86b7c124ef4ddd1798249cc3e4bb5d9f6c</td> 
+     <td>None</td> 
+     <td>If it's a file in a directory, trim the stupid file: spec</td> 
+     <td>SATD_ADDED</td> 
+     <td>find(PackageScanFilter, String, ClassLoader, Set<class>
+       )
+      </class></td> 
+     <td>protected void find(PackageScanFilter test, String packageName, ClassLoader loader, Set<class>
+        classes)
+      </class></td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Searching for: " + test + " in package: " + packageName + " using classloader: " + loader.getClass().getName()); } Enumeration<url>
+        urls; try { urls = getResources(loader, packageName); if (!urls.hasMoreElements()) { LOG.trace("No URLs returned by classloader"); } } catch (IOException ioe) { LOG.warn("Could not read package: " + packageName, ioe); return; } while (urls.hasMoreElements()) { URL url = null; try { url = urls.nextElement(); if (LOG.isTraceEnabled()) { LOG.trace("URL from classloader: " + url); } String urlPath = url.getFile(); urlPath = URLDecoder.decode(urlPath, "UTF-8"); if (LOG.isTraceEnabled()) { LOG.trace("Decoded urlPath: " + urlPath); } // If it's a file in a directory, trim the stupid file: spec if (urlPath.startsWith("file:")) { urlPath = urlPath.substring(5); } // osgi bundles should be skipped if (url.toString().startsWith("bundle:") || urlPath.startsWith("bundle:")) { LOG.trace("It's a virtual osgi bundle, skipping"); continue; } // Else it's in a JAR, grab the path to the jar if (urlPath.indexOf('!') &gt; 0) { urlPath = urlPath.substring(0, urlPath.indexOf('!')); } if (LOG.isTraceEnabled()) { LOG.trace("Scanning for classes in [" + urlPath + "] matching criteria: " + test); } File file = new File(urlPath); if (file.isDirectory()) { if (LOG.isDebugEnabled()) { LOG.debug("Loading from directory: " + file); } loadImplementationsInDirectory(test, packageName, file, classes); } else { InputStream stream; if (urlPath.startsWith("http:")) { // load resources using http such as java webstart LOG.debug("The current jar is accessed via http"); URL urlStream = new URL(urlPath); URLConnection con = urlStream.openConnection(); // disable cache mainly to avoid jar file locking on Windows con.setUseCaches(false); stream = con.getInputStream(); } else { stream = new FileInputStream(file); } if (LOG.isDebugEnabled()) { LOG.debug("Loading from jar: " + file); } loadImplementationsInJar(test, packageName, stream, urlPath, classes); } } catch (IOException ioe) { LOG.warn("Could not read entries in url: " + url, ioe); } } 
+      </url></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

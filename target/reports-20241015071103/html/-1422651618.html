@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>770</td> <td>-1422651618</td><td>apache/camel</td><td>Claus Ibsen</td><td>c1d1db9afd232935f9601ea92e2460a9b6d98fa2</td> <td>None</td> <td>TODO do we propagate header the same way in non-POJO mode?</td> <td>SATD_ADDED</td> <td>createCxfMessage(HeaderFilterStrategy, CxfExchange)</td> <td>public static Message createCxfMessage(HeaderFilterStrategy strategy, CxfExchange exchange)</td> <td>
+    Message answer = exchange.getInMessage();
+    CxfMessage in = exchange.getIn();
+    // Check the body if the POJO parameter list first
+    Object body = in.getBody(List.class);
+    if (body instanceof List) {
+        // just set the operation's parameter
+        answer.setContent(List.class, body);
+        CxfHeaderHelper.propagateCamelToCxf(strategy, in.getHeaders(), answer);
+    } else {
+        // CXF uses StAX which is based on the stream API to parse the XML,
+        // so the CXF transport is also based on the stream API.
+        // And the interceptors are also based on the stream API,
+        // so let's use an InputStream to host the CXF on wire message.
+        body = in.getBody(InputStream.class);
+        if (body instanceof InputStream) {
+            answer.setContent(InputStream.class, body);
+        }
+    // TODO do we propagate header the same way in non-POJO mode?
+    // CxfHeaderHelper.propagateCamelToCxf(strategy, in.getHeaders(), answer);
+    }
+    return answer;
+</td> </tr></table></body></html>

@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1203</td> <td>-1422651428</td><td>apache/camel</td><td>James Strachan</td><td>5b1bc67eb9116b43570f4a7622f9051cb658b2b5</td> <td>None</td> <td>should not load the content of the body into memory unless demand for it
+so the type received should be a GenericFile (holder for the file)</td> <td>SATD_ADDED</td> <td>testRouteLondon()</td> <td>public void testRouteLondon() throws Exception</td> <td>
+    prepareFiles();
+    MockEndpoint mock = getMockEndpoint("mock:london");
+    mock.expectedMessageCount(1);
+    // should not load the content of the body into memory unless demand for it
+    // so the type received should be a GenericFile (holder for the file)
+    mock.message(0).body().isInstanceOf(GenericFile.class);
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

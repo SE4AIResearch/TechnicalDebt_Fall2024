@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3468</td> <td>-1422650153</td><td>apache/camel</td><td>Claus Ibsen</td><td>2ca68387b75abeba143e65a0edba434c9f034661</td> <td>None</td> <td>TODO: this is wrong a configuration should not have CamelContext</td> <td>SATD_ADDED</td> <td>setCamelContext(CamelContext)</td> <td>public void setCamelContext(CamelContext camelContext)</td> <td>
+    // TODO: this is wrong a configuration should not have CamelContext
+    this.context = camelContext;
+    // try to retrieve the references once the context is available.
+    setKeystoreName(keystoreName);
+    setPublicKeyName(publicKeyName);
+    setPrivateKeyName(privateKeyName);
+    setCertificateName(certificateName);
+    setSecureRandomName(randomName);
+</td> </tr></table></body></html>

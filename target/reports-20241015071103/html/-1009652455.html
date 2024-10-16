@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5267</td> <td>-1009652455</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>desired range starts after beginning of this har block
+fix offset to beginning of relevant range (relative to desired file)</td> <td>SATD_ADDED</td> <td>initialize(URI, Configuration)</td> <td>public void initialize(URI name, Configuration conf) throws IOException</td> <td>
+    // decode the name
+    URI underLyingURI = decodeHarURI(name, conf);
+    // we got the right har Path- now check if this is
+    // truly a har filesystem
+    Path harPath = archivePath(new Path(name.getScheme(), name.getAuthority(), name.getPath()));
+    if (harPath == null) {
+        throw new IOException("Invalid path for the Har Filesystem. " + name.toString());
+    }
+    if (fs == null) {
+        fs = FileSystem.get(underLyingURI, conf);
+    }
+    uri = harPath.toUri();
+    archivePath = new Path(uri.getPath());
+    harAuth = getHarAuth(underLyingURI);
+    // check for the underlying fs containing
+    // the index file
+    Path masterIndexPath = new Path(archivePath, "_masterindex");
+    Path archiveIndexPath = new Path(archivePath, "_index");
+    if (!fs.exists(masterIndexPath) || !fs.exists(archiveIndexPath)) {
+        throw new IOException("Invalid path for the Har Filesystem. " + "No index file in " + harPath);
+    }
+    metadata = harMetaCache.get(uri);
+    if (metadata != null) {
+        FileStatus mStat = fs.getFileStatus(masterIndexPath);
+        FileStatus aStat = fs.getFileStatus(archiveIndexPath);
+        if (mStat.getModificationTime() != metadata.getMasterIndexTimestamp() || aStat.getModificationTime() != metadata.getArchiveIndexTimestamp()) {
+            // the archive has been overwritten since we last read it
+            // remove the entry from the meta data cache
+            metadata = null;
+            harMetaCache.remove(uri);
+        }
+    }
+    if (metadata == null) {
+        metadata = new HarMetaData(fs, masterIndexPath, archiveIndexPath);
+        metadata.parseMetaData();
+        harMetaCache.put(uri, metadata);
+    }
+</td> </tr></table></body></html>

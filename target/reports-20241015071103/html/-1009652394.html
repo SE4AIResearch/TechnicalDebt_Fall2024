@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5328</td> <td>-1009652394</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>We generate leaves for a single split point as well as for
+no split points.</td> <td>SATD_ADDED</td> <td>buildTrieRec(BinaryComparable[], int, int, byte[], int, CarriedTrieNodeRef)</td> <td>private TrieNode buildTrieRec(BinaryComparable[] splits, int lower, int upper, byte[] prefix, int maxDepth, CarriedTrieNodeRef ref)</td> <td>
+    final int depth = prefix.length;
+    // We generate leaves for a single split point as well as for
+    // no split points.
+    if (depth >= maxDepth || lower >= upper - 1) {
+        // If we have two consecutive requests for an unsplit trie node, we
+        // can deliver the same one the second time.
+        if (lower == upper && ref.content != null) {
+            return ref.content;
+        }
+        TrieNode result = LeafTrieNodeFactory(depth, splits, lower, upper);
+        ref.content = lower == upper ? result : null;
+        return result;
+    }
+    InnerTrieNode result = new InnerTrieNode(depth);
+    byte[] trial = Arrays.copyOf(prefix, prefix.length + 1);
+    // append an extra byte on to the prefix
+    int currentBound = lower;
+    for (int ch = 0; ch < 0xFF; ++ch) {
+        trial[depth] = (byte) (ch + 1);
+        lower = currentBound;
+        while (currentBound < upper) {
+            if (splits[currentBound].compareTo(trial, 0, trial.length) >= 0) {
+                break;
+            }
+            currentBound += 1;
+        }
+        trial[depth] = (byte) ch;
+        result.child[0xFF & ch] = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    }
+    // pick up the rest
+    trial[depth] = (byte) 0xFF;
+    result.child[0xFF] = buildTrieRec(splits, lower, currentBound, trial, maxDepth, ref);
+    return result;
+</td> </tr></table></body></html>

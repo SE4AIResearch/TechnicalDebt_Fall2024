@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4658</td> <td>1242678002</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>80915206e74d95e9eb7ce35059120b70f380ffbe</td> <td>None</td> <td>TODO(dborowitz): This should not be allowed.</td> <td>SATD_ADDED</td> <td>canReadAfterRollbackWithAllRefsVisible()</td> <td>public void canReadAfterRollbackWithAllRefsVisible() throws Exception</td> <td>
+    allow(project, READ, DEVS, "refs/*");
+    RevCommit parent1 = repo.commit().create();
+    ObjectId id1 = repo.branch("branch1").commit().parent(parent1).create();
+    ProjectControl pc = util.user(project, DEVS);
+    RevWalk rw = repo.getRevWalk();
+    assertTrue(pc.canReadCommit(rw, rw.parseCommit(parent1)));
+    assertTrue(pc.canReadCommit(rw, rw.parseCommit(id1)));
+    repo.branch("branch1").update(parent1);
+    assertTrue(pc.canReadCommit(rw, rw.parseCommit(parent1)));
+    // TODO(dborowitz): This should not be allowed.
+    assertTrue(pc.canReadCommit(rw, rw.parseCommit(id1)));
+</td> </tr></table></body></html>

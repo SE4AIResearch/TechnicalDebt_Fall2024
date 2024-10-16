@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3750</td> <td>-1422650035</td><td>apache/camel</td><td>Claus Ibsen</td><td>b4b067e1f4227e64ad2773b2c85a6a986f762048</td> <td>None</td> <td>take over any potential prefixes we may have been asked for</td> <td>SATD_ADDED</td> <td>String> createIndexedData(String...)</td> <td>
+    String prefix = createPrefix();
+    // take over any potential prefixes we may have been asked for
+    if (additionalPrefixes.length > 0) {
+        StringBuilder sb = new StringBuilder(prefix);
+        for (String additionalPrefix : additionalPrefixes) {
+            sb.append(additionalPrefix).append("-");
+        }
+        prefix = sb.toString();
+    }
+    String key = prefix + "key";
+    String value = prefix + "value";
+    log.info("Creating indexed data using the key/value pair {} => {}", key, value);
+    Map<String, String> map = new HashMap<String, String>();
+    map.put(key, value);
+    return map;
+</td> <td> Map<String, String> createIndexedData(String... additionalPrefixes)</td> </tr></table></body></html>

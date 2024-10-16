@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4295</td> <td>1242677803</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>2567c7e2c682a195818acab6bd8e08a1bb6e7d27</td> <td>None</td> <td>Don't permit receive-pack to be executed if a refs/for/branch_name
+reference exists in the destination repository. These block the
+client from being able to even send us a pack file, as it is very
+unlikely the user passed the --force flag and the new commit is
+probably not going to fast-forward the branch.
+</td> <td>SATD_ADDED</td> <td>create(ProjectControl, Repository)</td> <td> ReceiveCommits create(ProjectControl projectControl, Repository repository)</td> <td>mp</td> </tr></table></body></html>

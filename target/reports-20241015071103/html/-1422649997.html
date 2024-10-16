@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3811</td> <td>-1422649997</td><td>apache/camel</td><td>gautric</td><td>e8b00192394cc395bfd48ff3070ffc9fb3abf1bf</td> <td>None</td> <td>TODO provide parameter values for search</td> <td>SATD_ADDED</td> <td>testSearch()</td> <td>public void testSearch() throws Exception</td> <td>
+    // using com.braintreegateway.TransactionSearchRequest message body for single parameter "query"
+    final com.braintreegateway.ResourceCollection result = requestBody("direct://SEARCH", null);
+    assertNotNull("search result", result);
+    LOG.debug("search: " + result);
+</td> </tr></table></body></html>

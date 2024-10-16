@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3844</td> <td>-1422649971</td><td>apache/camel</td><td>lburgazzoli</td><td>0421c24dfcf992f3296ed746469771e3800200e3</td> <td>None</td> <td>We should ideally use an ExpectedException JUnit rule to assert the content of the exception
+thrown at deployment time. Unfortunately, OpenWebBeans does not enable access to the underlying
+cause added as deployment exception. To work-around that, we delay the start of the Camel context
+at runtime.</td> <td>SATD_ADDED</td> <td>createEventEndpointByUri(NotStartedCamelContext)</td> <td>public void createEventEndpointByUri(NotStartedCamelContext context)</td> <td>
+    try {
+        context.start(true);
+    } catch (Exception exception) {
+        Throwable cause = exception.getCause().getCause();
+        assertThat("Exception cause is not an UnsupportedOperationException!", cause, is(instanceOf(UnsupportedOperationException.class)));
+        assertThat("Incorrect exception message!", cause.getMessage(), is(equalTo("Creating CDI event endpoint isn't supported. Use @Inject CdiEventEndpoint instead")));
+        return;
+    }
+    fail("CDI event endpoint creation by URI should throw an exception!");
+</td> </tr></table></body></html>

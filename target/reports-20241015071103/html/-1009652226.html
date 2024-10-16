@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5500</td> <td>-1009652226</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>domain name
+too short
+too long
+too large
+weird
+too short
+too long
+too large
+too large</td> <td>SATD_ADDED</td> <td>testIsIPAddress()</td> <td>public void testIsIPAddress()</td> <td>
+    final String[] positives = { // regular ipv4
+    "123.13.42.255", // padded 0
+    "123.01.0.255", // more padded 0
+    "000.001.002.020", // escaped .
+    "123\\.13\\.42\\.255", // all-zero
+    "0.0.0.0", // all-0xff
+    "255.255.255.255", // regular ipv6
+    "1080:0:0:0:8:800:200C:417A", // padded 0
+    "1080:01:020:3:8:0800:200C:417A", // more padded 0
+    "1080:01:002:0003:080:0800:0200:417A", // all-zero
+    "0:0:0:0:0:0:0:0", // all-0xff
+    "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" };
+    final String[] negatives = { // domain name
+    "node.megatron.com", // too short
+    "13.42.255", // too long
+    "123.13.42.255.10", // too large
+    "123.256.42.255", // weird
+    "123.13.42.255.weird.com", // too short
+    "1080:0:0:0:8:200C:417A", // too long
+    "1080:0:0:0:1:8:800:200C:417A", // too large
+    "1080A:0:0:0:8:800:200C:417A", // too large
+    "1080:0:0:0:8:800:200G:417A" };
+    for (String s : positives) {
+        Assert.assertTrue(s, SimulatorEngine.isIPAddress(s));
+    }
+    for (String s : negatives) {
+        Assert.assertFalse(s, SimulatorEngine.isIPAddress(s));
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,94 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3703</td> 
+     <td>-1422650066</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>e2f5c9f075c89a8e74332e4f91a72f733fb0d4ca</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>findCamelContexts()</td> 
+     <td>public List<string>
+        findCamelContexts() throws Exception 
+      </string></td> 
+     <td> List<string>
+        answer = new ArrayList&lt;&gt;(); MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set 
+       <objectname>
+         names = server.queryNames(new ObjectName("*:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } // filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl) String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { answer.add(id); } } return answer; 
+       </objectname> 
+      </string></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3697</td> 
+     <td>-1422650066</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>bf36f6149d3280e160cee8be12fd03ada3e81d35</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl)</td> 
+     <td>SATD_CHANGED</td> 
+     <td>findCamelContexts()</td> 
+     <td>public List<string>
+        findCamelContexts() throws Exception 
+      </string></td> 
+     <td> List<string>
+        answer = new ArrayList&lt;&gt;(); MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set 
+       <objectname>
+         names = server.queryNames(new ObjectName("*:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } // filter out older Camel versions as this requires Camel 2.15 or better (rest-dsl) String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { answer.add(id); } } return answer; 
+       </objectname> 
+      </string></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3684</td> 
+     <td>-1422650066</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>1d5b0dab8751b59044706b20f1b10614bfec5c28</td> 
+     <td>None</td> 
+     <td>filter out older Camel versions as this requires Camel 2.15 or better</td> 
+     <td>SATD_ADDED</td> 
+     <td>findCamelContexts()</td> 
+     <td>public List<string>
+        findCamelContexts() throws Exception
+      </string></td> 
+     <td> List<string>
+        answer = new ArrayList&lt;&gt;(); MBeanServer server = ManagementFactory.getPlatformMBeanServer(); Set
+       <objectname>
+         names = server.queryNames(new ObjectName("*:type=context,*"), null); for (ObjectName on : names) { String id = on.getKeyProperty("name"); if (id.startsWith("\"") &amp;&amp; id.endsWith("\"")) { id = id.substring(1, id.length() - 1); } // filter out older Camel versions as this requires Camel 2.15 or better String version = (String) server.getAttribute(on, "CamelVersion"); if (CamelVersionHelper.isGE("2.15.0", version)) { answer.add(id); } } return answer; 
+       </objectname>
+      </string></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

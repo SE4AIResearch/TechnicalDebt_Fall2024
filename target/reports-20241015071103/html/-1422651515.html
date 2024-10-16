@@ -1,0 +1,78 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>995</td> 
+     <td>-1422651515</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7f70df09b02c5a95b53bb9351c67ba1c750bbc15</td> 
+     <td>TODO: release read lock from above, as we should hold id during processing</td> 
+     <td>must close channel</td> 
+     <td>SATD_REMOVED</td> 
+     <td>releaseExclusiveReadLock(GenericFileOperations<file>
+       , GenericFile
+       <file>
+        , Exchange)
+       </file>
+      </file></td> 
+     <td>public void releaseExclusiveReadLock(GenericFileOperations<file>
+        fileGenericFileOperations, GenericFile
+       <file>
+         fileGenericFile, Exchange exchange) throws Exception
+       </file>
+      </file></td> 
+     <td> FileLock lock = ExchangeHelper.getMandatoryProperty(exchange, "org.apache.camel.file.lock", FileLock.class); String lockFileName = ExchangeHelper.getMandatoryProperty(exchange, "org.apache.camel.file.lock.filename", String.class); Channel channel = lock.channel(); try { lock.release(); } finally { // must close channel ObjectHelper.close(channel, "while acquiring exclusive read lock for file: " + lockFileName, LOG); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>985</td> 
+     <td>-1422651515</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>efe75f3dae13328363236ae3fc093ce2fe2ecdb6</td> 
+     <td>None</td> 
+     <td>TODO: release read lock from above, as we should hold id during processing</td> 
+     <td>SATD_ADDED</td> 
+     <td>releaseExclusiveReadLock(GenericFileOperations<file>
+       , GenericFile
+       <file>
+        )
+       </file>
+      </file></td> 
+     <td>public void releaseExclusiveReadLock(GenericFileOperations<file>
+        fileGenericFileOperations, GenericFile
+       <file>
+         fileGenericFile)
+       </file>
+      </file></td> 
+     <td> // TODO: release read lock from above, as we should hold id during processing </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

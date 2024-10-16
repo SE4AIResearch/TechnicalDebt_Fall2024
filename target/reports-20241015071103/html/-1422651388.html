@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1280</td> <td>-1422651388</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>ac3ce18caf0e651c39aba0b6895cd8d10f4df9b9</td> <td>None</td> <td>TODO: MR-170</td> <td>SATD_ADDED</td> <td>createCamelContext()</td> <td>protected CamelContext createCamelContext() throws Exception</td> <td>
+    CamelContext camelContext = super.createCamelContext();
+    // TODO: MR-170
+    ActiveMQComponent activemq = activeMQComponent("vm://localhost?broker.persistent=false&broker.useJmx=false&jms.redeliveryPolicy.maximumRedeliveries=0&jms.redeliveryPolicy.initialRedeliveryDelay=500&jms.useAsyncSend=false&jms.sendTimeout=10000&jms.maxReconnectAttempts=1&jms.timeout=3000");
+    camelContext.addComponent("activemq", activemq);
+    return camelContext;
+</td> </tr></table></body></html>

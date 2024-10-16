@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>591</td> 
+     <td>-1422651810</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>d0f46f7e68af3ca35b86be3f3a8538558f1654aa</td> 
+     <td>TODO check if the message is oneway message Get the method name form the soap endpoint</td> 
+     <td>TODO check if the message is one-way message Get the method name from the soap endpoint</td> 
+     <td>SATD_CHANGED</td> 
+     <td>processSoapConsumerOut(Exchange)</td> 
+     <td>protected void processSoapConsumerOut(Exchange exchange) throws Exception</td> 
+     <td> LOG.info("processSoapConsumerOut: " + exchange); // TODO check if the message is one-way message // Get the method name from the soap endpoint org.apache.cxf.message.Message outMessage = CxfSoapBinding.getCxfOutMessage(exchange, false); org.apache.cxf.message.Exchange cxfExchange = outMessage.getExchange(); InterceptorChain chain = OutgoingChainInterceptor.getOutInterceptorChain(cxfExchange); outMessage.setInterceptorChain(chain); chain.doIntercept(outMessage); CachedOutputStream outputStream = (CachedOutputStream) outMessage.getContent(OutputStream.class); exchange.getOut().setBody(outputStream.getInputStream()); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>462</td> 
+     <td>-1422651810</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>108cb196c25758d2e387f748df1cfd63ec416ca7</td> 
+     <td>TODO</td> 
+     <td>TODO check if the message is oneway message Get the method name form the soap endpoint</td> 
+     <td>SATD_CHANGED</td> 
+     <td>processSoapConsumerOut(Exchange)</td> 
+     <td>protected void processSoapConsumerOut(Exchange exchange) throws Exception</td> 
+     <td> LOG.info("processSoapConsumerOut: " + exchange); CxfSoapBinding binding = endpoint.getCxfSoapBinding(); // TODO check if the message is oneway message // Get the method name form the soap endpoint org.apache.cxf.message.Message outMessage = binding.getCxfOutMessage(exchange, false); org.apache.cxf.message.Exchange cxfExchange = outMessage.getExchange(); InterceptorChain chain = OutgoingChainInterceptor.getOutInterceptorChain(cxfExchange); outMessage.setInterceptorChain(chain); chain.doIntercept(outMessage); CachedOutputStream outputStream = (CachedOutputStream) outMessage.getContent(OutputStream.class); exchange.getOut().setBody(outputStream.getInputStream()); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>443</td> 
+     <td>-1422651810</td>
+     <td>apache/camel</td>
+     <td>Hiram R. Chirino</td>
+     <td>543a177034aaf13f1b40c8c05b4d72efc9446279</td> 
+     <td>TODO</td> 
+     <td>TODO</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>processSoapConsumerOut(Exchange)</td> 
+     <td>protected void processSoapConsumerOut(Exchange exchange) throws Exception</td> 
+     <td> LOG.info("processSoapConsumerOut: " + exchange); // TODO </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,84 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2091</td> 
+     <td>-1422651187</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>7834bda895db6baee0e6302cfcecaef65b8ac854</td> 
+     <td>maybe we can iterate the body and that way create a list for the parameters then end users do not need to trouble with List</td> 
+     <td>maybe we can iterate the body and that way create a list for the parameters then end users do not need to trouble with List</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>getParams(CxfEndpoint, Exchange)</td> 
+     <td>private Object[] getParams(CxfEndpoint endpoint, Exchange exchange) throws InvalidPayloadException</td> 
+     <td> Object[] params = null; if (endpoint.getDataFormat() == DataFormat.POJO) { List<!--?--> list = exchange.getIn().getBody(List.class); if (list != null) { params = list.toArray(); } else { // maybe we can iterate the body and that way create a list for the parameters // then end users do not need to trouble with List Iterator it = exchange.getIn().getBody(Iterator.class); if (it != null &amp;&amp; it.hasNext()) { list = exchange.getContext().getTypeConverter().convertTo(List.class, it); if (list != null) { params = list.toArray(); } } if (params == null) { // no we could not then use the body as single parameter params = new Object[1]; params[0] = exchange.getIn().getBody(); } } // make sure we have the right number of parameters checkParameterSize(endpoint, exchange, params); } else if (endpoint.getDataFormat() == DataFormat.PAYLOAD) { params = new Object[1]; params[0] = exchange.getIn().getMandatoryBody(CxfPayload.class); } else if (endpoint.getDataFormat() == DataFormat.MESSAGE) { params = new Object[1]; params[0] = exchange.getIn().getMandatoryBody(InputStream.class); } if (LOG.isTraceEnabled()) { if (params != null) { for (int i = 0; i &lt; params.length; i++) { LOG.trace("params[" + i + "] = " + params[i]); } } } return params; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2088</td> 
+     <td>-1422651187</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>09fabb4969aa51aff637a85328a8eb0d108a6374</td> 
+     <td>maybe we can iterate the body and that way create a list for the parameters then end users do not need to trouble with List</td> 
+     <td>maybe we can iterate the body and that way create a list for the parameters then end users do not need to trouble with List</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>process(Exchange, AsyncCallback)</td> 
+     <td>public boolean process(Exchange camelExchange, AsyncCallback callback)</td> 
+     <td> if (LOG.isTraceEnabled()) { LOG.trace("Process exchange: " + camelExchange + " in an async way."); } try { // create CXF exchange ExchangeImpl cxfExchange = new ExchangeImpl(); Client client = clientCache.get(CxfEndpointUtils.getEffectiveAddress(camelExchange, endpoint.getAddress())); // prepare binding operation info BindingOperationInfo boi = prepareBindingOperation(camelExchange, cxfExchange, client); Map<string, object>
+        invocationContext = new HashMap 
+       <string, object>
+         (); Map 
+        <string, object>
+          responseContext = new HashMap 
+         <string, object>
+           (); invocationContext.put(Client.RESPONSE_CONTEXT, responseContext); invocationContext.put(Client.REQUEST_CONTEXT, prepareRequest(camelExchange, cxfExchange)); CxfClientCallback cxfClientCallback = new CxfClientCallback(callback, camelExchange, cxfExchange, boi, endpoint); // send the CXF async request client.invoke(cxfClientCallback, boi, getParams(endpoint, camelExchange, client), invocationContext, cxfExchange); } catch (Throwable ex) { // error occurred before we had a chance to go async // so set exception and invoke callback true camelExchange.setException(ex); callback.done(true); return true; } return false; 
+         </string,> 
+        </string,> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1660</td> 
+     <td>-1422651187</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>20845dffc73e0d0b1cba1e3d8221ebb7b72f8a2b</td> 
+     <td>None</td> 
+     <td>maybe we can iterate the body and that way create a list for the parameters then end users do not need to trouble with List</td> 
+     <td>SATD_ADDED</td> 
+     <td>getParams(CxfEndpoint, Exchange)</td> 
+     <td>private Object[] getParams(CxfEndpoint endpoint, Exchange exchange)</td> 
+     <td> // TODO: this method should probably be more strict and validate (CAMEL-2195) Object[] params = null; if (endpoint.getDataFormat() == DataFormat.POJO) { List<!--?--> list = exchange.getIn().getBody(List.class); if (list != null) { params = list.toArray(); } else { // maybe we can iterate the body and that way create a list for the parameters // then end users do not need to trouble with List Iterator it = exchange.getIn().getBody(Iterator.class); if (it != null &amp;&amp; it.hasNext()) { list = exchange.getContext().getTypeConverter().convertTo(List.class, it); if (list != null) { params = list.toArray(); } } if (params == null) { // no we could not then use the body as single parameter params = new Object[1]; params[0] = exchange.getIn().getBody(); } } } else if (endpoint.getDataFormat() == DataFormat.PAYLOAD) { params = new Object[1]; // TODO: maybe it should be mandatory body? params[0] = exchange.getIn().getBody(CxfPayload.class); } else if (endpoint.getDataFormat() == DataFormat.MESSAGE) { params = new Object[1]; // TODO: maybe it should be mandatory body? params[0] = exchange.getIn().getBody(InputStream.class); } if (LOG.isTraceEnabled()) { if (params instanceof Object[]) { for (int i = 0; i &lt; params.length; i++) { LOG.trace("params[" + i + "] = " + params[i]); } } else { LOG.trace("params = " + params); } } return params; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

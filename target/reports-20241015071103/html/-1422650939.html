@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2103</td> <td>-1422650939</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>b345dd8218e9c5346a10f8e2ff8030fefb7eb713</td> <td>None</td> <td>split policies into route and context scoped</td> <td>SATD_ADDED</td> <td>getExceptionPolicy(Map<ExceptionPolicyKey, OnExceptionDefinition>, Exchange, Throwable)</td> <td>public OnExceptionDefinition getExceptionPolicy(Map<ExceptionPolicyKey, OnExceptionDefinition> exceptionPolicies, Exchange exchange, Throwable exception)</td> <td>
+    Map<Integer, OnExceptionDefinition> candidates = new TreeMap<Integer, OnExceptionDefinition>();
+    Map<ExceptionPolicyKey, OnExceptionDefinition> routeScoped = new LinkedHashMap<ExceptionPolicyKey, OnExceptionDefinition>();
+    Map<ExceptionPolicyKey, OnExceptionDefinition> contextScoped = new LinkedHashMap<ExceptionPolicyKey, OnExceptionDefinition>();
+    // split policies into route and context scoped
+    initRouteAndContextScopedExceptionPolicies(exceptionPolicies, routeScoped, contextScoped);
+    // at first check route scoped as we prefer them over context scoped
+    // recursive up the tree using the iterator
+    boolean exactMatch = false;
+    Iterator<Throwable> it = createExceptionIterator(exception);
+    while (!exactMatch && it.hasNext()) {
+        // we should stop looking if we have found an exact match
+        exactMatch = findMatchedExceptionPolicy(routeScoped, exchange, it.next(), candidates);
+    }
+    // fallback to check context scoped (only do this if there was no exact match)
+    it = createExceptionIterator(exception);
+    while (!exactMatch && it.hasNext()) {
+        // we should stop looking if we have found an exact match
+        exactMatch = findMatchedExceptionPolicy(contextScoped, exchange, it.next(), candidates);
+    }
+    // now go through the candidates and find the best
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("Found " + candidates.size() + " candidates");
+    }
+    if (candidates.isEmpty()) {
+        // no type found
+        return null;
+    } else {
+        // return the first in the map as its sorted and we checked route scoped first, which we prefer
+        return candidates.values().iterator().next();
+    }
+</td> </tr></table></body></html>

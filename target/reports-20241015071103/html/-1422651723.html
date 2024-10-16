@@ -1,0 +1,33 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>592</td> <td>-1422651723</td><td>apache/camel</td><td>Claus Ibsen</td><td>bd8629761435b277f5ded8face67a8ca54f75dfd</td> <td>None</td> <td>TODO: LOG or rethrow</td> <td>SATD_ADDED</td> <td>addFields(Object, Class, Class, LinkedHashMap)</td> <td>private static void addFields(Object target, Class startClass, Class stopClass, LinkedHashMap map)</td> <td>
+    if (startClass != stopClass) {
+        addFields(target, startClass.getSuperclass(), stopClass, map);
+    }
+    Field[] fields = startClass.getDeclaredFields();
+    for (int i = 0; i < fields.length; i++) {
+        Field field = fields[i];
+        if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers()) || Modifier.isPrivate(field.getModifiers())) {
+            continue;
+        }
+        try {
+            field.setAccessible(true);
+            Object o = field.get(target);
+            if (o != null && o.getClass().isArray()) {
+                try {
+                    o = Arrays.asList((Object[]) o);
+                } catch (Throwable e) {
+                }
+            }
+            map.put(field.getName(), o);
+        } catch (Throwable e) {
+            // TODO: LOG or rethrow
+            e.printStackTrace();
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>459</td> 
+     <td>-1422652015</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>7f6cc8673c88856e7c8b4215caa195fbbd43c79d</td> 
+     <td>TODO we need a decoder to be able to process the message</td> 
+     <td>TODO we need a decoder to be able to process the message</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>extractBodyFromJms(JmsExchange, Message)</td> 
+     <td>public Object extractBodyFromJms(JmsExchange exchange, Message message)</td> 
+     <td> try { if (message instanceof ObjectMessage) { ObjectMessage objectMessage = (ObjectMessage) message; return objectMessage.getObject(); } else if (message instanceof TextMessage) { TextMessage textMessage = (TextMessage) message; return textMessage.getText(); } else if (message instanceof MapMessage) { return createMapFromMapMessage((MapMessage) message); } else if (message instanceof BytesMessage || message instanceof StreamMessage) { // TODO we need a decoder to be able to process the message return message; } else { return null; } } catch (JMSException e) { throw new RuntimeJmsException("Failed to extract body due to: " + e + ". Message: " + message, e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>215</td> 
+     <td>-1422652015</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO we need a decoder to be able to process the message</td> 
+     <td>TODO we need a decoder to be able to process the message</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>extractBodyFromJms(JmsExchange, Message)</td> 
+     <td>public Object extractBodyFromJms(JmsExchange exchange, Message message)</td> 
+     <td> try { if (message instanceof ObjectMessage) { ObjectMessage objectMessage = (ObjectMessage) message; return objectMessage.getObject(); } else if (message instanceof TextMessage) { TextMessage textMessage = (TextMessage) message; return textMessage.getText(); } else if (message instanceof MapMessage) { return createMapFromMapMessage((MapMessage) message); } else if (message instanceof BytesMessage || message instanceof StreamMessage) { // TODO we need a decoder to be able to process the message return message; } else { return null; } } catch (JMSException e) { throw new RuntimeJmsException("Failed to extract body due to: " + e + ". Message: " + message, e); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>36</td> 
+     <td>-1422652015</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>6fbbb0c742866e256521bd1e8e2ac45d26cdd588</td> 
+     <td>None</td> 
+     <td>TODO we need a decoder to be able to process the message</td> 
+     <td>SATD_ADDED</td> 
+     <td>extractBodyFromJms(JmsExchange, Message)</td> 
+     <td>public Object extractBodyFromJms(JmsExchange exchange, Message message)</td> 
+     <td> try { if (message instanceof ObjectMessage) { ObjectMessage objectMessage = (ObjectMessage) message; return objectMessage.getObject(); } else if (message instanceof TextMessage) { TextMessage textMessage = (TextMessage) message; return textMessage.getText(); } else if (message instanceof MapMessage) { return createMapFromMapMessage((MapMessage) message); } else if (message instanceof BytesMessage || message instanceof StreamMessage) { // TODO we need a decoder to be able to process the message return message; } else { return null; } } catch (JMSException e) { throw new RuntimeJmsException("Failed to extract body due to: " + e + ". Message: " + message, e); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

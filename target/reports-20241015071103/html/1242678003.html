@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4659</td> <td>1242678003</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>638e70d22d52441880d9c57c3e10144abf03c0ef</td> <td>None</td> <td>TODO(dborowitz): Fix bug so this is included.</td> <td>SATD_ADDED</td> <td>allRefsVisibleWithRefsMetaConfig()</td> <td>public void allRefsVisibleWithRefsMetaConfig() throws Exception</td> <td>
+    allow(Permission.READ, REGISTERED_USERS, "refs/*");
+    allow(Permission.READ, REGISTERED_USERS, "refs/meta/config");
+    assertRefs("HEAD", "refs/changes/01/1/1", "refs/changes/02/2/1", "refs/heads/branch", "refs/heads/master");
+// TODO(dborowitz): Fix bug so this is included.
+// "refs/meta/config");
+</td> </tr></table></body></html>

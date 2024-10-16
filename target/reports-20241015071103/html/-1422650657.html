@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2596</td> <td>-1422650657</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>7772f2207bd28ea4837c0f8dc38ce2f636721763</td> <td>None</td> <td>we cannot use the binary search here and the candidates a not sorted in the normal way</td> <td>SATD_ADDED</td> <td>configure()</td> <td>public void configure() throws Exception</td> <td>
+    /**
+     * TODO: this is cheap cheerful but suboptimal; it suffers from the
+     * 'herd effect' that on any change to the candidates list every
+     * policy instance will ask for the entire candidate list again.
+     * This is fine for small numbers of nodes (for scenarios like
+     * Master-Slave it is perfect) but could get noisy if large numbers
+     * of nodes were involved. <p> Better would be to find the position
+     * of this node in the list and watch the node in the position ahead
+     * node ahead of this and only request the candidate list when its
+     * status changes. This will require enhancing the consumer to allow
+     * custom operation lists.
+     */
+    from(zep).id("election-route-" + candidateName.substring(0, 8)).sort(body(), comparator).process(new Processor() {
+
+        @Override
+        public void process(Exchange e) throws Exception {
+            @SuppressWarnings("unchecked")
+            List<String> candidates = e.getIn().getMandatoryBody(List.class);
+            // we cannot use the binary search here and the candidates a not sorted in the normal way
+            /**
+             * check if the item at this location starts with this nodes
+             * candidate name
+             */
+            int location = findCandidateLocationInCandidatesList(candidates, candidateName);
+            if (location != -1) {
+                // set the nodes
+                masterNode.set(location <= enabledCount);
+                LOG.debug("This node is number '{}' on the candidate list, election is configured for the top '{}'. this node will be {}", new Object[] { location, enabledCount, masterNode.get() ? "enabled" : "disabled" });
+            }
+            electionComplete.countDown();
+            notifyElectionWatchers();
+        }
+
+        private int findCandidateLocationInCandidatesList(List<String> candidates, String candidateName) {
+            for (int location = 1; location <= candidates.size(); location++) {
+                if (candidates.get(location - 1).startsWith(candidateName)) {
+                    return location;
+                }
+            }
+            return -1;
+        }
+    });
+</td> </tr></table></body></html>

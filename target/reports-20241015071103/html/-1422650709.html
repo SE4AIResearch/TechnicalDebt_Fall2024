@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2502</td> <td>-1422650709</td><td>apache/camel</td><td>J. Daniel Kulp</td><td>4b03710ee5fd6353b8d01cd1a8bb2a5027ab1a85</td> <td>None</td> <td>FIXME - if not woodstox, this will likely not work well
+likely should copy CXF's W3CDOM stuff</td> <td>SATD_ADDED</td> <td>createXMLEventWriter(Result)</td> <td>public XMLEventWriter createXMLEventWriter(Result result) throws XMLStreamException</td> <td>
+    XMLOutputFactory factory = getOutputFactory();
+    try {
+        if (result instanceof DOMResult && !isWoodstox(factory)) {
+            // FIXME - if not woodstox, this will likely not work well
+            // likely should copy CXF's W3CDOM stuff
+            LOG.info("DOMResult is known to have issues with {0}. We suggest using Woodstox", factory.getClass());
+        }
+        return factory.createXMLEventWriter(result);
+    } finally {
+        returnXMLOutputFactory(factory);
+    }
+</td> </tr></table></body></html>

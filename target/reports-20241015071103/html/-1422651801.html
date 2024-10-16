@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1032</td> 
+     <td>-1422651801</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>449ae5dc3469288ad3537bef0e409cd4695b1fd9</td> 
+     <td>TODO switch to use the above mechanism?</td> 
+     <td>endpoint</td> 
+     <td>SATD_REMOVED</td> 
+     <td>init()</td> 
+     <td>public void init()</td> 
+     <td> // remoting addBeanDefinitionParser("proxy", CamelProxyFactoryBean.class); addBeanDefinitionParser("template", CamelTemplateFactoryBean.class); addBeanDefinitionParser("export", CamelServiceExporter.class); // data types addBeanDefinitionParser("artixDS", ArtixDSDataFormat.class); addBeanDefinitionParser("jaxb", JaxbDataFormat.class); addBeanDefinitionParser("serialization", SerializationDataFormat.class); addBeanDefinitionParser("xmlBeans", XMLBeansDataFormat.class); // load balancers addBeanDefinitionParser("roundRobin", RoundRobinLoadBalanceStrategy.class); addBeanDefinitionParser("random", RandomLoadBalanceStrategy.class); addBeanDefinitionParser("sticky", StickyLoadBalanceStrategy.class); addBeanDefinitionParser("topic", TopicLoadBalanceStrategy.class); // jmx agent addBeanDefinitionParser("jmxAgent", CamelJMXAgentType.class); // endpoint addBeanDefinitionParser("endpoint", EndpointFactoryBean.class); // camel context Class cl = CamelContextFactoryBean.class; try { cl = Class.forName("org.apache.camel.osgi.CamelContextFactoryBean"); } catch (Throwable t) { } registerParser("camelContext", new CamelContextBeanDefinitionParser(cl)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>455</td> 
+     <td>-1422651801</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>1c447d91ebdefa1b68413562325567c6ae0ab5a8</td> 
+     <td>None</td> 
+     <td>TODO switch to use the above mechanism?</td> 
+     <td>SATD_ADDED</td> 
+     <td>init()</td> 
+     <td>public void init()</td> 
+     <td> // remoting addBeanDefinitionParser("proxy", CamelProxyFactoryBean.class); addBeanDefinitionParser("export", CamelServiceExporter.class); // data types addBeanDefinitionParser("artixDS", ArtixDSDataFormat.class); addBeanDefinitionParser("jaxb", JaxbDataFormat.class); addBeanDefinitionParser("serialization", SerializationDataFormat.class); addBeanDefinitionParser("xmlBeans", XMLBeansDataFormat.class); // TODO switch to use the above mechanism? registerParser("endpoint", endpointParser); registerParser("camelContext", new CamelContextBeanDefinitionParser(CamelContextFactoryBean.class)); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

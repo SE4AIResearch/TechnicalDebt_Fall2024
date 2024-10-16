@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3487</td> <td>-1422650140</td><td>apache/camel</td><td>Claus Ibsen</td><td>f993d18c3a9f1b8eb165ce8c4259648b8e3ab11f</td> <td>None</td> <td>TODO: need to remove endpoints when removing the route</td> <td>SATD_ADDED</td> <td>testEndpointRegistryKeepRouteEndpointsRemoveRoute()</td> <td>public void testEndpointRegistryKeepRouteEndpointsRemoveRoute() throws Exception</td> <td>
+    assertTrue(context.hasEndpoint("direct://start") != null);
+    assertTrue(context.hasEndpoint("log://start") != null);
+    assertTrue(context.hasEndpoint("log://foo") != null);
+    assertTrue(context.hasEndpoint("mock://result") != null);
+    assertTrue(context.hasEndpoint("direct://bar") != null);
+    assertTrue(context.hasEndpoint("log://bar") != null);
+    assertEquals(6, context.getEndpointRegistry().staticSize());
+    // we dont have this endpoint yet
+    assertFalse(context.hasEndpoint("mock://unknown0") != null);
+    for (int i = 0; i < 50; i++) {
+        template.sendBody("mock:unknown" + i, "Hello " + i);
+    }
+    assertTrue(context.hasEndpoint("direct://start") != null);
+    assertTrue(context.hasEndpoint("log://start") != null);
+    assertTrue(context.hasEndpoint("log://foo") != null);
+    assertTrue(context.hasEndpoint("mock://result") != null);
+    assertTrue(context.hasEndpoint("direct://bar") != null);
+    assertTrue(context.hasEndpoint("log://bar") != null);
+    assertEquals(6, context.getEndpointRegistry().staticSize());
+    // now stop and remove the bar route
+    context.stopRoute("bar");
+    context.removeRoute("bar");
+// TODO: need to remove endpoints when removing the route
+/*
+        assertTrue(context.hasEndpoint("direct://start") != null);
+        assertTrue(context.hasEndpoint("log://start") != null);
+        assertTrue(context.hasEndpoint("log://foo") != null);
+        assertTrue(context.hasEndpoint("mock://result") != null);
+        assertFalse(context.hasEndpoint("direct://bar") != null);
+        assertFalse(context.hasEndpoint("log://bar") != null);
+
+        assertEquals(4, context.getEndpointRegistry().staticSize());
+        */
+</td> </tr></table></body></html>

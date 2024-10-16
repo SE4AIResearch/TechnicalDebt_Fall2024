@@ -1,0 +1,75 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2993</td> 
+     <td>-1422651922</td> 
+     <td>apache/camel</td> 
+     <td>Henryk Konsek</td> 
+     <td>72e8240e286d47c8cee82ecec9efa30dce5d7d23</td> 
+     <td>TODO refresh doesn't tend to work - maybe its a spring thing?</td> 
+     <td>TODO refresh doesn't tend to work - maybe its a spring thing?</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>getRefreshedProcessDefinition(EntityManagerTemplate, ProcessDefinition)</td> 
+     <td>public static ProcessDefinition getRefreshedProcessDefinition(EntityManagerTemplate entityManagerTemplate, ProcessDefinition definition)</td> 
+     <td> // TODO refresh doesn't tend to work - maybe its a spring thing? // template.refresh(definition); ObjectHelper.notNull(definition, "definition"); final Long id = definition.getId(); if (id == null) { LOG.warn("No primary key is available!"); return findOrCreateProcessDefinition(entityManagerTemplate, definition.getName()); } return entityManagerTemplate.execute(new EntityManagerCallback<processdefinition>
+        () { @Override public ProcessDefinition execute(EntityManager entityManager) { return entityManager.find(ProcessDefinition.class, id); } }); 
+      </processdefinition></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>247</td> 
+     <td>-1422651922</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO refresh doesn't tend to work - maybe its a spring thing?</td> 
+     <td>TODO refresh doesn't tend to work - maybe its a spring thing?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>getRefreshedProcessDefinition(JpaTemplate, ProcessDefinition)</td> 
+     <td>public static ProcessDefinition getRefreshedProcessDefinition(JpaTemplate template, ProcessDefinition definition)</td> 
+     <td> // TODO refresh doesn't tend to work - maybe its a spring thing? // template.refresh(definition); ObjectHelper.notNull(definition, "definition"); Long id = definition.getId(); if (id == null) { log.warn("No primary key is available!"); return findOrCreateProcessDefinition(template, definition.getName()); } definition = template.find(ProcessDefinition.class, id); return definition; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>190</td> 
+     <td>-1422651922</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>4e3c91403e843e101691aaed234bda8b5813a28f</td> 
+     <td>None</td> 
+     <td>TODO refresh doesn't tend to work - maybe its a spring thing?</td> 
+     <td>SATD_ADDED</td> 
+     <td>getRefreshedProcessDefinition(JpaTemplate, ProcessDefinition)</td> 
+     <td>public static ProcessDefinition getRefreshedProcessDefinition(JpaTemplate template, ProcessDefinition definition)</td> 
+     <td> // TODO refresh doesn't tend to work - maybe its a spring thing? // template.refresh(definition); ObjectHelper.notNull(definition, "definition"); Long id = definition.getId(); if (id == null) { log.warn("No primary key is available!"); return findOrCreateProcessDefinition(template, definition.getName()); } definition = template.find(ProcessDefinition.class, id); return definition; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

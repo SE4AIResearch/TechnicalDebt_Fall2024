@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2137</td> <td>-1422650925</td><td>apache/camel</td><td>Claus Ibsen</td><td>5a0f8e7a3a32e369729191806a9f86b6041b0b9b</td> <td>None</td> <td>it could potentially retry the file on the 2nd poll and then fail again
+so it should be minimum message count</td> <td>SATD_ADDED</td> <td>testPollFileAndShouldNotBeMoved()</td> <td>public void testPollFileAndShouldNotBeMoved() throws Exception</td> <td>
+    template.sendBodyAndHeader("file://target/movefile", body, Exchange.FILE_NAME, "hello.txt");
+    MockEndpoint mock = getMockEndpoint("mock:error");
+    // it could potentially retry the file on the 2nd poll and then fail again
+    // so it should be minimum message count
+    mock.expectedMinimumMessageCount(1);
+    mock.assertIsSatisfied();
+    oneExchangeDone.matchesMockWaitTime();
+    // assert the file is not moved
+    File file = new File("./target/movefile/hello.txt");
+    file = file.getAbsoluteFile();
+    assertTrue("The file should NOT have been moved", file.exists());
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4633</td> 
+     <td>1242677986</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Ostrovsky</td>
+     <td>f067fc081ac2a14c0563a332b4f289f51c0ac6d2</td> 
+     <td>None</td> 
+     <td>TODO(davido): find a better way to enforce cache invalidation.</td> 
+     <td>SATD_ADDED</td> 
+     <td>deleteOrUpdateDraftChange(PatchSet.Id, Change)</td> 
+     <td>private void deleteOrUpdateDraftChange(PatchSet.Id patchSetId, Change change) throws OrmException, ResourceNotFoundException, IOException</td> 
+     <td> if (dbProvider.get().patchSets().byChange(change.getId()).toList().size() == 0) { deleteDraftChange(patchSetId); } else { if (change.currentPatchSetId().equals(patchSetId)) { updateChange(dbProvider.get(), change, previousPatchSetInfo(patchSetId)); } else { // TODO(davido): find a better way to enforce cache invalidation. updateChange(dbProvider.get(), change, null); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4630</td> 
+     <td>1242677986</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Pursehouse</td>
+     <td>a50fa6761f306aa774e34dd5dc356180743dcbbd</td> 
+     <td>None</td> 
+     <td>TODO(davido): find a better way to enforce cache invalidation.</td> 
+     <td>SATD_ADDED</td> 
+     <td>deleteOrUpdateDraftChange(PatchSet.Id, Change)</td> 
+     <td>private void deleteOrUpdateDraftChange(PatchSet.Id patchSetId, Change change) throws OrmException, ResourceNotFoundException, IOException</td> 
+     <td> if (dbProvider.get().patchSets().byChange(change.getId()).toList().size() == 0) { deleteDraftChange(patchSetId); } else { if (change.currentPatchSetId().equals(patchSetId)) { updateChange(dbProvider.get(), change, previousPatchSetInfo(patchSetId)); } else { // TODO(davido): find a better way to enforce cache invalidation. updateChange(dbProvider.get(), change, null); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

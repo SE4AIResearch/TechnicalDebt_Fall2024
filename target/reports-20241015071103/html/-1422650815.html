@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2340</td> <td>-1422650815</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>afd51e3e86ac3b73180912f44fad9dd7e64bf794</td> <td>None</td> <td>file should be moved</td> <td>SATD_ADDED</td> <td>testFilePollEnrichNoWait()</td> <td>public void testFilePollEnrichNoWait() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedBodiesReceived("Hello World");
+    mock.expectedFileExists("target/pollenrich/done/hello.txt");
+    template.sendBodyAndHeader("file:target/pollenrich", "Hello World", Exchange.FILE_NAME, "hello.txt");
+    assertMockEndpointsSatisfied();
+    oneExchangeDone.matchesMockWaitTime();
+    // file should be moved
+    File file = new File("target/pollenrich/hello.txt").getAbsoluteFile();
+    assertFalse("File should have been moved", file.exists());
+</td> </tr></table></body></html>

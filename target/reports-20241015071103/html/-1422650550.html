@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2787</td> 
+     <td>-1422650550</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>89d33f4b043e3b8696e7aad4563ae462b2cfbb68</td> 
+     <td>TODO: This should be a task as well and wrap it by a instrumentation processor that is to be used for performance stats for this particular route</td> 
+     <td>wrap in route inflight processor to track number of inflight exchanges for the route</td> 
+     <td>SATD_REMOVED</td> 
+     <td>commit()</td> 
+     <td>public void commit()</td> 
+     <td> // now lets turn all of the event driven consumer processors into a single route if (!eventDrivenProcessors.isEmpty()) { Processor target = Pipeline.newInstance(getCamelContext(), eventDrivenProcessors); String routeId = route.idOrCreate(getCamelContext().getNodeIdFactory()); // and wrap it in a unit of work so the UoW is on the top, so the entire route will be in the same UoW CamelInternalProcessor internal = new CamelInternalProcessor(target); internal.addTask(new CamelInternalProcessor.UnitOfWorkProcessorTask(routeId)); // and then in route context so we can keep track which route this is at runtime internal.addTask(new CamelInternalProcessor.RouteContextTask(this)); // and then optionally add route policy processor if a custom policy is set List<routepolicy>
+        routePolicyList = getRoutePolicyList(); if (routePolicyList != null &amp;&amp; !routePolicyList.isEmpty()) { for (RoutePolicy policy : routePolicyList) { // add policy as service if we have not already done that (eg possible if two routes have the same service) // this ensures Camel can control the lifecycle of the policy if (!camelContext.hasService(policy)) { try { camelContext.addService(policy); } catch (Exception e) { throw ObjectHelper.wrapRuntimeCamelException(e); } } } internal.addTask(new CamelInternalProcessor.RoutePolicyTask(routePolicyList)); } // wrap in route inflight processor to track number of inflight exchanges for the route internal.addTask(new CamelInternalProcessor.RouteInflightRepositoryTask(camelContext.getInflightRepository(), routeId)); // wrap in JMX instrumentation processor that is used for performance stats internal.addTask(new CamelInternalProcessor.InstrumentationTask("route")); // and create the route that wraps the UoW Route edcr = new EventDrivenConsumerRoute(this, getEndpoint(), internal); edcr.getProperties().put(Route.ID_PROPERTY, routeId); edcr.getProperties().put(Route.PARENT_PROPERTY, Integer.toHexString(route.hashCode())); if (route.getGroup() != null) { edcr.getProperties().put(Route.GROUP_PROPERTY, route.getGroup()); } // after the route is created then set the route on the policy processor so we get hold of it CamelInternalProcessor.RoutePolicyTask task = internal.getTask(CamelInternalProcessor.RoutePolicyTask.class); if (task != null) { task.setRoute(edcr); } // invoke init on route policy if (routePolicyList != null &amp;&amp; !routePolicyList.isEmpty()) { for (RoutePolicy policy : routePolicyList) { policy.onInit(edcr); } } routes.add(edcr); } 
+      </routepolicy></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2780</td> 
+     <td>-1422650550</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>fb15fdee4b48d1cc9f8e8db6abf4048da4558308</td> 
+     <td>None</td> 
+     <td>TODO: This should be a task as well and wrap it by a instrumentation processor that is to be used for performance stats for this particular route</td> 
+     <td>SATD_ADDED</td> 
+     <td>commit()</td> 
+     <td>public void commit()</td> 
+     <td> // now lets turn all of the event driven consumer processors into a single route if (!eventDrivenProcessors.isEmpty()) { Processor target = Pipeline.newInstance(getCamelContext(), eventDrivenProcessors); // and wrap it in a unit of work so the UoW is on the top, so the entire route will be in the same UoW UnitOfWorkProcessor unitOfWorkProcessor = new UnitOfWorkProcessor(this, target); CamelInternalProcessor internal = new CamelInternalProcessor(unitOfWorkProcessor); // and then optionally add route policy processor if a custom policy is set List<routepolicy>
+        routePolicyList = getRoutePolicyList(); if (routePolicyList != null &amp;&amp; !routePolicyList.isEmpty()) { for (RoutePolicy policy : routePolicyList) { // add policy as service if we have not already done that (eg possible if two routes have the same service) // this ensures Camel can control the lifecycle of the policy if (!camelContext.hasService(policy)) { try { camelContext.addService(policy); } catch (Exception e) { throw ObjectHelper.wrapRuntimeCamelException(e); } } } internal.addTask(new CamelInternalProcessor.RoutePolicyTask(routePolicyList)); } // wrap in route inflight processor to track number of inflight exchanges for the route String routeId = route.idOrCreate(getCamelContext().getNodeIdFactory()); internal.addTask(new CamelInternalProcessor.RouteInflightRepositoryTask(camelContext.getInflightRepository(), routeId)); // TODO: This should be a task as well // and wrap it by a instrumentation processor that is to be used for performance stats // for this particular route InstrumentationProcessor instrument = new InstrumentationProcessor(); instrument.setType("route"); instrument.setProcessor(internal); // and create the route that wraps the UoW Route edcr = new EventDrivenConsumerRoute(this, getEndpoint(), instrument); edcr.getProperties().put(Route.ID_PROPERTY, routeId); edcr.getProperties().put(Route.PARENT_PROPERTY, Integer.toHexString(route.hashCode())); if (route.getGroup() != null) { edcr.getProperties().put(Route.GROUP_PROPERTY, route.getGroup()); } // after the route is created then set the route on the policy processor so we get hold of it CamelInternalProcessor.RoutePolicyTask task = internal.getTask(CamelInternalProcessor.RoutePolicyTask.class); if (task != null) { task.setRoute(edcr); } // invoke init on route policy if (routePolicyList != null &amp;&amp; !routePolicyList.isEmpty()) { for (RoutePolicy policy : routePolicyList) { policy.onInit(edcr); } } routes.add(edcr); } 
+      </routepolicy></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

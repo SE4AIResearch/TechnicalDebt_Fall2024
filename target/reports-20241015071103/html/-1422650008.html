@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3788</td> <td>-1422650008</td><td>apache/camel</td><td>Claus Ibsen</td><td>1d0bc598b3c7e6b7ed7ffa06d6cdf7885ada010d</td> <td>None</td> <td>sleep a bit to ensure its properly suspended</td> <td>SATD_ADDED</td> <td>testSuspendedResume()</td> <td>public void testSuspendedResume() throws Exception</td> <td>
+    resultEndpoint.expectedMessageCount(1);
+    resultEndpoint.expectedBodiesReceived("hello");
+    template.sendBody("hello");
+    assertMockEndpointsSatisfied();
+    context.suspendRoute("consumer");
+    // sleep a bit to ensure its properly suspended
+    Thread.sleep(2000);
+    resetMocks();
+    resultEndpoint.expectedMessageCount(0);
+    template.sendBody("Hello2");
+    assertMockEndpointsSatisfied(1, TimeUnit.SECONDS);
+    resetMocks();
+    resultEndpoint.expectedBodiesReceived("Hello2");
+    resultEndpoint.expectedMessageCount(1);
+    context.resumeRoute("consumer");
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

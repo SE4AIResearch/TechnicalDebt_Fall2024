@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2087</td> <td>-1422650950</td><td>apache/camel</td><td>Claus Ibsen</td><td>302c69c00f6d01ba5517fd5096795c9e81b27996</td> <td>None</td> <td>TODO: This doesnt look good to create a new CamelContext out of the blue</td> <td>SATD_ADDED</td> <td>getCamelTemplate()</td> <td>public ProducerTemplate getCamelTemplate() throws Exception</td> <td>
+    if (camelTemplate == null) {
+        CamelContext ctx = getCamelContext();
+        if (ctx == null) {
+            // TODO: This doesnt look good to create a new CamelContext out of the blue
+            ctx = new DefaultCamelContext();
+        }
+        camelTemplate = ctx.createProducerTemplate();
+    }
+    return camelTemplate;
+</td> </tr></table></body></html>

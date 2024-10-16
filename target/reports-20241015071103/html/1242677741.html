@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4203</td> <td>1242677741</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>Mark this file reviewed as soon we display the diff screen</td> <td>SATD_ADDED</td> <td>refresh(boolean)</td> <td>protected void refresh(final boolean isFirst)</td> <td>
+    final int rpcseq = ++rpcSequence;
+    script = null;
+    comments = null;
+    // Mark this file reviewed as soon we display the diff screen
+    if (Gerrit.isSignedIn() && isFirst) {
+        setReviewedByCurrentUser(true);
+    }
+    PatchUtil.DETAIL_SVC.patchScript(patchKey, idSideA, idSideB, scriptSettings, new GerritCallback<PatchScript>() {
+
+        public void onSuccess(final PatchScript result) {
+            if (rpcSequence == rpcseq) {
+                script = result;
+                onResult();
+            }
+        }
+
+        @Override
+        public void onFailure(final Throwable caught) {
+            if (rpcSequence == rpcseq) {
+                super.onFailure(caught);
+            }
+        }
+    });
+    PatchUtil.DETAIL_SVC.patchComments(patchKey, idSideA, idSideB, new GerritCallback<CommentDetail>() {
+
+        public void onSuccess(final CommentDetail result) {
+            if (rpcSequence == rpcseq) {
+                comments = result;
+                onResult();
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable caught) {
+            // Ignore no such entity, the patch script RPC above would
+            // also notice the problem and report it.
+            // 
+            if (!isNoSuchEntity(caught) && rpcSequence == rpcseq) {
+                super.onFailure(caught);
+            }
+        }
+    });
+</td> </tr></table></body></html>

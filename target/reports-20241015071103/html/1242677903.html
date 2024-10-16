@@ -1,0 +1,68 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4450</td> <td>1242677903</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>051e7313baba931a9cb71ecc57b9d013edd73e5b</td> <td>None</td> <td>TODO: support arbitrary labels.</td> <td>SATD_ADDED</td> <td>displayRow(int, ApprovalDetail, ChangeInfo, AccountInfo)</td> <td>private void displayRow(int row, final ApprovalDetail ad, ChangeInfo change, AccountInfo account)</td> <td>
+    final CellFormatter fmt = table.getCellFormatter();
+    int col = 0;
+    table.setWidget(row, col++, new InlineHyperlink(account.name(), PageLinks.toAccountQuery(account.name())));
+    rows.put(account._account_id(), row);
+    if (ad.canRemove()) {
+        final PushButton remove = new // 
+        PushButton(// 
+        new Image(Util.R.removeReviewerNormal()), new Image(Util.R.removeReviewerPressed()));
+        remove.setTitle(Util.M.removeReviewer(account.name()));
+        remove.setStyleName(Gerrit.RESOURCES.css().removeReviewer());
+        remove.addStyleName(Gerrit.RESOURCES.css().link());
+        remove.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                doRemove(ad, remove);
+            }
+        });
+        table.setWidget(row, col, remove);
+    } else {
+        table.clearCell(row, col);
+    }
+    fmt.setStyleName(row, col++, Gerrit.RESOURCES.css().removeReviewerCell());
+    for (String labelName : change.labels()) {
+        fmt.setStyleName(row, col, Gerrit.RESOURCES.css().approvalscore());
+        if (!ad.canVote(labelName)) {
+            fmt.addStyleName(row, col, Gerrit.RESOURCES.css().notVotable());
+            fmt.getElement(row, col).setTitle(Gerrit.C.userCannotVoteToolTip());
+        }
+        if (ad.isRejected(labelName)) {
+            table.setWidget(row, col, new Image(Gerrit.RESOURCES.redNot()));
+        } else if (ad.isApproved(labelName)) {
+            table.setWidget(row, col, new Image(Gerrit.RESOURCES.greenCheck()));
+        } else {
+            // TODO: support arbitrary labels.
+            ApprovalType legacyType = types.byLabel(labelName);
+            if (legacyType == null) {
+                table.clearCell(row, col);
+                col++;
+                continue;
+            }
+            int v = ad.getValue(labelName);
+            if (v == 0) {
+                table.clearCell(row, col);
+                col++;
+                continue;
+            }
+            String vstr = String.valueOf(ad.getValue(labelName));
+            if (v > 0) {
+                vstr = "+" + vstr;
+                fmt.addStyleName(row, col, Gerrit.RESOURCES.css().posscore());
+            } else {
+                fmt.addStyleName(row, col, Gerrit.RESOURCES.css().negscore());
+            }
+            table.setText(row, col, vstr);
+        }
+        col++;
+    }
+    fmt.addStyleName(row, col - 1, Gerrit.RESOURCES.css().rightmost());
+</td> </tr></table></body></html>

@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>712</td> <td>-1422651648</td><td>apache/camel</td><td>Claus Ibsen</td><td>185b32d97b7ce3cc75b82db2bf336e22327c3492</td> <td>None</td> <td>TODO: Work in progress</td> <td>SATD_ADDED</td> <td>testConcurrency()</td> <td>public void testConcurrency() throws Exception</td> <td>
+    int total = 1;
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(total);
+    // setup a task executor to be able send the messages in parallel
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(5);
+    executor.afterPropertiesSet();
+    for (int i = 0; i < 1; i++) {
+        final int threadCount = i;
+        executor.execute(new Runnable() {
+
+            public void run() {
+                int start = threadCount * 20;
+                for (int i = 0; i < 1; i++) {
+                    template.sendBody("seda:in", "<mail><subject>" + (start + i) + "</subject><body>Hello world!</body></mail>");
+                }
+            }
+        });
+    }
+    mock.assertIsSatisfied();
+    mock.assertNoDuplicates(body());
+</td> </tr></table></body></html>

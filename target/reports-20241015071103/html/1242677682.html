@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4093</td> 
+     <td>1242677682</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>67449dcaae49d48d67baa86aa93522cf44246f39</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>commentTo()</td> 
+     <td>private void commentTo() throws MessagingException</td> 
+     <td> // Always to the owner/uploader/author/committer. These people // have a vested interest in the change and any remarks made. // add(RecipientType.TO, change.getOwner()); if (patchSet != null) { add(RecipientType.TO, patchSet.getUploader()); } if (patchSetInfo != null) { add(RecipientType.TO, patchSetInfo.getAuthor()); add(RecipientType.TO, patchSetInfo.getCommitter()); } add(RecipientType.CC, reviewers); add(RecipientType.CC, extraCC); if (db == null) { // We need a database handle to fetch the interest list. // return; } try { // CC anyone else who has posted an approval mark on this change // for (ChangeApproval ap : db.changeApprovals().byChange(change.getId())) { add(RecipientType.CC, ap.getAccountId()); } // BCC anyone else who has interest in this project's changes // final Project.Id projectId = projectId(); if (projectId != null) { for (AccountProjectWatch w : db.accountProjectWatches().notifyAllComments(projectId)) { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4044</td> 
+     <td>1242677682</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>commentTo()</td> 
+     <td>private void commentTo() throws MessagingException</td> 
+     <td> // Always to the owner/uploader/author/committer. These people // have a vested interest in the change and any remarks made. // add(RecipientType.TO, change.getOwner()); if (patchSet != null) { add(RecipientType.TO, patchSet.getUploader()); } if (patchSetInfo != null) { add(RecipientType.TO, patchSetInfo.getAuthor()); add(RecipientType.TO, patchSetInfo.getCommitter()); } add(RecipientType.CC, reviewers); add(RecipientType.CC, extraCC); if (db == null) { // We need a database handle to fetch the interest list. // return; } try { // CC anyone else who has posted an approval mark on this change // for (ChangeApproval ap : db.changeApprovals().byChange(change.getId())) { add(RecipientType.CC, ap.getAccountId()); } // BCC anyone else who has interest in this project's changes // final Project.Id projectId = projectId(); if (projectId != null) { for (AccountProjectWatch w : db.accountProjectWatches().notifyAllComments(projectId)) { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4023</td> 
+     <td>1242677682</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>875f3120262e1b437c594f142cd08df4675cf39c</td> 
+     <td>None</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>SATD_ADDED</td> 
+     <td>commentTo()</td> 
+     <td>private void commentTo() throws MessagingException</td> 
+     <td> if (db == null) { // We need a database handle to fetch the interest list. // return; } try { // CC anyone else who has posted an approval mark on this change // for (ChangeApproval ap : db.changeApprovals().byChange(change.getId())) { add(RecipientType.CC, ap.getAccountId()); } // BCC anyone else who has interest in this project's changes // final Project.Id projectId = projectId(); if (projectId != null) { for (AccountProjectWatch w : db.accountProjectWatches().notifyAllComments(projectId)) { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

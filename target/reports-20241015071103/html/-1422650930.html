@@ -1,0 +1,135 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2119</td> <td>-1422650930</td><td>apache/camel</td><td>Claus Ibsen</td><td>4796eb29f9a0378c0ea69ba480e78d303303518e</td> <td>None</td> <td>TODO: in streaming mode we need to aggregate on-the-fly</td> <td>SATD_ADDED</td> <td>doProcessParallel(Exchange, AtomicExchange, Iterable<ProcessorExchangePair>, boolean, AsyncCallback)</td> <td>protected void doProcessParallel(final Exchange original, final AtomicExchange result, final Iterable<ProcessorExchangePair> pairs, final boolean streaming, final AsyncCallback callback) throws InterruptedException, ExecutionException</td> <td>
+    final CompletionService<Exchange> completion;
+    final AtomicBoolean running = new AtomicBoolean(true);
+    if (streaming) {
+        // execute tasks in parallel+streaming and aggregate in the order they are finished (out of order sequence)
+        completion = new ExecutorCompletionService<Exchange>(executorService);
+    } else {
+        // execute tasks in parallel and aggregate in the order the tasks are submitted (in order sequence)
+        completion = new SubmitOrderedCompletionService<Exchange>(executorService);
+    }
+    final AtomicInteger total = new AtomicInteger(0);
+    final Iterator<ProcessorExchangePair> it = pairs.iterator();
+    while (it.hasNext()) {
+        final ProcessorExchangePair pair = it.next();
+        final Exchange subExchange = pair.getExchange();
+        updateNewExchange(subExchange, total.intValue(), pairs, it);
+        completion.submit(new Callable<Exchange>() {
+
+            public Exchange call() throws Exception {
+                if (!running.get()) {
+                    // do not start processing the task if we are not running
+                    return subExchange;
+                }
+                try {
+                    doProcessParallel(pair);
+                } catch (Throwable e) {
+                    subExchange.setException(e);
+                }
+                // Decide whether to continue with the multicast or not; similar logic to the Pipeline
+                Integer number = getExchangeIndex(subExchange);
+                boolean continueProcessing = PipelineHelper.continueProcessing(subExchange, "Parallel processing failed for number " + number, LOG);
+                if (stopOnException && !continueProcessing) {
+                    // signal to stop running
+                    running.set(false);
+                    // throw caused exception
+                    if (subExchange.getException() != null) {
+                        // wrap in exception to explain where it failed
+                        throw new CamelExchangeException("Parallel processing failed for number " + number, subExchange, subExchange.getException());
+                    }
+                }
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Parallel processing complete for exchange: " + subExchange);
+                }
+                return subExchange;
+            }
+        });
+        total.incrementAndGet();
+    }
+    // TODO: in streaming mode we need to aggregate on-the-fly
+    // its to hard to do parallel async routing so we let the caller thread be synchronously
+    // and have it pickup the replies and do the aggregation
+    boolean timedOut = false;
+    boolean stoppedOnException = false;
+    final StopWatch watch = new StopWatch();
+    for (int i = 0; i < total.intValue(); i++) {
+        Future<Exchange> future;
+        if (timedOut) {
+            // we are timed out but try to grab if some tasks has been completed
+            // poll will return null if no tasks is present
+            future = completion.poll();
+        } else if (timeout > 0) {
+            long left = timeout - watch.taken();
+            if (left < 0) {
+                left = 0;
+            }
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Polling completion task #" + i + " using timeout " + left + " millis.");
+            }
+            future = completion.poll(left, TimeUnit.MILLISECONDS);
+        } else {
+            // take will wait until the task is complete
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Polling completion task #" + i);
+            }
+            future = completion.take();
+        }
+        if (future == null && timedOut) {
+            // we are timed out and no more tasks complete so break out
+            break;
+        } else if (future == null) {
+            // timeout occurred
+            AggregationStrategy strategy = getAggregationStrategy(null);
+            if (strategy instanceof TimeoutAwareAggregationStrategy) {
+                // notify the strategy we timed out
+                Exchange oldExchange = result.get();
+                if (oldExchange == null) {
+                    // if they all timed out the result may not have been set yet, so use the original exchange
+                    oldExchange = original;
+                }
+                ((TimeoutAwareAggregationStrategy) strategy).timeout(oldExchange, i, total.intValue(), timeout);
+            } else {
+                // log a WARN we timed out since it will not be aggregated and the Exchange will be lost
+                LOG.warn("Parallel processing timed out after " + timeout + " millis for number " + i + ". This task will be cancelled and will not be aggregated.");
+            }
+            timedOut = true;
+        } else {
+            // there is a result to aggregate
+            Exchange subExchange = future.get();
+            // Decide whether to continue with the multicast or not; similar logic to the Pipeline
+            Integer number = getExchangeIndex(subExchange);
+            boolean continueProcessing = PipelineHelper.continueProcessing(subExchange, "Parallel processing failed for number " + number, LOG);
+            if (stopOnException && !continueProcessing) {
+                // we want to stop on exception and an exception or failure occurred
+                // this is similar to what the pipeline does, so we should do the same to not surprise end users
+                // so we should set the failed exchange as the result and break out
+                result.set(subExchange);
+                stoppedOnException = true;
+                break;
+            }
+            // we got a result so aggregate it
+            AggregationStrategy strategy = getAggregationStrategy(subExchange);
+            doAggregate(strategy, result, subExchange);
+        }
+    }
+    if (timedOut || stoppedOnException) {
+        if (timedOut && LOG.isDebugEnabled()) {
+            LOG.debug("Cancelling tasks due timeout after " + timeout + " millis.");
+        }
+        if (stoppedOnException && LOG.isDebugEnabled()) {
+            LOG.debug("Cancelling tasks due stopOnException.");
+        }
+        // cancel tasks as we timed out (its safe to cancel done tasks)
+        running.set(false);
+    }
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Done parallel processing " + total + " exchanges");
+    }
+</td> </tr></table></body></html>

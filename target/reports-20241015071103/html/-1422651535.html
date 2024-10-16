@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>952</td> <td>-1422651535</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>991c7e2b41f15bde7d895d7b79b7364aa9f797b1</td> <td>None</td> <td>we just append the redelivery counter to the body
+you can of course do all kind of stuff instead</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws Exception</td> <td>
+    // the message is being redelivered so we can alter it
+    // we just append the redelivery counter to the body
+    // you can of course do all kind of stuff instead
+    String body = exchange.getIn().getBody(String.class);
+    int count = exchange.getIn().getHeader("org.apache.camel.RedeliveryCounter", Integer.class);
+    exchange.getIn().setBody(body + count);
+</td> </tr></table></body></html>

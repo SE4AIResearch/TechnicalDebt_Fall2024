@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5245</td> <td>-1009652136</td><td>apache/hadoop</td><td>Eli Collins</td><td>3fd40ae8d0b45d7bf6186fe14851ca87eb9ee3ef</td> <td>None</td> <td>TODO can this be configurable too. Users/emulators should be able to
+pick and choose what MATH operations to run.
+Example :
+BASIC : ADD, SUB, MUL, DIV
+ADV   : SQRT, SIN, COSIN..
+COMPO : (BASIC/ADV)*
+Also define input generator. For now we can use the random number
+generator. Later this can be changed to accept multiple sources.</td> <td>SATD_ADDED</td> <td>performUnitComputation()</td> <td>protected void performUnitComputation()</td> <td>
+    // TODO can this be configurable too. Users/emulators should be able to
+    // pick and choose what MATH operations to run.
+    // Example :
+    // BASIC : ADD, SUB, MUL, DIV
+    // ADV   : SQRT, SIN, COSIN..
+    // COMPO : (BASIC/ADV)*
+    // Also define input generator. For now we can use the random number
+    // generator. Later this can be changed to accept multiple sources.
+    int randomData = random.nextInt();
+    int randomDataCube = randomData * randomData * randomData;
+    double randomDataCubeRoot = Math.cbrt(randomData);
+    returnValue = Math.log(Math.tan(randomDataCubeRoot * Math.exp(randomDataCube)) * Math.sqrt(randomData));
+</td> </tr></table></body></html>

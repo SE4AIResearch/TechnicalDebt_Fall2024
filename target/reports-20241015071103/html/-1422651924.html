@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>188</td> 
+     <td>-1422651924</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>4e3c91403e843e101691aaed234bda8b5813a28f</td> 
+     <td>TODO add test that things have expired</td> 
+     <td>TODO add test that things have expired</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>processExchange(Exchange, ProcessInstance)</td> 
+     <td>public void processExchange(Exchange exchange, ProcessInstance instance)</td> 
+     <td> Date firstTime = first.evaluateState(instance); if (firstTime == null) { // ignore as first event has not accurred yet return; } // TODO now we might need to set the second activity state // to 'grey' to indicate it now could happen? // lets force the lazy creation of the second state ActivityState secondState = second.getOrCreateActivityState(instance); if (expectedMillis &gt; 0L) { Date expected = secondState.getTimeExpected(); if (expected == null) { expected = add(firstTime, expectedMillis); secondState.setTimeExpected(expected); } } if (overdueMillis &gt; 0L) { Date overdue = secondState.getTimeOverdue(); if (overdue == null) { overdue = add(firstTime, overdueMillis); secondState.setTimeOverdue(overdue); } } Date secondTime = second.evaluateState(instance); if (secondTime == null) { // TODO add test that things have expired } else { /* if (secondTime.delta(firstTime.plus(gap)) &gt; 0) { // TODO } */ } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>185</td> 
+     <td>-1422651924</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>2cbbb2f6bff90c8210adb77a7185e8c31cd714df</td> 
+     <td>None</td> 
+     <td>TODO add test that things have expired</td> 
+     <td>SATD_ADDED</td> 
+     <td>evaluate(ProcessContext, ActivityState)</td> 
+     <td>public void evaluate(ProcessContext context, ActivityState activityState)</td> 
+     <td> ProcessInstance instance = context.getProcessInstance(); Date firstTime = first.evaluateState(instance); if (firstTime == null) { // ignore as first event has not accurred yet return; } // TODO now we might need to set the second activity state // to 'grey' to indicate it now could happen? // if the second activity state is not created yet we might wanna create it ActivityState secondState = second.getActivityState(instance); if (expectedMillis &gt; 0L) { Date expected = secondState.getTimeExpected(); if (expected == null) { expected = add(firstTime, expectedMillis); secondState.setTimeExpected(expected); } } if (overdueMillis &gt; 0L) { Date overdue = secondState.getTimeOverdue(); if (overdue == null) { overdue = add(firstTime, overdueMillis); secondState.setTimeOverdue(overdue); } } Date secondTime = second.evaluateState(instance); if (secondTime == null) { // TODO add test that things have expired } else { /* if (secondTime.delta(firstTime.plus(gap)) &gt; 0) { // TODO } */ } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

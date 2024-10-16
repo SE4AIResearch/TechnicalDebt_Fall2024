@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1993</td> 
+     <td>-1422651008</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>d3711affa954e469d295504ae7f1d4af3af7f369</td> 
+     <td>TODO: we should re-create route defs on start, people should use suspend/resume for hot restart</td> 
+     <td>start the route definitions before the routes is started</td> 
+     <td>SATD_REMOVED</td> 
+     <td>doStartCamel()</td> 
+     <td>private void doStartCamel() throws Exception</td> 
+     <td> if (isStreamCaching()) { // only add a new stream cache if not already configured if (StreamCaching.getStreamCaching(this) == null) { LOG.info("StreamCaching is enabled on CamelContext: " + getName()); addInterceptStrategy(new StreamCaching()); } } if (isTracing()) { // tracing is added in the DefaultChannel so we can enable it on the fly LOG.info("Tracing is enabled on CamelContext: " + getName()); } if (isHandleFault()) { // only add a new handle fault if not already configured if (HandleFault.getHandleFault(this) == null) { LOG.info("HandleFault is enabled on CamelContext: " + getName()); addInterceptStrategy(new HandleFault()); } } if (getDelayer() != null &amp;&amp; getDelayer() &gt; 0) { // only add a new delayer if not already configured if (Delayer.getDelayer(this) == null) { long millis = getDelayer(); LOG.info("Delayer is enabled with: " + millis + " ms. on CamelContext: " + getName()); addInterceptStrategy(new Delayer(millis)); } } // register debugger if (getDebugger() != null) { LOG.info("Debugger: " + getDebugger() + " is enabled on CamelContext: " + getName()); // register this camel context on the debugger getDebugger().setCamelContext(this); startServices(getDebugger()); addInterceptStrategy(new Debug(getDebugger())); } // start management strategy before lifecycles are started getManagementStrategy().start(); // start lifecycle strategies Iterator<lifecyclestrategy>
+        it = lifecycleStrategies.iterator(); while (it.hasNext()) { LifecycleStrategy strategy = it.next(); try { strategy.onContextStart(this); } catch (Exception e) { // not all containers allow access to its MBeanServer (such as OC4j) // so here we remove the troublesome strategy to be able to continue LOG.warn("Cannot start lifecycle strategy: " + strategy + ". This strategy will be removed. Cause: " + e.getMessage(), e); it.remove(); } } // start notifiers as services for (EventNotifier notifier : getManagementStrategy().getEventNotifiers()) { if (notifier instanceof Service) { Service service = (Service) notifier; for (LifecycleStrategy strategy : lifecycleStrategies) { strategy.onServiceAdd(this, service, null); } } startServices(notifier); } // must let some bootstrap service be started before we can notify the starting event EventHelper.notifyCamelContextStarting(this); forceLazyInitialization(); addService(executorServiceStrategy); addService(producerServicePool); addService(inflightRepository); addService(shutdownStrategy); startServices(components.values()); // start the route definitions before the routes is started startRouteDefinitions(routeDefinitions); // start routes doStartRoutes(routeServices, true); // starting will continue in the start method 
+      </lifecyclestrategy></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1991</td> 
+     <td>-1422651008</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>5b7a5b5ae235ef98f6d2488f95c7d66159cd560a</td> 
+     <td>None</td> 
+     <td>TODO: we should re-create route defs on start, people should use suspend/resume for hot restart</td> 
+     <td>SATD_ADDED</td> 
+     <td>doStartCamel()</td> 
+     <td>private void doStartCamel() throws Exception</td> 
+     <td> if (isStreamCaching()) { // only add a new stream cache if not already configured if (StreamCaching.getStreamCaching(this) == null) { LOG.info("StreamCaching is enabled on CamelContext: " + getName()); addInterceptStrategy(new StreamCaching()); } } if (isTracing()) { // tracing is added in the DefaultChannel so we can enable it on the fly LOG.info("Tracing is enabled on CamelContext: " + getName()); } if (isHandleFault()) { // only add a new handle fault if not already configured if (HandleFault.getHandleFault(this) == null) { LOG.info("HandleFault is enabled on CamelContext: " + getName()); addInterceptStrategy(new HandleFault()); } } if (getDelayer() != null &amp;&amp; getDelayer() &gt; 0) { // only add a new delayer if not already configured if (Delayer.getDelayer(this) == null) { long millis = getDelayer(); LOG.info("Delayer is enabled with: " + millis + " ms. on CamelContext: " + getName()); addInterceptStrategy(new Delayer(millis)); } } // register debugger if (getDebugger() != null) { LOG.info("Debugger: " + getDebugger() + " is enabled on CamelContext: " + getName()); // register this camel context on the debugger getDebugger().setCamelContext(this); startServices(getDebugger()); addInterceptStrategy(new Debug(getDebugger())); } // start management strategy before lifecycles are started getManagementStrategy().start(); // start lifecycle strategies Iterator<lifecyclestrategy>
+        it = lifecycleStrategies.iterator(); while (it.hasNext()) { LifecycleStrategy strategy = it.next(); try { strategy.onContextStart(this); } catch (Exception e) { // not all containers allow access to its MBeanServer (such as OC4j) // so here we remove the troublesome strategy to be able to continue LOG.warn("Cannot start lifecycle strategy: " + strategy + ". This strategy will be removed. Cause: " + e.getMessage(), e); it.remove(); } } // start notifiers as services for (EventNotifier notifier : getManagementStrategy().getEventNotifiers()) { if (notifier instanceof Service) { Service service = (Service) notifier; for (LifecycleStrategy strategy : lifecycleStrategies) { strategy.onServiceAdd(this, service, null); } } startServices(notifier); } // must let some bootstrap service be started before we can notify the starting event EventHelper.notifyCamelContextStarting(this); forceLazyInitialization(); addService(executorServiceStrategy); addService(producerServicePool); addService(inflightRepository); addService(shutdownStrategy); startServices(components.values()); // the route definitions is only started once, even if Camel is stopped if (routeDefinitionInitiated.compareAndSet(false, true)) { // TODO: we should re-create route defs on start, people should use suspend/resume for hot restart startRouteDefinitions(routeDefinitions); } // start routes doStartRoutes(routeServices, true); // starting will continue in the start method 
+      </lifecyclestrategy></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

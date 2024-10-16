@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4300</td> <td>1242677808</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>1d9a6526baad7b45cb4a211d65c3f02ff05c86a6</td> <td>None</td> <td>For some reason keeping track of preferredWidth keeps the width better,
+but using 100% for height works better.</td> <td>SATD_ADDED</td> <td>onResize(ResizeEvent)</td> <td>public void onResize(final ResizeEvent event)</td> <td>
+    sp.setSize("100%", "100%");
+    // For some reason keeping track of preferredWidth keeps the width better,
+    // but using 100% for height works better.
+    popup.setHeight("100%");
+    popupPosition.setPosition(preferredPopupWidth, popup.getOffsetHeight());
+</td> </tr></table></body></html>

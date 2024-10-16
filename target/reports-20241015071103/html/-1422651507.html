@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1006</td> <td>-1422651507</td><td>apache/camel</td><td>Claus Ibsen</td><td>be24b42965496593df8362ccdfcd30b38cffa05a</td> <td>None</td> <td>give time for file consumer to stop properly</td> <td>SATD_ADDED</td> <td>testAssertionsUsingBean()</td> <td>public void testAssertionsUsingBean() throws Exception</td> <td>
+    MyAssertions bean = getMandatoryBean(MyAssertions.class, "myBean");
+    bean.assertEndpointsValid();
+    // give time for file consumer to stop properly
+    Thread.sleep(20);
+</td> </tr></table></body></html>

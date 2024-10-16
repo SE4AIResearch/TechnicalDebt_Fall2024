@@ -1,0 +1,205 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4875</td> 
+     <td>1242677883</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>9d12abd177cea3ff708b6b762e1a5a6179a1942d</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>forceCallerAsReviewer(ChangeContext, Map<string, patchsetapproval>
+        , List 
+       <patchsetapproval>
+         , List 
+        <patchsetapproval>
+          ) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td>private void forceCallerAsReviewer(ChangeContext ctx, Map<string, patchsetapproval>
+        current, List 
+       <patchsetapproval>
+         ups, List 
+        <patchsetapproval>
+          del) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td> if (current.isEmpty() &amp;&amp; ups.isEmpty()) { // TODO Find another way to link reviewers to changes. if (del.isEmpty()) { // If no existing label is being set to 0, hack in the caller // as a reviewer by picking the first server-wide LabelType. PatchSetApproval c = new PatchSetApproval(new PatchSetApproval.Key(psId, user.getAccountId(), ctx.getChangeControl().getLabelTypes().getLabelTypes().get(0).getLabelId()), (short) 0, TimeUtil.nowTs()); c.setGranted(ctx.getWhen()); ups.add(c); } else { // Pick a random label that is about to be deleted and keep it. Iterator<patchsetapproval>
+        i = del.iterator(); PatchSetApproval c = i.next(); c.setValue((short) 0); c.setGranted(ctx.getWhen()); i.remove(); ups.add(c); } } 
+      </patchsetapproval></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4639</td> 
+     <td>1242677883</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>David Pursehouse</td> 
+     <td>3a20cefc4bbd025173f83489855bbf9348bea642</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>forceCallerAsReviewer(RevisionResource, Map<string, patchsetapproval>
+        , List 
+       <patchsetapproval>
+         , List 
+        <patchsetapproval>
+          ) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td>private void forceCallerAsReviewer(RevisionResource rsrc, Map<string, patchsetapproval>
+        current, List 
+       <patchsetapproval>
+         ups, List 
+        <patchsetapproval>
+          del) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td> if (current.isEmpty() &amp;&amp; ups.isEmpty()) { // TODO Find another way to link reviewers to changes. if (del.isEmpty()) { // If no existing label is being set to 0, hack in the caller // as a reviewer by picking the first server-wide LabelType. PatchSetApproval c = new PatchSetApproval(new PatchSetApproval.Key(rsrc.getPatchSet().getId(), rsrc.getAccountId(), rsrc.getControl().getLabelTypes().getLabelTypes().get(0).getLabelId()), (short) 0, TimeUtil.nowTs()); c.setGranted(timestamp); c.cache(change); ups.add(c); } else { // Pick a random label that is about to be deleted and keep it. Iterator<patchsetapproval>
+        i = del.iterator(); PatchSetApproval c = i.next(); c.setValue((short) 0); c.setGranted(timestamp); c.cache(change); i.remove(); ups.add(c); } } 
+      </patchsetapproval></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4632</td> 
+     <td>1242677883</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>d0624718cb405cbbf1a49323a2e4eb48045fc6a8</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>forceCallerAsReviewer(RevisionResource, Map<string, patchsetapproval>
+        , List 
+       <patchsetapproval>
+         , List 
+        <patchsetapproval>
+          ) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td>private void forceCallerAsReviewer(RevisionResource rsrc, Map<string, patchsetapproval>
+        current, List 
+       <patchsetapproval>
+         ups, List 
+        <patchsetapproval>
+          del) 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td> if (current.isEmpty() &amp;&amp; ups.isEmpty()) { // TODO Find another way to link reviewers to changes. if (del.isEmpty()) { // If no existing label is being set to 0, hack in the caller // as a reviewer by picking the first server-wide LabelType. PatchSetApproval c = new PatchSetApproval(new PatchSetApproval.Key(rsrc.getPatchSet().getId(), rsrc.getAccountId(), rsrc.getControl().getLabelTypes().getLabelTypes().get(0).getLabelId()), (short) 0, TimeUtil.nowTs()); c.setGranted(timestamp); ups.add(c); } else { // Pick a random label that is about to be deleted and keep it. Iterator<patchsetapproval>
+        i = del.iterator(); PatchSetApproval c = i.next(); c.setValue((short) 0); c.setGranted(timestamp); i.remove(); ups.add(c); } } 
+      </patchsetapproval></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4460</td> 
+     <td>1242677883</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>0557fc43c3a28c387967e02d91d70014e88bb565</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide ApprovalType.</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide LabelType.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>forceCallerAsReviewer(RevisionResource, Map<string, patchsetapproval>
+        , List 
+       <patchsetapproval>
+         , List 
+        <patchsetapproval>
+          , List 
+         <patchsetapproval>
+           ) 
+         </patchsetapproval> 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td>private void forceCallerAsReviewer(RevisionResource rsrc, Map<string, patchsetapproval>
+        current, List 
+       <patchsetapproval>
+         ins, List 
+        <patchsetapproval>
+          upd, List 
+         <patchsetapproval>
+           del) 
+         </patchsetapproval> 
+        </patchsetapproval> 
+       </patchsetapproval> 
+      </string,></td> 
+     <td> if (current.isEmpty() &amp;&amp; ins.isEmpty() &amp;&amp; upd.isEmpty()) { // TODO Find another way to link reviewers to changes. if (del.isEmpty()) { // If no existing label is being set to 0, hack in the caller // as a reviewer by picking the first server-wide LabelType. PatchSetApproval c = new PatchSetApproval(new PatchSetApproval.Key(rsrc.getPatchSet().getId(), rsrc.getAccountId(), labelTypes.getLabelTypes().get(0).getApprovalCategoryId()), (short) 0); c.setGranted(timestamp); c.cache(change); ins.add(c); } else { // Pick a random label that is about to be deleted and keep it. Iterator<patchsetapproval>
+        i = del.iterator(); PatchSetApproval c = i.next(); c.setValue((short) 0); c.setGranted(timestamp); c.cache(change); i.remove(); upd.add(c); } } 
+      </patchsetapproval></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4421</td> 
+     <td>1242677883</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>327048b612815c1f5ec1aacd14b5da9383c2a815</td> 
+     <td>None</td> 
+     <td>If no existing label is being set to 0, hack in the caller as a reviewer by picking the first server-wide ApprovalType.</td> 
+     <td>SATD_ADDED</td> 
+     <td>forceCallerAsReviewer(RevisionResource, Map<string, patchsetapproval>
+       , List
+       <patchsetapproval>
+        , List
+        <patchsetapproval>
+         , List
+         <patchsetapproval>
+          )
+         </patchsetapproval>
+        </patchsetapproval>
+       </patchsetapproval>
+      </string,></td> 
+     <td>private void forceCallerAsReviewer(RevisionResource rsrc, Map<string, patchsetapproval>
+        current, List
+       <patchsetapproval>
+         ins, List
+        <patchsetapproval>
+          upd, List
+         <patchsetapproval>
+           del)
+         </patchsetapproval>
+        </patchsetapproval>
+       </patchsetapproval>
+      </string,></td> 
+     <td> if (current.isEmpty() &amp;&amp; ins.isEmpty() &amp;&amp; upd.isEmpty()) { // TODO Find another way to link reviewers to changes. if (del.isEmpty()) { // If no existing label is being set to 0, hack in the caller // as a reviewer by picking the first server-wide ApprovalType. PatchSetApproval c = new PatchSetApproval(new PatchSetApproval.Key(rsrc.getPatchSet().getId(), rsrc.getAuthorId(), approvalTypes.getApprovalTypes().get(0).getCategory().getId()), (short) 0); c.setGranted(timestamp); c.cache(change); ins.add(c); } else { // Pick a random label that is about to be deleted and keep it. Iterator<patchsetapproval>
+        i = del.iterator(); PatchSetApproval c = i.next(); c.setValue((short) 0); c.setGranted(timestamp); c.cache(change); i.remove(); upd.add(c); } } 
+      </patchsetapproval></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

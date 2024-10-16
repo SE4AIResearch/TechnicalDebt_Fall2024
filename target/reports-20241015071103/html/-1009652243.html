@@ -1,0 +1,58 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5483</td> <td>-1009652243</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>turn down the completion poll interval from the 5 second default
+for better test performance.</td> <td>SATD_ADDED</td> <td>testWithDFS()</td> <td>public void testWithDFS() throws IOException</td> <td>
+    MiniDFSCluster dfs = null;
+    MiniMRCluster mr = null;
+    FileSystem fileSys = null;
+    try {
+        final int taskTrackers = 4;
+        Configuration conf = new Configuration();
+        dfs = new MiniDFSCluster(conf, 4, true, null);
+        fileSys = dfs.getFileSystem();
+        mr = new MiniMRCluster(taskTrackers, fileSys.getUri().toString(), 1);
+        JobTracker jt = mr.getJobTrackerRunner().getJobTracker();
+        final Path inDir = new Path("./input");
+        final Path outDir = new Path("./output");
+        String input = "The quick brown fox\nhas many silly\nred fox sox\n";
+        // launch job with fail tasks
+        JobConf jobConf = mr.createJobConf();
+        // turn down the completion poll interval from the 5 second default
+        // for better test performance.
+        jobConf.set(Job.COMPLETION_POLL_INTERVAL_KEY, "50");
+        jobConf.setOutputCommitter(CommitterWithLogs.class);
+        RunningJob rJob = launchJob(jobConf, inDir, outDir, input);
+        rJob.waitForCompletion();
+        validateJob(rJob, jt, true);
+        // launch job with fail tasks and fail-cleanups
+        fileSys.delete(outDir, true);
+        jobConf.setOutputCommitter(CommitterWithFailTaskCleanup.class);
+        rJob = launchJob(jobConf, inDir, outDir, input);
+        rJob.waitForCompletion();
+        validateJob(rJob, jt, true);
+        fileSys.delete(outDir, true);
+        jobConf.setOutputCommitter(CommitterWithFailTaskCleanup2.class);
+        rJob = launchJob(jobConf, inDir, outDir, input);
+        rJob.waitForCompletion();
+        validateJob(rJob, jt, true);
+        // launch job with task-cleanup switched off
+        fileSys.delete(outDir, true);
+        jobConf.setOutputCommitter(CommitterWithFailTaskCleanup.class);
+        jobConf.setBoolean(MRJobConfig.TASK_CLEANUP_NEEDED, false);
+        rJob = launchJob(jobConf, inDir, outDir, input);
+        rJob.waitForCompletion();
+        validateJob(rJob, jt, false);
+    } finally {
+        if (dfs != null) {
+            dfs.shutdown();
+        }
+        if (mr != null) {
+            mr.shutdown();
+        }
+    }
+</td> </tr></table></body></html>

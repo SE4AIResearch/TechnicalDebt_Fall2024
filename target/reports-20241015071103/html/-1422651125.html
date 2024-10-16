@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1762</td> 
+     <td>-1422651125</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>cf9584baa64debd9f476132285892532603d1f91</td> 
+     <td>TODO: We can improve performance by not returning the old when adding</td> 
+     <td>we can improve performance by not returning the old when adding</td> 
+     <td>SATD_REMOVED</td> 
+     <td>add(CamelContext, K, Exchange)</td> 
+     <td>public Exchange add(CamelContext camelContext, K key, Exchange exchange)</td> 
+     <td> try { // If we could guarantee that the key and exchange are immutable, // then we could have stuck them directly into the index, // HawtDB could then eliminate the need to marshal and un-marshal // in some cases. But since we can.. we are going to force // early marshaling. final Buffer keyBuffer = marshallKey(key); final Buffer exchangeBuffer = marshallExchange(camelContext, exchange); Buffer rc = hawtDBFile.execute(new Work<buffer>
+        () { public Buffer execute(Transaction tx) { Index 
+       <buffer, buffer>
+         index = hawtDBFile.getRepositoryIndex(tx, repositoryName); return index.put(keyBuffer, exchangeBuffer); } }); if (rc == null) { return null; } // we can improve performance by not returning the old when adding return unmarshallExchange(camelContext, rc); } catch (IOException e) { throw new RuntimeException("Error adding to repository " + repositoryName + " with key " + key, e); } 
+       </buffer,> 
+      </buffer></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1759</td> 
+     <td>-1422651125</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>88a52438f4a695b6601e307a3a6ed5301643a5df</td> 
+     <td>TODO: We can improve performance by not returning the old when adding</td> 
+     <td>TODO: We can improve performance by not returning the old when adding</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>add(K, Exchange)</td> 
+     <td>public Exchange add(K key, Exchange exchange)</td> 
+     <td> try { // If we could guarantee that the key and exchange are immutable, // then we could have stuck them directly into the index, // HawtDB could then eliminate the need to marshal and un-marshal // in some cases. But since we can.. we are going to force // early marshaling. final Buffer keyBuffer = marshallKey(key); final Buffer exchangeBuffer = marshallExchange(exchange); Buffer rc = file.execute(new Work<buffer>
+        () { public Buffer execute(Transaction tx) { Index 
+       <buffer, buffer>
+         index = file.getRepositoryIndex(tx, name); return index.put(keyBuffer, exchangeBuffer); } }); if (rc == null) { return null; } // TODO: We can improve performance by not returning the old when adding return unmarshallExchange(rc); } catch (IOException e) { throw new RuntimeException("Error adding to repository " + name + " with key " + key, e); } 
+       </buffer,> 
+      </buffer></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1756</td> 
+     <td>-1422651125</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>dbe63209b3b3c14ebb24cbc4ca24f84b97176067</td> 
+     <td>None</td> 
+     <td>TODO: We can improve performance by not returning the old when adding</td> 
+     <td>SATD_ADDED</td> 
+     <td>add(K, Exchange)</td> 
+     <td>public Exchange add(K key, Exchange exchange)</td> 
+     <td> try { // If we could guarantee that the key and exchange are immutable, // then we could have stuck them directly into the index, // HawtDB could then eliminate the need to marshal and un-marshal // in some cases. But since we can.. we are going to force // early marshaling. final Buffer keyBuffer = marshallKey(key); final Buffer exchangeBuffer = marshallExchange(exchange); Buffer rc = file.execute(new Work<buffer>
+       () { public Buffer execute(Transaction tx) { Index
+       <buffer, buffer>
+         index = file.getRepositoryIndex(tx, name); return index.put(keyBuffer, exchangeBuffer); } }); if (rc == null) { return null; } // TODO: We can improve performance by not returning the old when adding return unmarshallExchange(rc); } catch (IOException e) { throw new RuntimeException("Error adding to repository " + name + " with key " + key, e); } 
+       </buffer,>
+      </buffer></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

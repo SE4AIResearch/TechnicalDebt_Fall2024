@@ -1,0 +1,11 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1493</td> <td>-1422651283</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>4a09c27e72c836197836e67c17b0055b7c0161d5</td> <td>None</td> <td>TODO: fix this test!</td> <td>SATD_ADDED</td> <td>fixmeTestSplitXPath()</td> <td>public void fixmeTestSplitXPath() throws Exception</td> <td>
+    String dsl = "from(\"direct:start\").split(xpath(\"//foo/bar\")).convertBodyTo(String.class).to(\"mock:result\")";
+    assertEquals(dsl, render(dsl));
+</td> </tr></table></body></html>

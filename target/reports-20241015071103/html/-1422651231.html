@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1801</td> 
+     <td>-1422651231</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>184850cf76b7050366a320923879571662f6eb14</td> 
+     <td>None</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>SATD_ADDED</td> 
+     <td>doWriteDirectResponse(Message, HttpServletResponse, Exchange)</td> 
+     <td>protected void doWriteDirectResponse(Message message, HttpServletResponse response, Exchange exchange) throws IOException</td> 
+     <td> InputStream is = null; if (checkChucked(message, exchange)) { is = message.getBody(InputStream.class); } if (is != null) { ServletOutputStream os = response.getOutputStream(); try { // copy directly from input stream to output stream IOHelper.copy(is, os); } finally { try { os.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } try { is.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } } } else { // not convertable as a stream so try as a String String data = message.getBody(String.class); if (data != null) { // set content length before we write data response.setContentLength(data.length()); response.getWriter().print(data); response.getWriter().flush(); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1798</td> 
+     <td>-1422651231</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>9b4dbbb553e2ee759212741d6630b3c64cc92d1a</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>doWriteDirectResponse(Message, HttpServletResponse, Exchange)</td> 
+     <td>protected void doWriteDirectResponse(Message message, HttpServletResponse response, Exchange exchange) throws IOException</td> 
+     <td> InputStream is = null; if (checkChunked(message, exchange)) { is = message.getBody(InputStream.class); } if (is != null) { ServletOutputStream os = response.getOutputStream(); try { // copy directly from input stream to output stream IOHelper.copy(is, os); } finally { try { os.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } try { is.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } } } else { // not convertable as a stream so try as a String String data = message.getBody(String.class); if (data != null) { // set content length before we write data response.setContentLength(data.length()); response.getWriter().print(data); response.getWriter().flush(); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1797</td> 
+     <td>-1422651231</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>e168eaf2246fa3b4b03e5ade7d5356410c1c3d12</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>doWriteDirectResponse(Message, HttpServletResponse, Exchange)</td> 
+     <td>protected void doWriteDirectResponse(Message message, HttpServletResponse response, Exchange exchange) throws IOException</td> 
+     <td> InputStream is = null; if (checkChunked(message, exchange)) { is = message.getBody(InputStream.class); } if (is != null) { ServletOutputStream os = response.getOutputStream(); try { // copy directly from input stream to output stream IOHelper.copy(is, os); } finally { try { os.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } try { is.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } } } else { // not convertable as a stream so try as a String String data = message.getBody(String.class); if (data != null) { // set content length before we write data response.setContentLength(data.length()); response.getWriter().print(data); response.getWriter().flush(); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1584</td> 
+     <td>-1422651231</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a96e0daf3c95f16b773b388f77ff2bdc75f98a85</td> 
+     <td>None</td> 
+     <td>ignore, maybe client have disconnected or timed out</td> 
+     <td>SATD_ADDED</td> 
+     <td>doWriteDirectResponse(Message, HttpServletResponse, Exchange)</td> 
+     <td>protected void doWriteDirectResponse(Message message, HttpServletResponse response, Exchange exchange) throws IOException</td> 
+     <td> InputStream is = message.getBody(InputStream.class); if (is != null) { ServletOutputStream os = response.getOutputStream(); try { // copy directly from input stream to output stream IOHelper.copy(is, os); } finally { try { os.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } try { is.close(); } catch (Exception e) { // ignore, maybe client have disconnected or timed out } } } else { // not convertable as a stream so try as a String String data = message.getBody(String.class); if (data != null) { // set content length before we write data response.setContentLength(data.length()); response.getWriter().print(data); response.getWriter().flush(); } } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

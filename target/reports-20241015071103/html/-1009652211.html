@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>5978</td> 
+     <td>-1009652211</td>
+     <td>apache/hadoop</td>
+     <td>Steve Loughran</td>
+     <td>28e6a4e44a3e920dcaf858f9a74a6358226b3a63</td> 
+     <td>Should have incremented the batch count exactly once</td> 
+     <td>Should have incremented the batch count exactly once</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>run()</td> 
+     <td>public void run()</td> 
+     <td> PermissionStatus p = namesystem.createFsOwnerPermissions(new FsPermission((short) 0777)); FSEditLog editLog = namesystem.getEditLog(); for (int i = 0; i &lt; numTransactions; i++) { INodeFileUnderConstruction inode = new INodeFileUnderConstruction(p, replication, blockSize, 0, "", "", null); editLog.logOpenFile("/filename" + i, inode); editLog.logCloseFile("/filename" + i, inode); editLog.logSync(); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5515</td> 
+     <td>-1009652211</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>None</td> 
+     <td>Should have incremented the batch count exactly once</td> 
+     <td>SATD_ADDED</td> 
+     <td>testSyncBatching()</td> 
+     <td>public void testSyncBatching() throws Exception</td> 
+     <td> // start a cluster Configuration conf = new HdfsConfiguration(); MiniDFSCluster cluster = null; FileSystem fileSys = null; ExecutorService threadA = Executors.newSingleThreadExecutor(); ExecutorService threadB = Executors.newSingleThreadExecutor(); try { cluster = new MiniDFSCluster.Builder(conf).numDataNodes(NUM_DATA_NODES).build(); cluster.waitActive(); fileSys = cluster.getFileSystem(); final FSNamesystem namesystem = cluster.getNamesystem(); FSImage fsimage = namesystem.getFSImage(); final FSEditLog editLog = fsimage.getEditLog(); assertEquals("should start with no txids synced", 0, editLog.getSyncTxId()); // Log an edit from thread A doLogEdit(threadA, editLog, "thread-a 1"); assertEquals("logging edit without syncing should do not affect txid", 0, editLog.getSyncTxId()); // Log an edit from thread B doLogEdit(threadB, editLog, "thread-b 1"); assertEquals("logging edit without syncing should do not affect txid", 0, editLog.getSyncTxId()); // Now ask to sync edit from B, which should sync both edits. doCallLogSync(threadB, editLog); assertEquals("logSync from second thread should bump txid up to 2", 2, editLog.getSyncTxId()); // Now ask to sync edit from A, which was already batched in - thus // it should increment the batch count metric doCallLogSync(threadA, editLog); assertEquals("logSync from first thread shouldn't change txid", 2, editLog.getSyncTxId()); // Should have incremented the batch count exactly once assertCounter("TransactionsBatchedInSync", 1L, getMetrics("NameNodeActivity")); } finally { threadA.shutdown(); threadB.shutdown(); if (fileSys != null) fileSys.close(); if (cluster != null) cluster.shutdown(); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

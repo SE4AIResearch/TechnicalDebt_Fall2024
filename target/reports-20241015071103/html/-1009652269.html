@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5457</td> <td>-1009652269</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>There is high probability that the rack id generated here will
+not conflict with those of other data node cluster.
+Not perfect but mostly unique rack ids are good enough</td> <td>SATD_ADDED</td> <td>getUniqueRackPrefix()</td> <td>private static String getUniqueRackPrefix()</td> <td>
+    String ip = "unknownIP";
+    try {
+        ip = DNS.getDefaultIP("default");
+    } catch (UnknownHostException ignored) {
+        System.out.println("Could not find ip address of \"default\" inteface.");
+    }
+    int rand = 0;
+    try {
+        rand = SecureRandom.getInstance("SHA1PRNG").nextInt(Integer.MAX_VALUE);
+    } catch (NoSuchAlgorithmException e) {
+        rand = (new Random()).nextInt(Integer.MAX_VALUE);
+    }
+    return "/Rack-" + rand + "-" + ip + "-" + System.currentTimeMillis();
+</td> </tr></table></body></html>

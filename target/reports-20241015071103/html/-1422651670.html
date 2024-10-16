@@ -1,0 +1,106 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1136</td> 
+     <td>-1422651670</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>6b9f807a6d78225fd910749c297126c3d6a29a3f</td> 
+     <td>TODO allow an annotation to expose the operation name to use</td> 
+     <td>now lets add the method to the repository</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createMethodInfo(Class, Method)</td> 
+     <td>protected MethodInfo createMethodInfo(Class clazz, Method method)</td> 
+     <td> Class[] parameterTypes = method.getParameterTypes(); Annotation[][] parametersAnnotations = method.getParameterAnnotations(); List<parameterinfo>
+        parameters = new ArrayList 
+       <parameterinfo>
+         (); List 
+        <parameterinfo>
+          bodyParameters = new ArrayList 
+         <parameterinfo>
+           (); boolean hasCustomAnnotation = false; for (int i = 0; i &lt; parameterTypes.length; i++) { Class parameterType = parameterTypes[i]; Annotation[] parameterAnnotations = parametersAnnotations[i]; Expression expression = createParameterUnmarshalExpression(clazz, method, parameterType, parameterAnnotations); hasCustomAnnotation |= expression != null; ParameterInfo parameterInfo = new ParameterInfo(i, parameterType, parameterAnnotations, expression); parameters.add(parameterInfo); if (expression == null) { hasCustomAnnotation |= ObjectHelper.hasAnnotation(parameterAnnotations, Body.class); if (bodyParameters.isEmpty()) { if (Exchange.class.isAssignableFrom(parameterType)) { // use exchange expression = ExpressionBuilder.exchangeExpression(); } else { // lets assume its the body expression = ExpressionBuilder.bodyExpression(parameterType); } parameterInfo.setExpression(expression); bodyParameters.add(parameterInfo); } else { // will ignore the expression for parameter evaluation } } } // now lets add the method to the repository MethodInfo methodInfo = new MethodInfo(clazz, method, parameters, bodyParameters, hasCustomAnnotation); return methodInfo; 
+         </parameterinfo> 
+        </parameterinfo> 
+       </parameterinfo> 
+      </parameterinfo></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>773</td> 
+     <td>-1422651670</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>989963110532c2cd8d8770b85978d72984a47e86</td> 
+     <td>TODO allow an annotation to expose the operation name to use</td> 
+     <td>TODO allow an annotation to expose the operation name to use</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createMethodInfo(Class, Method)</td> 
+     <td>protected MethodInfo createMethodInfo(Class clazz, Method method)</td> 
+     <td> Class[] parameterTypes = method.getParameterTypes(); Annotation[][] parametersAnnotations = method.getParameterAnnotations(); List<parameterinfo>
+        parameters = new ArrayList 
+       <parameterinfo>
+         (); List 
+        <parameterinfo>
+          bodyParameters = new ArrayList 
+         <parameterinfo>
+           (); boolean hasCustomAnnotation = false; for (int i = 0; i &lt; parameterTypes.length; i++) { Class parameterType = parameterTypes[i]; Annotation[] parameterAnnotations = parametersAnnotations[i]; Expression expression = createParameterUnmarshalExpression(clazz, method, parameterType, parameterAnnotations); hasCustomAnnotation |= expression != null; ParameterInfo parameterInfo = new ParameterInfo(i, parameterType, parameterAnnotations, expression); parameters.add(parameterInfo); if (expression == null) { hasCustomAnnotation |= ObjectHelper.hasAnnotation(parameterAnnotations, Body.class); if (bodyParameters.isEmpty()) { // lets assume its the body if (Exchange.class.isAssignableFrom(parameterType)) { expression = ExpressionBuilder.exchangeExpression(); } else { expression = ExpressionBuilder.bodyExpression(parameterType); } parameterInfo.setExpression(expression); bodyParameters.add(parameterInfo); } else { // will ignore the expression for parameter evaluation } } } // now lets add the method to the repository // TODO allow an annotation to expose the operation name to use /* if (method.getAnnotation(Operation.class) != null) { String name = * method.getAnnotation(Operation.class).name(); if (name != null &amp;&amp; * name.length() &gt; 0) { opName = name; } } */ MethodInfo methodInfo = new MethodInfo(clazz, method, parameters, bodyParameters, hasCustomAnnotation); return methodInfo; 
+         </parameterinfo> 
+        </parameterinfo> 
+       </parameterinfo> 
+      </parameterinfo></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>673</td> 
+     <td>-1422651670</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>dbeffa0202470f272e7acd9dbb8a0d3d813b45f8</td> 
+     <td>None</td> 
+     <td>TODO allow an annotation to expose the operation name to use</td> 
+     <td>SATD_ADDED</td> 
+     <td>introspect(Class, Method)</td> 
+     <td>protected MethodInfo introspect(Class clazz, Method method)</td> 
+     <td> Class[] parameterTypes = method.getParameterTypes(); Annotation[][] parametersAnnotations = method.getParameterAnnotations(); final Expression[] parameterExpressions = new Expression[parameterTypes.length]; List<parameterinfo>
+        parameters = new ArrayList
+       <parameterinfo>
+        (); List
+        <parameterinfo>
+          bodyParameters = new ArrayList
+         <parameterinfo>
+          (); boolean hasCustomAnnotation = false; for (int i = 0; i &lt; parameterTypes.length; i++) { Class parameterType = parameterTypes[i]; Annotation[] parameterAnnotations = parametersAnnotations[i]; Expression expression = createParameterUnmarshalExpression(clazz, method, parameterType, parameterAnnotations); hasCustomAnnotation |= expression != null; ParameterInfo parameterInfo = new ParameterInfo(i, parameterType, parameterAnnotations, expression); parameters.add(parameterInfo); if (expression == null) { hasCustomAnnotation |= ObjectHelper.hasAnnotation(parameterAnnotations, Body.class); if (bodyParameters.isEmpty()) { // lets assume its the body if (Exchange.class.isAssignableFrom(parameterType)) { expression = ExpressionBuilder.exchangeExpression(); } else { expression = ExpressionBuilder.bodyExpression(parameterType); } parameterInfo.setExpression(expression); bodyParameters.add(parameterInfo); } else { if (LOG.isDebugEnabled()) { LOG.debug("No expression available for method: " + method.toString() + " which already has a body so ignoring parameter: " + i + " so ignoring method"); } return null; } } } // now lets add the method to the repository String opName = method.getName(); // TODO allow an annotation to expose the operation name to use /* if (method.getAnnotation(Operation.class) != null) { String name = * method.getAnnotation(Operation.class).name(); if (name != null &amp;&amp; * name.length() &gt; 0) { opName = name; } } */ MethodInfo methodInfo = new MethodInfo(clazz, method, parameters, bodyParameters, hasCustomAnnotation); operations.put(opName, methodInfo); if (methodInfo.hasBodyParameter()) { operationsWithBody.add(methodInfo); } if (methodInfo.isHasCustomAnnotation() &amp;&amp; !methodInfo.hasBodyParameter()) { operationsWithCustomAnnotation.add(methodInfo); } return methodInfo; 
+         </parameterinfo>
+        </parameterinfo>
+       </parameterinfo>
+      </parameterinfo></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

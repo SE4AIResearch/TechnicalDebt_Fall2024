@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3901</td> <td>-1422649932</td><td>apache/camel</td><td>Andrea Cosentino</td><td>b2aa831da8c8f78f7d6ca908c5b33957bbc7fa24</td> <td>None</td> <td>TODO: add support for async callback in the send</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws CamelException</td> <td>
+    String topic = endpoint.getTopic();
+    if (!endpoint.isBridgeEndpoint()) {
+        topic = exchange.getIn().getHeader(KafkaConstants.TOPIC, topic, String.class);
+    }
+    if (topic == null) {
+        throw new CamelExchangeException("No topic key set", exchange);
+    }
+    Object partitionKey = exchange.getIn().getHeader(KafkaConstants.PARTITION_KEY);
+    boolean hasPartitionKey = partitionKey != null;
+    Object messageKey = exchange.getIn().getHeader(KafkaConstants.KEY);
+    boolean hasMessageKey = messageKey != null;
+    Object msg = exchange.getIn().getBody();
+    ProducerRecord record;
+    if (hasPartitionKey && hasMessageKey) {
+        record = new ProducerRecord(topic, new Integer(partitionKey.toString()), messageKey, msg);
+    } else if (hasMessageKey) {
+        record = new ProducerRecord(topic, messageKey, msg);
+    } else {
+        log.warn("No message key or partition key set");
+        record = new ProducerRecord(topic, msg);
+    }
+    // TODO: add support for async callback in the send
+    kafkaProducer.send(record);
+</td> </tr></table></body></html>

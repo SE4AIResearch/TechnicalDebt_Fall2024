@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>5060</td> 
+     <td>-1009652605</td>
+     <td>apache/hadoop</td>
+     <td>Suresh Srinivas</td>
+     <td>ae93ba7501d95e9d26a29de25f4cc39e5225ca20</td> 
+     <td>TODO: Get the user name from the GSS API for Kerberbos-based security Create the user subject</td> 
+     <td>server-side, don't trust the user groups provided by the client</td> 
+     <td>SATD_REMOVED</td> 
+     <td>getProtocolClass(String, Configuration)</td> 
+     <td> static Class<!--?--> getProtocolClass(String protocolName, Configuration conf) throws ClassNotFoundException</td> 
+     <td> Class<!--?--> protocol = PROTOCOL_CACHE.get(protocolName); if (protocol == null) { protocol = conf.getClassByName(protocolName); PROTOCOL_CACHE.put(protocolName, protocol); } return protocol; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5059</td> 
+     <td>-1009652605</td>
+     <td>apache/hadoop</td>
+     <td>Suresh Srinivas</td>
+     <td>ae93ba7501d95e9d26a29de25f4cc39e5225ca20</td> 
+     <td>TODO: Get the user name from the GSS API for Kerberbos-based security Create the user subject</td> 
+     <td>TODO: Get the user name from the GSS API for Kerberbos-based security</td> 
+     <td>SATD_CHANGED</td> 
+     <td>getProtocolClass(String, Configuration)</td> 
+     <td> static Class<!--?--> getProtocolClass(String protocolName, Configuration conf) throws ClassNotFoundException</td> 
+     <td> Class<!--?--> protocol = PROTOCOL_CACHE.get(protocolName); if (protocol == null) { protocol = conf.getClassByName(protocolName); PROTOCOL_CACHE.put(protocolName, protocol); } return protocol; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

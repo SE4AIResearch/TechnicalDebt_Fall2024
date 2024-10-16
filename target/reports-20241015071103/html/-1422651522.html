@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>977</td> <td>-1422651522</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>fb34675d428f1893a8a07c8029c1506601ce42fc</td> <td>None</td> <td>TODO: This code should be looked at, the parent stuff is might not needed</td> <td>SATD_ADDED</td> <td>buildFileEndpoint(String, String, Map)</td> <td>protected GenericFileEndpoint<File> buildFileEndpoint(String uri, String remaining, Map parameters) throws Exception</td> <td>
+    File file = new File(remaining);
+    NewFileEndpoint result = new NewFileEndpoint(uri, this);
+    result.setFile(file);
+    GenericFileConfiguration config = new GenericFileConfiguration();
+    // TODO: This code should be looked at, the parent stuff is might not needed
+    File parent = file.getParentFile();
+    if (parent != null) {
+        file = new File(parent, file.getName());
+    }
+    config.setFile(file.getPath());
+    config.setDirectory(file.isDirectory());
+    result.setConfiguration(config);
+    NewFileOperations operations = new NewFileOperations(result);
+    result.setOperations(operations);
+    return result;
+</td> </tr></table></body></html>

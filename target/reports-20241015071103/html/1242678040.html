@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4780</td> 
+     <td>1242678040</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>4ab21befbce78321b0b1b8e1916996b2c60c708c</td> 
+     <td>probably a SHA1</td> 
+     <td>Probably a SHA-1.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>apply(RevisionResource, RebaseInput)</td> 
+     <td>public ChangeInfo apply(RevisionResource rsrc, RebaseInput input) throws AuthException, ResourceNotFoundException, ResourceConflictException, EmailException, OrmException, IOException</td> 
+     <td> ChangeControl control = rsrc.getControl(); Change change = rsrc.getChange(); if (!control.canRebase()) { throw new AuthException("rebase not permitted"); } else if (!change.getStatus().isOpen()) { throw new ResourceConflictException("change is " + change.getStatus().name().toLowerCase()); } else if (!hasOneParent(rsrc.getPatchSet().getId())) { throw new ResourceConflictException("cannot rebase merge commits or commit with no ancestor"); } try (Repository repo = repoManager.openRepository(change.getProject()); RevWalk rw = new RevWalk(repo)) { rebaseChange.get().rebase(repo, rw, change, rsrc.getPatchSet().getId(), rsrc.getUser(), findBaseRev(rw, rsrc, input)); } catch (InvalidChangeOperationException e) { throw new ResourceConflictException(e.getMessage()); } catch (NoSuchChangeException e) { throw new ResourceNotFoundException(change.getId().toString()); } return json.format(change.getId()); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4726</td> 
+     <td>1242678040</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>874aed757016989ea2d9ccc360852defa1c6c991</td> 
+     <td>None</td> 
+     <td>probably a SHA1</td> 
+     <td>SATD_ADDED</td> 
+     <td>apply(RevisionResource, RebaseInput)</td> 
+     <td>public ChangeInfo apply(RevisionResource rsrc, RebaseInput input) throws AuthException, ResourceNotFoundException, ResourceConflictException, EmailException, OrmException</td> 
+     <td> ChangeControl control = rsrc.getControl(); Change change = rsrc.getChange(); if (!control.canRebase()) { throw new AuthException("rebase not permitted"); } else if (!change.getStatus().isOpen()) { throw new ResourceConflictException("change is " + change.getStatus().name().toLowerCase()); } else if (!hasOneParent(rsrc.getPatchSet().getId())) { throw new ResourceConflictException("cannot rebase merge commits or commit with no ancestor"); } String baseRev = null; if (input != null &amp;&amp; input.base != null) { String base = input.base.trim(); do { if (base.equals("")) { // remove existing dependency to other patch set baseRev = change.getDest().get(); break; } ReviewDb db = dbProvider.get(); PatchSet basePatchSet = parseBase(base); if (basePatchSet == null) { throw new ResourceConflictException("base revision is missing: " + base); } else if (!rsrc.getControl().isPatchVisible(basePatchSet, db)) { throw new AuthException("base revision not accessible: " + base); } else if (change.getId().equals(basePatchSet.getId().getParentKey())) { throw new ResourceConflictException("cannot depend on self"); } Change baseChange = db.changes().get(basePatchSet.getId().getParentKey()); if (baseChange != null) { if (!baseChange.getProject().equals(change.getProject())) { throw new ResourceConflictException("base change is in wrong project: " + baseChange.getProject()); } else if (!baseChange.getDest().equals(change.getDest())) { throw new ResourceConflictException("base change is targetting wrong branch: " + baseChange.getDest()); } else if (baseChange.getStatus() == Status.ABANDONED) { throw new ResourceConflictException("base change is abandoned: " + baseChange.getKey()); } baseRev = basePatchSet.getRevision().get(); break; } } while (// just wanted to use the break statement false); } try { rebaseChange.get().rebase(rsrc.getChange(), rsrc.getPatchSet().getId(), rsrc.getUser(), baseRev); } catch (InvalidChangeOperationException e) { throw new ResourceConflictException(e.getMessage()); } catch (IOException e) { throw new ResourceConflictException(e.getMessage()); } catch (NoSuchChangeException e) { throw new ResourceNotFoundException(change.getId().toString()); } return json.format(change.getId()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

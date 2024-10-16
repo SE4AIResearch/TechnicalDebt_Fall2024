@@ -1,0 +1,70 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1186</td> <td>-1422651434</td><td>apache/camel</td><td>Claus Ibsen</td><td>184681037ba80706c53a21a7d21e2797b3825c77</td> <td>None</td> <td>an exception occured maybe an onException can handle it</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(final Exchange exchange)</td> <td>
+    if (output == null) {
+        // no output then just return as nothing to wrap in a transaction
+        return;
+    }
+    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+        protected void doInTransactionWithoutResult(TransactionStatus status) {
+            // wrapper exception to throw if the exchange failed
+            // IMPORTANT: Must be a runtime exception to let Spring regard it as to do "rollback"
+            RuntimeCamelException rce;
+            // find out if there is an actual transaction alive, and thus we are in transacted mode
+            boolean activeTx = TransactionSynchronizationManager.isActualTransactionActive();
+            if (!activeTx) {
+                activeTx = status.isNewTransaction() && !status.isCompleted();
+                if (!activeTx) {
+                    if (DefaultTransactionStatus.class.isAssignableFrom(status.getClass())) {
+                        DefaultTransactionStatus defStatus = DefaultTransactionStatus.class.cast(status);
+                        activeTx = defStatus.hasTransaction() && !status.isCompleted();
+                    }
+                }
+            }
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Is actual transaction active: " + activeTx);
+            }
+            // okay mark the exchange as transacted, then the DeadLetterChannel or others know
+            // its a transacted exchange
+            if (activeTx) {
+                exchange.setProperty(Exchange.TRANSACTED, Boolean.TRUE);
+            }
+            try {
+                // process the exchange
+                output.process(exchange);
+            } catch (Exception e) {
+                exchange.setException(e);
+            }
+            // an exception occured maybe an onException can handle it
+            if (exchange.getException() != null) {
+                // handle onException
+                handleException(exchange);
+            }
+            // after handling and still an exception or marked as rollback only then rollback
+            if (exchange.getException() != null || exchange.isRollbackOnly()) {
+                rce = wrapRuntimeCamelException(exchange.getException());
+                if (activeTx) {
+                    status.setRollbackOnly();
+                    if (LOG.isDebugEnabled()) {
+                        if (rce != null) {
+                            LOG.debug("Setting transaction to rollbackOnly due to exception being thrown: " + rce.getMessage());
+                        } else {
+                            LOG.debug("Setting transaction to rollbackOnly as Exchange was marked as rollback only");
+                        }
+                    }
+                }
+                delayBeforeRedelivery();
+                // rethrow if an exception occured
+                if (rce != null) {
+                    throw rce;
+                }
+            }
+        }
+    });
+</td> </tr></table></body></html>

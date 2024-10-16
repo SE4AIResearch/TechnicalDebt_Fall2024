@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2181</td> <td>-1422650903</td><td>apache/camel</td><td>Claus Ibsen</td><td>78a88adca9373f81ee812c2ac03277a6aa120b12</td> <td>None</td> <td>TODO --> check how an instance can be killed...</td> <td>SATD_ADDED</td> <td>testRemoveInstance()</td> <td>public void testRemoveInstance() throws InterruptedException</td> <td>
+    MockEndpoint removed = getMockEndpoint("mock:removed");
+    removed.setExpectedMessageCount(1);
+    HazelcastInstance h1 = Hazelcast.newHazelcastInstance(null);
+    // TODO --> check how an instance can be killed...
+    h1.shutdown();
+    assertMockEndpointsSatisfied(5000, TimeUnit.MILLISECONDS);
+    // check headers
+    Exchange ex = removed.getExchanges().get(0);
+    Map<String, Object> headers = ex.getIn().getHeaders();
+    this.checkHeaders(headers, HazelcastConstants.REMOVED);
+    Hazelcast.shutdownAll();
+</td> </tr></table></body></html>

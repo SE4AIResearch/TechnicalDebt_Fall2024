@@ -1,0 +1,96 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4475</td> 
+     <td>1242677906</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>ac2095659a9234436d05dfa9f5810f72114bcb3a</td> 
+     <td>TODO: Support arbitrary labels.</td> 
+     <td>TODO: Support arbitrary labels.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createCherryPickCommitMessage(CodeReviewCommit)</td> 
+     <td>public String createCherryPickCommitMessage(final CodeReviewCommit n)</td> 
+     <td> final List<footerline>
+        footers = n.getFooterLines(); final StringBuilder msgbuf = new StringBuilder(); msgbuf.append(n.getFullMessage()); if (msgbuf.length() == 0) { // WTF, an empty commit message? msgbuf.append(" 
+       <no commit message provided>
+         "); } if (msgbuf.charAt(msgbuf.length() - 1) != '\n') { // Missing a trailing LF? Correct it (perhaps the editor was broken). msgbuf.append('\n'); } if (footers.isEmpty()) { // Doesn't end in a "Signed-off-by: ..." style line? Add another line // break to start a new paragraph for the reviewed-by tag lines. // msgbuf.append('\n'); } if (!contains(footers, CHANGE_ID, n.change.getKey().get())) { msgbuf.append(CHANGE_ID.getName()); msgbuf.append(": "); msgbuf.append(n.change.getKey().get()); msgbuf.append('\n'); } final String siteUrl = urlProvider.get(); if (siteUrl != null) { final String url = siteUrl + n.patchsetId.getParentKey().get(); if (!contains(footers, REVIEWED_ON, url)) { msgbuf.append(REVIEWED_ON.getName()); msgbuf.append(": "); msgbuf.append(url); msgbuf.append('\n'); } } PatchSetApproval submitAudit = null; for (final PatchSetApproval a : getApprovalsForCommit(n)) { if (a.getValue() &lt;= 0) { // Negative votes aren't counted. continue; } if (ApprovalCategory.SUBMIT.equals(a.getCategoryId())) { // Submit is treated specially, below (becomes committer) // if (submitAudit == null || a.getGranted().compareTo(submitAudit.getGranted()) &gt; 0) { submitAudit = a; } continue; } final Account acc = identifiedUserFactory.create(a.getAccountId()).getAccount(); final StringBuilder identbuf = new StringBuilder(); if (acc.getFullName() != null &amp;&amp; acc.getFullName().length() &gt; 0) { if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append(acc.getFullName()); } if (acc.getPreferredEmail() != null &amp;&amp; acc.getPreferredEmail().length() &gt; 0) { if (isSignedOffBy(footers, acc.getPreferredEmail())) { continue; } if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append('&lt;'); identbuf.append(acc.getPreferredEmail()); identbuf.append('&gt;'); } if (identbuf.length() == 0) { // Nothing reasonable to describe them by? Ignore them. continue; } final String tag; if (CRVW.equals(a.getCategoryId())) { tag = "Reviewed-by"; } else if (VRIF.equals(a.getCategoryId())) { tag = "Tested-by"; } else { final LabelType lt = project.getLabelTypes().byId(a.getCategoryId().get()); if (lt == null) { // TODO: Support arbitrary labels. continue; } tag = lt.getName(); } if (!contains(footers, new FooterKey(tag), identbuf.toString())) { msgbuf.append(tag); msgbuf.append(": "); msgbuf.append(identbuf); msgbuf.append('\n'); } } return msgbuf.toString(); 
+       </no> 
+      </footerline></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4462</td> 
+     <td>1242677906</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>0557fc43c3a28c387967e02d91d70014e88bb565</td> 
+     <td>TODO: Support arbitrary labels.</td> 
+     <td>TODO: Support arbitrary labels.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createCherryPickCommitMessage(CodeReviewCommit, ApprovalTypes, Provider<string>
+        , ReviewDb, IdentifiedUser.GenericFactory) 
+      </string></td> 
+     <td>public static String createCherryPickCommitMessage(final CodeReviewCommit n, final ApprovalTypes approvalTypes, final Provider<string>
+        urlProvider, final ReviewDb db, final IdentifiedUser.GenericFactory identifiedUserFactory) 
+      </string></td> 
+     <td> final List<footerline>
+        footers = n.getFooterLines(); final StringBuilder msgbuf = new StringBuilder(); msgbuf.append(n.getFullMessage()); if (msgbuf.length() == 0) { // WTF, an empty commit message? msgbuf.append(" 
+       <no commit message provided>
+         "); } if (msgbuf.charAt(msgbuf.length() - 1) != '\n') { // Missing a trailing LF? Correct it (perhaps the editor was broken). msgbuf.append('\n'); } if (footers.isEmpty()) { // Doesn't end in a "Signed-off-by: ..." style line? Add another line // break to start a new paragraph for the reviewed-by tag lines. // msgbuf.append('\n'); } if (!contains(footers, CHANGE_ID, n.change.getKey().get())) { msgbuf.append(CHANGE_ID.getName()); msgbuf.append(": "); msgbuf.append(n.change.getKey().get()); msgbuf.append('\n'); } final String siteUrl = urlProvider.get(); if (siteUrl != null) { final String url = siteUrl + n.patchsetId.getParentKey().get(); if (!contains(footers, REVIEWED_ON, url)) { msgbuf.append(REVIEWED_ON.getName()); msgbuf.append(": "); msgbuf.append(url); msgbuf.append('\n'); } } PatchSetApproval submitAudit = null; for (final PatchSetApproval a : getApprovalsForCommit(db, n)) { if (a.getValue() &lt;= 0) { // Negative votes aren't counted. continue; } if (ApprovalCategory.SUBMIT.equals(a.getCategoryId())) { // Submit is treated specially, below (becomes committer) // if (submitAudit == null || a.getGranted().compareTo(submitAudit.getGranted()) &gt; 0) { submitAudit = a; } continue; } final Account acc = identifiedUserFactory.create(a.getAccountId()).getAccount(); final StringBuilder identbuf = new StringBuilder(); if (acc.getFullName() != null &amp;&amp; acc.getFullName().length() &gt; 0) { if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append(acc.getFullName()); } if (acc.getPreferredEmail() != null &amp;&amp; acc.getPreferredEmail().length() &gt; 0) { if (isSignedOffBy(footers, acc.getPreferredEmail())) { continue; } if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append('&lt;'); identbuf.append(acc.getPreferredEmail()); identbuf.append('&gt;'); } if (identbuf.length() == 0) { // Nothing reasonable to describe them by? Ignore them. continue; } final String tag; if (CRVW.equals(a.getCategoryId())) { tag = "Reviewed-by"; } else if (VRIF.equals(a.getCategoryId())) { tag = "Tested-by"; } else { final ApprovalType at = approvalTypes.byId(a.getCategoryId().get()); if (at == null) { // TODO: Support arbitrary labels. continue; } tag = at.getName(); } if (!contains(footers, new FooterKey(tag), identbuf.toString())) { msgbuf.append(tag); msgbuf.append(": "); msgbuf.append(identbuf); msgbuf.append('\n'); } } return msgbuf.toString(); 
+       </no> 
+      </footerline></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4457</td> 
+     <td>1242677906</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>41f909fa98cd6d5170a2eec1b37dbfbb01aa8a9f</td> 
+     <td>None</td> 
+     <td>TODO: Support arbitrary labels.</td> 
+     <td>SATD_ADDED</td> 
+     <td>createCherryPickCommitMessage(CodeReviewCommit, ApprovalTypes, Provider<string>
+       , ReviewDb, IdentifiedUser.GenericFactory)
+      </string></td> 
+     <td>public static String createCherryPickCommitMessage(final CodeReviewCommit n, final ApprovalTypes approvalTypes, final Provider<string>
+        urlProvider, final ReviewDb db, final IdentifiedUser.GenericFactory identifiedUserFactory)
+      </string></td> 
+     <td> final List<footerline>
+        footers = n.getFooterLines(); final StringBuilder msgbuf = new StringBuilder(); msgbuf.append(n.getFullMessage()); if (msgbuf.length() == 0) { // WTF, an empty commit message? msgbuf.append("
+       <no commit message provided>
+        "); } if (msgbuf.charAt(msgbuf.length() - 1) != '\n') { // Missing a trailing LF? Correct it (perhaps the editor was broken). msgbuf.append('\n'); } if (footers.isEmpty()) { // Doesn't end in a "Signed-off-by: ..." style line? Add another line // break to start a new paragraph for the reviewed-by tag lines. // msgbuf.append('\n'); } if (!contains(footers, CHANGE_ID, n.change.getKey().get())) { msgbuf.append(CHANGE_ID.getName()); msgbuf.append(": "); msgbuf.append(n.change.getKey().get()); msgbuf.append('\n'); } final String siteUrl = urlProvider.get(); if (siteUrl != null) { final String url = siteUrl + n.patchsetId.getParentKey().get(); if (!contains(footers, REVIEWED_ON, url)) { msgbuf.append(REVIEWED_ON.getName()); msgbuf.append(": "); msgbuf.append(url); msgbuf.append('\n'); } } PatchSetApproval submitAudit = null; for (final PatchSetApproval a : getApprovalsForCommit(db, n)) { if (a.getValue() &lt;= 0) { // Negative votes aren't counted. continue; } if (ApprovalCategory.SUBMIT.equals(a.getCategoryId())) { // Submit is treated specially, below (becomes committer) // if (submitAudit == null || a.getGranted().compareTo(submitAudit.getGranted()) &gt; 0) { submitAudit = a; } continue; } final Account acc = identifiedUserFactory.create(a.getAccountId()).getAccount(); final StringBuilder identbuf = new StringBuilder(); if (acc.getFullName() != null &amp;&amp; acc.getFullName().length() &gt; 0) { if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append(acc.getFullName()); } if (acc.getPreferredEmail() != null &amp;&amp; acc.getPreferredEmail().length() &gt; 0) { if (isSignedOffBy(footers, acc.getPreferredEmail())) { continue; } if (identbuf.length() &gt; 0) { identbuf.append(' '); } identbuf.append('&lt;'); identbuf.append(acc.getPreferredEmail()); identbuf.append('&gt;'); } if (identbuf.length() == 0) { // Nothing reasonable to describe them by? Ignore them. continue; } final String tag; if (CRVW.equals(a.getCategoryId())) { tag = "Reviewed-by"; } else if (VRIF.equals(a.getCategoryId())) { tag = "Tested-by"; } else { final ApprovalType at = approvalTypes.byId(a.getCategoryId().get()); if (at == null) { // TODO: Support arbitrary labels. continue; } tag = at.getName(); } if (!contains(footers, new FooterKey(tag), identbuf.toString())) { msgbuf.append(tag); msgbuf.append(": "); msgbuf.append(identbuf); msgbuf.append('\n'); } } return msgbuf.toString(); 
+       </no>
+      </footerline></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

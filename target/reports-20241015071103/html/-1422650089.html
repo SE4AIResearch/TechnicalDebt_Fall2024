@@ -1,0 +1,108 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3717</td> 
+     <td>-1422650089</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>6ca72e1d854300a0b909389727a654d8a4357554</td> 
+     <td>maybe its a language</td> 
+     <td>the part may have optional language to use, so you can mix languages</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createExpression(RouteContext)</td> 
+     <td>protected Expression createExpression(RouteContext routeContext)</td> 
+     <td> List<expression>
+        list = new ArrayList 
+       <expression>
+         (); String[] parts = uri.split("\\+"); for (String part : parts) { // the part may have optional language to use, so you can mix languages String value = ObjectHelper.after(part, "language:"); if (value != null) { String before = ObjectHelper.before(value, ":"); String after = ObjectHelper.after(value, ":"); if (before != null &amp;&amp; after != null) { // maybe its a language, must have language: as prefix try { Language partLanguage = routeContext.getCamelContext().resolveLanguage(before); if (partLanguage != null) { Expression exp = partLanguage.createExpression(after); list.add(exp); continue; } } catch (NoSuchLanguageException e) { // ignore } } } // fallback and use simple language Language lan = routeContext.getCamelContext().resolveLanguage("simple"); Expression exp = lan.createExpression(part); list.add(exp); } Expression exp; if (list.size() == 1) { exp = list.get(0); } else { exp = ExpressionBuilder.concatExpression(list); } return exp; 
+       </expression> 
+      </expression></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3648</td> 
+     <td>-1422650089</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>cc556718cf3467cc2475bcda44c16fb7ce19149f</td> 
+     <td>maybe its a language</td> 
+     <td>maybe its a language</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createExpression(RouteContext)</td> 
+     <td>protected Expression createExpression(RouteContext routeContext)</td> 
+     <td> List<expression>
+        list = new ArrayList 
+       <expression>
+         (); String[] parts = uri.split("\\+"); for (String part : parts) { // the part may have optional language to use, so you can mix languages String before = ObjectHelper.before(part, ":"); String after = ObjectHelper.after(part, ":"); if (before != null &amp;&amp; after != null) { // maybe its a language try { Language partLanguage = routeContext.getCamelContext().resolveLanguage(before); Expression exp = partLanguage.createExpression(after); list.add(exp); continue; } catch (NoSuchLanguageException e) { // ignore } } // fallback and use simple language Language lan = routeContext.getCamelContext().resolveLanguage("simple"); Expression exp = lan.createExpression(part); list.add(exp); } Expression exp; if (list.size() == 1) { exp = list.get(0); } else { exp = ExpressionBuilder.concatExpression(list); } return exp; 
+       </expression> 
+      </expression></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3647</td> 
+     <td>-1422650089</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>d2ea9b5102630d7b80c95b616acbad4b1ead1bfb</td> 
+     <td>maybe its a language</td> 
+     <td>maybe its a language</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createProcessor(RouteContext)</td> 
+     <td>public Processor createProcessor(RouteContext routeContext) throws Exception</td> 
+     <td> ObjectHelper.notEmpty(uri, "uri", this); List<expression>
+        list = new ArrayList 
+       <expression>
+         (); String[] parts = uri.split("\\+"); for (String part : parts) { // the part may have optional language to use, so you can mix languages String before = ObjectHelper.before(part, ":"); String after = ObjectHelper.after(part, ":"); if (before != null &amp;&amp; after != null) { // maybe its a language try { Language partLanguage = routeContext.getCamelContext().resolveLanguage(before); Expression exp = partLanguage.createExpression(after); list.add(exp); continue; } catch (NoSuchLanguageException e) { // ignore } } // fallback and use simple language Language lan = routeContext.getCamelContext().resolveLanguage("simple"); Expression exp = lan.createExpression(part); list.add(exp); } Expression exp; if (list.size() == 1) { exp = list.get(0); } else { exp = ExpressionBuilder.concatExpression(list); } SendDynamicProcessor processor = new SendDynamicProcessor(uri, exp); processor.setPattern(pattern); if (cacheSize != null) { processor.setCacheSize(cacheSize); } if (ignoreInvalidEndpoint != null) { processor.setIgnoreInvalidEndpoint(ignoreInvalidEndpoint); } return processor; 
+       </expression> 
+      </expression></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3646</td> 
+     <td>-1422650089</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>dfe2dae8cdc61a51870ff25824a42fecd780a8b6</td> 
+     <td>None</td> 
+     <td>maybe its a language</td> 
+     <td>SATD_ADDED</td> 
+     <td>createProcessor(RouteContext)</td> 
+     <td>public Processor createProcessor(RouteContext routeContext) throws Exception</td> 
+     <td> List<expression>
+        list = new ArrayList
+       <expression>
+        (); String[] parts = uri.split("\\+"); for (String part : parts) { // the part may have optional language to use, so you can mix languages String before = ObjectHelper.before(part, ":"); String after = ObjectHelper.after(part, ":"); if (before != null &amp;&amp; after != null) { // maybe its a language try { Language partLanguage = routeContext.getCamelContext().resolveLanguage(before); Expression exp = partLanguage.createExpression(after); list.add(exp); continue; } catch (NoSuchLanguageException e) { // ignore } } // fallback and use simple language Language lan = routeContext.getCamelContext().resolveLanguage("simple"); Expression exp = lan.createExpression(part); list.add(exp); } Expression exp; if (list.size() == 1) { exp = list.get(0); } else { exp = ExpressionBuilder.concatExpression(list); } DynamicSendProcessor processor = new DynamicSendProcessor(exp); processor.setPattern(pattern); if (cacheSize != null) { processor.setCacheSize(cacheSize); } if (ignoreInvalidEndpoint != null) { processor.setIgnoreInvalidEndpoint(ignoreInvalidEndpoint); } return processor; 
+       </expression>
+      </expression></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

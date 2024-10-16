@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>353</td> 
+     <td>-1422651908</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>7ff7e7017667cd44e79bc9fe22a8e3cd9326115e</td> 
+     <td>will be reported eventually</td> 
+     <td>only remember the first one</td> 
+     <td>SATD_REMOVED</td> 
+     <td>uncaughtException(Thread, Throwable)</td> 
+     <td>public void uncaughtException(Thread thread, Throwable throwable)</td> 
+     <td> if (throwable instanceof ThreadDeath) { // harmless return; } boolean doLog = false; synchronized (this) { // only remember the first one if (uncaughtException == null) { // will be reported uncaughtException = throwable; // eventually } else { doLog = true; } } if (doLog) { getLog().warn("an additional exception was thrown", throwable); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>258</td> 
+     <td>-1422651908</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>d346db0d4a95208569d5512933daa69aba268c61</td> 
+     <td>None</td> 
+     <td>will be reported eventually</td> 
+     <td>SATD_ADDED</td> 
+     <td>uncaughtException(Thread, Throwable)</td> 
+     <td>public void uncaughtException(Thread thread, Throwable throwable)</td> 
+     <td> if (throwable instanceof ThreadDeath) { // harmless return; } boolean doLog = false; synchronized (this) { if (// only remember the first one uncaughtException == null) { // will be reported eventually uncaughtException = throwable; } else { doLog = true; } } if (doLog) { getLog().warn("an additional exception was thrown", throwable); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

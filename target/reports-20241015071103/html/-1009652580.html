@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6048</td> 
+     <td>-1009652580</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi), if you want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46 -- for me to feel statistically comfortable. Call me paranoid.)</td> 
+     <td>Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi), if you want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46 -- for me to feel statistically comfortable. Call me paranoid.)</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>hbMakeCodeLengths(char[], int[], int, int)</td> 
+     <td>protected static void hbMakeCodeLengths(char[] len, int[] freq, int alphaSize, int maxLen)</td> 
+     <td> /* * Nodes and heap entries run from 1. Entry 0 for both the heap and * nodes is a sentinel. */ final int[] heap = new int[MAX_ALPHA_SIZE * 2]; final int[] weight = new int[MAX_ALPHA_SIZE * 2]; final int[] parent = new int[MAX_ALPHA_SIZE * 2]; for (int i = alphaSize; --i &gt;= 0; ) { weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8; } for (boolean tooLong = true; tooLong; ) { tooLong = false; int nNodes = alphaSize; int nHeap = 0; heap[0] = 0; weight[0] = 0; parent[0] = -2; for (int i = 1; i &lt;= alphaSize; i++) { parent[i] = -1; nHeap++; heap[nHeap] = i; int zz = nHeap; int tmp = heap[zz]; while (weight[tmp] &lt; weight[heap[zz &gt;&gt; 1]]) { heap[zz] = heap[zz &gt;&gt; 1]; zz &gt;&gt;= 1; } heap[zz] = tmp; } // assert (nHeap &lt; (MAX_ALPHA_SIZE + 2)) : nHeap; while (nHeap &gt; 1) { int n1 = heap[1]; heap[1] = heap[nHeap]; nHeap--; int yy = 0; int zz = 1; int tmp = heap[1]; while (true) { yy = zz &lt;&lt; 1; if (yy &gt; nHeap) { break; } if ((yy &lt; nHeap) &amp;&amp; (weight[heap[yy + 1]] &lt; weight[heap[yy]])) { yy++; } if (weight[tmp] &lt; weight[heap[yy]]) { break; } heap[zz] = heap[yy]; zz = yy; } heap[zz] = tmp; int n2 = heap[1]; heap[1] = heap[nHeap]; nHeap--; yy = 0; zz = 1; tmp = heap[1]; while (true) { yy = zz &lt;&lt; 1; if (yy &gt; nHeap) { break; } if ((yy &lt; nHeap) &amp;&amp; (weight[heap[yy + 1]] &lt; weight[heap[yy]])) { yy++; } if (weight[tmp] &lt; weight[heap[yy]]) { break; } heap[zz] = heap[yy]; zz = yy; } heap[zz] = tmp; nNodes++; parent[n1] = parent[n2] = nNodes; final int weight_n1 = weight[n1]; final int weight_n2 = weight[n2]; weight[nNodes] = (((weight_n1 &amp; 0xffffff00) + (weight_n2 &amp; 0xffffff00)) | (1 + (((weight_n1 &amp; 0x000000ff) &gt; (weight_n2 &amp; 0x000000ff)) ? (weight_n1 &amp; 0x000000ff) : (weight_n2 &amp; 0x000000ff)))); parent[nNodes] = -1; nHeap++; heap[nHeap] = nNodes; tmp = 0; zz = nHeap; tmp = heap[zz]; final int weight_tmp = weight[tmp]; while (weight_tmp &lt; weight[heap[zz &gt;&gt; 1]]) { heap[zz] = heap[zz &gt;&gt; 1]; zz &gt;&gt;= 1; } heap[zz] = tmp; } // assert (nNodes &lt; (MAX_ALPHA_SIZE * 2)) : nNodes; for (int i = 1; i &lt;= alphaSize; i++) { int j = 0; int k = i; for (int parent_k; (parent_k = parent[k]) &gt;= 0; ) { k = parent_k; j++; } len[i - 1] = (char) j; if (j &gt; maxLen) { tooLong = true; } } if (tooLong) { for (int i = 1; i &lt; alphaSize; i++) { int j = weight[i] &gt;&gt; 8; j = 1 + (j &gt;&gt; 1); weight[i] = j &lt;&lt; 8; } } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5201</td> 
+     <td>-1009652580</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi), if you want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46 -- for me to feel statistically comfortable. Call me paranoid.)</td> 
+     <td>Now another magic 48-bit number, 0x177245385090, to indicate the end of the last block. (sqrt(pi), if you want to know. I did want to use e, but it contains too much repetition -- 27 18 28 18 28 46 -- for me to feel statistically comfortable. Call me paranoid.)</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>hbMakeCodeLengths(char[], int[], int, int)</td> 
+     <td>protected static void hbMakeCodeLengths(char[] len, int[] freq, int alphaSize, int maxLen)</td> 
+     <td> /* * Nodes and heap entries run from 1. Entry 0 for both the heap and * nodes is a sentinel. */ final int[] heap = new int[MAX_ALPHA_SIZE * 2]; final int[] weight = new int[MAX_ALPHA_SIZE * 2]; final int[] parent = new int[MAX_ALPHA_SIZE * 2]; for (int i = alphaSize; --i &gt;= 0; ) { weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) &lt;&lt; 8; } for (boolean tooLong = true; tooLong; ) { tooLong = false; int nNodes = alphaSize; int nHeap = 0; heap[0] = 0; weight[0] = 0; parent[0] = -2; for (int i = 1; i &lt;= alphaSize; i++) { parent[i] = -1; nHeap++; heap[nHeap] = i; int zz = nHeap; int tmp = heap[zz]; while (weight[tmp] &lt; weight[heap[zz &gt;&gt; 1]]) { heap[zz] = heap[zz &gt;&gt; 1]; zz &gt;&gt;= 1; } heap[zz] = tmp; } // assert (nHeap &lt; (MAX_ALPHA_SIZE + 2)) : nHeap; while (nHeap &gt; 1) { int n1 = heap[1]; heap[1] = heap[nHeap]; nHeap--; int yy = 0; int zz = 1; int tmp = heap[1]; while (true) { yy = zz &lt;&lt; 1; if (yy &gt; nHeap) { break; } if ((yy &lt; nHeap) &amp;&amp; (weight[heap[yy + 1]] &lt; weight[heap[yy]])) { yy++; } if (weight[tmp] &lt; weight[heap[yy]]) { break; } heap[zz] = heap[yy]; zz = yy; } heap[zz] = tmp; int n2 = heap[1]; heap[1] = heap[nHeap]; nHeap--; yy = 0; zz = 1; tmp = heap[1]; while (true) { yy = zz &lt;&lt; 1; if (yy &gt; nHeap) { break; } if ((yy &lt; nHeap) &amp;&amp; (weight[heap[yy + 1]] &lt; weight[heap[yy]])) { yy++; } if (weight[tmp] &lt; weight[heap[yy]]) { break; } heap[zz] = heap[yy]; zz = yy; } heap[zz] = tmp; nNodes++; parent[n1] = parent[n2] = nNodes; final int weight_n1 = weight[n1]; final int weight_n2 = weight[n2]; weight[nNodes] = (((weight_n1 &amp; 0xffffff00) + (weight_n2 &amp; 0xffffff00)) | (1 + (((weight_n1 &amp; 0x000000ff) &gt; (weight_n2 &amp; 0x000000ff)) ? (weight_n1 &amp; 0x000000ff) : (weight_n2 &amp; 0x000000ff)))); parent[nNodes] = -1; nHeap++; heap[nHeap] = nNodes; tmp = 0; zz = nHeap; tmp = heap[zz]; final int weight_tmp = weight[tmp]; while (weight_tmp &lt; weight[heap[zz &gt;&gt; 1]]) { heap[zz] = heap[zz &gt;&gt; 1]; zz &gt;&gt;= 1; } heap[zz] = tmp; } // assert (nNodes &lt; (MAX_ALPHA_SIZE * 2)) : nNodes; for (int i = 1; i &lt;= alphaSize; i++) { int j = 0; int k = i; for (int parent_k; (parent_k = parent[k]) &gt;= 0; ) { k = parent_k; j++; } len[i - 1] = (char) j; if (j &gt; maxLen) { tooLong = true; } } if (tooLong) { for (int i = 1; i &lt; alphaSize; i++) { int j = weight[i] &gt;&gt; 8; j = 1 + (j &gt;&gt; 1); weight[i] = j &lt;&lt; 8; } } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

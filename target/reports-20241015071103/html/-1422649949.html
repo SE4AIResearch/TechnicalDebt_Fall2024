@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3871</td> <td>-1422649949</td><td>apache/camel</td><td>Claus Ibsen</td><td>1001f1aeec52702e16c6a957480a2c06748bde03</td> <td>None</td> <td>TODO: use some template like velocity or freemarker</td> <td>SATD_ADDED</td> <td>updateReadMeFile(File, String, String)</td> <td>private void updateReadMeFile(File readmeFile, String componentName, String json) throws MojoExecutionException</td> <td>
+    // TODO: use some template like velocity or freemarker
+    List<Map<String, String>> rows = JSonSchemaHelper.parseJsonSchema("component", json, false);
+    String scheme = getValue("scheme", rows);
+    String syntax = getValue("syntax", rows);
+    String title = getValue("title", rows);
+    String description = getValue("description", rows);
+    String label = getValue("label", rows);
+    String groupId = getValue("groupId", rows);
+    String artifactId = getValue("artifactId", rows);
+    String version = getValue("version", rows);
+    try {
+        OutputStream os = buildContext.newFileOutputStream(readmeFile);
+        os.write("##".getBytes());
+        os.write(title.getBytes());
+        os.write("\n\n".getBytes());
+        os.write(description.getBytes());
+        os.write("\n\n".getBytes());
+        os.close();
+    } catch (IOException e) {
+        throw new MojoExecutionException("Failed to update " + readmeFile + " file. Reason: " + e, e);
+    }
+</td> </tr></table></body></html>

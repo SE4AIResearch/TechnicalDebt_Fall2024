@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>755</td> <td>-1422651625</td><td>apache/camel</td><td>Claus Ibsen</td><td>f5171143fa56448f99865aac3ec7d7c87a8cc28e</td> <td>None</td> <td>TODO: Fix me on Bamboo</td> <td>SATD_ADDED</td> <td>xxxtestPollFileWhileSlowFileIsBeingWritten()</td> <td>public void xxxtestPollFileWhileSlowFileIsBeingWritten() throws Exception</td> <td>
+    deleteDirectory("./target/exclusiveread");
+    createDirectory("./target/exclusiveread/slowfile");
+    MockEndpoint mock = getMockEndpoint("mock:result");
+    mock.expectedMessageCount(1);
+    mock.expectedBodiesReceived("Hello WorldLine #0Line #1Line #2Bye World");
+    createSlowFile();
+    mock.assertIsSatisfied();
+</td> </tr></table></body></html>

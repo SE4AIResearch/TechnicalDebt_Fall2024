@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>275</td> <td>-1422651894</td><td>apache/camel</td><td>James Strachan</td><td>2f1d26d5212c4d2ac7e0e6c714e68c74c3f59356</td> <td>None</td> <td>TODO support any CamelDestination?</td> <td>SATD_ADDED</td> <td>send(Destination, Message, int, int, long)</td> <td>public void send(Destination destination, Message message, int deliveryMode, int priority, long timeToLive) throws JMSException</td> <td>
+    CamelDestination camelDestination = null;
+    if (ObjectHelper.equals(destination, this.destination)) {
+        camelDestination = this.destination;
+    } else {
+        // TODO support any CamelDestination?
+        throw new IllegalArgumentException("Invalid destination setting: " + destination + " when expected: " + this.destination);
+    }
+    try {
+        JmsExchange exchange = new JmsExchange(endpoint.getContext(), camelDestination.getBinding());
+        producer.process(exchange);
+    } catch (JMSException e) {
+        throw e;
+    } catch (Exception e) {
+        throw JMSExceptionSupport.create(e);
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1449</td> <td>-1422651309</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>fa1791316aab36796cc94cbd6dda027af62b07db</td> <td>None</td> <td>it could sometimes send it twice so we expect at least 1 msg</td> <td>SATD_ADDED</td> <td>testJmsRouteWithTextMessage()</td> <td>public void testJmsRouteWithTextMessage() throws Exception</td> <td>
+    String expectedBody = "Hello there!";
+    boolean windows = System.getProperty("os.name").startsWith("Windows");
+    if (windows) {
+        // it could sometimes send it twice so we expect at least 1 msg
+        resultEndpoint.expectedMinimumMessageCount(1);
+    } else {
+        resultEndpoint.expectedBodiesReceived(expectedBody);
+    }
+    resultEndpoint.message(0).header("cheese").isEqualTo(123);
+    sendExchange(expectedBody);
+    if (windows) {
+        // send the message twice to walk around the AMQP's drop first message issue on Windows box
+        sendExchange(expectedBody);
+    }
+    resultEndpoint.assertIsSatisfied();
+</td> </tr></table></body></html>

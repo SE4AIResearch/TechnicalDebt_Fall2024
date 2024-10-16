@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>722</td> <td>-1422651640</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>ca0ab2d63f12b67499d4fa80920c65013f9c4e69</td> <td>None</td> <td>TODO: connect and disconnect. createFtpClient should be moved to another class they don't
+belong on this endpoint class that is only for Camel related stuff</td> <td>SATD_ADDED</td> <td>connect(FTPClient)</td> <td>public void connect(FTPClient client) throws IOException</td> <td>
+    // TODO: connect and disconnect. createFtpClient should be moved to another class they don't
+    // belong on this endpoint class that is only for Camel related stuff
+    RemoteFileConfiguration config = getConfiguration();
+    String host = config.getHost();
+    int port = config.getPort();
+    String username = config.getUsername();
+    client.connect(host, port);
+    if (username != null) {
+        client.login(username, config.getPassword());
+    } else {
+        client.login("anonymous", null);
+    }
+    client.setFileType(config.isBinary() ? FTPClient.BINARY_FILE_TYPE : FTPClient.ASCII_FILE_TYPE);
+</td> </tr></table></body></html>

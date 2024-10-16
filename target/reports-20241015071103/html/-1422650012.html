@@ -1,0 +1,53 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3783</td> <td>-1422650012</td><td>apache/camel</td><td>Claus Ibsen</td><td>bd1661b248c960e200bd5f69e1ba34989529a712</td> <td>None</td> <td>TODO:  Enhance this to read a bunch of characters and log, rather than log them one at a time</td> <td>SATD_ADDED</td> <td>getMessage(InputStream)</td> <td>public String getMessage(InputStream anInputStream) throws IOException</td> <td>
+    try {
+        // TODO:  Enhance this to read a bunch of characters and log, rather than log them one at a time
+        boolean waitingForStartOfBlock = true;
+        while (waitingForStartOfBlock) {
+            int potentialStartCharacter = anInputStream.read();
+            switch(potentialStartCharacter) {
+                case END_OF_STREAM:
+                    return null;
+                case START_OF_BLOCK:
+                    waitingForStartOfBlock = false;
+                    break;
+                default:
+                    log.warn("START_OF_BLOCK character has not been received.  Out-of-band character received: {}", potentialStartCharacter);
+            }
+        }
+    } catch (SocketException socketEx) {
+        log.error("Unable to read from socket stream when expected bMLLP_ENVELOPE_START_OF_BLOCK - resetting connection ", socketEx);
+        resetConnection(clientSocket);
+        return null;
+    }
+    boolean endOfMessage = false;
+    StringBuilder parsedMessage = new StringBuilder(anInputStream.available() + 10);
+    while (!endOfMessage) {
+        int characterReceived = anInputStream.read();
+        switch(characterReceived) {
+            case START_OF_BLOCK:
+                log.error("Received START_OF_BLOCK before END_OF_DATA.  Discarding data: {}", parsedMessage.toString());
+                return null;
+            case END_OF_STREAM:
+                log.error("Received END_OF_STREAM without END_OF_DATA.  Discarding data: {}", parsedMessage.toString());
+                return null;
+            case END_OF_BLOCK:
+                characterReceived = anInputStream.read();
+                if (characterReceived != END_OF_DATA) {
+                    log.error("Received {} when expecting END_OF_DATA after END_OF_BLOCK.  Discarding Hl7MessageGenerator: {}", characterReceived, parsedMessage.toString());
+                    return null;
+                }
+                endOfMessage = true;
+                break;
+            default:
+                parsedMessage.append((char) characterReceived);
+        }
+    }
+    return parsedMessage.toString();
+</td> </tr></table></body></html>

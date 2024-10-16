@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2416</td> <td>-1422650761</td><td>apache/camel</td><td>Christian Mueller</td><td>6c1fae685e272264d3ad038c82d4b1e00dfa10da</td> <td>prefer to use URL over InputStream as it loads better with http</td> <td>prefer to use URL over InputStream as it loads better with http</td> <td>SATD_MOVED_FILE</td> <td>loadResource(XsltBuilder, String)</td> <td>private synchronized void loadResource(XsltBuilder xslt, String resourceUri) throws TransformerConfigurationException, IOException</td> <td>
+    LOG.trace("{} loading schema resource: {}", this, resourceUri);
+    // prefer to use URL over InputStream as it loads better with http
+    URL url = ResourceHelper.resolveMandatoryResourceAsUrl(getCamelContext().getClassResolver(), resourceUri);
+    xslt.setTransformerURL(url);
+    // now loaded so clear flag
+    cacheCleared = false;
+</td> </tr></table></body></html>

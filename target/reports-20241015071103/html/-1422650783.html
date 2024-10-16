@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2999</td> 
+     <td>-1422650783</td>
+     <td>apache/camel</td>
+     <td>Richard Kettelerij</td>
+     <td>3d359ec1c3cd24f2e282dde20d4b815028e72cde</td> 
+     <td>the predicate parser understands a lot more than the expression parser - single quoted = block of nodes enclosed by single quotes - double quoted = block of nodes enclosed by double quotes - single quoted with functions = block of nodes enclosed by single quotes allowing embedded functions - double quoted with functions = block of nodes enclosed by double quotes allowing embedded functions</td> 
+     <td>-------------------------------------------------------------- grammar --------------------------------------------------------------</td> 
+     <td>SATD_REMOVED</td> 
+     <td>isBooleanValue()</td> 
+     <td>protected boolean isBooleanValue()</td> 
+     <td> if (accept(TokenType.booleanValue)) { return true; } return false; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2384</td> 
+     <td>-1422650783</td>
+     <td>apache/camel</td>
+     <td>William Tam</td>
+     <td>414d6c8eb763c8916ea6d74a61dcd23f2f3ae0e8</td> 
+     <td>None</td> 
+     <td>the predicate parser understands a lot more than the expression parser - single quoted = block of nodes enclosed by single quotes - double quoted = block of nodes enclosed by double quotes - single quoted with functions = block of nodes enclosed by single quotes allowing embedded functions - double quoted with functions = block of nodes enclosed by double quotes allowing embedded functions</td> 
+     <td>SATD_ADDED</td> 
+     <td>singleQuotedLiteralWithFunctionsText()</td> 
+     <td>protected boolean singleQuotedLiteralWithFunctionsText()</td> 
+     <td> if (accept(TokenType.singleQuote)) { nextToken(TokenType.singleQuote, TokenType.eol, TokenType.functionStart, TokenType.functionEnd, TokenType.escapedValue); while (!token.getType().isSingleQuote() &amp;&amp; !token.getType().isEol()) { // we need to loop until we find the ending single quote, or the eol nextToken(TokenType.singleQuote, TokenType.eol, TokenType.functionStart, TokenType.functionEnd, TokenType.escapedValue); } expect(TokenType.singleQuote); return true; } return false; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

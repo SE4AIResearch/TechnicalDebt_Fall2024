@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6002</td> 
+     <td>-1009652534</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Benchmark for StringUtils split</td> 
+     <td>Benchmark for StringUtils split</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>main(String[])</td> 
+     <td>public static void main(String[] args)</td> 
+     <td> final String TO_SPLIT = "foo,bar,baz,blah,blah"; for (boolean useOurs : new boolean[] { false, true }) { for (int outer = 0; outer &lt; 10; outer++) { long st = System.nanoTime(); int components = 0; for (int inner = 0; inner &lt; 1000000; inner++) { String[] res; if (useOurs) { res = StringUtils.split(TO_SPLIT, ','); } else { res = TO_SPLIT.split(","); } // be sure to use res, otherwise might be optimized out components += res.length; } long et = System.nanoTime(); if (outer &gt; 3) { System.out.println((useOurs ? "StringUtils impl" : "Java impl") + " #" + outer + ":" + (et - st) / 1000000 + "ms"); } } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5176</td> 
+     <td>-1009652534</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Benchmark for StringUtils split</td> 
+     <td>Benchmark for StringUtils split</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>main(String[])</td> 
+     <td>public static void main(String[] args)</td> 
+     <td> final String TO_SPLIT = "foo,bar,baz,blah,blah"; for (boolean useOurs : new boolean[] { false, true }) { for (int outer = 0; outer &lt; 10; outer++) { long st = System.nanoTime(); int components = 0; for (int inner = 0; inner &lt; 1000000; inner++) { String[] res; if (useOurs) { res = StringUtils.split(TO_SPLIT, ','); } else { res = TO_SPLIT.split(","); } // be sure to use res, otherwise might be optimized out components += res.length; } long et = System.nanoTime(); if (outer &gt; 3) { System.out.println((useOurs ? "StringUtils impl" : "Java impl") + " #" + outer + ":" + (et - st) / 1000000 + "ms"); } } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5068</td> 
+     <td>-1009652534</td>
+     <td>apache/hadoop</td>
+     <td>Christopher Douglas</td>
+     <td>fe34ccdda84575045022d3041aab42481f636ddc</td> 
+     <td>None</td> 
+     <td>Benchmark for StringUtils split</td> 
+     <td>SATD_ADDED</td> 
+     <td>main(String[])</td> 
+     <td>public static void main(String[] args)</td> 
+     <td> final String TO_SPLIT = "foo,bar,baz,blah,blah"; for (boolean useOurs : new boolean[] { false, true }) { for (int outer = 0; outer &lt; 10; outer++) { long st = System.nanoTime(); int components = 0; for (int inner = 0; inner &lt; 1000000; inner++) { String[] res; if (useOurs) { res = StringUtils.split(TO_SPLIT, ','); } else { res = TO_SPLIT.split(","); } // be sure to use res, otherwise might be optimized out components += res.length; } long et = System.nanoTime(); if (outer &gt; 3) { System.out.println((useOurs ? "StringUtils impl" : "Java impl") + " #" + outer + ":" + (et - st) / 1000000 + "ms"); } } } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

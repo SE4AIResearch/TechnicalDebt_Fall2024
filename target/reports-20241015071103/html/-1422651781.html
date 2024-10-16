@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>493</td> <td>-1422651781</td><td>apache/camel</td><td>Guillaume Nodet</td><td>901b8701184ccca91833e954ee79c20652ca8657</td> <td>None</td> <td>TODO is this valid?</td> <td>SATD_ADDED</td> <td>getUpdated(AtomEndpoint, Document<Feed>, Entry)</td> <td>protected Date getUpdated(AtomEndpoint endpoint, Document<Feed> feed, Entry entry)</td> <td>
+    Date answer = entry.getUpdated();
+    if (answer == null) {
+        answer = entry.getEdited();
+        // TODO is this valid?
+        if (answer == null) {
+            answer = entry.getPublished();
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

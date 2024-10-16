@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2523</td> <td>-1422650699</td><td>apache/camel</td><td>Claus Ibsen</td><td>f856b4d77bcce3136fa17ce141b27aab7f4e0284</td> <td>None</td> <td>call completed to properly stop as we count down the waiting latch</td> <td>SATD_ADDED</td> <td>doStop()</td> <td>protected void doStop() throws Exception</td> <td>
+    // stop camel context
+    if (camelContext != null) {
+        camelContext.stop();
+    }
+    // and then stop blueprint
+    LOG.debug("Stopping Blueprint XML file: " + descriptors);
+    CamelBlueprintHelper.disposeBundleContext(bundleContext);
+    // call completed to properly stop as we count down the waiting latch
+    completed();
+</td> </tr></table></body></html>

@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4154</td> <td>1242677731</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>642e17aa35ecde4614d26b87a149c1bca52ffaca</td> <td>Its really binary, but Git couldn't see the nul early enough
+to realize its binary, and instead produced the diff.
+</td> <td>Its really binary, but Git couldn't see the nul early enough
+to realize its binary, and instead produced the diff.
+</td> <td>SATD_MOVED_FILE</td> <td>toPatchType(FileHeader)</td> <td>private static PatchType toPatchType(final FileHeader hdr)</td> <td>
+    PatchType pt;
+    if (hdr instanceof CombinedFileHeader) {
+        pt = Patch.PatchType.N_WAY;
+    } else {
+        switch(hdr.getPatchType()) {
+            case UNIFIED:
+                pt = Patch.PatchType.UNIFIED;
+                break;
+            case GIT_BINARY:
+            case BINARY:
+                pt = Patch.PatchType.BINARY;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported type " + hdr.getPatchType());
+        }
+    }
+    if (pt != PatchType.BINARY) {
+        final byte[] buf = hdr.getBuffer();
+        for (int ptr = hdr.getStartOffset(); ptr < hdr.getEndOffset(); ptr++) {
+            if (buf[ptr] == '\0') {
+                // Its really binary, but Git couldn't see the nul early enough
+                // to realize its binary, and instead produced the diff.
+                // 
+                // Force it to be a binary; it really should have been that.
+                // 
+                pt = PatchType.BINARY;
+                break;
+            }
+        }
+    }
+    return pt;
+</td> </tr></table></body></html>

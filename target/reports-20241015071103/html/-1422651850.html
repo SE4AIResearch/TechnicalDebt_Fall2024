@@ -1,0 +1,81 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>384</td> <td>-1422651850</td><td>apache/camel</td><td>Hiram R. Chirino</td><td>9dd79e43b4472325ef7ba38623c4c16c0048dd51</td> <td>None</td> <td>TODO we could add this to the model?</td> <td>SATD_ADDED</td> <td>configureNodeData(Object, NodeData)</td> <td>protected void configureNodeData(Object node, NodeData data)</td> <td>
+    if (node instanceof ProcessorType) {
+        ProcessorType processorType = (ProcessorType) node;
+        data.edgeLabel = processorType.getLabel();
+    }
+    if (node instanceof FromType) {
+        FromType fromType = (FromType) node;
+        data.label = fromType.getRef();
+        if (isNullOrBlank(data.label)) {
+            data.label = fromType.getUri();
+        }
+        data.url = "http://activemq.apache.org/camel/message-endpoint.html";
+    } else if (node instanceof ToType) {
+        ToType toType = (ToType) node;
+        String ref = toType.getRef();
+        if (isNullOrBlank(ref)) {
+            ref = toType.getUri();
+        }
+        data.label = ref;
+        data.url = "http://activemq.apache.org/camel/message-endpoint.html";
+    } else if (node instanceof FilterType) {
+        data.image = imagePrefix + "MessageFilterIcon.gif";
+        data.nodeType = "Message Filter";
+    } else if (node instanceof ChoiceType) {
+        data.image = imagePrefix + "ContentBasedRouterIcon.gif";
+        data.nodeType = "Content Based Router";
+    } else if (node instanceof RecipientListType) {
+        data.image = imagePrefix + "RecipientListIcon.gif";
+        data.nodeType = "Recipient List";
+    } else if (node instanceof SplitterType) {
+        data.image = imagePrefix + "SplitterIcon.gif";
+        data.nodeType = "Splitter";
+    } else if (node instanceof AggregatorType) {
+        data.image = imagePrefix + "AggregatorIcon.gif";
+        data.nodeType = "Aggregator";
+    } else if (node instanceof ResequencerType) {
+        data.image = imagePrefix + "ResequencerIcon.gif";
+        data.nodeType = "Resequencer";
+    }
+    // lets auto-default as many values as we can
+    if (isNullOrBlank(data.nodeType)) {
+        // TODO we could add this to the model?
+        String name = node.getClass().getName();
+        int idx = name.lastIndexOf('.');
+        if (idx > 0) {
+            name = name.substring(idx + 1);
+        }
+        if (name.endsWith("Type")) {
+            name = name.substring(0, name.length() - 4);
+        }
+        data.nodeType = insertSpacesBetweenCamelCase(name);
+    }
+    if (data.label == null) {
+        if (isNullOrBlank(data.image)) {
+            data.label = data.nodeType;
+            data.shape = "box";
+        } else if (isNotNullAndNonEmpty(data.edgeLabel)) {
+            data.label = "";
+        } else {
+            data.label = node.toString();
+        }
+    }
+    if (isNullOrBlank(data.tooltop)) {
+        if (isNotNullAndNonEmpty(data.nodeType)) {
+            String description = isNotNullAndNonEmpty(data.edgeLabel) ? data.edgeLabel : data.label;
+            data.tooltop = data.nodeType + ": " + description;
+        } else {
+            data.tooltop = data.label;
+        }
+    }
+    if (isNullOrBlank(data.url) && isNotNullAndNonEmpty(data.nodeType)) {
+        data.url = "http://activemq.apache.org/camel/" + data.nodeType.toLowerCase().replace(' ', '-') + ".html";
+    }
+</td> </tr></table></body></html>

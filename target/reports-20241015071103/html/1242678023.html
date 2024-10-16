@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4692</td> <td>1242678023</td><td>GerritCodeReview/gerrit</td><td>David Pursehouse</td><td>4248ea8c8626c75995f116bac043d4c04fd24879</td> <td>Does not account for draft status as a user might want to let a
+reviewer see a draft.</td> <td>Does not account for draft status as a user might want to let a
+reviewer see a draft.</td> <td>CLASS_OR_METHOD_CHANGED</td> <td>isValidReviewer(Account, ChangeControl)</td> <td>private boolean isValidReviewer(Account member, ChangeControl control)</td> <td>
+    if (member.isActive()) {
+        IdentifiedUser user = identifiedUserFactory.create(member.getId());
+        // Does not account for draft status as a user might want to let a
+        // reviewer see a draft.
+        return control.forUser(user).isRefVisible();
+    }
+    return false;
+</td> </tr></table></body></html>

@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5388</td> <td>-1009652338</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO The only problem with these counters would be on restart.
+The jobtracker updates the counter only when the task that is scheduled
+if from a non-running tip and is local (data, rack ...). But upon restart
+as the reports come from the task tracker, there is no good way to infer
+when exactly to increment the locality counters. The only solution is to
+increment the counters for all the tasks irrespective of
+- whether the tip is running or not
+- whether its a speculative task or not
+
+So to simplify, increment the data locality counter whenever there is
+data locality.</td> <td>SATD_ADDED</td> <td>getTimestamp()</td> <td>public long getTimestamp()</td> <td>
+    return timestamp;
+</td> </tr></table></body></html>

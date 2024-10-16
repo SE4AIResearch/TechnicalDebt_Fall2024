@@ -1,0 +1,38 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1988</td> <td>-1422651011</td><td>apache/camel</td><td>Claus Ibsen</td><td>5b7a5b5ae235ef98f6d2488f95c7d66159cd560a</td> <td>None</td> <td>quartz scheduler could potential trigger during a route has been shutdown</td> <td>SATD_ADDED</td> <td>onJobExecute(JobExecutionContext)</td> <td>public void onJobExecute(final JobExecutionContext jobExecutionContext) throws JobExecutionException</td> <td>
+    boolean run = true;
+    LoadBalancer balancer = getLoadBalancer();
+    if (balancer instanceof ServiceSupport) {
+        run = ((ServiceSupport) balancer).isRunAllowed();
+    }
+    if (!run) {
+        // quartz scheduler could potential trigger during a route has been shutdown
+        LOG.warn("Cannot execute Quartz Job with context: " + jobExecutionContext + " because processor is not started: " + balancer);
+        return;
+    }
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Firing Quartz Job with context: " + jobExecutionContext);
+    }
+    Exchange exchange = createExchange(jobExecutionContext);
+    try {
+        balancer.process(exchange);
+        if (exchange.getException() != null) {
+            // propagate the exception back to Quartz
+            throw new JobExecutionException(exchange.getException());
+        }
+    } catch (Exception e) {
+        // log the error
+        LOG.error(ExchangeHelper.createExceptionMessage("Error processing exchange", exchange, e));
+        // and rethrow to let quartz handle it
+        if (e instanceof JobExecutionException) {
+            throw (JobExecutionException) e;
+        }
+        throw new JobExecutionException(e);
+    }
+</td> </tr></table></body></html>

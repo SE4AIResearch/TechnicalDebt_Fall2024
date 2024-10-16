@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2622</td> <td>-1422650643</td><td>apache/camel</td><td>James Strachan</td><td>eaab5275e913b5e5c996c94cfc9636bdf005e16c</td> <td>None</td> <td>give time for ftp consumer to disconnect, delay is 5000 ms which is long
+enough to avoid a second poll cycle before we are done with the asserts
+below inside the main thread</td> <td>SATD_ADDED</td> <td>testDisconnectOnDone()</td> <td>public void testDisconnectOnDone() throws Exception</td> <td>
+    getMockEndpoint("mock:result").expectedMessageCount(1);
+    assertMockEndpointsSatisfied();
+    // give time for ftp consumer to disconnect, delay is 5000 ms which is long
+    // enough to avoid a second poll cycle before we are done with the asserts
+    // below inside the main thread
+    Thread.sleep(2000);
+    FtpEndpoint<?> endpoint = context.getEndpoint(getFtpUrl(), FtpEndpoint.class);
+    assertFalse("The FTPClient should be already disconnected", endpoint.getFtpClient().isConnected());
+    assertTrue("The FtpEndpoint should be configured to disconnect", endpoint.isDisconnect());
+</td> </tr></table></body></html>

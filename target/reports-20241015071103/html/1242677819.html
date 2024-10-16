@@ -1,0 +1,92 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4335</td> 
+     <td>1242677819</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>fb9760ed11d3f4c88361199e3e9217c7eb9d6d46</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>call()</td> 
+     <td>public ReviewerResult call() throws Exception</td> 
+     <td> final Set<account.id>
+        reviewerIds = new HashSet
+       <account.id>
+        (); final ChangeControl control = changeControlFactory.validateFor(changeId); final ReviewerResult result = new ReviewerResult(); for (final String nameOrEmail : reviewers) { final Account account = accountResolver.find(nameOrEmail); if (account == null) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.ACCOUNT_NOT_FOUND, nameOrEmail)); continue; } if (!account.isActive()) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.ACCOUNT_INACTIVE, nameOrEmail)); continue; } final IdentifiedUser user = identifiedUserFactory.create(account.getId()); if (!control.forUser(user).isVisible()) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.CHANGE_NOT_VISIBLE, nameOrEmail)); continue; } reviewerIds.add(account.getId()); } if (reviewerIds.isEmpty()) { return result; } // Add the reviewers to the database // final Set
+        <account.id>
+          added = new HashSet
+         <account.id>
+          (); final List
+          <patchsetapproval>
+            toInsert = new ArrayList
+           <patchsetapproval>
+            (); final PatchSet.Id psid = control.getChange().currentPatchSetId(); for (final Account.Id reviewer : reviewerIds) { if (!exists(psid, reviewer)) { // This reviewer has not entered an approval for this change yet. // final PatchSetApproval myca = dummyApproval(psid, reviewer); toInsert.add(myca); added.add(reviewer); } } db.patchSetApprovals().insert(toInsert); // Email the reviewers // // The user knows they added themselves, don't bother emailing them. added.remove(currentUser.getAccountId()); if (!added.isEmpty()) { final AddReviewerSender cm; cm = addReviewerSenderFactory.create(control.getChange()); cm.setFrom(currentUser.getAccountId()); cm.addReviewers(added); cm.send(); } return result; 
+           </patchsetapproval>
+          </patchsetapproval>
+         </account.id>
+        </account.id>
+       </account.id>
+      </account.id></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4318</td> 
+     <td>1242677819</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Nasser Grainawi</td>
+     <td>2b18baeb0ef1dc40bc25c099204cb86945dbedc8</td> 
+     <td>None</td> 
+     <td>Email the reviewers The user knows they added themselves, don't bother emailing them.</td> 
+     <td>SATD_ADDED</td> 
+     <td>call()</td> 
+     <td>public ReviewerResult call() throws Exception</td> 
+     <td> final Set<account.id>
+        reviewerIds = new HashSet
+       <account.id>
+        (); final ChangeControl control = changeControlFactory.validateFor(changeId); final ReviewerResult result = new ReviewerResult(); for (final String nameOrEmail : reviewers) { final Account account = accountResolver.find(nameOrEmail); if (account == null) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.ACCOUNT_NOT_FOUND, nameOrEmail)); continue; } if (!account.isActive()) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.ACCOUNT_INACTIVE, nameOrEmail)); continue; } final IdentifiedUser user = identifiedUserFactory.create(account.getId()); if (!control.forUser(user).isVisible()) { result.addError(new ReviewerResult.Error(ReviewerResult.Error.Type.CHANGE_NOT_VISIBLE, nameOrEmail)); continue; } reviewerIds.add(account.getId()); } if (reviewerIds.isEmpty()) { return result; } // Add the reviewers to the database // final Set
+        <account.id>
+          added = new HashSet
+         <account.id>
+          (); final List
+          <patchsetapproval>
+            toInsert = new ArrayList
+           <patchsetapproval>
+            (); final PatchSet.Id psid = control.getChange().currentPatchSetId(); for (final Account.Id reviewer : reviewerIds) { if (!exists(psid, reviewer)) { // This reviewer has not entered an approval for this change yet. // final PatchSetApproval myca = dummyApproval(psid, reviewer); toInsert.add(myca); added.add(reviewer); } } db.patchSetApprovals().insert(toInsert); // Email the reviewers // // The user knows they added themselves, don't bother emailing them. added.remove(currentUser.getAccountId()); if (!added.isEmpty()) { final AddReviewerSender cm; cm = addReviewerSenderFactory.create(control.getChange()); cm.setFrom(currentUser.getAccountId()); cm.addReviewers(added); cm.send(); } result.setChange(changeDetailFactory.create(changeId).call()); return result; 
+           </patchsetapproval>
+          </patchsetapproval>
+         </account.id>
+        </account.id>
+       </account.id>
+      </account.id></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

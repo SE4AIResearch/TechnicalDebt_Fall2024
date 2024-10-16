@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>652</td> 
+     <td>-1422651727</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7c6bc5ce34ccb478fec7f6f2fc8339c17a29a714</td> 
+     <td>Mulitcast the message in a sequential way</td> 
+     <td>Multicast the message in a sequential way</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder()</td> 
+     <td> return new RouteBuilder() { public void configure() { // START SNIPPET: example // The message will be sent parallelly to the endpoints from("direct:parallel").multicast(new BodyOutAggregatingStrategy(), true).to("direct:x", "direct:y", "direct:z"); // Multicast the message in a sequential way from("direct:sequential").multicast(new BodyOutAggregatingStrategy()).to("direct:x", "direct:y", "direct:z"); from("direct:x").process(new AppendingProcessor("x")).to("direct:aggregater"); from("direct:y").process(new AppendingProcessor("y")).to("direct:aggregater"); from("direct:z").process(new AppendingProcessor("z")).to("direct:aggregater"); from("direct:aggregater").aggregator(header("cheese"), new BodyInAggregatingStrategy()).completedPredicate(header("aggregated").isEqualTo(3)).to("mock:result"); // END SNIPPET: example } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>586</td> 
+     <td>-1422651727</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>ce1db4bbf6c476ea947970b797d9da96bccdb468</td> 
+     <td>None</td> 
+     <td>Mulitcast the message in a sequential way</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder()</td> 
+     <td> return new RouteBuilder() { public void configure() { // START SNIPPET: example // The message will be parallely sent to the endpoints from("direct:parallel").multicast(new BodyOutAggregatingStrategy(), true).to("direct:x", "direct:y", "direct:z"); // Mulitcast the message in a sequential way from("direct:sequential").multicast(new BodyOutAggregatingStrategy()).to("direct:x", "direct:y", "direct:z"); from("direct:x").process(new AppendingProcessor("x")).to("direct:aggregater"); from("direct:y").process(new AppendingProcessor("y")).to("direct:aggregater"); from("direct:z").process(new AppendingProcessor("z")).to("direct:aggregater"); from("direct:aggregater").aggregator(header("cheese"), new BodyInAggregatingStrategy()).completedPredicate(header("aggregated").isEqualTo(3)).to("mock:result"); // END SNIPPET: example } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

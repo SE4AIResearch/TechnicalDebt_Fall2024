@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2383</td> <td>-1422650784</td><td>apache/camel</td><td>William Tam</td><td>414d6c8eb763c8916ea6d74a61dcd23f2f3ae0e8</td> <td>None</td> <td>now after parsing we need a bit of work to do, to make it easier to turn the tokens
+into and ast, and then from the ast, to Camel predicate(s).
+hence why there is a number of tasks going on below to accomplish this</td> <td>SATD_ADDED</td> <td>doParsePredicate()</td> <td>protected Predicate doParsePredicate()</td> <td>
+    // parse using the following grammar
+    nextToken();
+    while (!token.getType().isEol()) {
+        // predicate supports quotes, functions, operators and whitespaces
+        // CHECKSTYLE:OFF
+        if (!singleQuotedLiteralWithFunctionsText() && !doubleQuotedLiteralWithFunctionsText() && !functionText() && !unaryOperator() && !binaryOperator() && !logicalOperator() && !token.getType().isWhitespace() && !token.getType().isEol()) {
+            // okay the symbol was not one of the above, so its not supported
+            // use the previous index as that is where the problem is
+            throw new SimpleParserException("Unexpected token " + token, previousIndex);
+        }
+        // CHECKSTYLE:ON
+        // take the next token
+        nextToken();
+    }
+    // now after parsing we need a bit of work to do, to make it easier to turn the tokens
+    // into and ast, and then from the ast, to Camel predicate(s).
+    // hence why there is a number of tasks going on below to accomplish this
+    // remove any ignorable white space tokens
+    removeIgnorableWhiteSpaceTokens();
+    // turn the tokens into the ast model
+    parseTokensAndCreateNodes();
+    // compact and stack blocks (eg function start/end, quotes start/end, etc.)
+    prepareBlocks();
+    // compact and stack unary expressions
+    prepareUnaryExpressions();
+    // compact and stack binary expressions
+    prepareBinaryExpressions();
+    // compact and stack logical expressions
+    prepareLogicalExpressions();
+    // create and return as a Camel predicate
+    List<Predicate> predicates = createPredicates();
+    if (predicates.isEmpty()) {
+        return null;
+    } else if (predicates.size() == 1) {
+        return predicates.get(0);
+    } else {
+        return PredicateBuilder.and(predicates);
+    }
+</td> </tr></table></body></html>

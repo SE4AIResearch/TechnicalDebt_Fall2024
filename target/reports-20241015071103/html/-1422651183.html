@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1669</td> <td>-1422651183</td><td>apache/camel</td><td>Claus Ibsen</td><td>ff6f3ce9697289d2ce3523654bff23c42d60a84c</td> <td>None</td> <td>TODO: mark rollback only causes Spring TX to not rollback on JMS queue</td> <td>SATD_ADDED</td> <td>testJmsToJmsTestRollbackDueToMarkRollbackOnly()</td> <td>public void testJmsToJmsTestRollbackDueToMarkRollbackOnly() throws Exception</td> <td>
+    context.addRoutes(new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            from("activemq:queue:foo").transacted().to("mock:start").to("activemq:queue:bar").markRollbackOnly();
+            from("activemq:queue:bar").to("log:bar").to("mock:bar");
+        }
+    });
+    context.start();
+    MockEndpoint bar = getMockEndpoint("mock:bar");
+    bar.expectedMessageCount(0);
+    // TODO: mark rollback only causes Spring TX to not rollback on JMS queue
+    MockEndpoint start = getMockEndpoint("mock:start");
+    start.expectedMessageCount(6);
+    template.sendBody("activemq:queue:foo", "Hello World");
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

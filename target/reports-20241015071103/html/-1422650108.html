@@ -1,0 +1,48 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3613</td> <td>-1422650108</td><td>apache/camel</td><td>Andrea Cosentino</td><td>8fe4288f2a19d1b8894f65b04a7ac871983b8938</td> <td>TODO: Add support for a HeaderFilterStrategy. See: org.apache.camel.component.jms.JmsBinding#shouldOutputHeader</td> <td>validate that replyToType and replyTo is configured accordingly</td> <td>SATD_REMOVED</td> <td>initReplyManager()</td> <td>protected void initReplyManager()</td> <td>
+    if (!started.get()) {
+        synchronized (this) {
+            if (started.get()) {
+                return;
+            }
+            log.debug("Starting reply manager");
+            // must use the classloader from the application context when creating reply manager,
+            // as it should inherit the classloader from app context and not the current which may be
+            // a different classloader
+            ClassLoader current = Thread.currentThread().getContextClassLoader();
+            ClassLoader ac = getEndpoint().getCamelContext().getApplicationContextClassLoader();
+            try {
+                if (ac != null) {
+                    Thread.currentThread().setContextClassLoader(ac);
+                }
+                // validate that replyToType and replyTo is configured accordingly
+                if (getEndpoint().getReplyToType() != null) {
+                    // setting temporary with a fixed replyTo is not supported
+                    if (getEndpoint().getReplyTo() != null && getEndpoint().getReplyToType().equals(ReplyToType.Temporary.name())) {
+                        throw new IllegalArgumentException("ReplyToType " + ReplyToType.Temporary + " is not supported when replyTo " + getEndpoint().getReplyTo() + " is also configured.");
+                    }
+                }
+                if (getEndpoint().getReplyTo() != null) {
+                    // specifying reply queues is not currently supported
+                    throw new IllegalArgumentException("Specifying replyTo " + getEndpoint().getReplyTo() + " is currently not supported.");
+                } else {
+                    replyManager = createReplyManager();
+                    log.debug("Using RabbitMQReplyManager: {} to process replies from temporary queue", replyManager);
+                }
+            } catch (Exception e) {
+                throw new FailedToCreateProducerException(getEndpoint(), e);
+            } finally {
+                if (ac != null) {
+                    Thread.currentThread().setContextClassLoader(current);
+                }
+            }
+            started.set(true);
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2410</td> <td>-1422650766</td><td>apache/camel</td><td>Claus Ibsen</td><td>1d6e74a24b973fc0f9aff3a432a10d71117e1f22</td> <td>None</td> <td>TODO: equinox fails for some reason</td> <td>SATD_ADDED</td> <td>configure()</td> <td>public static Option[] configure() throws Exception</td> <td>
+    Option[] options = combine(getDefaultCamelKarafOptions(), Helper.setLogLevel("INFO"), new Customizer() {
+
+        @Override
+        public InputStream customizeTestProbe(InputStream testProbe) {
+            return modifyBundle(testProbe).add(SimpleObject.class).add("META-INF/persistence.xml", BlobStoreBlueprintRouteTest.class.getResource("/META-INF/persistence.xml")).add("OSGI-INF/blueprint/test.xml", BlobStoreBlueprintRouteTest.class.getResource("blueprintCamelContext.xml")).set(Constants.BUNDLE_SYMBOLICNAME, "CamelBlueprintJcloudsTestBundle").set(Constants.DYNAMICIMPORT_PACKAGE, "*").set("Meta-Persistence", "META-INF/persistence.xml").build();
+        }
+    }, bundle(newBundle().add("OSGI-INF/blueprint/test.xml", BlobStoreBlueprintRouteTest.class.getResource("blueprintBlobStoreService.xml")).set(Constants.BUNDLE_SYMBOLICNAME, "org.apache.camel.jclouds.blobstore.service").set(Constants.BUNDLE_VERSION, "1.0.0").set(Constants.DYNAMICIMPORT_PACKAGE, "*").build()).start(), // using the features to install the camel components
+    scanFeatures(getCamelKarafFeatureUrl(), "camel-blueprint", "camel-jclouds"), workingDirectory("target/paxrunner/"), felix());
+    // TODO: equinox fails for some reason
+    return options;
+</td> </tr></table></body></html>

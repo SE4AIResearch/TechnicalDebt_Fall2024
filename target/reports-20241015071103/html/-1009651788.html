@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6078</td> 
+     <td>-1009651788</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>move to current trash</td> 
+     <td>move to current trash</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>initialize(Configuration, FileSystem, Path)</td> 
+     <td>public void initialize(Configuration conf, FileSystem fs, Path home)</td> 
+     <td> this.fs = fs; this.trash = new Path(home, TRASH); this.homesParent = home.getParent(); this.current = new Path(trash, CURRENT); this.deletionInterval = (long) (conf.getFloat(FS_TRASH_INTERVAL_KEY, FS_TRASH_INTERVAL_DEFAULT) * MSECS_PER_MINUTE); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5973</td> 
+     <td>-1009651788</td>
+     <td>apache/hadoop</td>
+     <td>Tsz-wo Sze</td>
+     <td>184ff33de5598b04bf968ea3b113b175a4225b82</td> 
+     <td>move to current trash</td> 
+     <td>move to current trash</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>initialize(Configuration, FileSystem, Path)</td> 
+     <td>public void initialize(Configuration conf, FileSystem fs, Path home)</td> 
+     <td> this.fs = fs; this.trash = new Path(home, TRASH); this.homesParent = home.getParent(); this.current = new Path(trash, CURRENT); this.deletionInterval = (long) (conf.getFloat(FS_TRASH_INTERVAL_KEY, FS_TRASH_INTERVAL_DEFAULT) * MSECS_PER_MINUTE); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

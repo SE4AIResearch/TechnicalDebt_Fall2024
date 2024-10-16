@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3776</td> <td>-1422650019</td><td>apache/camel</td><td>Claus Ibsen</td><td>a2b6ab7dfb85b28771dfa2dda182a7ae6090d32e</td> <td>None</td> <td>maybe there is blueprint XML files</td> <td>SATD_ADDED</td> <td>detectBlueprintOnClassPathOrBlueprintXMLFiles()</td> <td>private boolean detectBlueprintOnClassPathOrBlueprintXMLFiles()</td> <td>
+    List<Dependency> deps = project.getCompileDependencies();
+    for (Dependency dep : deps) {
+        if ("org.apache.camel".equals(dep.getGroupId()) && "camel-blueprint".equals(dep.getArtifactId())) {
+            getLog().info("camel-blueprint detected on classpath");
+        }
+    }
+    // maybe there is blueprint XML files
+    List<Resource> resources = project.getResources();
+    for (Resource res : resources) {
+        File dir = new File(res.getDirectory());
+        File xml = new File(dir, "OSGI-INF/blueprint");
+        if (xml.exists() && xml.isDirectory()) {
+            getLog().info("OSGi Blueprint XML files detected in directory " + xml);
+            return true;
+        }
+    }
+    return false;
+</td> </tr></table></body></html>

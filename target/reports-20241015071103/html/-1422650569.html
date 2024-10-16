@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2760</td> <td>-1422650569</td><td>apache/camel</td><td>Claus Ibsen</td><td>f3d14298d4914525f2ac4e9a79216a2c0638e668</td> <td>Test whether user's role is authorized to perform functions in the permissions list</td> <td>Test whether user's role is authorized to perform functions in the permissions list</td> <td>SATD_MOVED_FILE</td> <td>applySecurityPolicy(Exchange)</td> <td>private void applySecurityPolicy(Exchange exchange) throws Exception</td> <td>
+    ByteSource encryptedToken;
+    if (policy.isBase64()) {
+        String base64 = ExchangeHelper.getMandatoryHeader(exchange, ShiroConstants.SHIRO_SECURITY_TOKEN, String.class);
+        byte[] bytes = Base64.decode(base64);
+        encryptedToken = ByteSource.Util.bytes(bytes);
+    } else {
+        encryptedToken = ExchangeHelper.getMandatoryHeader(exchange, ShiroConstants.SHIRO_SECURITY_TOKEN, ByteSource.class);
+    }
+    ByteSource decryptedToken = policy.getCipherService().decrypt(encryptedToken.getBytes(), policy.getPassPhrase());
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decryptedToken.getBytes());
+    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+    ShiroSecurityToken securityToken;
+    try {
+        securityToken = (ShiroSecurityToken) objectInputStream.readObject();
+    } finally {
+        IOHelper.close(objectInputStream, byteArrayInputStream);
+    }
+    Subject currentUser = SecurityUtils.getSubject();
+    // Authenticate user if not authenticated
+    try {
+        authenticateUser(currentUser, securityToken);
+        // Test whether user's role is authorized to perform functions in the permissions list
+        authorizeUser(currentUser, exchange);
+    } finally {
+        if (policy.isAlwaysReauthenticate()) {
+            currentUser.logout();
+        }
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3562</td> <td>-1422650126</td><td>apache/camel</td><td>Claus Ibsen</td><td>8cf8021d684be05f2ea70c241518521a2fe9f8ba</td> <td>None</td> <td>TODO: See comment from Claus at ticket: https://issues.apache.org/jira/browse/CAMEL-8434</td> <td>SATD_ADDED</td> <td>testSimpleConsumerWithEmptyFile()</td> <td>public void testSimpleConsumerWithEmptyFile() throws Exception</td> <td>
+    if (!canTest()) {
+        return;
+    }
+    final Path file = new Path(new File("target/test/test-camel-normal-file").getAbsolutePath());
+    Configuration conf = new Configuration();
+    FileSystem fs = FileSystem.get(file.toUri(), conf);
+    FSDataOutputStream out = fs.create(file);
+    out.close();
+    MockEndpoint resultEndpoint = context.getEndpoint("mock:result", MockEndpoint.class);
+    // TODO: See comment from Claus at ticket: https://issues.apache.org/jira/browse/CAMEL-8434
+    resultEndpoint.expectedMinimumMessageCount(1);
+    context.addRoutes(new RouteBuilder() {
+
+        public void configure() {
+            from("hdfs2:///" + file.toUri() + "?fileSystemType=LOCAL&chunkSize=4096&initialDelay=0").to("mock:result");
+        }
+    });
+    context.start();
+    resultEndpoint.assertIsSatisfied();
+    assertThat(resultEndpoint.getReceivedExchanges().get(0).getIn().getBody(ByteArrayOutputStream.class).toByteArray().length, equalTo(0));
+</td> </tr></table></body></html>

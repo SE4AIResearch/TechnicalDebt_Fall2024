@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4812</td> <td>1242678083</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>61003e99cee563caf0668045c9989047fc919c0b</td> <td>None</td> <td>TODO(dborowitz): Support certifications by other trusted keys?</td> <td>SATD_ADDED</td> <td>checkCertifications(PGPPublicKey, String, List<String>)</td> <td>private static void checkCertifications(PGPPublicKey key, String userId, List<String> problems)</td> <td>
+    @SuppressWarnings("unchecked")
+    Iterator<PGPSignature> sigs = key.getSignaturesForID(userId);
+    if (sigs == null) {
+        sigs = Collections.emptyIterator();
+    }
+    boolean ok = false;
+    boolean revoked = false;
+    try {
+        while (sigs.hasNext()) {
+            PGPSignature sig = sigs.next();
+            if (sig.getKeyID() != key.getKeyID()) {
+                // TODO(dborowitz): Support certifications by other trusted keys?
+                continue;
+            } else if (sig.getSignatureType() != DEFAULT_CERTIFICATION && sig.getSignatureType() != POSITIVE_CERTIFICATION && sig.getSignatureType() != CERTIFICATION_REVOCATION) {
+                continue;
+            }
+            sig.init(new BcPGPContentVerifierBuilderProvider(), key);
+            if (sig.verifyCertification(userId, key)) {
+                if (sig.getSignatureType() == CERTIFICATION_REVOCATION) {
+                    revoked = true;
+                } else {
+                    ok = true;
+                }
+            } else {
+                problems.add("Invalid signature for User ID " + userId);
+            }
+        }
+    } catch (PGPException e) {
+        problems.add("Error in certifications");
+        log.warn("Error in certification verification for public key: " + keyToString(key), e);
+    }
+    if (revoked) {
+        problems.add("User ID " + userId + " is revoked");
+    } else if (!ok) {
+        problems.add("No certification for User ID " + userId);
+    }
+</td> </tr></table></body></html>

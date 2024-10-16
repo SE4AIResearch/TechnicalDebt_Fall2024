@@ -1,0 +1,147 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3412</td> 
+     <td>-1422650185</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>7970f839b2c0cf28f6a8e639cc191c7216f5ebc5</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>performContextCommand(CamelController, String, PrintStream, PrintStream)</td> 
+     <td>protected Object performContextCommand(CamelController camelController, String contextName, PrintStream out, PrintStream err) throws Exception</td> 
+     <td> List<map> 
+       <string, string>
+         &gt; endpoints = camelController.getEndpoints(contextName); final Map 
+        <string, integer>
+          columnWidths = computeColumnWidths(endpoints); final String headerFormat = buildFormatString(columnWidths, true); final String rowFormat = buildFormatString(columnWidths, false); if (endpoints.size() &gt; 0) { out.println(String.format(headerFormat, URI_COLUMN_LABEL, STATUS_COLUMN_LABEL)); out.println(String.format(headerFormat, "---", "------")); for (Map 
+         <string, string>
+           row : endpoints) { String uri = row.get("uri"); if (decode) { // decode uri so its more human readable uri = URLDecoder.decode(uri, "UTF-8"); } // sanitize and mask uri so we dont see passwords uri = URISupport.sanitizeUri(uri); String state = row.get("state"); out.println(String.format(rowFormat, uri, state)); if (explain) { boolean first = true; String json = camelController.explainEndpointAsJSon(context, row.get("uri"), verbose); // use a basic json parser List 
+          <map> 
+           <string, string>
+             &gt; options = JsonSchemaHelper.parseJsonSchema("properties", json, true); // lets sort the options by name Collections.sort(options, new Comparator 
+            <map> 
+             <string, string>
+               &gt;() { @Override public int compare(Map 
+              <string, string>
+                o1, Map 
+               <string, string>
+                 o2) { // sort by kind first (need to -1 as we want path on top), then name int answer = -1 * o1.get("kind").compareTo(o2.get("kind")); if (answer == 0) { answer = o1.get("name").compareTo(o2.get("name")); } return answer; } }); for (Map 
+                <string, string>
+                  option : options) { String key = option.get("name"); String kind = option.get("kind"); String type = option.get("type"); String javaType = option.get("javaType"); String value = option.get("value"); if (ObjectHelper.isEmpty(value)) { value = option.get("defaultValue"); } String desc = option.get("description"); if (key != null &amp;&amp; value != null) { if (first) { out.println(); first = false; } String line; if ("path".equals(kind)) { line = "\t" + key + " (endpoint path) = " + value; } else { line = "\t" + key + " = " + value; } out.println(String.format(rowFormat, "", line, "")); if (type != null) { String displayType = type; if (javaType != null &amp;&amp; !displayType.equals(javaType)) { displayType = type + " (" + javaType + ")"; } out.println(String.format(rowFormat, "", "\t" + displayType, "")); } if (desc != null) { // TODO: split desc in multi lines so it does not overflow out.println(String.format(rowFormat, "", "\t" + desc, "")); } out.println(); } } } } } return null; 
+                </string,> 
+               </string,> 
+              </string,> 
+             </string,></map> 
+           </string,></map> 
+         </string,> 
+        </string,> 
+       </string,></map></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3410</td> 
+     <td>-1422650185</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>288ea67664f9b7e0df93a36bfca124e871bb0cee</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>performContextCommand(CamelController, CamelContext, PrintStream, PrintStream)</td> 
+     <td>protected Object performContextCommand(CamelController camelController, CamelContext camelContext, PrintStream out, PrintStream err) throws Exception</td> 
+     <td> List<map> 
+       <string, string>
+         &gt; endpoints = camelController.getEndpoints(context); final Map 
+        <string, integer>
+          columnWidths = computeColumnWidths(endpoints); final String headerFormat = buildFormatString(columnWidths, true); final String rowFormat = buildFormatString(columnWidths, false); if (endpoints.size() &gt; 0) { out.println(String.format(headerFormat, URI_COLUMN_LABEL, STATUS_COLUMN_LABEL)); out.println(String.format(headerFormat, "---", "------")); for (Map 
+         <string, string>
+           row : endpoints) { String uri = row.get("uri"); if (decode) { // decode uri so its more human readable uri = URLDecoder.decode(uri, "UTF-8"); } // sanitize and mask uri so we dont see passwords uri = URISupport.sanitizeUri(uri); String state = row.get("state"); out.println(String.format(rowFormat, uri, state)); if (explain) { boolean first = true; String json = camelController.explainEndpointAsJSon(context, row.get("uri"), verbose); // use a basic json parser List 
+          <map> 
+           <string, string>
+             &gt; options = JsonSchemaHelper.parseJsonSchema("properties", json, true); // lets sort the options by name Collections.sort(options, new Comparator 
+            <map> 
+             <string, string>
+               &gt;() { @Override public int compare(Map 
+              <string, string>
+                o1, Map 
+               <string, string>
+                 o2) { // sort by kind first (need to -1 as we want path on top), then name int answer = -1 * o1.get("kind").compareTo(o2.get("kind")); if (answer == 0) { answer = o1.get("name").compareTo(o2.get("name")); } return answer; } }); for (Map 
+                <string, string>
+                  option : options) { String key = option.get("name"); String kind = option.get("kind"); String type = option.get("type"); String javaType = option.get("javaType"); String value = option.get("value"); if (ObjectHelper.isEmpty(value)) { value = option.get("defaultValue"); } String desc = option.get("description"); if (key != null &amp;&amp; value != null) { if (first) { out.println(); first = false; } String line; if ("path".equals(kind)) { line = "\t" + key + " (endpoint path) = " + value; } else { line = "\t" + key + " = " + value; } out.println(String.format(rowFormat, "", line, "")); if (type != null) { String displayType = type; if (javaType != null &amp;&amp; !displayType.equals(javaType)) { displayType = type + " (" + javaType + ")"; } out.println(String.format(rowFormat, "", "\t" + displayType, "")); } if (desc != null) { // TODO: split desc in multi lines so it does not overflow out.println(String.format(rowFormat, "", "\t" + desc, "")); } out.println(); } } } } } return null; 
+                </string,> 
+               </string,> 
+              </string,> 
+             </string,></map> 
+           </string,></map> 
+         </string,> 
+        </string,> 
+       </string,></map></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3386</td> 
+     <td>-1422650185</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>796aa09281461c90291f41406027dd8360fbc8f9</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>TODO: split desc in multi lines so it does not overflow</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>execute(CamelController, PrintStream, PrintStream)</td> 
+     <td>public Object execute(CamelController camelController, PrintStream out, PrintStream err) throws Exception</td> 
+     <td> List<endpoint>
+        endpoints = camelController.getEndpoints(name); final Map
+       <string, integer>
+         columnWidths = computeColumnWidths(endpoints); final String headerFormat = buildFormatString(columnWidths, true); final String rowFormat = buildFormatString(columnWidths, false); if (endpoints.size() &gt; 0) { out.println(String.format(headerFormat, CONTEXT_COLUMN_LABEL, URI_COLUMN_LABEL, STATUS_COLUMN_LABEL)); out.println(String.format(headerFormat, "-------", "---", "------")); for (final Endpoint endpoint : endpoints) { String contextId = endpoint.getCamelContext().getName(); String uri = endpoint.getEndpointUri(); if (decode) { // decode uri so its more human readable uri = URLDecoder.decode(uri, "UTF-8"); } // sanitize and mask uri so we dont see passwords uri = URISupport.sanitizeUri(uri); String state = getEndpointState(endpoint); out.println(String.format(rowFormat, contextId, uri, state)); if (explain) { boolean first = true; String json = camelController.explainEndpoint(endpoint.getCamelContext().getName(), endpoint.getEndpointUri(), verbose); // use a basic json parser List
+        <map>
+         <string, string>
+          &gt; options = JsonSchemaHelper.parseJsonSchema("properties", json, true); // lets sort the options by name Collections.sort(options, new Comparator
+          <map>
+           <string, string>
+            &gt;() { @Override public int compare(Map
+            <string, string>
+              o1, Map
+             <string, string>
+               o2) { // sort by kind first (need to -1 as we want path on top), then name int answer = -1 * o1.get("kind").compareTo(o2.get("kind")); if (answer == 0) { answer = o1.get("name").compareTo(o2.get("name")); } return answer; } }); for (Map
+              <string, string>
+                option : options) { String key = option.get("name"); String kind = option.get("kind"); String type = option.get("type"); String javaType = option.get("javaType"); String value = option.get("value"); if (ObjectHelper.isEmpty(value)) { value = option.get("defaultValue"); } String desc = option.get("description"); if (key != null &amp;&amp; value != null) { if (first) { out.println(); first = false; } String line; if ("path".equals(kind)) { line = "\t" + key + " (endpoint path) = " + value; } else { line = "\t" + key + " = " + value; } out.println(String.format(rowFormat, "", line, "")); if (type != null) { String displayType = type; if (javaType != null &amp;&amp; !displayType.equals(javaType)) { displayType = type + " (" + javaType + ")"; } out.println(String.format(rowFormat, "", "\t" + displayType, "")); } if (desc != null) { // TODO: split desc in multi lines so it does not overflow out.println(String.format(rowFormat, "", "\t" + desc, "")); } out.println(); } } } } } return null; 
+              </string,>
+             </string,>
+            </string,>
+           </string,></map>
+         </string,></map>
+       </string,>
+      </endpoint></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

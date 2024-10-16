@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4724</td> <td>1242678038</td><td>GerritCodeReview/gerrit</td><td>Stefan Beller</td><td>b9db274286c15d1fc26638f602e95baf773b94fb</td> <td>None</td> <td>Properly render revision actions initially while waiting for
+the callback to populate them correctly.</td> <td>SATD_ADDED</td> <td>renderChangeInfo(ChangeInfo)</td> <td>private void renderChangeInfo(ChangeInfo info)</td> <td>
+    changeInfo = info;
+    lastDisplayedUpdate = info.updated();
+    labels.set(info);
+    renderOwner(info);
+    renderActionTextDate(info);
+    renderDiffBaseListBox(info);
+    initReplyButton(info, revision);
+    initIncludedInAction(info);
+    initChangeAction(info);
+    initDownloadAction(info, revision);
+    initProjectLinks(info);
+    initBranchLink(info);
+    initEditMode(info, revision);
+    actions.display(info, revision);
+    star.setValue(info.starred());
+    permalink.setHref(ChangeLink.permalink(changeId));
+    permalink.setText(String.valueOf(info.legacy_id()));
+    topic.set(info, revision);
+    commit.set(commentLinkProcessor, info, revision);
+    related.set(info, revision);
+    reviewers.set(info);
+    if (Gerrit.isNoteDbEnabled()) {
+        hashtags.set(info);
+    } else {
+        setVisible(hashtagTableRow, false);
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append(Util.M.changeScreenTitleId(info.id_abbreviated()));
+    if (info.subject() != null) {
+        sb.append(": ");
+        sb.append(info.subject());
+    }
+    setWindowTitle(sb.toString());
+    // Properly render revision actions initially while waiting for
+    // the callback to populate them correctly.
+    renderRevisionInfo(changeInfo, NativeMap.<ActionInfo>create());
+</td> </tr></table></body></html>

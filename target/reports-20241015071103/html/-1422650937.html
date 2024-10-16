@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2105</td> <td>-1422650937</td><td>apache/camel</td><td>Guillaume Nodet</td><td>41f98579a98bb7fde89f6c3c8a57189127b2d6db</td> <td>None</td> <td>TODO: populate exchange headers</td> <td>SATD_ADDED</td> <td>handleEvent(Event)</td> <td>public void handleEvent(Event event)</td> <td>
+    Exchange exchange = endpoint.createExchange();
+    // TODO: populate exchange headers
+    exchange.getIn().setBody(event);
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("EventAdmin " + endpoint.getTopic() + " is firing");
+    }
+    try {
+        getProcessor().process(exchange);
+        // log exception if an exception occurred and was not handled
+        if (exchange.getException() != null) {
+            getExceptionHandler().handleException("Error processing exchange", exchange, exchange.getException());
+        }
+    } catch (Exception e) {
+        getExceptionHandler().handleException("Error processing exchange", exchange, exchange.getException());
+    }
+</td> </tr></table></body></html>

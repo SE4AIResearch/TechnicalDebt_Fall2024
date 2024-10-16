@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4859</td> 
+     <td>1242678096</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>555ae63f86edf4f8b68a015db6519bdd514310f5</td> 
+     <td>TODO(dborowitz): Not sure this is guaranteed in general.</td> 
+     <td>TODO(dborowitz): Not sure this is guaranteed in general.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>addOp(ChangeControl, Op)</td> 
+     <td>public BatchUpdate addOp(ChangeControl ctl, Op op)</td> 
+     <td> Change.Id id = ctl.getChange().getId(); ChangeControl old = changeControls.get(id); // TODO(dborowitz): Not sure this is guaranteed in general. checkArgument(old == null || old == ctl, "mismatched ChangeControls for change %s", id); ops.put(id, op); changeControls.put(id, ctl); return this; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4849</td> 
+     <td>1242678096</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Pursehouse</td>
+     <td>7a7fa9cc1cb3fdf6e1e1a603dc06fc06206f0265</td> 
+     <td>None</td> 
+     <td>TODO(dborowitz): Not sure this is guaranteed in general.</td> 
+     <td>SATD_ADDED</td> 
+     <td>addChangeOp(ChangeOp)</td> 
+     <td>public BatchUpdate addChangeOp(ChangeOp op)</td> 
+     <td> Change.Id id = op.ctl.getChange().getId(); ChangeControl old = changeControls.get(id); // TODO(dborowitz): Not sure this is guaranteed in general. checkArgument(old == null || old == op.ctl, "mismatched ChangeControls for change %s", id); changeOps.put(id, op); changeControls.put(id, op.ctl); return this; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

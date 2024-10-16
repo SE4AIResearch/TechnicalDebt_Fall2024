@@ -1,0 +1,92 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4711</td> 
+     <td>1242677766</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>a386fb30356bb3ecd0cbc11b9a23d13e7aa6ce5f</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>isValid(Patch)</td> 
+     <td>mp</td> 
+     <td> boolean isValid(Patch patch)</td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4386</td> 
+     <td>1242677766</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Liu Yubao</td> 
+     <td>7e8d9b3ed951ecf6822a1c3357374b3e9d34e6bf</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>isValid(Patch)</td> 
+     <td>mp</td> 
+     <td> boolean isValid(Patch patch)</td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4280</td> 
+     <td>1242677766</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>9b218bc0ad9e1ac2fbbb46e3f4bd12691e0cd323</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>indexOf(Patch.Key)</td> 
+     <td>public int indexOf(Patch.Key patch)</td> 
+     <td> for (int i = 0; i &lt; patchList.size(); i++) { if (patchList.get(i).getKey().equals(patch)) { return i; } } return -1; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4230</td> 
+     <td>1242677766</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Ulrik Sjolin</td>
+     <td>44671f5c6929a8f05223dd359182610286ceb98a</td> 
+     <td>None</td> 
+     <td>Green check mark if the user is logged in and they reviewed that file</td> 
+     <td>SATD_ADDED</td> 
+     <td>display(PatchSet.Id, List<patch>
+       )
+      </patch></td> 
+     <td>public void display(final PatchSet.Id id, final List<patch>
+        list)
+      </patch></td> 
+     <td> psid = id; myTable = null; patchList = list; final DisplayCommand cmd = new DisplayCommand(list); if (cmd.execute()) { cmd.initMeter(); DeferredCommand.addCommand(cmd); } else { cmd.showTable(); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

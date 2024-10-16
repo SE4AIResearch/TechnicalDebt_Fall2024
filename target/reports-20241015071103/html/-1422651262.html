@@ -1,0 +1,89 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1999</td> 
+     <td>-1422651262</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>1dc65f4a6b79f27582d05d8902639707f2a598b4</td> 
+     <td>split into consumers and child services as we need to start the consumers afterwards to avoid them being active while the others start</td> 
+     <td>split into consumers and child services as we need to start the consumers afterwards to avoid them being active while the others start</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>warmUp()</td> 
+     <td>public void warmUp() throws Exception</td> 
+     <td> camelContext.addRouteCollection(routes); for (LifecycleStrategy strategy : camelContext.getLifecycleStrategies()) { strategy.onRoutesAdd(routes); } for (Route route : routes) { if (LOG.isTraceEnabled()) { LOG.trace("Starting route services: " + route); } // TODO: We should also consider processors which are not services then we can manage all processors as well // otherwise its only the processors which is a Service List<service>
+        services = route.getServices(); // callback that we are staring these services route.onStartingServices(services); // gather list of services to start as we need to start child services as well List
+       <service>
+         list = new ArrayList
+        <service>
+         (); for (Service service : services) { doGetChildServices(list, service); } // split into consumers and child services as we need to start the consumers // afterwards to avoid them being active while the others start List
+         <service>
+           childServices = new ArrayList
+          <service>
+           (); for (Service service : list) { if (service instanceof Consumer) { inputs.put(route, (Consumer) service); } else { childServices.add(service); } } startChildService(route, childServices); } warmUpDone.set(true); 
+          </service>
+         </service>
+        </service>
+       </service>
+      </service></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1546</td> 
+     <td>-1422651262</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>56e3b9610bc9b422adb2c6265ef808e75667f4be</td> 
+     <td>None</td> 
+     <td>split into consumers and child services as we need to start the consumers afterwards to avoid them being active while the others start</td> 
+     <td>SATD_ADDED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> camelContext.addRouteCollection(routes); for (LifecycleStrategy strategy : camelContext.getLifecycleStrategies()) { strategy.onRoutesAdd(routes); } for (Route route : routes) { if (LOG.isTraceEnabled()) { LOG.trace("Starting route services: " + route); } List<service>
+        services = route.getServices(); // callback that we are staring these services route.onStartingServices(services); // gather list of services to start as we need to start child services as well List
+       <service>
+         list = new ArrayList
+        <service>
+         (); for (Service service : services) { doGetChildServies(list, service); } // split into consumers and child services as we need to start the consumers // afterwards to avoid them being active while the others start List
+         <service>
+           childServices = new ArrayList
+          <service>
+           (); for (Service service : list) { if (service instanceof Consumer) { inputs.put(route, (Consumer) service); } else { childServices.add(service); } } startChildService(route, childServices); // start the route itself ServiceHelper.startService(route); // fire event EventHelper.notifyRouteStarted(camelContext, route); } if (startInputs) { // start the input consumers for (Map.Entry
+           <route, consumer>
+             entry : inputs.entrySet()) { Route route = entry.getKey(); Consumer consumer = entry.getValue(); startChildService(route, consumer); } } 
+           </route,>
+          </service>
+         </service>
+        </service>
+       </service>
+      </service></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

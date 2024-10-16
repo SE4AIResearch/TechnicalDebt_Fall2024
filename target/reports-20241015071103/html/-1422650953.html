@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3025</td> 
+     <td>-1422650953</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>0a60bfdf1c977e66e4ac297faeb85d2558218f31</td> 
+     <td>TODO Support to set the timeout in case the Camel can't send the response back on time. The continuation could be called before the suspend is called</td> 
+     <td>Now we don't set up the timeout value</td> 
+     <td>SATD_REMOVED</td> 
+     <td>asyncInvoke(Exchange, Object, Method, Object[], Continuation)</td> 
+     <td>private Object asyncInvoke(Exchange cxfExchange, final Object serviceObject, Method method, Object[] paramArray, final Continuation continuation) throws Exception</td> 
+     <td> synchronized (continuation) { if (continuation.isNew()) { ExchangePattern ep = ExchangePattern.InOut; if (method.getReturnType() == Void.class) { ep = ExchangePattern.InOnly; } final org.apache.camel.Exchange camelExchange = endpoint.createExchange(ep); CxfRsBinding binding = endpoint.getBinding(); binding.populateExchangeFromCxfRsRequest(cxfExchange, camelExchange, method, paramArray); // we want to handle the UoW cxfRsConsumer.createUoW(camelExchange); // Now we don't set up the timeout value LOG.trace("Suspending continuation of exchangeId: {}", camelExchange.getExchangeId()); // The continuation could be called before the suspend is called continuation.suspend(endpoint.getContinuationTimeout()); cxfExchange.put(SUSPENED, Boolean.TRUE); cxfRsConsumer.getAsyncProcessor().process(camelExchange, new AsyncCallback() { public void done(boolean doneSync) { // make sure the continuation resume will not be called before the suspend method in other thread synchronized (continuation) { LOG.trace("Resuming continuation of exchangeId: {}", camelExchange.getExchangeId()); // resume processing after both, sync and async callbacks continuation.setObject(camelExchange); continuation.resume(); } } }); return null; } if (continuation.isResumed()) { cxfExchange.put(SUSPENED, Boolean.FALSE); org.apache.camel.Exchange camelExchange = (org.apache.camel.Exchange) continuation.getObject(); try { return returnResponse(cxfExchange, camelExchange); } finally { cxfRsConsumer.doneUoW(camelExchange); } } } return null; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2083</td> 
+     <td>-1422650953</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>a1c3f4a021854e21197df21cb5257c296bb403b6</td> 
+     <td>None</td> 
+     <td>TODO Support to set the timeout in case the Camel can't send the response back on time. The continuation could be called before the suspend is called</td> 
+     <td>SATD_ADDED</td> 
+     <td>asyncInvoke(Exchange, Object, Method, Object[], Continuation)</td> 
+     <td>private Object asyncInvoke(Exchange cxfExchange, final Object serviceObject, Method method, Object[] paramArray, final Continuation continuation) throws Exception</td> 
+     <td> synchronized (continuation) { if (continuation.isNew()) { ExchangePattern ep = ExchangePattern.InOut; if (method.getReturnType() == Void.class) { ep = ExchangePattern.InOnly; } final org.apache.camel.Exchange camelExchange = endpoint.createExchange(ep); CxfRsBinding binding = endpoint.getBinding(); binding.populateExchangeFromCxfRsRequest(cxfExchange, camelExchange, method, paramArray); // Now we don't set up the timeout value if (LOG.isTraceEnabled()) { LOG.trace("Suspending continuation of exchangeId: " + camelExchange.getExchangeId()); } // TODO Support to set the timeout in case the Camel can't send the response back on time. // The continuation could be called before the suspend is called continuation.suspend(0); cxfExchange.put(SUSPENED, Boolean.TRUE); cxfRsConsumer.getAsyncProcessor().process(camelExchange, new AsyncCallback() { public void done(boolean doneSync) { // make sure the continuation resume will not be called before the suspend method in other thread synchronized (continuation) { if (LOG.isTraceEnabled()) { LOG.trace("Resuming continuation of exchangeId: " + camelExchange.getExchangeId()); } // resume processing after both, sync and async callbacks continuation.setObject(camelExchange); continuation.resume(); } } }); return null; } if (continuation.isResumed()) { cxfExchange.put(SUSPENED, Boolean.FALSE); org.apache.camel.Exchange camelExchange = (org.apache.camel.Exchange) continuation.getObject(); return returnResponse(cxfExchange, camelExchange); } } return null; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

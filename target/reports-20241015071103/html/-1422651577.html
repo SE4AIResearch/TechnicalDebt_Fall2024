@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>859</td> 
+     <td>-1422651577</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>0c507b868ccd1acc48aa2d881fefe036fbe3c2b4</td> 
+     <td>TODO: When using thread there is a multi threading / concurreny issue in Camel hard to debug as it tend only to surface when unit test is running really fast (no break points)</td> 
+     <td>Processor #1</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { public void configure() throws Exception { errorHandler(deadLetterChannel("mock:handled").maximumRedeliveries(redelivery)); from("direct:errorTest").thread(5).process(new Processor() { public void process(Exchange exchange) throws Exception { callCounter1++; LOG.debug("Processor #1 Received A " + exchange.getIn().getBody()); exchange.getOut().setBody(msg2); } }).process(new Processor() { public void process(Exchange exchange) throws Exception { callCounter2++; LOG.debug("Processor #2 Received A " + exchange.getIn().getBody()); exchange.getOut().setBody(msg3); } }).process(new Processor() { public void process(Exchange exchange) throws Exception { callCounter3++; LOG.debug("Processor #3 Received A " + exchange.getIn().getBody()); throw new MyBelaException("Forced exception by unit test"); } }); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>849</td> 
+     <td>-1422651577</td>
+     <td>apache/camel</td>
+     <td>Hadrian Zbarcea</td>
+     <td>71e3439688833c2463953b2d52e63712c9742d68</td> 
+     <td>None</td> 
+     <td>TODO: When using thread there is a multi threading / concurreny issue in Camel hard to debug as it tend only to surface when unit test is running really fast (no break points)</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { public void configure() throws Exception { // getContext().addInterceptStrategy(new Tracer()); errorHandler(deadLetterChannel("mock:handled").maximumRedeliveries(redelivery)); from("seda:errorTest").process(new Processor() { public void process(Exchange exchange) throws Exception { callCounter1++; LOG.debug("Processor #1 Received A " + exchange.getIn().getBody()); exchange.getOut().setBody(msg2); } }).process(new Processor() { public void process(Exchange exchange) throws Exception { callCounter2++; LOG.debug("Processor #2 Received A " + exchange.getIn().getBody()); exchange.getOut().setBody(msg3); } }).process(new Processor() { public void process(Exchange exchange) throws Exception { // Thread.sleep(100); callCounter3++; LOG.debug("Processor #3 Received A " + exchange.getIn().getBody()); throw new Exception("Forced exception by unit test"); } }); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

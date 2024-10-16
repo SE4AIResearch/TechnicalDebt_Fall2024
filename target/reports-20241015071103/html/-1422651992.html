@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>202</td> 
+     <td>-1422651992</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO</td> 
+     <td>TODO</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>createEndpoint(ServiceEndpoint)</td> 
+     <td>public CamelJbiEndpoint createEndpoint(ServiceEndpoint ep) throws URISyntaxException</td> 
+     <td> URI uri = new URI(ep.getEndpointName()); Map map = URISupport.parseQuery(uri.getQuery()); String camelUri = uri.getSchemeSpecificPart(); Endpoint camelEndpoint = getCamelContext().getEndpoint(camelUri); Processor processor = null; try { processor = camelEndpoint.createProducer(); } catch (Exception e) { throw new FailedToCreateProducerException(camelEndpoint, e); } CamelJbiEndpoint endpoint = new CamelJbiEndpoint(getServiceUnit(), camelEndpoint, getBinding(), processor); IntrospectionSupport.setProperties(endpoint, map); // TODO // endpoint.setRole(MessageExchange.Role.PROVIDER); return endpoint; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>67</td> 
+     <td>-1422651992</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>c210132b9219522267adbc0142957ee5a76aeb67</td> 
+     <td>None</td> 
+     <td>TODO</td> 
+     <td>SATD_ADDED</td> 
+     <td>createEndpoint(ServiceEndpoint)</td> 
+     <td>public CamelJbiEndpoint createEndpoint(ServiceEndpoint ep) throws URISyntaxException</td> 
+     <td> URI uri = new URI(ep.getEndpointName()); Map map = URISupport.parseQuery(uri.getQuery()); String camelUri = uri.getSchemeSpecificPart(); Endpoint camelEndpoint = getCamelContext().resolveEndpoint(camelUri); CamelJbiEndpoint endpoint = new CamelJbiEndpoint(getServiceUnit(), camelEndpoint, getBinding()); IntrospectionSupport.setProperties(endpoint, map); // TODO // endpoint.setRole(MessageExchange.Role.PROVIDER); return endpoint; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

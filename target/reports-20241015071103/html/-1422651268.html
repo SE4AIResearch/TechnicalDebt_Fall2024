@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1526</td> <td>-1422651268</td><td>apache/camel</td><td>Claus Ibsen</td><td>e2e1364d6e7c865be0a66dae91e43452aa49a297</td> <td>None</td> <td>some OS such as Windows can have problem doing rename IO operations so we may need to
+retry a couple of times to let it work</td> <td>SATD_ADDED</td> <td>renameFile(String, String)</td> <td>public boolean renameFile(String from, String to) throws GenericFileOperationFailedException</td> <td>
+    File file = new File(from);
+    File target = new File(to);
+    // do not try to rename non existing files
+    if (!file.exists()) {
+        return false;
+    }
+    // some OS such as Windows can have problem doing rename IO operations so we may need to
+    // retry a couple of times to let it work
+    boolean renamed = false;
+    int count = 0;
+    while (!renamed && count < 3) {
+        renamed = file.renameTo(target);
+        if (count > 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            // ignore
+            }
+        }
+        count++;
+    }
+    return renamed;
+</td> </tr></table></body></html>

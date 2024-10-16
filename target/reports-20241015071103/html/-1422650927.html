@@ -1,0 +1,181 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2472</td> 
+     <td>-1422650927</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>4dc15948109c5756df41403930cabf27576f351d</td> 
+     <td>move the abstracts interceptors into the dedicated list</td> 
+     <td>move the abstracts interceptors into the dedicated list</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>initInterceptors(CamelContext, RouteDefinition, List<processordefinition>
+        , List 
+       <processordefinition>
+         , List 
+        <interceptdefinition>
+          , List 
+         <interceptfromdefinition>
+           , List 
+          <interceptsendtoendpointdefinition>
+            ) 
+          </interceptsendtoendpointdefinition> 
+         </interceptfromdefinition> 
+        </interceptdefinition> 
+       </processordefinition> 
+      </processordefinition></td> 
+     <td>private static void initInterceptors(CamelContext context, RouteDefinition route, List<processordefinition>
+        abstracts, List 
+       <processordefinition>
+         upper, List 
+        <interceptdefinition>
+          intercepts, List 
+         <interceptfromdefinition>
+           interceptFromDefinitions, List 
+          <interceptsendtoendpointdefinition>
+            interceptSendToEndpointDefinitions) 
+          </interceptsendtoendpointdefinition> 
+         </interceptfromdefinition> 
+        </interceptdefinition> 
+       </processordefinition> 
+      </processordefinition></td> 
+     <td> // move the abstracts interceptors into the dedicated list for (ProcessorDefinition processor : abstracts) { if (processor instanceof InterceptSendToEndpointDefinition) { if (interceptSendToEndpointDefinitions == null) { interceptSendToEndpointDefinitions = new ArrayList<interceptsendtoendpointdefinition>
+        (); } interceptSendToEndpointDefinitions.add((InterceptSendToEndpointDefinition) processor); } else if (processor instanceof InterceptFromDefinition) { if (interceptFromDefinitions == null) { interceptFromDefinitions = new ArrayList 
+       <interceptfromdefinition>
+         (); } interceptFromDefinitions.add((InterceptFromDefinition) processor); } else if (processor instanceof InterceptDefinition) { if (intercepts == null) { intercepts = new ArrayList 
+        <interceptdefinition>
+          (); } intercepts.add((InterceptDefinition) processor); } } doInitInterceptors(context, route, upper, intercepts, interceptFromDefinitions, interceptSendToEndpointDefinitions); 
+        </interceptdefinition> 
+       </interceptfromdefinition> 
+      </interceptsendtoendpointdefinition></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2176</td> 
+     <td>-1422650927</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>36c26459b728d21ca3b3ef4c6727b82d0f6881be</td> 
+     <td>move the abstracts interceptors into the dedicated list</td> 
+     <td>move the abstracts interceptors into the dedicated list</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>initInterceptors(CamelContext, RouteDefinition, List<processordefinition>
+        , List 
+       <processordefinition>
+         , List 
+        <interceptdefinition>
+          , List 
+         <interceptfromdefinition>
+           , List 
+          <interceptsendtoendpointdefinition>
+            ) 
+          </interceptsendtoendpointdefinition> 
+         </interceptfromdefinition> 
+        </interceptdefinition> 
+       </processordefinition> 
+      </processordefinition></td> 
+     <td>private static void initInterceptors(CamelContext context, RouteDefinition route, List<processordefinition>
+        abstracts, List 
+       <processordefinition>
+         upper, List 
+        <interceptdefinition>
+          intercepts, List 
+         <interceptfromdefinition>
+           interceptFromDefinitions, List 
+          <interceptsendtoendpointdefinition>
+            interceptSendToEndpointDefinitions) 
+          </interceptsendtoendpointdefinition> 
+         </interceptfromdefinition> 
+        </interceptdefinition> 
+       </processordefinition> 
+      </processordefinition></td> 
+     <td> // move the abstracts interceptors into the dedicated list for (ProcessorDefinition processor : abstracts) { if (processor instanceof InterceptSendToEndpointDefinition) { if (interceptSendToEndpointDefinitions == null) { interceptSendToEndpointDefinitions = new ArrayList<interceptsendtoendpointdefinition>
+        (); } interceptSendToEndpointDefinitions.add((InterceptSendToEndpointDefinition) processor); } else if (processor instanceof InterceptFromDefinition) { if (interceptFromDefinitions == null) { interceptFromDefinitions = new ArrayList 
+       <interceptfromdefinition>
+         (); } interceptFromDefinitions.add((InterceptFromDefinition) processor); } else if (processor instanceof InterceptDefinition) { if (intercepts == null) { intercepts = new ArrayList 
+        <interceptdefinition>
+          (); } intercepts.add((InterceptDefinition) processor); } } doInitInterceptors(context, route, upper, intercepts, interceptFromDefinitions, interceptSendToEndpointDefinitions); 
+        </interceptdefinition> 
+       </interceptfromdefinition> 
+      </interceptsendtoendpointdefinition></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2134</td> 
+     <td>-1422650927</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>bb9721add44501ba0e1ce286a2e3be88ac41a81e</td> 
+     <td>None</td> 
+     <td>move the abstracts interceptors into the dedicated list</td> 
+     <td>SATD_ADDED</td> 
+     <td>initInterceptors(RouteDefinition, List<processordefinition>
+       , List
+       <processordefinition>
+        , List
+        <interceptdefinition>
+         , List
+         <interceptfromdefinition>
+          , List
+          <interceptsendtoendpointdefinition>
+           )
+          </interceptsendtoendpointdefinition>
+         </interceptfromdefinition>
+        </interceptdefinition>
+       </processordefinition>
+      </processordefinition></td> 
+     <td>private static void initInterceptors(RouteDefinition route, List<processordefinition>
+        abstracts, List
+       <processordefinition>
+         upper, List
+        <interceptdefinition>
+          intercepts, List
+         <interceptfromdefinition>
+           interceptFromDefinitions, List
+          <interceptsendtoendpointdefinition>
+            interceptSendToEndpointDefinitions)
+          </interceptsendtoendpointdefinition>
+         </interceptfromdefinition>
+        </interceptdefinition>
+       </processordefinition>
+      </processordefinition></td> 
+     <td> // move the abstracts interceptors into the dedicated list for (ProcessorDefinition processor : abstracts) { if (processor instanceof InterceptSendToEndpointDefinition) { if (interceptSendToEndpointDefinitions == null) { interceptSendToEndpointDefinitions = new ArrayList<interceptsendtoendpointdefinition>
+       (); } interceptSendToEndpointDefinitions.add((InterceptSendToEndpointDefinition) processor); } else if (processor instanceof InterceptFromDefinition) { if (interceptFromDefinitions == null) { interceptFromDefinitions = new ArrayList
+       <interceptfromdefinition>
+        (); } interceptFromDefinitions.add((InterceptFromDefinition) processor); } else if (processor instanceof InterceptDefinition) { if (intercepts == null) { intercepts = new ArrayList
+        <interceptdefinition>
+         (); } intercepts.add((InterceptDefinition) processor); } } doInitInterceptors(route, upper, intercepts, interceptFromDefinitions, interceptSendToEndpointDefinitions); 
+        </interceptdefinition>
+       </interceptfromdefinition>
+      </interceptsendtoendpointdefinition></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>463</td> <td>-1422651799</td><td>apache/camel</td><td>James Strachan</td><td>108cb196c25758d2e387f748df1cfd63ec416ca7</td> <td>None</td> <td>TODO copy the right header information</td> <td>SATD_ADDED</td> <td>processSoapConsumerIn(Exchange)</td> <td>protected void processSoapConsumerIn(Exchange exchange) throws Exception</td> <td>
+    LOG.info("processSoapConsumerIn: " + exchange);
+    CxfSoapBinding binding = endpoint.getCxfSoapBinding();
+    org.apache.cxf.message.Message inMessage = binding.getCxfInMessage(exchange, false);
+    org.apache.cxf.message.Exchange cxfExchange = inMessage.getExchange();
+    cxfExchange.put(org.apache.cxf.endpoint.Endpoint.class, server.getEndpoint());
+    cxfExchange.put(Bus.class, getBus());
+    cxfExchange.setConduit(new NullConduit());
+    // get the message input stream, deal with the exchange in message
+    inMessageObserver.onMessage(inMessage);
+    exchange.getIn().setBody(inMessage.getContent(Source.class));
+    // TODO copy the right header information
+    exchange.getIn().setHeaders(inMessage);
+</td> </tr></table></body></html>

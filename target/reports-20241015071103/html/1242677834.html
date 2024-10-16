@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4345</td> <td>1242677834</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>7bb1f97b98c4f1d33b92ed8ee4ce96f5ff40b2f4</td> <td>Contains a path separator. Don't serve it as the client
+might be trying something evil like \"/../../etc/passwd\".
+This static servlet is just meant to facilitate simple
+assets like banner images.
+</td> <td>Ensure that the requested file is *actually* within the static dir base.</td> <td>SATD_REMOVED</td> <td>local(HttpServletRequest)</td> <td>private File local(final HttpServletRequest req)</td> <td>
+    final String name = req.getPathInfo();
+    if (name.length() < 2 || !name.startsWith("/") || isUnreasonableName(name)) {
+        // Too short to be a valid file name, or doesn't start with
+        // the path info separator like we expected.
+        // 
+        return null;
+    }
+    final File p = new File(staticBase, name.substring(1));
+    // Ensure that the requested file is *actually* within the static dir base.
+    try {
+        if (!p.getCanonicalFile().getPath().startsWith(staticBasePath))
+            return null;
+    } catch (IOException e) {
+        return null;
+    }
+    return p.isFile() ? p : null;
+</td> </tr></table></body></html>

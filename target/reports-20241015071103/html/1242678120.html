@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4912</td> <td>1242678120</td><td>GerritCodeReview/gerrit</td><td>David Ostrovsky</td><td>d287ab744d4d724fa68eca1ae4a68c833d71a1ed</td> <td>None</td> <td>TODO(davido): accept closure passed in from caller</td> <td>SATD_ADDED</td> <td>storeSection(Config, String, String, T, T)</td> <td>public static void storeSection(Config cfg, String section, String sub, T s, T defaults) throws ConfigInvalidException</td> <td>
+    try {
+        for (Field f : s.getClass().getDeclaredFields()) {
+            if (skipField(f)) {
+                continue;
+            }
+            Class<?> t = f.getType();
+            String n = f.getName();
+            f.setAccessible(true);
+            Object c = f.get(s);
+            Object d = f.get(defaults);
+            if (!isString(t) && !isCollectionOrMap(t)) {
+                Preconditions.checkNotNull(d, "Default cannot be null for: " + n);
+            }
+            if (c == null || c.equals(d)) {
+                cfg.unset(section, sub, n);
+            } else {
+                if (isString(t)) {
+                    cfg.setString(section, sub, n, (String) c);
+                } else if (isInteger(t)) {
+                    cfg.setInt(section, sub, n, (Integer) c);
+                } else if (isLong(t)) {
+                    cfg.setLong(section, sub, n, (Long) c);
+                } else if (isBoolean(t)) {
+                    cfg.setBoolean(section, sub, n, (Boolean) c);
+                } else if (t.isEnum()) {
+                    cfg.setEnum(section, sub, n, (Enum<?>) c);
+                } else if (isCollectionOrMap(t)) {
+                    // TODO(davido): accept closure passed in from caller
+                    continue;
+                } else {
+                    throw new ConfigInvalidException("type is unknown: " + t.getName());
+                }
+            }
+        }
+    } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        throw new ConfigInvalidException("cannot save values", e);
+    }
+</td> </tr></table></body></html>

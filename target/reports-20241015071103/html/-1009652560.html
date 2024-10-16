@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6042</td> 
+     <td>-1009652560</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>the directory better be empty</td> 
+     <td>the directory better be empty</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>rmdir(String)</td> 
+     <td>public int rmdir(String path) throws IOException</td> 
+     <td> if (isDirectory(path)) { // the directory better be empty String[] dirEntries = readdir(path); if ((dirEntries.length &lt;= 2) &amp;&amp; (localFS.delete(new Path(path), true))) return 0; } return -1; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5172</td> 
+     <td>-1009652560</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>the directory better be empty</td> 
+     <td>the directory better be empty</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>rmdir(String)</td> 
+     <td>public int rmdir(String path) throws IOException</td> 
+     <td> if (isDirectory(path)) { // the directory better be empty String[] dirEntries = readdir(path); if ((dirEntries.length &lt;= 2) &amp;&amp; (localFS.delete(new Path(path), true))) return 0; } return -1; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5014</td> 
+     <td>-1009652560</td>
+     <td>apache/hadoop</td>
+     <td>Owen O'Malley</td>
+     <td>ac670cc47f06b0eb880dcb5522a5aba187b5c67d</td> 
+     <td>None</td> 
+     <td>the directory better be empty</td> 
+     <td>SATD_ADDED</td> 
+     <td>rmdir(String)</td> 
+     <td>public int rmdir(String path) throws IOException</td> 
+     <td> if (isDirectory(path)) { // the directory better be empty String[] dirEntries = readdir(path); if ((dirEntries.length &lt;= 2) &amp;&amp; (localFS.delete(new Path(path), true))) return 0; } return -1; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

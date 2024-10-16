@@ -1,0 +1,57 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4255</td> <td>1242677786</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>75afdfdc843b7dfb4c9dc2676e162b21d7df7684</td> <td>None</td> <td>TODO Support per-branch READ access.</td> <td>SATD_ADDED</td> <td>updateCategorySelection()</td> <td>private void updateCategorySelection()</td> <td>
+    final int idx = catBox.getSelectedIndex();
+    final ApprovalType at;
+    if (idx >= 0) {
+        at = Gerrit.getConfig().getApprovalTypes().getApprovalType(new ApprovalCategory.Id(catBox.getValue(idx)));
+    } else {
+        at = null;
+    }
+    if (at == null || at.getValues().isEmpty()) {
+        rangeMinBox.setEnabled(false);
+        rangeMaxBox.setEnabled(false);
+        referenceTxt.setEnabled(false);
+        addRight.setEnabled(false);
+        return;
+    }
+    // TODO Support per-branch READ access.
+    if (ApprovalCategory.READ.equals(at.getCategory().getId())) {
+        referenceTxt.setText("");
+        referenceTxt.setEnabled(false);
+    } else {
+        referenceTxt.setEnabled(true);
+    }
+    int curIndex = 0, minIndex = -1, maxIndex = -1;
+    rangeMinBox.clear();
+    rangeMaxBox.clear();
+    for (final ApprovalCategoryValue v : at.getValues()) {
+        final String vStr = String.valueOf(v.getValue());
+        String nStr = vStr + ": " + v.getName();
+        if (v.getValue() > 0) {
+            nStr = "+" + nStr;
+        }
+        rangeMinBox.addItem(nStr, vStr);
+        rangeMaxBox.addItem(nStr, vStr);
+        if (v.getValue() < 0) {
+            minIndex = curIndex;
+        }
+        if (maxIndex < 0 && v.getValue() > 0) {
+            maxIndex = curIndex;
+        }
+        curIndex++;
+    }
+    if (ApprovalCategory.READ.equals(at.getCategory().getId())) {
+        // Special case; for READ the most logical range is just
+        // +1 READ, so assume that as the default for both.
+        minIndex = maxIndex;
+    }
+    rangeMinBox.setSelectedIndex(minIndex >= 0 ? minIndex : 0);
+    rangeMaxBox.setSelectedIndex(maxIndex >= 0 ? maxIndex : curIndex - 1);
+    addRight.setEnabled(true);
+</td> </tr></table></body></html>

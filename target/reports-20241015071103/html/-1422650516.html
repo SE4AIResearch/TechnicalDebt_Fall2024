@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2829</td> <td>-1422650516</td><td>apache/camel</td><td>Henryk Konsek</td><td>0c401b9fba53837bdea3dc486880dd0e0c6e2d6f</td> <td>None</td> <td>TODO check if this is really needed or not, since SF response content type seems fixed
+check if the default accept content type must be used</td> <td>SATD_ADDED</td> <td>doHttpRequest(ContentExchange, ClientResponseCallback)</td> <td>protected void doHttpRequest(ContentExchange request, ClientResponseCallback callback)</td> <td>
+    // set access token for all requests
+    setAccessToken(request);
+    // set default charset
+    request.setRequestHeader(HttpHeaders.ACCEPT_CHARSET, StringUtil.__UTF8);
+    // TODO check if this is really needed or not, since SF response content type seems fixed
+    // check if the default accept content type must be used
+    if (!request.getRequestFields().containsKey(HttpHeaders.ACCEPT)) {
+        final String contentType = getContentType(DEFAULT_ACCEPT_TYPE);
+        request.setRequestHeader(HttpHeaders.ACCEPT, contentType);
+    // request content type and charset is set by the request entity
+    }
+    super.doHttpRequest(request, callback);
+</td> </tr></table></body></html>

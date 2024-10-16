@@ -1,0 +1,77 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4491</td> 
+     <td>1242677787</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>5fb8de558757f828a84d510e1b2f48f07fafb2d1</td> 
+     <td>Unfortunately this validation isn't entirely complete. Clients can have exceptions trying to evaluate the pattern if they don't support a token used, even if the server does support the token. At the minimum, we can trap problems related to unmatched groups.</td> 
+     <td>Unfortunately this validation isn't entirely complete. Clients can have exceptions trying to evaluate the pattern if they don't support a token used, even if the server does support the token. At the minimum, we can trap problems related to unmatched groups.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>buildCommentLinks(Config)</td> 
+     <td>private static List<commentlink>
+        buildCommentLinks(Config cfg)
+      </commentlink></td> 
+     <td> Set<string>
+        sections = cfg.getSubsections("commentlink"); List
+       <commentlink>
+         links = Lists.newArrayListWithCapacity(sections.size()); for (String name : cfg.getSubsections("commentlink")) { String match = cfg.getString("commentlink", name, "match"); // Unfortunately this validation isn't entirely complete. Clients // can have exceptions trying to evaluate the pattern if they don't // support a token used, even if the server does support the token. // // At the minimum, we can trap problems related to unmatched groups. try { Pattern.compile(match); } catch (PatternSyntaxException e) { throw new ProvisionException("Invalid pattern \"" + match + "\" in commentlink." + name + ".match: " + e.getMessage()); } String link = cfg.getString("commentlink", name, "link"); int hasLink = Strings.isNullOrEmpty(link) ? 0 : 1; String html = cfg.getString("commentlink", name, "html"); int hasHtml = Strings.isNullOrEmpty(html) ? 0 : 1; if (hasLink + hasHtml != 1) { throw new ProvisionException("commentlink." + name + " must have either link or html"); } else if (hasLink == 1) { links.add(CommentLink.newCommentLink(match, link)); } else if (hasHtml == 1) { links.add(CommentLink.newRawCommentLink(match, html)); } } return links; 
+       </commentlink>
+      </string></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4256</td> 
+     <td>1242677787</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>82fc819e76ca25546f5e33a70c8fdec2db7af314</td> 
+     <td>None</td> 
+     <td>Unfortunately this validation isn't entirely complete. Clients can have exceptions trying to evaluate the pattern if they don't support a token used, even if the server does support the token. At the minimum, we can trap problems related to unmatched groups.</td> 
+     <td>SATD_ADDED</td> 
+     <td>create()</td> 
+     <td>private GerritConfig create()</td> 
+     <td> final GerritConfig config = new GerritConfig(); switch(authConfig.getAuthType()) { case LDAP: config.setRegisterUrl(cfg.getString("auth", null, "registerurl")); break; } config.setUseContributorAgreements(cfg.getBoolean("auth", "contributoragreements", false)); config.setGitDaemonUrl(cfg.getString("gerrit", null, "canonicalgiturl")); config.setUseRepoDownload(cfg.getBoolean("repo", null, "showdownloadcommand", false)); config.setUseContactInfo(contactStore != null &amp;&amp; contactStore.isEnabled()); config.setAuthType(authConfig.getAuthType()); config.setWildProject(wildProject); config.setApprovalTypes(approvalTypes); final Set<account.fieldname>
+        fields = new HashSet
+       <account.fieldname>
+        (); for (final Account.FieldName n : Account.FieldName.values()) { if (realm.allowsEdit(n)) { fields.add(n); } } if (emailSender != null &amp;&amp; emailSender.isEnabled()) { fields.add(Account.FieldName.REGISTER_NEW_EMAIL); } config.setEditableAccountFields(fields); if (gitWebConfig.getUrl() != null) { config.setGitwebLink(new GitwebLink(gitWebConfig.getUrl(), gitWebConfig.getGitWebType())); } if (sshInfo != null &amp;&amp; !sshInfo.getHostKeys().isEmpty()) { config.setSshdAddress(sshInfo.getHostKeys().get(0).getHost()); } List
+        <regexfindreplace>
+          links = new ArrayList
+         <regexfindreplace>
+          (); for (String name : cfg.getSubsections("commentlink")) { String match = cfg.getString("commentlink", name, "match"); // Unfortunately this validation isn't entirely complete. Clients // can have exceptions trying to evaluate the pattern if they don't // support a token used, even if the server does support the token. // // At the minimum, we can trap problems related to unmatched groups. try { Pattern.compile(match); } catch (PatternSyntaxException e) { throw new ProvisionException("Invalid pattern \"" + match + "\" in commentlink." + name + ".match: " + e.getMessage()); } String link = cfg.getString("commentlink", name, "link"); String html = cfg.getString("commentlink", name, "html"); if (html == null || html.isEmpty()) { html = "
+          <a href="\&quot;&quot;" + link "\">$&amp;</a>"; } links.add(new RegexFindReplace(match, html)); } config.setCommentLinks(links); return config; 
+         </regexfindreplace>
+        </regexfindreplace>
+       </account.fieldname>
+      </account.fieldname></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

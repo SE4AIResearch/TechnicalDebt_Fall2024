@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>642</td> <td>-1422651687</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>45ab816bcb8cd708f8b45cea69e78a70d235a707</td> <td>None</td> <td>TODO: Use spring mail support to add the attachment</td> <td>SATD_ADDED</td> <td>appendAttachmentsFromCamel(MimeMessage, Exchange, org.apache.camel.Message)</td> <td>protected void appendAttachmentsFromCamel(MimeMessage mimeMessage, Exchange exchange, org.apache.camel.Message camelMessage) throws MessagingException</td> <td>
+    // TODO: Use spring mail support to add the attachment
+    // Create a Multipart
+    MimeMultipart multipart = new MimeMultipart();
+    // fill the body with text
+    multipart.setSubType("mixed");
+    MimeBodyPart textBodyPart = new MimeBodyPart();
+    textBodyPart.setContent(exchange.getIn().getBody(String.class), "text/plain");
+    multipart.addBodyPart(textBodyPart);
+    BodyPart messageBodyPart;
+    Set<Map.Entry<String, DataHandler>> entries = camelMessage.getAttachments().entrySet();
+    for (Map.Entry<String, DataHandler> entry : entries) {
+        String attName = entry.getKey();
+        DataHandler attValue = entry.getValue();
+        if (attValue != null) {
+            if (shouldOutputAttachment(camelMessage, attName, attValue)) {
+                // Create another body part
+                messageBodyPart = new MimeBodyPart();
+                // Set the data handler to the attachment
+                messageBodyPart.setDataHandler(attValue);
+                // Set the filename
+                messageBodyPart.setFileName(attName);
+                // Set Disposition
+                messageBodyPart.setDisposition(Part.ATTACHMENT);
+                // Add part to multipart
+                multipart.addBodyPart(messageBodyPart);
+            }
+        }
+    }
+    // Put parts in message
+    mimeMessage.setContent(multipart);
+</td> </tr></table></body></html>

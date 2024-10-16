@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5346</td> <td>-1009652380</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>Move the offset to the start of the block.</td> <td>SATD_ADDED</td> <td>decodeFile(FileSystem, Path, FileSystem, Path, long, Path)</td> <td>public void decodeFile(FileSystem fs, Path srcFile, FileSystem parityFs, Path parityFile, long errorOffset, Path decodedFile) throws IOException</td> <td>
+    LOG.info("Create " + decodedFile + " for error at " + srcFile + ":" + errorOffset);
+    FileStatus srcStat = fs.getFileStatus(srcFile);
+    long blockSize = srcStat.getBlockSize();
+    configureBuffers(blockSize);
+    // Move the offset to the start of the block.
+    errorOffset = (errorOffset / blockSize) * blockSize;
+    // Create the decoded file.
+    FSDataOutputStream out = fs.create(decodedFile, false, conf.getInt("io.file.buffer.size", 64 * 1024), srcStat.getReplication(), srcStat.getBlockSize());
+    // Open the source file.
+    FSDataInputStream in = fs.open(srcFile, conf.getInt("io.file.buffer.size", 64 * 1024));
+    // Start copying data block-by-block.
+    for (long offset = 0; offset < srcStat.getLen(); offset += blockSize) {
+        long limit = Math.min(blockSize, srcStat.getLen() - offset);
+        long bytesAlreadyCopied = 0;
+        if (offset != errorOffset) {
+            try {
+                in = fs.open(srcFile, conf.getInt("io.file.buffer.size", 64 * 1024));
+                in.seek(offset);
+                RaidUtils.copyBytes(in, out, readBufs[0], limit);
+                assert (out.getPos() == offset + limit);
+                LOG.info("Copied till " + out.getPos() + " from " + srcFile);
+                continue;
+            } catch (BlockMissingException e) {
+                LOG.warn("Encountered BME at " + srcFile + ":" + offset);
+                bytesAlreadyCopied = out.getPos() - offset;
+            } catch (ChecksumException e) {
+                LOG.warn("Encountered CE at " + srcFile + ":" + offset);
+                bytesAlreadyCopied = out.getPos() - offset;
+            }
+        }
+        // If we are here offset == errorOffset or we got an exception.
+        // Recover the block starting at offset.
+        fixErasedBlock(fs, srcFile, parityFs, parityFile, blockSize, offset, bytesAlreadyCopied, limit, out);
+    }
+    out.close();
+    try {
+        fs.setOwner(decodedFile, srcStat.getOwner(), srcStat.getGroup());
+        fs.setPermission(decodedFile, srcStat.getPermission());
+        fs.setTimes(decodedFile, srcStat.getModificationTime(), srcStat.getAccessTime());
+    } catch (Exception exc) {
+        LOG.warn("Didn't manage to copy meta information because of " + exc + " Ignoring...");
+    }
+</td> </tr></table></body></html>

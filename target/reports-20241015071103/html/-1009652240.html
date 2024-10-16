@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5486</td> <td>-1009652240</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO What is compressible is turned on? LOG is a bad idea!</td> <td>SATD_ADDED</td> <td>write(DataOutput)</td> <td>public void write(DataOutput out) throws IOException</td> <td>
+    // data bytes including vint encoding
+    WritableUtils.writeVInt(out, size);
+    final int payload = size - WritableUtils.getVIntSize(size);
+    if (payload > Long.SIZE / Byte.SIZE) {
+        if (compressible) {
+            writeRandomText(out, payload);
+        } else {
+            writeRandom(out, payload);
+        }
+    } else if (payload > 0) {
+        // TODO What is compressible is turned on? LOG is a bad idea!
+        out.write(literal, 0, payload);
+    }
+</td> </tr></table></body></html>

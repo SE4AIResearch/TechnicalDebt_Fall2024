@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4337</td> <td>1242677830</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>a1652c6459598e1246105b666a79d031b7866a9d</td> <td>None</td> <td>If the owner can edit the Global Capabilities but they don't exist in this
+project, create an empty one at the beginning of the list making it
+possible to add permissions to it.</td> <td>SATD_ADDED</td> <td>onAddSection(ClickEvent)</td> <td> void onAddSection(ClickEvent event)</td> <td>
+    int index = local.getList().size();
+    local.getList().add(new AccessSection("refs/heads/*"));
+    AccessSectionEditor editor = local.getEditors().get(index);
+    editor.enableEditing();
+    editor.editRefPattern();
+</td> </tr></table></body></html>

@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2877</td> 
+     <td>-1422650491</td>
+     <td>apache/camel</td>
+     <td>Willem Jiang</td>
+     <td>900b9bd9cf77198d6d53a61c3ef1478b185b4614</td> 
+     <td>TODO Add more asserts</td> 
+     <td>TODO Add more asserts</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>testAgregat()</td> 
+     <td>public void testAgregat() throws Exception</td> 
+     <td> // Test that the collection has 0 documents in it assertEquals(0, testCollection.count()); pumpDataIntoTestCollection(); // Repeat ten times, obtain 10 batches of 100 results each time Object result = template.requestBody("direct:aggregat", "[{ $match : {$or : [{\"scientist\" : \"Darwin\"},{\"scientist\" : \"Einstein\"}]}},{ $group: { _id: \"$scientist\", count: { $sum: 1 }} } ]"); assertTrue("Result is not of type List", result instanceof List); @SuppressWarnings("unchecked") List<dbobject>
+        resultList = (List
+       <dbobject>
+        ) result; assertListSize("Result does not contain 2 elements", resultList, 2); // TODO Add more asserts 
+       </dbobject>
+      </dbobject></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2876</td> 
+     <td>-1422650491</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>bdad710a3aa8a14bd5af9d13b60d60bd4545f7ec</td> 
+     <td>None</td> 
+     <td>TODO Add more asserts</td> 
+     <td>SATD_ADDED</td> 
+     <td>testAgregat()</td> 
+     <td>public void testAgregat() throws Exception</td> 
+     <td> // Test that the collection has 0 documents in it assertEquals(0, testCollection.count()); pumpDataIntoTestCollection(); // Repeat ten times, obtain 10 batches of 100 results each time Object result = template.requestBody("direct:aggregat", "[{ $match : {$or : [{\"scientist\" : \"Darwin\"},{\"scientist\" : \"Einstein\"}]}},{ $group: { _id: \"$scientist\", count: { $sum: 1 }} } ]"); assertTrue("Result is not of type List", result instanceof List); @SuppressWarnings("unchecked") List<dbobject>
+        resultList = (List
+       <dbobject>
+        ) result; assertListSize("Result does not contain 2 elements", resultList, 2); // TODO Add more asserts 
+       </dbobject>
+      </dbobject></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

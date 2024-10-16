@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2451</td> <td>-1422650736</td><td>apache/camel</td><td>Claus Ibsen</td><td>f63b7f93c62c4b8510de13cd1997d2a07ab4d767</td> <td>None</td> <td>Can't assume that the end of the list will be the most recent ID.
+The Twitter API sometimes returns them slightly out of order.</td> <td>SATD_ADDED</td> <td>checkLastId(long)</td> <td>protected void checkLastId(long newId)</td> <td>
+    if (newId > lastId) {
+        lastId = newId;
+    }
+</td> </tr></table></body></html>

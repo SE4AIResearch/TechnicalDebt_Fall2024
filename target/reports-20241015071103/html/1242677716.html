@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4118</td> <td>1242677716</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>203a775142e5b912f88dca2f76b65d3ab5397903</td> <td>None</td> <td>FIXME: This code has to be moved to separate method when patchSetInfo
+creation is removed</td> <td>SATD_ADDED</td> <td>importInfo()</td> <td>private void importInfo() throws OrmException</td> <td>
+    if (info == null) {
+        info = new PatchSetInfo(dst.getId());
+        infoIsNew = true;
+    }
+    info.setSubject(src.getShortMessage());
+    info.setMessage(src.getFullMessage());
+    info.setAuthor(toUserIdentity(src.getAuthorIdent()));
+    info.setCommitter(toUserIdentity(src.getCommitterIdent()));
+    // FIXME: This code has to be moved to separate method when patchSetInfo
+    // creation is removed
+    for (int p = 0; p < src.getParentCount(); p++) {
+        PatchSetAncestor a = ancestorExisting.remove(p + 1);
+        if (a == null) {
+            a = new PatchSetAncestor(new PatchSetAncestor.Id(dst.getId(), p + 1));
+            ancestorInsert.add(a);
+        } else {
+            ancestorUpdate.add(a);
+        }
+        a.setAncestorRevision(toRevId(src.getParent(p)));
+    }
+</td> </tr></table></body></html>

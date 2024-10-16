@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1649</td> <td>-1422651194</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>be7f6c7e17ee43879a2cc93d240e647ac879936b</td> <td>None</td> <td>TODO: support comma-separated list of receivers</td> <td>SATD_ADDED</td> <td>writeTo(GMailEndpoint, Exchange, Message)</td> <td>protected void writeTo(GMailEndpoint endpoint, Exchange exchange, Message request)</td> <td>
+    // TODO: support comma-separated list of receivers
+    String to = (String) exchange.getIn().getHeader(GMAIL_TO);
+    if (to == null) {
+        to = endpoint.getTo();
+    }
+    request.setTo(to);
+</td> </tr></table></body></html>

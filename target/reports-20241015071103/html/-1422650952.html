@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2084</td> <td>-1422650952</td><td>apache/camel</td><td>Claus Ibsen</td><td>ace79ec37c9beda6f208371356a0094465dcd17c</td> <td>None</td> <td>throw runtime exception to force rollback (which works best to rollback with Spring transaction manager)</td> <td>SATD_ADDED</td> <td>doInTransactionTemplate(Exchange)</td> <td>protected void doInTransactionTemplate(final Exchange exchange)</td> <td>
+    // spring transaction template is working best with rollback if you throw it a runtime exception
+    // otherwise it may not rollback messages send to JMS queues etc.
+    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+        protected void doInTransactionWithoutResult(TransactionStatus status) {
+            // wrapper exception to throw if the exchange failed
+            // IMPORTANT: Must be a runtime exception to let Spring regard it as to do "rollback"
+            RuntimeException rce;
+            // and now let process the exchange by the error handler
+            processByErrorHandler(exchange);
+            // after handling and still an exception or marked as rollback only then rollback
+            if (exchange.getException() != null || exchange.isRollbackOnly()) {
+                // wrap exception in transacted exception
+                if (exchange.getException() != null) {
+                    rce = ObjectHelper.wrapRuntimeCamelException(exchange.getException());
+                } else {
+                    // create dummy exception to force spring transaction manager to rollback
+                    rce = new TransactionRollbackException();
+                }
+                if (!status.isRollbackOnly()) {
+                    status.setRollbackOnly();
+                }
+                // throw runtime exception to force rollback (which works best to rollback with Spring transaction manager)
+                throw rce;
+            }
+        }
+    });
+</td> </tr></table></body></html>

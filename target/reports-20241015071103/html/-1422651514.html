@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>986</td> <td>-1422651514</td><td>apache/camel</td><td>Claus Ibsen</td><td>efe75f3dae13328363236ae3fc093ce2fe2ecdb6</td> <td>None</td> <td>TODO: marker file that is the stuff with the .camel file</td> <td>SATD_ADDED</td> <td>getExclusiveReadLockStrategy(Map<String, Object>)</td> <td>private static GenericFileExclusiveReadLockStrategy getExclusiveReadLockStrategy(Map<String, Object> params)</td> <td>
+    GenericFileExclusiveReadLockStrategy strategy = (GenericFileExclusiveReadLockStrategy) params.get("exclusiveReadLockStrategy");
+    if (strategy != null) {
+        return strategy;
+    }
+    // no explicit stategy set then fallback to readLock option
+    String readLock = (String) params.get("readLock");
+    if (ObjectHelper.isNotEmpty(readLock)) {
+        if ("none".equals(readLock) || "false".equals(readLock)) {
+            return null;
+        } else if ("fileLock".equals(readLock)) {
+            GenericFileExclusiveReadLockStrategy readLockStrategy = new NewFileLockExclusiveReadLockStrategy();
+            Long timeout = (Long) params.get("readLockTimeout");
+            if (timeout != null) {
+                readLockStrategy.setTimeout(timeout);
+            }
+            return readLockStrategy;
+        } else if ("rename".equals(readLock)) {
+            GenericFileExclusiveReadLockStrategy readLockStrategy = new GenericFileRenameExclusiveReadLockStrategy();
+            Long timeout = (Long) params.get("readLockTimeout");
+            if (timeout != null) {
+                readLockStrategy.setTimeout(timeout);
+            }
+            return readLockStrategy;
+        } else if ("markerFile".equals(readLock)) {
+            // TODO: marker file that is the stuff with the .camel file
+            GenericFileExclusiveReadLockStrategy readLockStrategy = new NewMarkerFileExclusiveReadLockStrategy();
+            return readLockStrategy;
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

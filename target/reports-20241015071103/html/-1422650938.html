@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2104</td> <td>-1422650938</td><td>apache/camel</td><td>Claus Ibsen</td><td>94a120c68fadb0d9953b4ccda1ef35356affcb92</td> <td>None</td> <td>TODO: populate exchange headers</td> <td>SATD_ADDED</td> <td>sendExchange(PaxLoggingEvent)</td> <td>protected void sendExchange(PaxLoggingEvent paxLoggingEvent)</td> <td>
+    MDC.put(PaxLoggingConsumer.class.getName(), endpoint.getName());
+    if (paxLoggingEvent.getProperties().containsKey(PaxLoggingConsumer.class.getName())) {
+        return;
+    }
+    Exchange exchange = endpoint.createExchange();
+    // TODO: populate exchange headers
+    exchange.getIn().setBody(paxLoggingEvent);
+    if (LOG.isTraceEnabled()) {
+        LOG.trace("PaxLogging " + endpoint.getName() + " is firing");
+    }
+    try {
+        getProcessor().process(exchange);
+        // log exception if an exception occurred and was not handled
+        if (exchange.getException() != null) {
+            getExceptionHandler().handleException("Error processing exchange", exchange, exchange.getException());
+        }
+    } catch (Exception e) {
+        getExceptionHandler().handleException("Error processing exchange", exchange, exchange.getException());
+    }
+</td> </tr></table></body></html>

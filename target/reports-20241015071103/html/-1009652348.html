@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5378</td> <td>-1009652348</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>This should give us 25 splits, one per letter.</td> <td>SATD_ADDED</td> <td>testAlphabetSplit()</td> <td>public void testAlphabetSplit() throws SQLException</td> <td>
+    // This should give us 25 splits, one per letter.
+    TextSplitter splitter = new TextSplitter();
+    List<String> splits = splitter.split(25, "A", "Z", "");
+    String[] expected = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+    assertArrayEquals(expected, splits.toArray(new String[0]));
+</td> </tr></table></body></html>

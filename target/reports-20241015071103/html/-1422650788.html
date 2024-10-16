@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2377</td> <td>-1422650788</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>954b9a52c92ecdb1373561aae66d680bf2f32b7f</td> <td>None</td> <td>FIXME: URI encoding @Test</td> <td>SATD_ADDED</td> <td>testGetRequestUrlEncoding()</td> <td>public void testGetRequestUrlEncoding() throws Exception</td> <td>
+    GHttpEndpoint endpoint = createEndpoint("ghttp://somewhere.com:9090/path?bridgeEndpoint=false&a=b c");
+    assertEquals("http://somewhere.com:9090/path?a=b+c", binding.getRequestUrl(endpoint, exchange).toString());
+    exchange.getIn().setHeader(Exchange.HTTP_QUERY, "x=y z");
+    assertEquals("http://somewhere.com:9090/path?x=y+z", binding.getRequestUrl(endpoint, exchange).toString());
+    exchange.getIn().removeHeader(Exchange.HTTP_QUERY);
+    exchange.getIn().setHeader(Exchange.HTTP_URI, "http://custom.org:8080/path?d=e f");
+    assertEquals("http://custom.org:8080/path?d=e+f", binding.getRequestUrl(endpoint, exchange).toString());
+    exchange.getIn().setHeader(Exchange.HTTP_QUERY, "x=y z");
+    assertEquals("http://custom.org:8080/path?x=y+z", binding.getRequestUrl(endpoint, exchange).toString());
+</td> </tr></table></body></html>

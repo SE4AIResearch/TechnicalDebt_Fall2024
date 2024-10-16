@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>356</td> 
+     <td>-1422651896</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>7ff7e7017667cd44e79bc9fe22a8e3cd9326115e</td> 
+     <td>TODO we might be PUT? - have some better way to explicitly choose method</td> 
+     <td>TODO we might be PUT? - have some better way to explicitly choose method</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createMethod(Exchange)</td> 
+     <td>protected HttpMethod createMethod(Exchange exchange)</td> 
+     <td> String uri = getEndpoint().getEndpointUri(); RequestEntity requestEntity = createRequestEntity(exchange); if (requestEntity == null) { return new GetMethod(uri); } // TODO we might be PUT? - have some better way to explicitly choose // method PostMethod method = new PostMethod(uri); method.setRequestEntity(requestEntity); return method; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>272</td> 
+     <td>-1422651896</td>
+     <td>apache/camel</td>
+     <td>Jonas B. Lim</td>
+     <td>704f70ada6746372fc6d6204b0922e8837cd7270</td> 
+     <td>None</td> 
+     <td>TODO we might be PUT? - have some better way to explicitly choose method</td> 
+     <td>SATD_ADDED</td> 
+     <td>createMethod(Exchange)</td> 
+     <td>protected HttpMethod createMethod(Exchange exchange)</td> 
+     <td> String uri = getEndpoint().getEndpointUri(); RequestEntity requestEntity = createRequestEntity(exchange); if (requestEntity == null) { return new GetMethod(uri); } // TODO we might be PUT? - have some better way to explicitly choose method PostMethod method = new PostMethod(uri); method.setRequestEntity(requestEntity); return method; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

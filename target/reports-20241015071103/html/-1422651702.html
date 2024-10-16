@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>619</td> 
+     <td>-1422651702</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7e737b8d8a04b4ef6f0c48da6312beb623f1b438</td> 
+     <td>lets log all steps in all routes TODO: this does not work as expected. if enabled the exchange is not routed to seda:bar</td> 
+     <td>lets log all steps in all routes (must use proceed to let the exchange gots by its normal route path instead of swalling it here by our interception</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { public void configure() throws Exception { // lets log all steps in all routes (must use proceed to let the exchange gots by its // normal route path instead of swalling it here by our interception intercept().to("log:foo").proceed(); from("seda:foo").to("seda:bar"); from("seda:bar").to("mock:result"); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>618</td> 
+     <td>-1422651702</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>19a6f3a9b69a23aa5e5ad4489e03c5e170e8964b</td> 
+     <td>None</td> 
+     <td>lets log all steps in all routes TODO: this does not work as expected. if enabled the exchange is not routed to seda:bar</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { public void configure() throws Exception { // lets log all steps in all routes // TODO: this does not work as expected. if enabled the exchange is not routed to seda:bar // intercept().to("log:foo"); from("seda:foo").to("seda:bar"); from("seda:bar").to("mock:result"); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

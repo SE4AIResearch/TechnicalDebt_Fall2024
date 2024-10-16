@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5140</td> <td>-1009652494</td><td>apache/hadoop</td><td>Suresh Srinivas</td><td>8a2b40d0726215e48b53ab22382dd49379c36249</td> <td>placeholder for javadoc to prevent broken links, until
+HADOOP-6920</td> <td>race protection</td> <td>SATD_REMOVED</td> <td>getThreadUsage(MetricsRecordBuilder)</td> <td>private void getThreadUsage(MetricsRecordBuilder rb)</td> <td>
+    int threadsNew = 0;
+    int threadsRunnable = 0;
+    int threadsBlocked = 0;
+    int threadsWaiting = 0;
+    int threadsTimedWaiting = 0;
+    int threadsTerminated = 0;
+    long[] threadIds = threadMXBean.getAllThreadIds();
+    for (ThreadInfo threadInfo : threadMXBean.getThreadInfo(threadIds, 0)) {
+        // race protection
+        if (threadInfo == null)
+            continue;
+        switch(threadInfo.getThreadState()) {
+            case NEW:
+                threadsNew++;
+                break;
+            case RUNNABLE:
+                threadsRunnable++;
+                break;
+            case BLOCKED:
+                threadsBlocked++;
+                break;
+            case WAITING:
+                threadsWaiting++;
+                break;
+            case TIMED_WAITING:
+                threadsTimedWaiting++;
+                break;
+            case TERMINATED:
+                threadsTerminated++;
+                break;
+        }
+    }
+    rb.addGauge(ThreadsNew, threadsNew).addGauge(ThreadsRunnable, threadsRunnable).addGauge(ThreadsBlocked, threadsBlocked).addGauge(ThreadsWaiting, threadsWaiting).addGauge(ThreadsTimedWaiting, threadsTimedWaiting).addGauge(ThreadsTerminated, threadsTerminated);
+</td> </tr></table></body></html>

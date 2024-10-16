@@ -1,0 +1,70 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2015</td> <td>-1422650995</td><td>apache/camel</td><td>Claus Ibsen</td><td>5021ca2efa123aa57a4d0fd535246c814ad35604</td> <td>None</td> <td>we could potentially also be interrupted during sleep</td> <td>SATD_ADDED</td> <td>connect(RemoteFileConfiguration)</td> <td>public boolean connect(RemoteFileConfiguration configuration) throws GenericFileOperationFailedException</td> <td>
+    if (isConnected()) {
+        // already connected
+        return true;
+    }
+    boolean connected = false;
+    int attempt = 0;
+    while (!connected) {
+        try {
+            if (LOG.isTraceEnabled() && attempt > 0) {
+                LOG.trace("Reconnect attempt #" + attempt + " connecting to + " + configuration.remoteServerInformation());
+            }
+            if (channel == null || !channel.isConnected()) {
+                if (session == null || !session.isConnected()) {
+                    LOG.trace("Session isn't connected, trying to recreate and connect.");
+                    session = createSession(configuration);
+                    if (endpoint.getConfiguration().getConnectTimeout() > 0) {
+                        LOG.trace("Connecting use connectTimeout: " + endpoint.getConfiguration().getConnectTimeout() + " ...");
+                        session.connect(endpoint.getConfiguration().getConnectTimeout());
+                    } else {
+                        LOG.trace("Connecting ...");
+                        session.connect();
+                    }
+                }
+                LOG.trace("Channel isn't connected, trying to recreate and connect.");
+                channel = (ChannelSftp) session.openChannel("sftp");
+                if (endpoint.getConfiguration().getConnectTimeout() > 0) {
+                    LOG.trace("Connecting use connectTimeout: " + endpoint.getConfiguration().getConnectTimeout() + " ...");
+                    channel.connect(endpoint.getConfiguration().getConnectTimeout());
+                } else {
+                    LOG.trace("Connecting ...");
+                    channel.connect();
+                }
+                LOG.info("Connected to " + configuration.remoteServerInformation());
+            }
+            // yes we could connect
+            connected = true;
+        } catch (Exception e) {
+            // check if we are interrupted so we can break out
+            if (Thread.currentThread().isInterrupted()) {
+                throw new GenericFileOperationFailedException("Interrupted during connecting", new InterruptedException("Interrupted during connecting"));
+            }
+            GenericFileOperationFailedException failed = new GenericFileOperationFailedException("Cannot connect to " + configuration.remoteServerInformation(), e);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Cannot connect due: " + failed.getMessage());
+            }
+            attempt++;
+            if (attempt > endpoint.getMaximumReconnectAttempts()) {
+                throw failed;
+            }
+            if (endpoint.getReconnectDelay() > 0) {
+                try {
+                    Thread.sleep(endpoint.getReconnectDelay());
+                } catch (InterruptedException ie) {
+                    // we could potentially also be interrupted during sleep
+                    Thread.currentThread().interrupt();
+                    throw new GenericFileOperationFailedException("Interrupted during sleeping", ie);
+                }
+            }
+        }
+    }
+    return true;
+</td> </tr></table></body></html>

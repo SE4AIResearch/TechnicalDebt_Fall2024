@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2904</td> <td>-1422650481</td><td>apache/camel</td><td>Willem Jiang</td><td>3fd4c53ad9604c83f66015837f154fa6c995b7b7</td> <td>None</td> <td>TODO: fix browsable endpoint mbean</td> <td>SATD_ADDED</td> <td>testSanitize()</td> <td>public void testSanitize() throws Exception</td> <td>
+    MBeanServer mbeanServer = getMBeanServer();
+    ObjectName name = ObjectName.getInstance("org.apache.camel:context=localhost/camel-1,type=endpoints,name=\"stub://foo\\?password=xxxxxx&username=foo\"");
+    assertTrue("Should be registered", mbeanServer.isRegistered(name));
+// TODO: fix browsable endpoint mbean
+// String uri = (String) mbeanServer.getAttribute(name, "EndpointUri");
+// assertEquals("stub://foo?password=xxxxxx&username=foo", uri);
+</td> </tr></table></body></html>

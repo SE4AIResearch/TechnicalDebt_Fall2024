@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6035</td> 
+     <td>-1009652595</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>Ideally we should wait after transferTo returns 0. But because of a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), which throws an exception instead of returning 0, we wait for the channel to be writable before writing to it. If you ever see IOException with message \"Resource temporarily unavailable\" thrown here, please let us know. Once we move to JAVA SE 7, wait should be moved to correct place.</td> 
+     <td>Ideally we should wait after transferTo returns 0. But because of a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), which throws an exception instead of returning 0, we wait for the channel to be writable before writing to it. If you ever see IOException with message \"Resource temporarily unavailable\" thrown here, please let us know. Once we move to JAVA SE 7, wait should be moved to correct place.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>transferToFully(FileChannel, long, int)</td> 
+     <td>public void transferToFully(FileChannel fileCh, long position, int count) throws IOException</td> 
+     <td> while (count &gt; 0) { /* * Ideally we should wait after transferTo returns 0. But because of * a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), * which throws an exception instead of returning 0, we wait for the * channel to be writable before writing to it. If you ever see * IOException with message "Resource temporarily unavailable" * thrown here, please let us know. * * Once we move to JAVA SE 7, wait should be moved to correct place. */ waitForWritable(); int nTransfered = (int) fileCh.transferTo(position, count, getChannel()); if (nTransfered == 0) { // check if end of file is reached. if (position &gt;= fileCh.size()) { throw new EOFException("EOF Reached. file size is " + fileCh.size() + " and " + count + " more bytes left to be " + "transfered."); } // otherwise assume the socket is full. // waitForWritable(); // see comment above. } else if (nTransfered &lt; 0) { throw new IOException("Unexpected return of " + nTransfered + " from transferTo()"); } else { position += nTransfered; count -= nTransfered; } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5170</td> 
+     <td>-1009652595</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>Ideally we should wait after transferTo returns 0. But because of a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), which throws an exception instead of returning 0, we wait for the channel to be writable before writing to it. If you ever see IOException with message \"Resource temporarily unavailable\" thrown here, please let us know. Once we move to JAVA SE 7, wait should be moved to correct place.</td> 
+     <td>Ideally we should wait after transferTo returns 0. But because of a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), which throws an exception instead of returning 0, we wait for the channel to be writable before writing to it. If you ever see IOException with message \"Resource temporarily unavailable\" thrown here, please let us know. Once we move to JAVA SE 7, wait should be moved to correct place.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>transferToFully(FileChannel, long, int)</td> 
+     <td>public void transferToFully(FileChannel fileCh, long position, int count) throws IOException</td> 
+     <td> while (count &gt; 0) { /* * Ideally we should wait after transferTo returns 0. But because of * a bug in JRE on Linux (http://bugs.sun.com/view_bug.do?bug_id=5103988), * which throws an exception instead of returning 0, we wait for the * channel to be writable before writing to it. If you ever see * IOException with message "Resource temporarily unavailable" * thrown here, please let us know. * * Once we move to JAVA SE 7, wait should be moved to correct place. */ waitForWritable(); int nTransfered = (int) fileCh.transferTo(position, count, getChannel()); if (nTransfered == 0) { // check if end of file is reached. if (position &gt;= fileCh.size()) { throw new EOFException("EOF Reached. file size is " + fileCh.size() + " and " + count + " more bytes left to be " + "transfered."); } // otherwise assume the socket is full. // waitForWritable(); // see comment above. } else if (nTransfered &lt; 0) { throw new IOException("Unexpected return of " + nTransfered + " from transferTo()"); } else { position += nTransfered; count -= nTransfered; } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

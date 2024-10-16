@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3608</td> <td>-1422650109</td><td>apache/camel</td><td>Claus Ibsen</td><td>6d6d1b736e25b139671ba9a652b6b7ac9e524a3b</td> <td>None</td> <td>TODO: properties should use same map kind as headers</td> <td>SATD_ADDED</td> <td>Object> safeCopyProperties(Map<String, Object>)</td> <td>private static Map<String, Object> safeCopyProperties(Map<String, Object> properties)</td> <td>
+    if (properties == null) {
+        return null;
+    }
+    // TODO: properties should use same map kind as headers
+    Map<String, Object> answer = new ConcurrentHashMap<String, Object>(properties);
+    // safe copy message history using a defensive copy
+    List<MessageHistory> history = (List<MessageHistory>) answer.remove(Exchange.MESSAGE_HISTORY);
+    if (history != null) {
+        answer.put(Exchange.MESSAGE_HISTORY, new ArrayList<MessageHistory>(history));
+    }
+    return answer;
+</td> </tr></table></body></html>

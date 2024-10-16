@@ -1,0 +1,77 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3425</td> <td>-1422650166</td><td>apache/camel</td><td>Willem Jiang</td><td>23688d3d84886e9f6fab8d73bc72991484f5c151</td> <td>None</td> <td>here we could introduce the transformations for the signature policy, which we do not yet support</td> <td>SATD_ADDED</td> <td>addSignaturePolicyIdentifier(Document, Element, Input)</td> <td>protected void addSignaturePolicyIdentifier(Document doc, Element signedProperties, Input input) throws XmlSignatureException, SAXException, IOException, ParserConfigurationException</td> <td>
+    if (!isAddSignaturePolicy()) {
+        return;
+    }
+    Element signaturePolicyIdentifier = createElement("SignaturePolicyIdentifier", doc, input);
+    signedProperties.appendChild(signaturePolicyIdentifier);
+    if (SIG_POLICY_IMPLIED.equals(getSignaturePolicy())) {
+        LOG.debug("Adding implied signature policy");
+        Element implied = createElement("SignaturePolicyImplied", doc, input);
+        signaturePolicyIdentifier.appendChild(implied);
+    } else if (SIG_POLICY_EXPLICIT_ID.equals(getSignaturePolicy())) {
+        LOG.debug("Adding signatue policy ID");
+        Element id = createElement("SignaturePolicyId", doc, input);
+        signaturePolicyIdentifier.appendChild(id);
+        Element sigPolicyId = createElement("SigPolicyId", doc, input);
+        id.appendChild(sigPolicyId);
+        Element identifier = createElement("Identifier", doc, input);
+        sigPolicyId.appendChild(identifier);
+        if (getSigPolicyId() == null || getSigPolicyId().isEmpty()) {
+            throw new XmlSignatureException("The XAdES-EPES confguration is invalid. The signature policy identifier is missing.");
+        }
+        identifier.setTextContent(getSigPolicyId());
+        if (getSigPolicyIdQualifier() != null && !getSigPolicyIdQualifier().isEmpty()) {
+            setAttribute(identifier, "Qualifier", getSigPolicyIdQualifier());
+        }
+        if (getSigPolicyIdDescription() != null && !getSigPolicyIdDescription().isEmpty()) {
+            Element description = createElement("Description", doc, input);
+            sigPolicyId.appendChild(description);
+            description.setTextContent(getSigPolicyIdDescription());
+        }
+        if (!getSigPolicyIdDocumentationReferences().isEmpty()) {
+            Element documentationReferences = createElement("DocumentationReferences", doc, input);
+            sigPolicyId.appendChild(documentationReferences);
+            List<String> docReferences = getSigPolicyIdDocumentationReferences();
+            for (String documentationReferenceValue : docReferences) {
+                Element documentationReference = createElement("DocumentationReference", doc, input);
+                documentationReferences.appendChild(documentationReference);
+                documentationReference.setTextContent(documentationReferenceValue);
+            }
+        }
+        // here we could introduce the transformations for the signature policy, which we do not yet support
+        Element sigPolicyHash = createElement("SigPolicyHash", doc, input);
+        id.appendChild(sigPolicyHash);
+        if (getSignaturePolicyDigestAlgorithm() == null || getSignaturePolicyDigestAlgorithm().isEmpty()) {
+            throw new XmlSignatureException("The XAdES-EPES confguration is invalid. The digest algorithm for the signature policy is missing.");
+        }
+        Element digestMethod = createDigSigElement("DigestMethod", doc, input.getPrefixForXmlSignatureNamespace());
+        sigPolicyHash.appendChild(digestMethod);
+        setAttribute(digestMethod, "Algorithm", getSignaturePolicyDigestAlgorithm());
+        if (getSignaturePolicyDigestValue() == null || getSignaturePolicyDigestValue().isEmpty()) {
+            throw new XmlSignatureException("The XAdES-EPES confguration is invalid. The digest value for the signature policy is missing.");
+        }
+        Element digestValue = createDigSigElement("DigestValue", doc, input.getPrefixForXmlSignatureNamespace());
+        sigPolicyHash.appendChild(digestValue);
+        digestValue.setTextContent(getSignaturePolicyDigestValue());
+        List<String> qualifiers = getSigPolicyQualifiers();
+        if (!qualifiers.isEmpty()) {
+            Element qualifiersEl = createElement("SigPolicyQualifiers", doc, input);
+            id.appendChild(qualifiersEl);
+            String errorMessage = "The XAdES confguration is invalid. The list of the signatue policy qualifiers contains the invalid entry '%s'." + " An entry must either be a text or an XML fragment with the root element '%s' with the namespace '%s'.";
+            for (String elementOrText : getSigPolicyQualifiers()) {
+                Element child = createChildFromXmlFragmentOrText(doc, input, "SigPolicyQualifier", errorMessage, elementOrText);
+                qualifiersEl.appendChild(child);
+            }
+        }
+    } else {
+        // cannot happen
+        throw new IllegalStateException(String.format("Invalid value '%s' for parameter 'SignaturePolicy'. Possible values are: 'None', 'Implied', and 'ExplictId'.", getSignaturePolicy()));
+    }
+</td> </tr></table></body></html>

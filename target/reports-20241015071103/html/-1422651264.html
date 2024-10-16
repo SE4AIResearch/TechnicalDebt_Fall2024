@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1894</td> 
+     <td>-1422651264</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a24f83b12e90ce52f41c256dea6e4b9b7528ee2a</td> 
+     <td>TODO: setting failure handled should only be if we used a failure processor we could not process the exchange so we let the failure processor handled it</td> 
+     <td>we could not process the exchange so we let the failure processor handled it</td> 
+     <td>SATD_REMOVED</td> 
+     <td>prepareExchangeAfterFailure(Exchange, RedeliveryData)</td> 
+     <td>protected void prepareExchangeAfterFailure(final Exchange exchange, final RedeliveryData data)</td> 
+     <td> // we could not process the exchange so we let the failure processor handled it ExchangeHelper.setFailureHandled(exchange); // honor if already set a handling boolean alreadySet = exchange.getProperty(Exchange.ERRORHANDLER_HANDLED) != null; if (alreadySet) { boolean handled = exchange.getProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.class); if (log.isDebugEnabled()) { log.debug("This exchange has already been marked for handling: " + handled); } if (handled) { exchange.setException(null); } else { // exception not handled, put exception back in the exchange exchange.setException(exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class)); // and put failure endpoint back as well exchange.setProperty(Exchange.FAILURE_ENDPOINT, exchange.getProperty(Exchange.TO_ENDPOINT)); } return; } Predicate handledPredicate = data.handledPredicate; if (handledPredicate == null || !handledPredicate.matches(exchange)) { if (log.isDebugEnabled()) { log.debug("This exchange is not handled so its marked as failed: " + exchange); } // exception not handled, put exception back in the exchange exchange.setProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.FALSE); exchange.setException(exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class)); // and put failure endpoint back as well exchange.setProperty(Exchange.FAILURE_ENDPOINT, exchange.getProperty(Exchange.TO_ENDPOINT)); } else { if (log.isDebugEnabled()) { log.debug("This exchange is handled so its marked as not failed: " + exchange); } exchange.setProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.TRUE); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1539</td> 
+     <td>-1422651264</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>533883d5c788be05835aa7ebd157723df4734ff8</td> 
+     <td>None</td> 
+     <td>TODO: setting failure handled should only be if we used a failure processor we could not process the exchange so we let the failure processor handled it</td> 
+     <td>SATD_ADDED</td> 
+     <td>prepareExchangeAfterFailure(Exchange, RedeliveryData)</td> 
+     <td>protected void prepareExchangeAfterFailure(final Exchange exchange, final RedeliveryData data)</td> 
+     <td> // TODO: setting failure handled should only be if we used a failure processor // we could not process the exchange so we let the failure processor handled it ExchangeHelper.setFailureHandled(exchange); // honor if already set a handling boolean alreadySet = exchange.getProperty(Exchange.ERRORHANDLER_HANDLED) != null; if (alreadySet) { boolean handled = exchange.getProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.class); if (log.isDebugEnabled()) { log.debug("This exchange has already been marked for handling: " + handled); } if (handled) { exchange.setException(null); } else { // exception not handled, put exception back in the exchange exchange.setException(exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class)); } return; } Predicate handledPredicate = data.handledPredicate; if (handledPredicate == null || !handledPredicate.matches(exchange)) { if (log.isDebugEnabled()) { log.debug("This exchange is not handled so its marked as failed: " + exchange); } // exception not handled, put exception back in the exchange exchange.setProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.FALSE); exchange.setException(exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class)); } else { if (log.isDebugEnabled()) { log.debug("This exchange is handled so its marked as not failed: " + exchange); } exchange.setProperty(Exchange.ERRORHANDLER_HANDLED, Boolean.TRUE); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

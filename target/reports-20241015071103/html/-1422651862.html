@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>328</td> <td>-1422651862</td><td>apache/camel</td><td>James Strachan</td><td>98b13d7ec6759e952d23230d61bf08b48f086d23</td> <td>None</td> <td>TODO ideally we'd not have to wrap validation exceptions!
+TODO should we expose checked exceptions on CamelTemplate
+or should we make validation errors be runtime exceptions?</td> <td>SATD_ADDED</td> <td>testInvalidMessage()</td> <td>public void testInvalidMessage() throws Exception</td> <td>
+    String body = "<mail xmlns='http://foo.com/bar'><body>Hello world!</body></mail>";
+    try {
+        template.sendBody("direct:start", body);
+    }// TODO ideally we'd not have to wrap validation exceptions!
+    // TODO should we expose checked exceptions on CamelTemplate
+    // or should we make validation errors be runtime exceptions?
+     catch (RuntimeCamelException e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof SchemaValidationException) {
+            log.debug("Caught expected schema validation exception: " + e, e);
+        } else {
+            log.error(e, e);
+            fail("Not a SchemaValidationException: " + e);
+        }
+    } catch (Exception e) {
+        log.error(e, e);
+        fail("Caught: " + e);
+    }
+</td> </tr></table></body></html>

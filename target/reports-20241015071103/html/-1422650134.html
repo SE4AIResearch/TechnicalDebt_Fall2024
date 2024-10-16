@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3545</td> <td>-1422650134</td><td>apache/camel</td><td>Claus Ibsen</td><td>3774c01e71cf8715e90673328655fd426242e7ba</td> <td>None</td> <td>using soTimeout=0 could potentially cause the ftp producer to dead-lock doing endless reconnection attempts
+this is a test to ensure we have fixed that</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder() throws Exception</td> <td>
+    return new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            errorHandler(deadLetterChannel("mock:dead"));
+            // using soTimeout=0 could potentially cause the ftp producer to dead-lock doing endless reconnection attempts
+            // this is a test to ensure we have fixed that
+            from("direct:start").to("ftp://localhost:" + fakeFtpServer.getServerControlPort() + "?ftpClient=#mocked" + "&soTimeout=0&" + "connectTimeout=" + CONNECT_TIMEOUT).to("mock:done");
+        }
+    };
+</td> </tr></table></body></html>

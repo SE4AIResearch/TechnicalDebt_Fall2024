@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3052</td> <td>-1422650394</td><td>apache/camel</td><td>Kevin Earls</td><td>37541d2e31ce640f77298c599bc050bc80166902</td> <td>None</td> <td>create a runnable invocation task to be submitted on a background thread pool
+this way we avoid blocking the current thread for long running methods</td> <td>SATD_ADDED</td> <td>process(Exchange, AsyncCallback)</td> <td>public boolean process(final Exchange exchange, final AsyncCallback callback)</td> <td>
+    // properties for method arguments
+    final Map<String, Object> properties = new HashMap<String, Object>();
+    propertiesHelper.getEndpointProperties(endpoint.getConfiguration(), properties);
+    propertiesHelper.getExchangeProperties(exchange, properties);
+    interceptProperties(properties);
+    // decide which method to invoke
+    final Enum<? extends ApiMethod> method = findMethod(exchange, properties);
+    if (method == null) {
+        // synchronous failure
+        callback.done(true);
+        return true;
+    }
+    // create a runnable invocation task to be submitted on a background thread pool
+    // this way we avoid blocking the current thread for long running methods
+    Runnable invocation = new Runnable() {
+
+        @Override
+        public void run() {
+            try {
+                if (log.isDebugEnabled()) {
+                    log.debug("Invoking operation {} with {}", ((ApiMethod) method).getName(), properties.keySet());
+                }
+                Object result = doInvokeMethod(method, properties);
+                // producer returns a single response, even for methods with List return types
+                exchange.getOut().setBody(result);
+                // copy headers
+                exchange.getOut().setHeaders(exchange.getIn().getHeaders());
+                doProcessResult(exchange);
+            } catch (Throwable t) {
+                exchange.setException(ObjectHelper.wrapRuntimeCamelException(t));
+            } finally {
+                callback.done(false);
+            }
+        }
+    };
+    getExecutorService(getEndpoint().getCamelContext()).submit(invocation);
+    return false;
+</td> </tr></table></body></html>

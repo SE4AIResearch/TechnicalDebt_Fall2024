@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3489</td> 
+     <td>-1422650923</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>b05668f78d83086181a5be6b3430b868089e4a93</td> 
+     <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> 
+     <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createConnectionFactory(String)</td> 
+     <td>public static ConnectionFactory createConnectionFactory(String options)</td> 
+     <td> // using a unique broker name improves testing when running the entire test suite in the same JVM int id = counter.incrementAndGet(); String url = "vm://test-broker-" + id + "?broker.persistent=false&amp;broker.useJmx=false"; if (options != null) { url = url + "&amp;" + options; } ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url); // optimize AMQ to be as fast as possible so unit testing is quicker connectionFactory.setCopyMessageOnSend(false); connectionFactory.setOptimizeAcknowledge(true); connectionFactory.setOptimizedMessageDispatch(true); // When using asyncSend, producers will not be guaranteed to send in the order we // have in the tests (which may be confusing for queues) so we need this set to false. // Another way of guaranteeing order is to use persistent messages or transactions. connectionFactory.setUseAsyncSend(false); connectionFactory.setAlwaysSessionAsync(false); return connectionFactory; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2142</td> 
+     <td>-1422650923</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>a211f98cc2e7a0068b4723b9a00780cac627970f</td> 
+     <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> 
+     <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createConnectionFactory(String)</td> 
+     <td>public static ConnectionFactory createConnectionFactory(String options)</td> 
+     <td> // using a unique broker name improves testing when running the entire test suite in the same JVM int id = counter.incrementAndGet(); String url = "vm://test-broker-" + id + "?broker.persistent=false&amp;broker.useJmx=false"; if (options != null) { url = url + "&amp;" + options; } ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url); return connectionFactory; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2140</td> 
+     <td>-1422650923</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>3243303c9760ca2847191a5eb26733580b398079</td> 
+     <td>None</td> 
+     <td>using a unique broker name improves testing when running the entire test suite in the same JVM</td> 
+     <td>SATD_ADDED</td> 
+     <td>createPersistentConnectionFactory()</td> 
+     <td>public static ConnectionFactory createPersistentConnectionFactory()</td> 
+     <td> // using a unique broker name improves testing when running the entire test suite in the same JVM int id = ran.nextInt(100000); ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://broker-" + id + "?broker.persistent=true&amp;broker.useJmx=false"); return connectionFactory; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

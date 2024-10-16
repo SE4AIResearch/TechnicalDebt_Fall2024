@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1780</td> 
+     <td>-1422651118</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>514c86b1872c5e08c7d9224ad854842de6dd72a1</td> 
+     <td>TODO: this executor should also be shutdown when CamelContext stops</td> 
+     <td>we only need one thread in the pool to schedule this task</td> 
+     <td>SATD_REMOVED</td> 
+     <td>run()</td> 
+     <td>public void run()</td> 
+     <td> if (suspended) { if (LOG.isTraceEnabled()) { LOG.trace("Cannot start to poll: " + this.getEndpoint() + " as its suspended"); } return; } int retryCounter = -1; boolean done = false; while (!done) { try { // eager assume we are done done = true; if (isPollAllowed()) { if (retryCounter == -1) { if (LOG.isTraceEnabled()) { LOG.trace("Starting to poll: " + this.getEndpoint()); } } else { if (LOG.isDebugEnabled()) { LOG.debug("Retrying attempt " + retryCounter + " to poll: " + this.getEndpoint()); } } boolean begin = pollStrategy.begin(this, getEndpoint()); if (begin) { retryCounter++; poll(); pollStrategy.commit(this, getEndpoint()); } else { if (LOG.isDebugEnabled()) { LOG.debug("Cannot begin polling as pollStrategy returned false: " + pollStrategy); } } } if (LOG.isTraceEnabled()) { LOG.trace("Finished polling: " + this.getEndpoint()); } } catch (Exception e) { try { boolean retry = pollStrategy.rollback(this, getEndpoint(), retryCounter, e); if (retry) { done = false; } } catch (Exception re) { throw ObjectHelper.wrapRuntimeCamelException(re); } } catch (Error e) { // log the fatal error as the JDK itself may not log it for us log.fatal("Consumer " + this + " could not poll endpoint: " + getEndpoint().getEndpointUri() + " caused by: " + e.getMessage(), e); throw e; } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1774</td> 
+     <td>-1422651118</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>7681dc1dc955293d186f370206d4bb9a8c34d4fa</td> 
+     <td>None</td> 
+     <td>TODO: this executor should also be shutdown when CamelContext stops</td> 
+     <td>SATD_ADDED</td> 
+     <td>run()</td> 
+     <td>public void run()</td> 
+     <td> if (suspended) { if (LOG.isTraceEnabled()) { LOG.trace("Cannot start to poll: " + this.getEndpoint() + " as its suspended"); } return; } int retryCounter = -1; boolean done = false; while (!done) { try { // eager assume we are done done = true; if (isPollAllowed()) { if (retryCounter == -1) { if (LOG.isTraceEnabled()) { LOG.trace("Starting to poll: " + this.getEndpoint()); } } else { if (LOG.isDebugEnabled()) { LOG.debug("Retrying attempt " + retryCounter + " to poll: " + this.getEndpoint()); } } boolean begin = pollStrategy.begin(this, getEndpoint()); if (begin) { retryCounter++; poll(); pollStrategy.commit(this, getEndpoint()); } else { if (LOG.isDebugEnabled()) { LOG.debug("Cannot begin polling as pollStrategy returned false: " + pollStrategy); } } } if (LOG.isTraceEnabled()) { LOG.trace("Finished polling: " + this.getEndpoint()); } } catch (Exception e) { try { boolean retry = pollStrategy.rollback(this, getEndpoint(), retryCounter, e); if (retry) { done = false; } } catch (Exception re) { throw ObjectHelper.wrapRuntimeCamelException(re); } } catch (Error e) { // log the fatal error as the JDK itself may not log it for us log.fatal("Consumer " + this + " could not poll endpoint: " + getEndpoint().getEndpointUri() + " caused by: " + e.getMessage(), e); throw e; } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

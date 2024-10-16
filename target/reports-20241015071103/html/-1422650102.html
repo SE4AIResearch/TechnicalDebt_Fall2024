@@ -1,0 +1,99 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3624</td> <td>-1422650102</td><td>apache/camel</td><td>Claus Ibsen</td><td>8c0039b3d7b93750586b7c2c099eda9b5ca7720d</td> <td>None</td> <td>TODO: Remove some of the missing check as we should have that out of the box with the validate goal</td> <td>SATD_ADDED</td> <td>executeModel()</td> <td>protected void executeModel() throws MojoExecutionException, MojoFailureException</td> <td>
+    getLog().info("Copying all Camel model json descriptors");
+    // lets use sorted set/maps
+    Set<File> jsonFiles = new TreeSet<File>();
+    Set<File> duplicateJsonFiles = new TreeSet<File>();
+    Set<File> missingLabels = new TreeSet<File>();
+    Set<File> missingJavaDoc = new TreeSet<File>();
+    Map<String, Set<String>> usedLabels = new TreeMap<String, Set<String>>();
+    // find all json files in camel-core
+    if (coreDir != null && coreDir.isDirectory()) {
+        File target = new File(coreDir, "target/classes/org/apache/camel/model");
+        PackageHelper.findJsonFiles(target, jsonFiles, new PackageHelper.CamelComponentsModelFilter());
+    }
+    getLog().info("Found " + jsonFiles.size() + " model json files");
+    // make sure to create out dir
+    modelsOutDir.mkdirs();
+    for (File file : jsonFiles) {
+        File to = new File(modelsOutDir, file.getName());
+        if (to.exists()) {
+            duplicateJsonFiles.add(to);
+            getLog().warn("Duplicate model name detected: " + to);
+        }
+        try {
+            copyFile(file, to);
+        } catch (IOException e) {
+            throw new MojoFailureException("Cannot copy file from " + file + " -> " + to, e);
+        }
+        try {
+            // check if we have a label as we want the eip to include labels
+            String text = loadText(new FileInputStream(file));
+            // just do a basic label check
+            if (text.contains("\"label\": \"\"")) {
+                missingLabels.add(file);
+            } else {
+                String name = asComponentName(file);
+                Matcher matcher = LABEL_PATTERN.matcher(text);
+                // grab the label, and remember it in the used labels
+                if (matcher.find()) {
+                    String label = matcher.group(1);
+                    String[] labels = label.split(",");
+                    for (String s : labels) {
+                        Set<String> models = usedLabels.get(s);
+                        if (models == null) {
+                            models = new TreeSet<String>();
+                            usedLabels.put(s, models);
+                        }
+                        models.add(name);
+                    }
+                }
+            }
+            // check all the properties if they have description
+            List<Map<String, String>> rows = JSonSchemaHelper.parseJsonSchema("properties", text, true);
+            for (Map<String, String> row : rows) {
+                String name = row.get("name");
+                // skip checking these as they have no documentation
+                if ("outputs".equals(name)) {
+                    continue;
+                }
+                String doc = row.get("description");
+                if (doc == null || doc.isEmpty()) {
+                    missingJavaDoc.add(file);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+        // ignore
+        }
+    }
+    File all = new File(modelsOutDir, "../models.properties");
+    try {
+        FileOutputStream fos = new FileOutputStream(all, false);
+        String[] names = modelsOutDir.list();
+        List<String> models = new ArrayList<String>();
+        // sort the names
+        for (String name : names) {
+            if (name.endsWith(".json")) {
+                // strip out .json from the name
+                String modelName = name.substring(0, name.length() - 5);
+                models.add(modelName);
+            }
+        }
+        Collections.sort(models);
+        for (String name : models) {
+            fos.write(name.getBytes());
+            fos.write("\n".getBytes());
+        }
+        fos.close();
+    } catch (IOException e) {
+        throw new MojoFailureException("Error writing to file " + all);
+    }
+    printModelsReport(jsonFiles, duplicateJsonFiles, missingLabels, usedLabels, missingJavaDoc);
+</td> </tr></table></body></html>

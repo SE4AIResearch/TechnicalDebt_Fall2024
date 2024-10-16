@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1783</td> <td>-1422651110</td><td>apache/camel</td><td>Martin Krasser</td><td>a5163c314c290d184e38b5ec646bde38e9d19ef7</td> <td>None</td> <td>TODO use canExecute here (available since java 1.6)</td> <td>SATD_ADDED</td> <td>getExecScriptFileOrNull(String)</td> <td>private File getExecScriptFileOrNull(String scriptNameBase)</td> <td>
+    String resource = null;
+    if (OS.isFamilyWindows()) {
+        resource = scriptNameBase + ".bat";
+    } else if (OS.isFamilyUnix()) {
+        resource = scriptNameBase + ".sh";
+    }
+    File resourceFile = getClasspathResourceFileOrNull(resource);
+    // TODO use canExecute here (available since java 1.6)
+    if (resourceFile != null && !resourceFile.canRead()) {
+        logger.warn("The resource  " + resourceFile.getAbsolutePath() + " is not readable!");
+        // it is not readable, do not try to execute it
+        return null;
+    }
+    return resourceFile;
+</td> </tr></table></body></html>

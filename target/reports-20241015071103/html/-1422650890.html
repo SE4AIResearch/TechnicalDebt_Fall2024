@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2201</td> <td>-1422650890</td><td>apache/camel</td><td>Claus Ibsen</td><td>a2112f818c27769ecb963cd732a1929fb22e5d73</td> <td>None</td> <td>TODO remove?</td> <td>SATD_ADDED</td> <td>configure()</td> <td>public void configure() throws Exception</td> <td>
+    // webservice response for OK
+    OutputReportIncident ok = new OutputReportIncident();
+    ok.setCode("0");
+    from("cxf:bean:reportIncident").convertBodyTo(// TODO remove?
+    InputReportIncident.class).setHeader(Exchange.FILE_NAME, constant("request-${date:now:yyyy-MM-dd-HHmmssSSS}")).to("file://target/inbox/").transform(constant(ok));
+</td> </tr></table></body></html>

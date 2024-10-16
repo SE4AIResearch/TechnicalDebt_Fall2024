@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5633</td> <td>-1009652116</td><td>apache/hadoop</td><td>Tsz-wo Sze</td><td>09b6f98de431628c80bc8a6faf0070eeaf72ff2a</td> <td>None</td> <td>
+Keeps a TreeSet for every named node. Each treeset contains
+a list of the blocks that are \"extra\" at that location. We'll
+eventually remove these extras.
+Mapping: StorageID -> TreeSet<Block>
+</td> <td>SATD_ADDED</td> <td>getPendingReplicationBlocksCount()</td> <td>public long getPendingReplicationBlocksCount()</td> <td>
+    return pendingReplicationBlocksCount;
+</td> </tr></table></body></html>

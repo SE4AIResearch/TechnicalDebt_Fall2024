@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>581</td> <td>-1422651730</td><td>apache/camel</td><td>James Strachan</td><td>0ccc4c4cb169aafc049bae44b8519e6b98b2f84a</td> <td>None</td> <td>TODO: Type can be symbolic link etc. so what should we do?</td> <td>SATD_ADDED</td> <td>pollDirectory(String)</td> <td>protected void pollDirectory(String dir) throws Exception</td> <td>
+    client.changeWorkingDirectory(dir);
+    for (FTPFile ftpFile : client.listFiles()) {
+        if (ftpFile.isFile()) {
+            pollFile(ftpFile);
+        } else if (ftpFile.isDirectory()) {
+            if (isRecursive()) {
+                pollDirectory(getFullFileName(ftpFile));
+            }
+        } else {
+            // TODO: Type can be symbolic link etc. so what should we do?
+            LOG.warn("Unsupported type of FTPFile: " + ftpFile + " not a file or directory");
+        }
+    }
+</td> </tr></table></body></html>

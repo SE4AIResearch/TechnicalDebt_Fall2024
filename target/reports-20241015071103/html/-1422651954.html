@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>249</td> 
+     <td>-1422651954</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>645d9a7a1027ea4efecdaff4ad127333666baab4</td> 
+     <td>TODO Add support for endpoints associated with a WSDL</td> 
+     <td>TODO Add support for endpoints associated with a WSDL</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> // TODO Add support for sending message inputstream. Currently, we only handle // method invocation with pojo. // TODO Add support for endpoints associated with a WSDL if (client == null) { ClientFactoryBean cfBean = new ClientFactoryBean(); cfBean.setAddress(getEndpoint().getEndpointUri()); cfBean.setBus(endpoint.getBus()); cfBean.setServiceClass(Class.forName(endpoint.getProperty(CxfConstants.SEI))); client = cfBean.create(); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>127</td> 
+     <td>-1422651954</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>0b472529392bb78e3a5ee3cdc394828c3bde8d38</td> 
+     <td>None</td> 
+     <td>TODO Add support for endpoints associated with a WSDL</td> 
+     <td>SATD_ADDED</td> 
+     <td>doStart()</td> 
+     <td>protected void doStart() throws Exception</td> 
+     <td> // TODO Add support for sending message inputstream. Currently, we only handle // method invocation with pojo. // TODO Add support for endpoints associated with a WSDL if (client == null) { ClientFactoryBean cfBean = new ClientFactoryBean(); cfBean.setAddress(getEndpoint().getEndpointUri()); cfBean.setBus(cxfEndpoint.getBus()); cfBean.setServiceClass(Class.forName(cxfEndpoint.getProperty(CxfConstants.SEI))); client = cfBean.create(); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

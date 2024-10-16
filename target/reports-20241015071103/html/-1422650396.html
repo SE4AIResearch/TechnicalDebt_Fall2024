@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3050</td> 
+     <td>-1422650396</td>
+     <td>apache/camel</td>
+     <td>Dhiraj Bokde</td>
+     <td>dd70b99d643b5257ca90694338df5f9cc50a02fd</td> 
+     <td>TODO generate Component classes generate ApiCollection</td> 
+     <td>generate ApiCollection</td> 
+     <td>SATD_REMOVED</td> 
+     <td>execute()</td> 
+     <td>public void execute() throws MojoExecutionException, MojoFailureException</td> 
+     <td> if (apis == null || apis.length == 0) { throw new MojoExecutionException("One or more API proxies are required"); } // generate ApiCollection mergeTemplate(getApiContext(), getApiCollectionFile(), "/api-collection.vm"); // generate ApiName mergeTemplate(getApiContext(), getApiNameFile(), "/api-name-enum.vm"); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3048</td> 
+     <td>-1422650396</td>
+     <td>apache/camel</td>
+     <td>Dhiraj Bokde</td>
+     <td>ecee7f1fcb48b2945aa6ebfd32c84226b86f6dfc</td> 
+     <td>None</td> 
+     <td>TODO generate Component classes generate ApiCollection</td> 
+     <td>SATD_ADDED</td> 
+     <td>execute()</td> 
+     <td>public void execute() throws MojoExecutionException, MojoFailureException</td> 
+     <td> if (apis == null || apis.length == 0) { throw new MojoExecutionException("One or more API proxies are required"); } // generate ApiMethods for (int i = 0; i &lt; apis.length; i++) { apis[i].validate(); AbstractApiMethodGeneratorMojo generator; if (apis[i].getSignatureFile() != null) { generator = new FileApiMethodGeneratorMojo(); ((FileApiMethodGeneratorMojo) generator).signatureFile = apis[i].getSignatureFile(); } else { generator = new JavadocApiMethodGeneratorMojo(); ((JavadocApiMethodGeneratorMojo) generator).excludePackages = apis[i].getExcludePackages(); ((JavadocApiMethodGeneratorMojo) generator).excludeClasses = apis[i].getExcludeClasses(); } // set API properties generator.proxyClass = apis[i].getProxyClass(); generator.substitutions = apis[i].getSubstitutions(); // set shared properties generator.outDir = outDir; generator.outPackage = outPackage; // set shared state generator.setEngine(getEngine()); generator.setProjectClassLoader(getProjectClassLoader()); try { generator.execute(); } catch (AbstractMojoExecutionException e) { throw new MojoExecutionException("Error generating ApiMethod for " + apis[i].getProxyClass() + ": " + e.getMessage(), e); } } // TODO generate Component classes // generate ApiCollection mergeTemplate(getApiCollectionContext(), getApiCollectionFile(), "/api-collection.vm"); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

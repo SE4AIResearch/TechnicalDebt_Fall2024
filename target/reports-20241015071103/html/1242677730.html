@@ -1,0 +1,45 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4147</td> <td>1242677730</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>818fa7568021f41863df0dbcb6db68d8692404b0</td> <td>None</td> <td>Not signed in yet. Since the browser state might have an anchor
+token which we want to capture and carry through the auth process
+we send back JavaScript now to capture that, and do the real work
+of redirecting to the authentication area.
+</td> <td>SATD_ADDED</td> <td>doFilter(ServletRequest, ServletResponse, FilterChain)</td> <td>public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException</td> <td>
+    if (gerritCall.get().getAccountId() == null) {
+        // Not signed in yet. Since the browser state might have an anchor
+        // token which we want to capture and carry through the auth process
+        // we send back JavaScript now to capture that, and do the real work
+        // of redirecting to the authentication area.
+        // 
+        final HttpServletRequest req = (HttpServletRequest) request;
+        final HttpServletResponse rsp = (HttpServletResponse) response;
+        final byte[] tosend;
+        if (RPCServletUtils.acceptsGzipEncoding(req)) {
+            rsp.setHeader("Content-Encoding", "gzip");
+            tosend = signInGzip;
+        } else {
+            tosend = signInRaw;
+        }
+        rsp.setHeader("Expires", "Fri, 01 Jan 1980 00:00:00 GMT");
+        rsp.setHeader("Pragma", "no-cache");
+        rsp.setHeader("Cache-Control", "no-cache, must-revalidate");
+        rsp.setContentType("text/html");
+        rsp.setCharacterEncoding(HtmlDomUtil.ENC);
+        rsp.setContentLength(tosend.length);
+        final OutputStream out = rsp.getOutputStream();
+        try {
+            out.write(tosend);
+        } finally {
+            out.close();
+        }
+    } else {
+        // Already signed in, forward the request.
+        // 
+        chain.doFilter(request, response);
+    }
+</td> </tr></table></body></html>

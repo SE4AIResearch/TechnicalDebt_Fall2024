@@ -1,0 +1,79 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4129</td> 
+     <td>1242677674</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>b9e93f7ad5639dd15ee480c5e38fb60cd6c9d8b8</td> 
+     <td>If the container didn't do the authentication we might have done it in the front-end web server. Try to split the identity out of the Authorization header and honor it. </td> 
+     <td>If the container didn't do the authentication we might have done it in the front-end web server. Try to split the identity out of the Authorization header and honor it. </td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>assumeHttp()</td> 
+     <td>private boolean assumeHttp()</td> 
+     <td> final String hdr = authConfig.getLoginHttpHeader(); String user; if (hdr != null &amp;&amp; !"".equals(hdr) &amp;&amp; !"Authorization".equalsIgnoreCase(hdr)) { user = getHttpServletRequest().getHeader(hdr); } else { user = getHttpServletRequest().getRemoteUser(); if (user == null) { // If the container didn't do the authentication we might // have done it in the front-end web server. Try to split // the identity out of the Authorization header and honor it. // user = getHttpServletRequest().getHeader("Authorization"); if (user != null &amp;&amp; user.startsWith("Basic ")) { user = new String(Base64.decode(user.substring("Basic ".length()))); if (user.indexOf(':') &gt;= 0) { user = user.substring(0, user.indexOf(':')); } } else if (user != null &amp;&amp; user.startsWith("Digest ") &amp;&amp; user.contains("username=\"")) { user = user.substring(user.indexOf("username=\"") + 10); user = user.substring(0, user.indexOf('"')); } else { user = null; } } } if (user == null) { return false; } try { final ReviewDb db = schema.open(); try { final String eid = "gerrit:" + user; final List<accountexternalid>
+        matches = db.accountExternalIds().byExternal(eid).toList(); if (matches.size() == 1) { // Account exists, connect to it again. // final AccountExternalId e = matches.get(0); e.setLastUsedOn(); db.accountExternalIds().update(Collections.singleton(e)); accountId = e.getAccountId(); rememberAccount = false; setAccountCookie(); return true; } if (matches.size() == 0) { // No account, automatically initialize a new one. // final Transaction txn = db.beginTransaction(); final Account.Id nid = new Account.Id(db.nextAccountId()); final Account a = new Account(nid); a.setFullName(user); final String efmt = authConfig.getEmailFormat(); if (efmt != null &amp;&amp; efmt.contains("{0}")) { a.setPreferredEmail(MessageFormat.format(efmt, user)); } final AccountExternalId e = new AccountExternalId(new AccountExternalId.Key(nid, eid)); e.setEmailAddress(a.getPreferredEmail()); e.setLastUsedOn(); db.accounts().insert(Collections.singleton(a), txn); db.accountExternalIds().insert(Collections.singleton(e), txn); txn.commit(); accountId = nid; rememberAccount = false; setAccountCookie(); return true; } } finally { db.close(); } } catch (OrmException e) { } return false; 
+      </accountexternalid></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4065</td> 
+     <td>1242677674</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>If the container didn't do the authentication we might have done it in the front-end web server. Try to split the identity out of the Authorization header and honor it. </td> 
+     <td>If the container didn't do the authentication we might have done it in the front-end web server. Try to split the identity out of the Authorization header and honor it. </td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>assumeHttp()</td> 
+     <td>private boolean assumeHttp()</td> 
+     <td> final String hdr = server.getLoginHttpHeader(); String user; if (hdr != null &amp;&amp; !"".equals(hdr) &amp;&amp; !"Authorization".equalsIgnoreCase(hdr)) { user = getHttpServletRequest().getHeader(hdr); } else { user = getHttpServletRequest().getRemoteUser(); if (user == null) { // If the container didn't do the authentication we might // have done it in the front-end web server. Try to split // the identity out of the Authorization header and honor it. // user = getHttpServletRequest().getHeader("Authorization"); if (user != null &amp;&amp; user.startsWith("Basic ")) { user = new String(Base64.decode(user.substring("Basic ".length()))); if (user.indexOf(':') &gt;= 0) { user = user.substring(0, user.indexOf(':')); } } else if (user != null &amp;&amp; user.startsWith("Digest ") &amp;&amp; user.contains("username=\"")) { user = user.substring(user.indexOf("username=\"") + 10); user = user.substring(0, user.indexOf('"')); } else { user = null; } } } if (user == null) { return false; } try { final ReviewDb db = Common.getSchemaFactory().open(); try { final String eid = "gerrit:" + user; final List<accountexternalid>
+        matches = db.accountExternalIds().byExternal(eid).toList(); if (matches.size() == 1) { // Account exists, connect to it again. // final AccountExternalId e = matches.get(0); e.setLastUsedOn(); db.accountExternalIds().update(Collections.singleton(e)); accountId = e.getAccountId(); setCookie(Gerrit.ACCOUNT_COOKIE, accountId.toString(), server.getAccountToken()); return true; } if (matches.size() == 0) { // No account, automatically initialize a new one. // final Transaction txn = db.beginTransaction(); final Account.Id nid = new Account.Id(db.nextAccountId()); final Account a = new Account(nid); a.setFullName(user); final String efmt = server.getEmailFormat(); if (efmt != null &amp;&amp; efmt.contains("{0}")) { a.setPreferredEmail(MessageFormat.format(efmt, user)); } final AccountExternalId e = new AccountExternalId(new AccountExternalId.Key(nid, eid)); e.setEmailAddress(a.getPreferredEmail()); e.setLastUsedOn(); db.accounts().insert(Collections.singleton(a), txn); db.accountExternalIds().insert(Collections.singleton(e), txn); txn.commit(); accountId = nid; setCookie(Gerrit.ACCOUNT_COOKIE, accountId.toString(), server.getAccountToken()); return true; } } finally { db.close(); } } catch (OrmException e) { } return false; 
+      </accountexternalid></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4010</td> 
+     <td>1242677674</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>f384b44ad60ef5fae753fc58920cdb783db6bcf5</td> 
+     <td>None</td> 
+     <td>If the container didn't do the authentication we might have done it in the front-end web server. Try to split the identity out of the Authorization header and honor it. </td> 
+     <td>SATD_ADDED</td> 
+     <td>assumeHttp()</td> 
+     <td>private boolean assumeHttp()</td> 
+     <td> final String hdr = server.getLoginHttpHeader(); String user; if (hdr != null &amp;&amp; !"".equals(hdr) &amp;&amp; !"Authorization".equalsIgnoreCase(hdr)) { user = getHttpServletRequest().getHeader(hdr); } else { user = getHttpServletRequest().getRemoteUser(); if (user == null) { // If the container didn't do the authentication we might // have done it in the front-end web server. Try to split // the identity out of the Authorization header and honor it. // user = getHttpServletRequest().getHeader("Authorization"); if (user != null &amp;&amp; user.startsWith("Basic ")) { user = new String(Base64.decode(user.substring("Basic ".length()))); if (user.indexOf(':') &gt;= 0) { user = user.substring(0, user.indexOf(':')); } } else if (user != null &amp;&amp; user.startsWith("Digest ") &amp;&amp; user.contains("username=\"")) { user = user.substring(user.indexOf("username=\"") + 10); user = user.substring(0, user.indexOf('"')); } else { user = null; } } } if (user == null) { return false; } try { final ReviewDb db = Common.getSchemaFactory().open(); try { final String eid = "gerrit:" + user; final List<accountexternalid>
+        matches = db.accountExternalIds().byExternal(eid).toList(); if (matches.size() == 1) { // Account exists, connect to it again. // final AccountExternalId e = matches.get(0); e.setLastUsedOn(); db.accountExternalIds().update(Collections.singleton(e)); accountId = e.getAccountId(); setCookie(Gerrit.ACCOUNT_COOKIE, accountId.toString(), server.getAccountToken()); return true; } if (matches.size() == 0) { // No account, automatically initialize a new one. // final Transaction txn = db.beginTransaction(); final Account.Id nid = new Account.Id(db.nextAccountId()); final Account a = new Account(nid); a.setFullName(user); final String efmt = server.getEmailFormat(); if (efmt != null &amp;&amp; efmt.contains("{0}")) { a.setPreferredEmail(MessageFormat.format(efmt, user)); } final AccountExternalId e = new AccountExternalId(new AccountExternalId.Key(nid, eid)); e.setEmailAddress(a.getPreferredEmail()); e.setLastUsedOn(); db.accounts().insert(Collections.singleton(a), txn); db.accountExternalIds().insert(Collections.singleton(e), txn); txn.commit(); accountId = nid; setCookie(Gerrit.ACCOUNT_COOKIE, accountId.toString(), server.getAccountToken()); return true; } } finally { db.close(); } } catch (OrmException e) { } return false; 
+      </accountexternalid></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

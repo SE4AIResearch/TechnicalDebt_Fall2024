@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2616</td> <td>-1422650647</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>bd657734ed5a05c5b5c3730c252736bed68d342d</td> <td>None</td> <td>TODO this code was copied from Pipeline - should make it static and reuse the code?</td> <td>SATD_ADDED</td> <td>createNextExchange(Exchange)</td> <td>protected Exchange createNextExchange(Exchange previousExchange)</td> <td>
+    Exchange answer = previousExchange;
+    // now lets set the input of the next exchange to the output of the
+    // previous message if it is not null
+    if (answer.hasOut()) {
+        answer.setIn(answer.getOut());
+        answer.setOut(null);
+    }
+    return answer;
+</td> </tr></table></body></html>

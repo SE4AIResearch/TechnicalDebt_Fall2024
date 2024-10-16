@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2637</td> <td>-1422650633</td><td>apache/camel</td><td>Claus Ibsen</td><td>eb1f2ed6f9950b12c4fe541490c41cb560fecf6c</td> <td>None</td> <td>when suspending its only the consumer that suspends
+there is a ticket to improve this</td> <td>SATD_ADDED</td> <td>testScheduledSuspendRoutePolicy()</td> <td>public void testScheduledSuspendRoutePolicy() throws Exception</td> <td>
+    context.getComponent("quartz", QuartzComponent.class).setPropertiesFile("org/apache/camel/routepolicy/quartz/myquartz.properties");
+    context.addRoutes(new RouteBuilder() {
+
+        public void configure() {
+            CronScheduledRoutePolicy policy = new CronScheduledRoutePolicy();
+            policy.setRouteSuspendTime("*/3 * * * * ?");
+            from("direct:start").routeId("test").routePolicy(policy).to("mock:unreachable");
+        }
+    });
+    context.start();
+    Thread.sleep(5000);
+    // when suspending its only the consumer that suspends
+    // there is a ticket to improve this
+    Consumer consumer = context.getRoute("test").getConsumer();
+    SuspendableService ss = (SuspendableService) consumer;
+    assertTrue("Consumer should be suspended", ss.isSuspended());
+</td> </tr></table></body></html>

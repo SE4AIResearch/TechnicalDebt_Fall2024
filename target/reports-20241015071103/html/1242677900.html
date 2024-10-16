@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4447</td> <td>1242677900</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>f115ce78c74ff025c477b9baaff2ff8a865968f3</td> <td>None</td> <td>TODO: Support arbitrary labels.</td> <td>SATD_ADDED</td> <td>format(Collection<ReviewerResource>)</td> <td>public List<ReviewerInfo> format(Collection<ReviewerResource> rsrcs) throws OrmException</td> <td>
+    List<ReviewerInfo> infos = Lists.newArrayListWithCapacity(rsrcs.size());
+    AccountInfo.Loader loader = accountLoaderFactory.create(true);
+    for (ReviewerResource rsrc : rsrcs) {
+        ReviewerInfo info = formatOne(rsrc);
+        loader.put(info);
+        infos.add(info);
+    }
+    loader.fill();
+    return infos;
+</td> </tr></table></body></html>

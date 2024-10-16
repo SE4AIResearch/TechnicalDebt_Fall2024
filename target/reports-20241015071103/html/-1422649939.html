@@ -1,0 +1,109 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3892</td> <td>-1422649939</td><td>apache/camel</td><td>Daniel Kulp</td><td>452041047e770c24e8802f2cac7cc76080554303</td> <td>None</td> <td>TODO: Logging</td> <td>SATD_ADDED</td> <td>run()</td> <td>public void run()</td> <td>
+    DBCursor c = null;
+    java.util.Date fromDate = null;
+    QueryStrategy s = endpoint.getQueryStrategy();
+    boolean usesTimestamp = (s != QueryStrategy.FileAttribute);
+    boolean persistsTimestamp = (s == QueryStrategy.PersistentTimestamp || s == QueryStrategy.PersistentTimestampAndFileAttribute);
+    boolean usesAttribute = (s == QueryStrategy.FileAttribute || s == QueryStrategy.TimeStampAndFileAttribute || s == QueryStrategy.PersistentTimestampAndFileAttribute);
+    DBCollection ptsCollection = null;
+    DBObject persistentTimestamp = null;
+    if (persistsTimestamp) {
+        ptsCollection = endpoint.getDB().getCollection(endpoint.getPersistentTSCollection());
+        // ensure standard indexes as long as collections are small
+        try {
+            if (ptsCollection.count() < 1000) {
+                ptsCollection.createIndex(new BasicDBObject("id", 1));
+            }
+        } catch (MongoException e) {
+        // TODO: Logging
+        }
+        persistentTimestamp = ptsCollection.findOne(new BasicDBObject("id", endpoint.getPersistentTSObject()));
+        if (persistentTimestamp == null) {
+            persistentTimestamp = new BasicDBObject("id", endpoint.getPersistentTSObject());
+            fromDate = new java.util.Date();
+            persistentTimestamp.put("timestamp", fromDate);
+            ptsCollection.save(persistentTimestamp);
+        }
+        fromDate = (java.util.Date) persistentTimestamp.get("timestamp");
+    } else if (usesTimestamp) {
+        fromDate = new java.util.Date();
+    }
+    try {
+        Thread.sleep(endpoint.getInitialDelay());
+        while (isStarted()) {
+            if (c == null || c.getCursorId() == 0) {
+                if (c != null) {
+                    c.close();
+                }
+                String queryString = endpoint.getQuery();
+                DBObject query;
+                if (queryString == null) {
+                    query = new BasicDBObject();
+                } else {
+                    query = (DBObject) JSON.parse(queryString);
+                }
+                if (usesTimestamp) {
+                    query.put("uploadDate", new BasicDBObject("$gt", fromDate));
+                }
+                if (usesAttribute) {
+                    query.put(endpoint.getFileAttributeName(), null);
+                }
+                c = endpoint.getFilesCollection().find(query);
+            }
+            boolean dateModified = false;
+            while (c.hasNext() && isStarted()) {
+                GridFSDBFile file = (GridFSDBFile) c.next();
+                GridFSDBFile forig = file;
+                if (usesAttribute) {
+                    file.put(endpoint.getFileAttributeName(), "processing");
+                    DBObject q = BasicDBObjectBuilder.start("_id", file.getId()).append("camel-processed", null).get();
+                    forig = (GridFSDBFile) endpoint.getFilesCollection().findAndModify(q, null, null, false, file, true, false);
+                }
+                if (forig != null) {
+                    file = endpoint.getGridFs().findOne(new BasicDBObject("_id", file.getId()));
+                    Exchange exchange = endpoint.createExchange();
+                    exchange.getIn().setHeader(GridFsEndpoint.GRIDFS_METADATA, JSON.serialize(file.getMetaData()));
+                    exchange.getIn().setHeader(Exchange.FILE_CONTENT_TYPE, file.getContentType());
+                    exchange.getIn().setHeader(Exchange.FILE_LENGTH, file.getLength());
+                    exchange.getIn().setHeader(Exchange.FILE_LAST_MODIFIED, file.getUploadDate());
+                    exchange.getIn().setBody(file.getInputStream(), InputStream.class);
+                    try {
+                        getProcessor().process(exchange);
+                        // System.out.println("Processing " + file.getFilename());
+                        if (usesAttribute) {
+                            forig.put(endpoint.getFileAttributeName(), "done");
+                            endpoint.getFilesCollection().save(forig);
+                        }
+                        if (usesTimestamp) {
+                            if (file.getUploadDate().compareTo(fromDate) > 0) {
+                                fromDate = file.getUploadDate();
+                                dateModified = true;
+                            }
+                        }
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (persistsTimestamp && dateModified) {
+                persistentTimestamp.put("timestamp", fromDate);
+                ptsCollection.save(persistentTimestamp);
+            }
+            Thread.sleep(endpoint.getDelay());
+        }
+    } catch (Throwable e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+    }
+    if (c != null) {
+        c.close();
+    }
+</td> </tr></table></body></html>

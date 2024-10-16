@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4985</td> <td>1242678163</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>f156a4d76a1521d9aeb8d029a5703e44cbef7b55</td> <td>TODO: This is not optimal, but shouldn't be too costly in most cases.
+Maybe rewrite after done keeping track of diff chunk positions.</td> <td>TODO: This is not optimal, but shouldn't be too costly in most cases.
+Maybe rewrite after done keeping track of diff chunk positions.</td> <td>SATD_MOVED_FILE</td> <td>splitSkips(int, List<SkippedLine>)</td> <td> List<SkippedLine> splitSkips(int context, List<SkippedLine> skips)</td> <td>
+    if (sideB.containsKey(0)) {
+        // Special case of file comment; cannot skip first line.
+        for (SkippedLine skip : skips) {
+            if (skip.getStartB() == 0) {
+                skip.incrementStart(1);
+            }
+        }
+    }
+    // TODO: This is not optimal, but shouldn't be too costly in most cases.
+    // Maybe rewrite after done keeping track of diff chunk positions.
+    for (int boxLine : sideB.tailMap(1).keySet()) {
+        List<SkippedLine> temp = new ArrayList<>(skips.size() + 2);
+        for (SkippedLine skip : skips) {
+            int startLine = skip.getStartB();
+            int deltaBefore = boxLine - startLine;
+            int deltaAfter = startLine + skip.getSize() - boxLine;
+            if (deltaBefore < -context || deltaAfter < -context) {
+                // Size guaranteed to be greater than 1
+                temp.add(skip);
+            } else if (deltaBefore > context && deltaAfter > context) {
+                SkippedLine before = new SkippedLine(skip.getStartA(), skip.getStartB(), skip.getSize() - deltaAfter - context);
+                skip.incrementStart(deltaBefore + context);
+                checkAndAddSkip(temp, before);
+                checkAndAddSkip(temp, skip);
+            } else if (deltaAfter > context) {
+                skip.incrementStart(deltaBefore + context);
+                checkAndAddSkip(temp, skip);
+            } else if (deltaBefore > context) {
+                skip.reduceSize(deltaAfter + context);
+                checkAndAddSkip(temp, skip);
+            }
+        }
+        if (temp.isEmpty()) {
+            return temp;
+        }
+        skips = temp;
+    }
+    return skips;
+</td> </tr></table></body></html>

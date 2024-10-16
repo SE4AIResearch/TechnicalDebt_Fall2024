@@ -1,0 +1,42 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2679</td> <td>-1422650609</td><td>apache/camel</td><td>Claus Ibsen</td><td>669d5e04be4f7d866030f7e193b426ea772dfaa5</td> <td>None</td> <td>TODO: support named parameters</td> <td>SATD_ADDED</td> <td>createIterator(Exchange, String, int)</td> <td>private Iterator<?> createIterator(Exchange exchange, final String query, final int expectedParams)</td> <td>
+    Object body = exchange.getIn().getBody();
+    if (body == null) {
+        return null;
+    }
+    // TODO: support named parameters
+    /*
+        if (body instanceof Map) {
+            final Map map = (Map) body;
+            return new Iterator() {
+
+                private int current;
+
+                @Override
+                public boolean hasNext() {
+                    return current < expectedParams;
+                }
+
+                @Override
+                public Object next() {
+                    current++;
+                    // TODO: Fix me
+                    return map.get("ID");
+                }
+
+                @Override
+                public void remove() {
+                    // noop
+                }
+            };
+        }*/
+    // else force as iterator based
+    Iterator<?> iterator = exchange.getIn().getBody(Iterator.class);
+    return iterator;
+</td> </tr></table></body></html>

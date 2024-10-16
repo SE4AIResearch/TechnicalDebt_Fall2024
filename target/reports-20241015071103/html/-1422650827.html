@@ -1,0 +1,85 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2320</td> <td>-1422650827</td><td>apache/camel</td><td>Claus Ibsen</td><td>3f905d405d32e46a4d8922ce30871d860314084c</td> <td>None</td> <td>we should not add headers for the parameters in the uri if we bridge the endpoint
+as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws Exception</td> <td>
+    // if we bridge endpoint then we need to skip matching headers with the HTTP_QUERY to avoid sending
+    // duplicated headers to the receiver, so use this skipRequestHeaders as the list of headers to skip
+    Map<String, Object> skipRequestHeaders = null;
+    if (getEndpoint().isBridgeEndpoint()) {
+        exchange.setProperty(Exchange.SKIP_GZIP_ENCODING, Boolean.TRUE);
+        String queryString = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class);
+        if (queryString != null) {
+            skipRequestHeaders = URISupport.parseQuery(queryString);
+        }
+    }
+    HttpRequestBase httpRequest = createMethod(exchange);
+    Message in = exchange.getIn();
+    String httpProtocolVersion = in.getHeader(Exchange.HTTP_PROTOCOL_VERSION, String.class);
+    if (httpProtocolVersion != null) {
+        // set the HTTP protocol version
+        httpRequest.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpHelper.parserHttpVersion(httpProtocolVersion));
+    }
+    HeaderFilterStrategy strategy = getEndpoint().getHeaderFilterStrategy();
+    // propagate headers as HTTP headers
+    for (Map.Entry<String, Object> entry : in.getHeaders().entrySet()) {
+        String key = entry.getKey();
+        Object headerValue = in.getHeader(key);
+        if (headerValue != null) {
+            // use an iterator as there can be multiple values. (must not use a delimiter)
+            final Iterator it = ObjectHelper.createIterator(headerValue, null);
+            // the value to add as request header
+            final List<String> values = new ArrayList<String>();
+            // if its a multi value then check each value if we can add it and for multi values they
+            // should be combined into a single value
+            while (it.hasNext()) {
+                String value = exchange.getContext().getTypeConverter().convertTo(String.class, it.next());
+                // we should not add headers for the parameters in the uri if we bridge the endpoint
+                // as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well
+                if (skipRequestHeaders != null && skipRequestHeaders.containsKey(key)) {
+                    Object skipValue = skipRequestHeaders.get(key);
+                    if (ObjectHelper.equal(skipValue, value)) {
+                        continue;
+                    }
+                }
+                if (value != null && strategy != null && !strategy.applyFilterToCamelHeaders(key, value, exchange)) {
+                    values.add(value);
+                }
+            }
+            // add the value(s) as a http request header
+            if (values.size() > 0) {
+                // use the default toString of a ArrayList to create in the form [xxx, yyy]
+                // if multi valued, for a single value, then just output the value as is
+                String s = values.size() > 1 ? values.toString() : values.get(0);
+                httpRequest.addHeader(key, s);
+            }
+        }
+    }
+    // lets store the result in the output message.
+    HttpResponse httpResponse = null;
+    try {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Executing http {} method: {}", httpRequest.getMethod(), httpRequest.getURI().toString());
+        }
+        httpResponse = executeMethod(httpRequest);
+        int responseCode = httpResponse.getStatusLine().getStatusCode();
+        LOG.debug("Http responseCode: {}", responseCode);
+        if (throwException && (responseCode < 100 || responseCode >= 300)) {
+            throw populateHttpOperationFailedException(exchange, httpRequest, httpResponse, responseCode);
+        } else {
+            populateResponse(exchange, httpRequest, httpResponse, in, strategy, responseCode);
+        }
+    } finally {
+        if (httpResponse != null) {
+            try {
+                EntityUtils.consume(httpResponse.getEntity());
+            } catch (IOException e) {
+            // nothing we could do
+            }
+        }
+    }
+</td> </tr></table></body></html>

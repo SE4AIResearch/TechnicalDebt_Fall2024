@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1814</td> <td>-1422651096</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>95ae5d830c3fff3122ded936b3228d1bbeea6dc8</td> <td>None</td> <td>TODO: Why limit to what the JDK property editor can set?</td> <td>SATD_ADDED</td> <td>isSettableType(Class<?>)</td> <td>private static boolean isSettableType(Class<?> clazz)</td> <td>
+    // TODO: Why limit to what the JDK property editor can set?
+    if (PropertyEditorManager.findEditor(clazz) != null) {
+        return true;
+    }
+    if (clazz == URI.class) {
+        return true;
+    }
+    if (clazz == Boolean.class) {
+        return true;
+    }
+    return false;
+</td> </tr></table></body></html>

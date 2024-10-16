@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1317</td> <td>-1422651369</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>7621113fd24fd7b049a0ae16d1be888bec6923fb</td> <td>None</td> <td>TODO: Add dyanmic proxy support in that sence it should be some callback hooks in CamelContext to
+you can register to do custom endpoint lookup or add to registry</td> <td>SATD_ADDED</td> <td>proxyEndpoint(CamelContext)</td> <td>public void proxyEndpoint(CamelContext context)</td> <td>
+    // TODO: Add dyanmic proxy support in that sence it should be some callback hooks in CamelContext to
+    // you can register to do custom endpoint lookup or add to registry
+    // proxy the endpoint by using the InterceptSendToEndpoint that will proxy
+    // the producer so it processes the detour first
+    Endpoint endpoint = lookupEndpoint(context);
+    // decorate endpoint with our proxy
+    boolean skip = skipSendToOriginalEndpoint != null ? skipSendToOriginalEndpoint : false;
+    InterceptSendToEndpoint proxy = new InterceptSendToEndpoint(endpoint, skip);
+    try {
+        // add will replace the old one
+        context.addEndpoint(proxy.getEndpointUri(), proxy);
+    } catch (Exception e) {
+        throw ObjectHelper.wrapRuntimeCamelException(e);
+    }
+</td> </tr></table></body></html>

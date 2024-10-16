@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1695</td> <td>-1422651159</td><td>apache/camel</td><td>Claus Ibsen</td><td>21e6a2ed32c9364879e84cb5d1ad1e92413ad54e</td> <td>None</td> <td>TODO: Add some DEBUG logging that we retry one more time</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(Exchange exchange) throws Exception</td> <td>
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Sending a short message for exchange id '" + exchange.getExchangeId() + "'...");
+    }
+    SubmitSm submitSm = getEndpoint().getBinding().createSubmitSm(exchange);
+    String messageId;
+    try {
+        messageId = doProcess(submitSm);
+    } catch (Exception e) {
+        // TODO: Add some DEBUG logging that we retry one more time
+        doStop();
+        doStart();
+        messageId = doProcess(submitSm);
+    }
+    LOG.info("Sent a short message for exchange id '" + exchange.getExchangeId() + "' and received message id '" + messageId + "'");
+    if (exchange.getPattern().isOutCapable()) {
+        exchange.getOut().setHeader(SmppBinding.ID, messageId);
+    } else {
+        exchange.getIn().setHeader(SmppBinding.ID, messageId);
+    }
+</td> </tr></table></body></html>

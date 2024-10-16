@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2834</td> <td>-1422650511</td><td>apache/camel</td><td>Henryk Konsek</td><td>0c401b9fba53837bdea3dc486880dd0e0c6e2d6f</td> <td>None</td> <td>TODO add support for supplementary characters</td> <td>SATD_ADDED</td> <td>getEnumConstant(String)</td> <td>public String getEnumConstant(String value)</td> <td>
+    // TODO add support for supplementary characters
+    final StringBuilder result = new StringBuilder();
+    boolean changed = false;
+    if (!Character.isJavaIdentifierStart(value.charAt(0))) {
+        result.append("_");
+        changed = true;
+    }
+    for (char c : value.toCharArray()) {
+        if (Character.isJavaIdentifierPart(c)) {
+            result.append(c);
+        } else {
+            // replace non Java identifier character with '_'
+            result.append('_');
+            changed = true;
+        }
+    }
+    return changed ? result.toString().toUpperCase() : value.toUpperCase();
+</td> </tr></table></body></html>

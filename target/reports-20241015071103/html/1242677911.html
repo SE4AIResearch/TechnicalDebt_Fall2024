@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4487</td> <td>1242677911</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>bfe9eec10ab21757bae3305466e33c3e42818ef9</td> <td>None</td> <td>If the limit is at least 5 MiB but is not a whole multiple
+of MiB round up to the next one full megabyte. This is a very
+tiny memory increase in exchange for nice round units.</td> <td>SATD_ADDED</td> <td>configure()</td> <td>protected void configure()</td> <td>
+    bind(GitRepositoryManager.class).to(LocalDiskRepositoryManager.class);
+    install(new LifecycleModule() {
+
+        @Override
+        protected void configure() {
+            listener().to(LocalDiskRepositoryManager.Lifecycle.class);
+        }
+    });
+</td> </tr></table></body></html>

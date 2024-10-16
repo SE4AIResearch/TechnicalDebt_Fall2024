@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3791</td> 
+     <td>-1422650036</td>
+     <td>apache/camel</td>
+     <td>Greg. A</td>
+     <td>80c1224b262242cd46a2fdcfe6dfd5c9bc3ffce5</td> 
+     <td>REVISIT we need to disable JSR356 detection for now when using jetty-9.3 when using atmosphere-2.4.x TODO switch to use contant ApplicationConfig.WEBSOCKET_SUPPRESS_JSR356 aftr atmosphere-2.4.2</td> 
+     <td>REVISIT we need to disable JSR356 detection for now when using jetty-9.3 when using atmosphere-2.4.x</td> 
+     <td>SATD_REMOVED</td> 
+     <td>getEndpoint()</td> 
+     <td>public WebsocketEndpoint getEndpoint()</td> 
+     <td> return (WebsocketEndpoint) super.getEndpoint(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3749</td> 
+     <td>-1422650036</td>
+     <td>apache/camel</td>
+     <td>Akitoshi Yoshida</td>
+     <td>4adf56cda8822fd2db0bd5908e9b4fe81cfc541f</td> 
+     <td>None</td> 
+     <td>REVISIT we need to disable JSR356 detection for now when using jetty-9.3 when using atmosphere-2.4.x TODO switch to use contant ApplicationConfig.WEBSOCKET_SUPPRESS_JSR356 aftr atmosphere-2.4.2</td> 
+     <td>SATD_ADDED</td> 
+     <td>getEndpoint()</td> 
+     <td>public WebsocketEndpoint getEndpoint()</td> 
+     <td> return (WebsocketEndpoint) super.getEndpoint(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

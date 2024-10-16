@@ -1,0 +1,79 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1544</td> 
+     <td>-1422651290</td> 
+     <td>apache/camel</td> 
+     <td>Jonathan Anstey</td> 
+     <td>bdc7ba424b65f3f6c2e7b6233f585e573b4a7bf9</td> 
+     <td>TODO improve stream() support</td> 
+     <td>TODO improve stream() support</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>render(StringBuilder, ProcessorDefinition<!--?-->)</td> 
+     <td>public static void render(StringBuilder buffer, ProcessorDefinition<!--?--> processor)</td> 
+     <td> ResequenceDefinition resequence = (ResequenceDefinition) processor; buffer.append(".").append(processor.getShortName()).append("("); List<expression>
+        exps = resequence.getExpressionList(); for (Expression exp : exps) { ExpressionRenderer.renderExpression(buffer, exp.toString()); if (exp != exps.get(exps.size() - 1)) { buffer.append(", "); } } buffer.append(")"); if (resequence.getStreamConfig() != null) { // TODO improve stream() support buffer.append(".stream()"); } 
+      </expression></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1483</td> 
+     <td>-1422651290</td> 
+     <td>apache/camel</td> 
+     <td>Hadrian Zbarcea</td> 
+     <td>a5ac34d212570ac41303ef9c71510dcf54ed3ebe</td> 
+     <td>TODO improve stream() support</td> 
+     <td>TODO improve stream() support</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>render(StringBuilder, ProcessorDefinition<!--?-->)</td> 
+     <td>public static void render(StringBuilder buffer, ProcessorDefinition<!--?--> processor)</td> 
+     <td> ResequenceDefinition resequence = (ResequenceDefinition) processor; buffer.append(".").append(processor.getShortName()).append("("); List<expression>
+        exps = resequence.getExpressionList(); for (Expression exp : exps) { ExpressionRenderer.renderExpression(buffer, exp.toString()); if (exp != exps.get(exps.size() - 1)) { buffer.append(", "); } } buffer.append(")"); if (resequence.getStreamConfig() != null) { // TODO improve stream() support buffer.append(".stream()"); } 
+      </expression></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1482</td> 
+     <td>-1422651290</td>
+     <td>apache/camel</td>
+     <td>Jonathan Anstey</td>
+     <td>83bd77880ff9ba56612280eaf992a1af6894a637</td> 
+     <td>None</td> 
+     <td>TODO improve stream() support</td> 
+     <td>SATD_ADDED</td> 
+     <td>render(StringBuilder, ProcessorDefinition)</td> 
+     <td>public static void render(StringBuilder buffer, ProcessorDefinition processor)</td> 
+     <td> ResequenceDefinition resequence = (ResequenceDefinition) processor; buffer.append(".").append(processor.getShortName()).append("("); List<expression>
+        exps = resequence.getExpressionList(); for (Expression exp : exps) { ExpressionRenderer.renderExpression(buffer, exp.toString()); if (exp != exps.get(exps.size() - 1)) { buffer.append(", "); } } buffer.append(")"); if (resequence.getStreamConfig() != null) { // TODO improve stream() support buffer.append(".stream()"); } 
+      </expression></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

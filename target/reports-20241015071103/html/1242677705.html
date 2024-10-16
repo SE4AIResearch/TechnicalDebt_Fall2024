@@ -1,0 +1,39 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4105</td> <td>1242677705</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>f6b3c2214fa9c9aeae1746c66f899092e02a24bf</td> <td>None</td> <td>Just don't CC everyone. Better to send a partial message to those
+we already have queued up then to fail deliver entirely to people
+who have a lower interest in the change.</td> <td>SATD_ADDED</td> <td>bccWatchers()</td> <td>private void bccWatchers() throws MessagingException</td> <td>
+    if (db != null) {
+        try {
+            // BCC anyone else who has interest in this project's changes
+            // 
+            final Project project = getProject();
+            if (project != null) {
+                // Try to mark interested owners with a TO and not a BCC line.
+                // 
+                final Set<Account.Id> owners = new HashSet<Account.Id>();
+                for (AccountGroupMember m : db.accountGroupMembers().byGroup(project.getOwnerGroupId())) {
+                    owners.add(m.getAccountId());
+                }
+                // BCC anyone who has interest in this project's changes
+                // 
+                for (AccountProjectWatch w : db.accountProjectWatches().notifyNewChanges(project.getId())) {
+                    if (owners.contains(w.getAccountId())) {
+                        add(RecipientType.TO, w.getAccountId());
+                    } else {
+                        add(RecipientType.BCC, w.getAccountId());
+                    }
+                }
+            }
+        } catch (OrmException err) {
+        // Just don't CC everyone. Better to send a partial message to those
+        // we already have queued up then to fail deliver entirely to people
+        // who have a lower interest in the change.
+        }
+    }
+</td> </tr></table></body></html>

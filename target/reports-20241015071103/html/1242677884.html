@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4440</td> 
+     <td>1242677884</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>e46a0dd83c9ab09f4947188a2d510badf563a8a8</td> 
+     <td>TODO Switch to triplet project~branch~id format in URI.</td> 
+     <td>TODO Switch to triplet project~branch~id format in URI.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>change(int)</td> 
+     <td>private static RestApi change(int id)</td> 
+     <td> // TODO Switch to triplet project~branch~id format in URI. return new RestApi("/changes/").id(String.valueOf(id)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4422</td> 
+     <td>1242677884</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>230343b94d0d69a89f9743f6f357e97de913f1df</td> 
+     <td>None</td> 
+     <td>TODO Switch to triplet project~branch~id format in URI.</td> 
+     <td>SATD_ADDED</td> 
+     <td>api(int, String, String)</td> 
+     <td>private static RestApi api(int id, String commit, String action)</td> 
+     <td> // TODO Switch to triplet project~branch~id format in URI. return new RestApi("/changes/" + id + "/revisions/" + commit + "/" + action); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2507</td> 
+     <td>-1422650705</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>91fae1d8df18822d3b98f3d3e7311895ac508375</td> 
+     <td>TODO: Is this correct for a UDP client</td> 
+     <td>TODO: Is this correct for a UDP client</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>openConnection()</td> 
+     <td>private ChannelFuture openConnection() throws Exception</td> 
+     <td> ChannelFuture answer; ChannelPipeline clientPipeline; if (configuration.getClientPipelineFactory() != null) { // initialize user defined client pipeline factory configuration.getClientPipelineFactory().setProducer(this); clientPipeline = configuration.getClientPipelineFactory().getPipeline(); } else { // initialize client pipeline factory ClientPipelineFactory clientPipelineFactory = new DefaultClientPipelineFactory(this); // must get the pipeline from the factory when opening a new connection clientPipeline = clientPipelineFactory.getPipeline(); } if (isTcp()) { ClientBootstrap clientBootstrap = new ClientBootstrap(channelFactory); clientBootstrap.setOption("keepAlive", configuration.isKeepAlive()); clientBootstrap.setOption("tcpNoDelay", configuration.isTcpNoDelay()); clientBootstrap.setOption("reuseAddress", configuration.isReuseAddress()); clientBootstrap.setOption("connectTimeoutMillis", configuration.getConnectTimeout()); // set the pipeline on the bootstrap clientBootstrap.setPipeline(clientPipeline); answer = clientBootstrap.connect(new InetSocketAddress(configuration.getHost(), configuration.getPort())); return answer; } else { // TODO: Is this correct for a UDP client ConnectionlessBootstrap connectionlessClientBootstrap = new ConnectionlessBootstrap(datagramChannelFactory); connectionlessClientBootstrap.setOption("child.keepAlive", configuration.isKeepAlive()); connectionlessClientBootstrap.setOption("child.tcpNoDelay", configuration.isTcpNoDelay()); connectionlessClientBootstrap.setOption("child.reuseAddress", configuration.isReuseAddress()); connectionlessClientBootstrap.setOption("child.connectTimeoutMillis", configuration.getConnectTimeout()); connectionlessClientBootstrap.setOption("child.broadcast", configuration.isBroadcast()); connectionlessClientBootstrap.setOption("sendBufferSize", configuration.getSendBufferSize()); connectionlessClientBootstrap.setOption("receiveBufferSize", configuration.getReceiveBufferSize()); // set the pipeline on the bootstrap connectionlessClientBootstrap.setPipeline(clientPipeline); connectionlessClientBootstrap.bind(new InetSocketAddress(0)); answer = connectionlessClientBootstrap.connect(new InetSocketAddress(configuration.getHost(), configuration.getPort())); return answer; } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2506</td> 
+     <td>-1422650705</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>1b611ea1a4772b7509b7143076fa7e7f8a85d7ac</td> 
+     <td>None</td> 
+     <td>TODO: Is this correct for a UDP client</td> 
+     <td>SATD_ADDED</td> 
+     <td>openConnection(Exchange, AsyncCallback)</td> 
+     <td>private ChannelFuture openConnection(Exchange exchange, AsyncCallback callback) throws Exception</td> 
+     <td> ChannelFuture answer; ChannelPipeline clientPipeline; if (configuration.getClientPipelineFactory() != null) { // initialize user defined client pipeline factory configuration.getClientPipelineFactory().setProducer(this); configuration.getClientPipelineFactory().setExchange(exchange); configuration.getClientPipelineFactory().setCallback(callback); clientPipeline = configuration.getClientPipelineFactory().getPipeline(); } else { // initialize client pipeline factory ClientPipelineFactory clientPipelineFactory = new DefaultClientPipelineFactory(this, exchange, callback); // must get the pipeline from the factory when opening a new connection clientPipeline = clientPipelineFactory.getPipeline(); } if (isTcp()) { ClientBootstrap clientBootstrap = new ClientBootstrap(channelFactory); clientBootstrap.setOption("keepAlive", configuration.isKeepAlive()); clientBootstrap.setOption("tcpNoDelay", configuration.isTcpNoDelay()); clientBootstrap.setOption("reuseAddress", configuration.isReuseAddress()); clientBootstrap.setOption("connectTimeoutMillis", configuration.getConnectTimeout()); // set the pipeline on the bootstrap clientBootstrap.setPipeline(clientPipeline); answer = clientBootstrap.connect(new InetSocketAddress(configuration.getHost(), configuration.getPort())); return answer; } else { // TODO: Is this correct for a UDP client ConnectionlessBootstrap connectionlessClientBootstrap = new ConnectionlessBootstrap(datagramChannelFactory); connectionlessClientBootstrap.setOption("child.keepAlive", configuration.isKeepAlive()); connectionlessClientBootstrap.setOption("child.tcpNoDelay", configuration.isTcpNoDelay()); connectionlessClientBootstrap.setOption("child.reuseAddress", configuration.isReuseAddress()); connectionlessClientBootstrap.setOption("child.connectTimeoutMillis", configuration.getConnectTimeout()); connectionlessClientBootstrap.setOption("child.broadcast", configuration.isBroadcast()); connectionlessClientBootstrap.setOption("sendBufferSize", configuration.getSendBufferSize()); connectionlessClientBootstrap.setOption("receiveBufferSize", configuration.getReceiveBufferSize()); // set the pipeline on the bootstrap connectionlessClientBootstrap.setPipeline(clientPipeline); connectionlessClientBootstrap.bind(new InetSocketAddress(0)); answer = connectionlessClientBootstrap.connect(new InetSocketAddress(configuration.getHost(), configuration.getPort())); return answer; } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

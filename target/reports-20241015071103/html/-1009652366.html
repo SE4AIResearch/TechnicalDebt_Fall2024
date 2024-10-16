@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5360</td> <td>-1009652366</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>TODO: test values as hashmap of column names</td> <td>SATD_ADDED</td> <td>recordTest(List<Integer>, List<Object>, DataOutputBuffer, DataInputBuffer, boolean)</td> <td>private String recordTest(List<Integer> types, List<Object> values, DataOutputBuffer out, DataInputBuffer in, boolean date_string) throws IOException</td> <td>
+    VerticaRecord record = new VerticaRecord(null, types, values, date_string);
+    // TODO: test values as hashmap of column names
+    // write values into an output buffer
+    record.write(out);
+    // copy to an input buffer
+    in.reset(out.getData(), out.getLength());
+    // create a new record with new values
+    List<Object> new_values = new ArrayList<Object>();
+    record = new VerticaRecord(null, types, new_values, date_string);
+    // read back into values
+    record.readFields(in);
+    // compare values
+    for (int i = 0; i < values.size(); i++) if (values.get(i) == null)
+        assertSame("Vertica Record serialized value " + i + " is null", values.get(i), new_values.get(i));
+    else if (values.get(i).getClass().isArray()) {
+        Object a = values.get(i);
+        Object b = new_values.get(i);
+        for (int j = 0; j < Array.getLength(a); j++) assertEquals("Vertica Record serialized value " + i + "[" + j + "] does not match", Array.get(a, j), Array.get(b, j));
+    } else {
+        assertEquals("Vertica Record serialized value " + i + " does not match", values.get(i), new_values.get(i));
+    }
+    // data in sql form
+    return record.toSQLString();
+</td> </tr></table></body></html>

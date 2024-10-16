@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4689</td> <td>1242678022</td><td>GerritCodeReview/gerrit</td><td>David Ostrovsky</td><td>3d2c070206f8b277015a26ac20323f8671933c08</td> <td>None</td> <td>TODO(davido): Clean this up by returning 404 when edit doesn't exist.</td> <td>SATD_ADDED</td> <td>apply(ChangeResource)</td> <td>public BinaryResult apply(ChangeResource rsrc) throws AuthException, IOException, OrmException, NoSuchChangeException</td> <td>
+    Optional<ChangeEdit> edit = editUtil.byChange(rsrc.getChange());
+    // TODO(davido): Clean this up by returning 404 when edit doesn't exist.
+    // Client should call GET /changes/{id}/revisions/current/commit in this
+    // case; or, to be consistent with GET content logic, the client could
+    // call directly the right endpoint.
+    String m = edit.isPresent() ? edit.get().getEditCommit().getFullMessage() : changeUtil.getMessage(rsrc.getChange());
+    return BinaryResult.create(m).base64();
+</td> </tr></table></body></html>

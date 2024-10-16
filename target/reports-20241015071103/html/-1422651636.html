@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>726</td> <td>-1422651636</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>c377b0ae1fb70d314e7358d67d39cc52a9a1fe39</td> <td>None</td> <td>TODO: must send header type so $type evaluates
+however maybe we should support missing headers is evaluated to false
+if so the we should test by sending no headers</td> <td>SATD_ADDED</td> <td>testChoiceWithNoHeaderSelectOther()</td> <td>public void testChoiceWithNoHeaderSelectOther() throws Exception</td> <td>
+    MockEndpoint mock = getMockEndpoint("mock:other");
+    mock.expectedBodiesReceived("<name>Other</name>");
+    // TODO: must send header type so $type evaluates
+    // however maybe we should support missing headers is evaluated to false
+    // if so the we should test by sending no headers
+    template.sendBodyAndHeader("direct:in", "<name>Other</name>", "type", "Foo");
+    mock.assertIsSatisfied();
+</td> </tr></table></body></html>

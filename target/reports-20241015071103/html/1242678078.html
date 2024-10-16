@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4798</td> <td>1242678078</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>90ed9414c2d4e0f8ec60d5e7c0d1463b30f2eee8</td> <td>None</td> <td>TODO(dborowitz): Support certifications by other trusted keys?</td> <td>SATD_ADDED</td> <td>verifyPublicKeyCertifications(PGPPublicKey, PushCertificateIdent)</td> <td>private boolean verifyPublicKeyCertifications(PGPPublicKey key, PushCertificateIdent ident)</td> <td>
+    @SuppressWarnings("unchecked")
+    Iterator<PGPSignature> sigs = key.getSignaturesForID(ident.getUserId());
+    if (sigs == null) {
+        sigs = Collections.emptyIterator();
+    }
+    boolean valid = false;
+    boolean revoked = false;
+    try {
+        while (sigs.hasNext()) {
+            PGPSignature sig = sigs.next();
+            if (sig.getKeyID() != key.getKeyID()) {
+                // TODO(dborowitz): Support certifications by other trusted keys?
+                continue;
+            } else if (sig.getSignatureType() != DEFAULT_CERTIFICATION && sig.getSignatureType() != POSITIVE_CERTIFICATION && sig.getSignatureType() != CERTIFICATION_REVOCATION) {
+                continue;
+            }
+            sig.init(new BcPGPContentVerifierBuilderProvider(), key);
+            if (sig.verifyCertification(ident.getUserId(), key)) {
+                if (sig.getSignatureType() == CERTIFICATION_REVOCATION) {
+                    revoked = true;
+                } else {
+                    valid = true;
+                }
+            } else {
+                log.warn("Invalid signature for pusher identity {} in key: {}", ident.getUserId(), toString(key));
+            }
+        }
+    } catch (PGPException e) {
+        log.warn("Error in signature verification for public key", e);
+    }
+    if (revoked) {
+        log.warn("Pusher identity {} is revoked in key {}", ident.getUserId(), toString(key));
+        return false;
+    } else if (!valid) {
+        log.warn("Key does not contain valid certification for pusher identity {}: {}", ident.getUserId(), toString(key));
+        return false;
+    }
+    return true;
+</td> </tr></table></body></html>

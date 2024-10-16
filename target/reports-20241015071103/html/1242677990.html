@@ -1,0 +1,79 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4970</td> 
+     <td>1242677990</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>020c01372121efe820e63b9cf52cd4d9fa3d9a90</td> 
+     <td>TODO - dborowitz: add NEW_CHANGE type for default.</td> 
+     <td>TODO - dborowitz: add NEW_CHANGE type for default.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>getChangeKindInternal(ChangeKindCache, ReviewDb, ChangeNotes, PatchSet, ChangeData.Factory, ProjectCache, GitRepositoryManager)</td> 
+     <td>private static ChangeKind getChangeKindInternal(ChangeKindCache cache, ReviewDb db, ChangeNotes notes, PatchSet patch, ChangeData.Factory changeDataFactory, ProjectCache projectCache, GitRepositoryManager repoManager)</td> 
+     <td> // TODO - dborowitz: add NEW_CHANGE type for default. ChangeKind kind = ChangeKind.REWORK; // Trivial case: if we're on the first patch, we don't need to open // the repository. if (patch.getId().get() &gt; 1) { try (Repository repo = repoManager.openRepository(notes.getProjectName())) { ProjectState projectState = projectCache.checkedGet(notes.getProjectName()); ChangeData cd = changeDataFactory.create(db, notes); Collection<patchset>
+        patchSetCollection = cd.patchSets(); PatchSet priorPs = patch; for (PatchSet ps : patchSetCollection) { if (ps.getId().get() &lt; patch.getId().get() &amp;&amp; (ps.getId().get() &gt; priorPs.getId().get() || priorPs == patch)) { // We only want the previous patch set, so walk until the last one priorPs = ps; } } // If we still think the previous patch is the current patch, // we only have one patch set. Return the default. // This can happen if a user creates a draft, uploads a second patch, // and deletes the draft. if (priorPs != patch) { kind = cache.getChangeKind(projectState, repo, ObjectId.fromString(priorPs.getRevision().get()), ObjectId.fromString(patch.getRevision().get())); } } catch (IOException | OrmException e) { // Do nothing; assume we have a complex change log.warn("Unable to get change kind for patchSet " + patch.getPatchSetId() + "of change " + notes.getChangeId(), e); } } return kind; 
+      </patchset></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4967</td> 
+     <td>1242677990</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Edwin Kempin</td> 
+     <td>3ce9d7e6f4c58b79ddf85a29fcf03948a2e61a09</td> 
+     <td>TODO - dborowitz: add NEW_CHANGE type for default.</td> 
+     <td>TODO - dborowitz: add NEW_CHANGE type for default.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>getChangeKindInternal(ChangeKindCache, ReviewDb, ChangeNotes, PatchSet, ChangeData.Factory, ProjectCache, GitRepositoryManager)</td> 
+     <td>private static ChangeKind getChangeKindInternal(ChangeKindCache cache, ReviewDb db, ChangeNotes notes, PatchSet patch, ChangeData.Factory changeDataFactory, ProjectCache projectCache, GitRepositoryManager repoManager)</td> 
+     <td> // TODO - dborowitz: add NEW_CHANGE type for default. ChangeKind kind = ChangeKind.REWORK; // Trivial case: if we're on the first patch, we don't need to open // the repository. if (patch.getId().get() &gt; 1) { try (Repository repo = repoManager.openRepository(notes.getProjectName())) { ProjectState projectState = projectCache.checkedGet(notes.getProjectName()); ChangeData cd = changeDataFactory.create(db, notes); Collection<patchset>
+        patchSetCollection = cd.patchSets(); PatchSet priorPs = patch; for (PatchSet ps : patchSetCollection) { if (ps.getId().get() &lt; patch.getId().get() &amp;&amp; (ps.getId().get() &gt; priorPs.getId().get() || priorPs == patch)) { // We only want the previous patch set, so walk until the last one priorPs = ps; } } // If we still think the previous patch is the current patch, // we only have one patch set. Return the default. // This can happen if a user creates a draft, uploads a second patch, // and deletes the draft. if (priorPs != patch) { kind = cache.getChangeKind(projectState, repo, ObjectId.fromString(priorPs.getRevision().get()), ObjectId.fromString(patch.getRevision().get())); } } catch (IOException | OrmException e) { // Do nothing; assume we have a complex change log.warn("Unable to get change kind for patchSet " + patch.getPatchSetId() + "of change " + notes.getChangeId(), e); } } return kind; 
+      </patchset></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4645</td> 
+     <td>1242677990</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>David Pursehouse</td>
+     <td>58ba20634fd1cb43a435153dd117119d8adbbd87</td> 
+     <td>None</td> 
+     <td>TODO - dborowitz: add NEW_CHANGE type for default.</td> 
+     <td>SATD_ADDED</td> 
+     <td>getChangeKindInternal(ChangeKindCache, ReviewDb, Change, PatchSet, ChangeData.Factory, ProjectCache, GitRepositoryManager)</td> 
+     <td>private static ChangeKind getChangeKindInternal(ChangeKindCache cache, ReviewDb db, Change change, PatchSet patch, ChangeData.Factory changeDataFactory, ProjectCache projectCache, GitRepositoryManager repoManager)</td> 
+     <td> Repository repo = null; // TODO - dborowitz: add NEW_CHANGE type for default. ChangeKind kind = ChangeKind.REWORK; // Trivial case: if we're on the first patch, we don't need to open // the repository. if (patch.getId().get() &gt; 1) { try { ProjectState projectState = projectCache.checkedGet(change.getProject()); repo = repoManager.openRepository(change.getProject()); ChangeData cd = changeDataFactory.create(db, change); Collection<patchset>
+        patchSetCollection = cd.patches(); PatchSet priorPs = patch; for (PatchSet ps : patchSetCollection) { if (ps.getId().get() &lt; patch.getId().get() &amp;&amp; (ps.getId().get() &gt; priorPs.getId().get() || priorPs == patch)) { // We only want the previous patch set, so walk until the last one priorPs = ps; } } // If we still think the previous patch is the current patch, // we only have one patch set. Return the default. // This can happen if a user creates a draft, uploads a second patch, // and deletes the draft. if (priorPs != patch) { kind = cache.getChangeKind(projectState, repo, ObjectId.fromString(priorPs.getRevision().get()), ObjectId.fromString(patch.getRevision().get())); } } catch (IOException | OrmException e) { // Do nothing; assume we have a complex change log.warn("Unable to get change kind for patchSet " + patch.getPatchSetId() + "of change " + change.getChangeId(), e); } finally { if (repo != null) { repo.close(); } } } return kind; 
+      </patchset></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

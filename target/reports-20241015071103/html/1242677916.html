@@ -1,0 +1,98 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4500</td> <td>1242677916</td><td>GerritCodeReview/gerrit</td><td>Shawn Pearce</td><td>d3d491ba2ef782f138704c242932832e1a0b42ec</td> <td>None</td> <td>Don't allow a change to directly depend upon itself. This is a
+very common error due to users making a new commit rather than
+amending when trying to address review comments.</td> <td>SATD_ADDED</td> <td>validate(boolean)</td> <td>
+    if (!autoClose && inputCommand.getResult() != NOT_ATTEMPTED) {
+        return false;
+    }
+    if (change == null || patchSets == null) {
+        reject(inputCommand, "change " + ontoChange + " not found");
+        return false;
+    }
+    priorPatchSet = change.currentPatchSetId();
+    Map<PatchSet.Id, RevCommit> revisions = parseRevisions();
+    if (revisions == null || !revisions.containsKey(priorPatchSet)) {
+        reject(inputCommand, "change " + ontoChange + " missing revisions");
+        return false;
+    }
+    RevCommit priorCommit = revisions.get(priorPatchSet);
+    if (newCommit == priorCommit) {
+        // Ignore requests to make the change its current state.
+        skip = true;
+        return false;
+    }
+    changeCtl = projectControl.controlFor(change);
+    if (!changeCtl.canAddPatchSet()) {
+        reject(inputCommand, "cannot replace " + ontoChange);
+        return false;
+    }
+    if (change.getStatus().isClosed()) {
+        reject(inputCommand, "change " + ontoChange + " closed");
+        return false;
+    }
+    for (RevCommit prior : revisions.values()) {
+        // Don't allow the same commit to appear twice on the same change
+        if (newCommit == prior) {
+            reject(inputCommand, "commit already exists");
+            return false;
+        }
+        // Don't allow a change to directly depend upon itself. This is a
+        // very common error due to users making a new commit rather than
+        // amending when trying to address review comments.
+        if (rp.getRevWalk().isMergedInto(prior, newCommit)) {
+            reject(inputCommand, "squash commits first");
+            return false;
+        }
+    }
+    rp.getRevWalk().parseBody(newCommit);
+    if (!validCommit(changeCtl.getRefControl(), inputCommand, newCommit)) {
+        return false;
+    }
+    // Don't allow the same tree if the commit message is unmodified
+    // or no parents were updated (rebase), else warn that only part
+    // of the commit was modified.
+    if (newCommit.getTree() == priorCommit.getTree()) {
+        rp.getRevWalk().parseBody(priorCommit);
+        final boolean messageEq = eq(newCommit.getFullMessage(), priorCommit.getFullMessage());
+        final boolean parentsEq = parentsEqual(newCommit, priorCommit);
+        final boolean authorEq = authorEqual(newCommit, priorCommit);
+        if (messageEq && parentsEq && authorEq && !autoClose) {
+            reject(inputCommand, "no changes made");
+            return false;
+        } else {
+            ObjectReader reader = rp.getRevWalk().getObjectReader();
+            StringBuilder msg = new StringBuilder();
+            msg.append("(W) ");
+            msg.append(reader.abbreviate(newCommit).name());
+            msg.append(":");
+            msg.append(" no files changed");
+            if (!authorEq) {
+                msg.append(", author changed");
+            }
+            if (!messageEq) {
+                msg.append(", message updated");
+            }
+            if (!parentsEq) {
+                msg.append(", was rebased");
+            }
+            addMessage(msg.toString());
+        }
+    }
+    PatchSet.Id id = ChangeUtil.nextPatchSetId(allRefs, change.currentPatchSetId());
+    newPatchSet = new PatchSet(id);
+    newPatchSet.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+    newPatchSet.setUploader(currentUser.getAccountId());
+    newPatchSet.setRevision(toRevId(newCommit));
+    if (magicBranch != null && magicBranch.isDraft()) {
+        newPatchSet.setDraft(true);
+    }
+    info = patchSetInfoFactory.get(newCommit, newPatchSet.getId());
+    cmd = new ReceiveCommand(ObjectId.zeroId(), newCommit, newPatchSet.getRefName());
+    return true;
+</td> <td> boolean validate(boolean autoClose) throws IOException</td> </tr></table></body></html>

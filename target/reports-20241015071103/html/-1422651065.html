@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1886</td> <td>-1422651065</td><td>apache/camel</td><td>Claus Ibsen</td><td>93cf7f1429a1f9d2dd2eb7c5f4efecbc979f42ac</td> <td>None</td> <td>TODO: Fix this test later</td> <td>SATD_ADDED</td> <td>testInoutHeaderCXFClientNoServiceClassNoRelay()</td> <td>public void testInoutHeaderCXFClientNoServiceClassNoRelay() throws Exception</td> <td>
+    // TODO: Fix this test later
+    QName qname = QName.valueOf("{http://apache.org/camel/component/cxf/soap/headers}SOAPHeaderInfo");
+    String uri = "cxf:bean:routerNoRelayNoServiceClassEndpoint?headerFilterStrategy=#dropAllMessageHeadersStrategy";
+    String requestHeader = "<ns2:SOAPHeaderInfo xmlns:ns2=\"http://apache.org/camel/" + "component/cxf/soap/headers\"><originator>CxfSoapHeaderRoutePropagationTest.testInOutHeader Requestor" + "</originator><message>Invoking CxfSoapHeaderRoutePropagationTest.testInOutHeader() Request" + "</message></ns2:SOAPHeaderInfo>";
+    String requestBody = "<ns2:inoutHeader xmlns:ns2=\"http://apache.org/camel/component/cxf/soap/headers\">" + "<requestType>CXF user</requestType></ns2:inoutHeader>";
+    List<Element> elements = new ArrayList<Element>();
+    elements.add(DOMUtils.readXml(new StringReader(requestBody)).getDocumentElement());
+    final List<SoapHeader> headers = new ArrayList<SoapHeader>();
+    headers.add(new SoapHeader(qname, DOMUtils.readXml(new StringReader(requestHeader)).getDocumentElement()));
+    final CxfPayload<SoapHeader> cxfPayload = new CxfPayload<SoapHeader>(headers, elements);
+    Exchange exchange = template.request(uri, new Processor() {
+
+        public void process(Exchange exchange) throws Exception {
+            exchange.getIn().setBody(cxfPayload);
+            exchange.getIn().setHeader(Header.HEADER_LIST, headers);
+        }
+    });
+    CxfPayload<?> out = exchange.getOut().getBody(CxfPayload.class);
+    assertEquals(1, out.getBody().size());
+    assertEquals(0, out.getHeaders().size());
+    String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<ns2:inoutHeaderResponse xmlns:ns2=\"http://apache.org/camel/" + "component/cxf/soap/headers\"><responseType>pass</responseType>" + "</ns2:inoutHeaderResponse>";
+    assertEquals(response, XMLUtils.toString(out.getBody().get(0)));
+</td> </tr></table></body></html>

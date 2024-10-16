@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4656</td> <td>1242678000</td><td>GerritCodeReview/gerrit</td><td>Edwin Kempin</td><td>1ef3b37c887de32a238f321c59c4eb8924a1c4b9</td> <td>None</td> <td>TODO(yyonas): Delete drafts if they already existed.</td> <td>SATD_ADDED</td> <td>addPublishedComments(ReviewDb, ChangeUpdate, Iterable<PatchLineComment>)</td> <td>public void addPublishedComments(ReviewDb db, ChangeUpdate update, Iterable<PatchLineComment> comments) throws OrmException</td> <td>
+    for (PatchLineComment c : comments) {
+        update.upsertComment(c);
+    }
+    db.patchComments().upsert(comments);
+</td> </tr></table></body></html>

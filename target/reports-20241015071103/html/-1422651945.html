@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>146</td> <td>-1422651945</td><td>apache/camel</td><td>James Strachan</td><td>ec016c74be5c6e64dba1b13f15bf0f579a3ebf90</td> <td>None</td> <td>TODO convert to AND</td> <td>SATD_ADDED</td> <td>testFirstFewAttemptsFail()</td> <td>public void testFirstFewAttemptsFail() throws Exception</td> <td>
+    successEndpoint.expectedBodiesReceived(body);
+    successEndpoint.message(0).header(DeadLetterChannel.REDELIVERED).isEqualTo(true);
+    // TODO convert to AND
+    successEndpoint.message(0).header(DeadLetterChannel.REDELIVERY_COUNTER).isEqualTo(1);
+    deadEndpoint.expectedMessageCount(0);
+    send("direct:start", body);
+    assertIsSatisfied(deadEndpoint, successEndpoint);
+</td> </tr></table></body></html>

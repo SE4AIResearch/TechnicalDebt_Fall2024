@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1324</td> 
+     <td>-1422651405</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>486cd9c629053e9c2e18f7515457efd2a3c631da</td> 
+     <td>TODO: Should also work with DLC will be possible when we remove the AsyncProcessor so the processing logic is much easier to deal with</td> 
+     <td>TODO: Should also work with DLC</td> 
+     <td>SATD_CHANGED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // TODO: Should also work with DLC // errorHandler(deadLetterChannel("mock:dead").disableRedelivery()); onException(MyTechnicalException.class).handled(true).process(new Processor() { public void process(Exchange exchange) throws Exception { // System.out.println("tech"); } }).to("mock:tech"); onException(MyFunctionalException.class).handled(true).to("mock:onFunc").process(new Processor() { public void process(Exchange exchange) throws Exception { // System.out.println("func"); throw new MyTechnicalException("Tech error"); } }).to("mock:doneFunc"); // in this regular route the processing failed from("direct:start").process(new Processor() { public void process(Exchange exchange) throws Exception { throw new MyFunctionalException("Func error"); } }); } }; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1246</td> 
+     <td>-1422651405</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>407ffa6b674f8b884887ebb44bbe7ffe47ac63a8</td> 
+     <td>None</td> 
+     <td>TODO: Should also work with DLC will be possible when we remove the AsyncProcessor so the processing logic is much easier to deal with</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRouteBuilder()</td> 
+     <td>protected RouteBuilder createRouteBuilder() throws Exception</td> 
+     <td> return new RouteBuilder() { @Override public void configure() throws Exception { // TODO: Should also work with DLC // will be possible when we remove the AsyncProcessor so the processing logic // is much easier to deal with // errorHandler(deadLetterChannel("mock:dead").disableRedelivery()); onException(MyTechnicalException.class).handled(true).process(new Processor() { public void process(Exchange exchange) throws Exception { // System.out.println("tech"); } }).to("mock:tech"); onException(MyFunctionalException.class).handled(true).to("mock:onFunc").process(new Processor() { public void process(Exchange exchange) throws Exception { // System.out.println("func"); throw new MyTechnicalException("Tech error"); } }).to("mock:doneFunc"); // in this regular route the processing failed from("direct:start").process(new Processor() { public void process(Exchange exchange) throws Exception { throw new MyFunctionalException("Func error"); } }); } }; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

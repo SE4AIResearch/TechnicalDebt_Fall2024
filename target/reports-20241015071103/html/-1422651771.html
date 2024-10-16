@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>508</td> <td>-1422651771</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>35c8dd74eb0f96c9d242234936fa4dc4d9252104</td> <td>None</td> <td>TODO: is there a way to avoid copy-pasting the reconnect logic?</td> <td>SATD_ADDED</td> <td>disconnect()</td> <td>protected void disconnect() throws JSchException</td> <td>
+    if (session != null) {
+        LOG.info("Session is being explicitly disconnected");
+        session.disconnect();
+    }
+    if (channel != null) {
+        LOG.info("Channel is being explicitly disconnected");
+        channel.disconnect();
+    }
+</td> </tr></table></body></html>

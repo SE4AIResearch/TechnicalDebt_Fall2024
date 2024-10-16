@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5692</td> <td>-1009651975</td><td>apache/hadoop</td><td>Tsz-wo Sze</td><td>cabec474e0f4c525ba80bd7c8dede1a8d76e4f39</td> <td>// verify policy deletes the correct blocks. companion blocks should be
+// evenly distributed.</td> <td>start the cluster with one datanode first</td> <td>SATD_REMOVED</td> <td>setupCluster()</td> <td>protected void setupCluster() throws IOException</td> <td>
+    conf = new Configuration();
+    conf.setLong(DFSConfigKeys.DFS_BLOCKREPORT_INTERVAL_MSEC_KEY, 1000L);
+    conf.set("dfs.replication.pending.timeout.sec", "2");
+    conf.setLong(DFSConfigKeys.DFS_BLOCK_SIZE_KEY, 1L);
+    conf.set("dfs.block.replicator.classname", "org.apache.hadoop.hdfs.server.namenode.BlockPlacementPolicyRaid");
+    conf.set(RaidNode.STRIPE_LENGTH_KEY, "2");
+    conf.set(RaidNode.RS_PARITY_LENGTH_KEY, "3");
+    conf.setInt(DFSConfigKeys.DFS_BYTES_PER_CHECKSUM_KEY, 1);
+    // start the cluster with one datanode first
+    cluster = new MiniDFSCluster.Builder(conf).numDataNodes(1).format(true).racks(rack1).hosts(host1).build();
+    cluster.waitActive();
+    namesystem = cluster.getNameNode().getNamesystem();
+    Assert.assertTrue("BlockPlacementPolicy type is not correct.", namesystem.blockManager.replicator instanceof BlockPlacementPolicyRaid);
+    policy = (BlockPlacementPolicyRaid) namesystem.blockManager.replicator;
+    fs = cluster.getFileSystem();
+    xorPrefix = RaidNode.xorDestinationPath(conf).toUri().getPath();
+    raidTempPrefix = RaidNode.xorTempPrefix(conf);
+    raidrsTempPrefix = RaidNode.rsTempPrefix(conf);
+    raidrsHarTempPrefix = RaidNode.rsHarTempPrefix(conf);
+</td> </tr></table></body></html>

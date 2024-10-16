@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4864</td> <td>1242678102</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>c7d6d8ea5cce439e5aee894673eb5ad74b882034</td> <td>None</td> <td>Only pushing magic branches: allow a valid push certificate even if the
+key is not ultimately trusted. Assume anyone with Submit permission to
+the branch is able to verify during review that the code is legitimate.</td> <td>SATD_ADDED</td> <td>isAllowed(CheckResult, Collection<ReceiveCommand>)</td> <td>private static boolean isAllowed(CheckResult result, Collection<ReceiveCommand> commands)</td> <td>
+    if (onlyMagicBranches(commands)) {
+        // Only pushing magic branches: allow a valid push certificate even if the
+        // key is not ultimately trusted. Assume anyone with Submit permission to
+        // the branch is able to verify during review that the code is legitimate.
+        return result.isOk();
+    } else {
+        // Directly updating one or more refs: require a trusted key.
+        return result.isTrusted();
+    }
+</td> </tr></table></body></html>

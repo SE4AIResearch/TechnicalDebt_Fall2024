@@ -1,0 +1,11 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3665</td> <td>-1422650080</td><td>apache/camel</td><td>Claus Ibsen</td><td>abcd5dfee034792bb740b5d5a18a77232add7619</td> <td>None</td> <td>TODO: implement the logic for this in a better way</td> <td>SATD_ADDED</td> <td>shouldReturnCustomResponseForOptions()</td> <td>public void shouldReturnCustomResponseForOptions() throws Exception</td> <td>
+    String response = template.requestBodyAndHeader("netty4-http:http://localhost:{{port}}/foo", "", HTTP_METHOD, "OPTIONS", String.class);
+    assertEquals("expectedOptionsResponse", response);
+</td> </tr></table></body></html>

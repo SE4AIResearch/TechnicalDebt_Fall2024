@@ -1,0 +1,74 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1995</td> 
+     <td>-1422651010</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>3a1fff2096ce03444d9a43075d0e457975313719</td> 
+     <td>suspend routes using the shutdown strategy so it can shutdown in correct order TODO: leverage shutdown strategy to let it run in suspend mode, so it can suspend routes in correct order</td> 
+     <td>assemble list of startup ordering so routes can be shutdown accordingly</td> 
+     <td>SATD_REMOVED</td> 
+     <td>suspend()</td> 
+     <td>public void suspend() throws Exception</td> 
+     <td> if (!suspended.get()) { if (suspending.compareAndSet(false, true)) { try { EventHelper.notifyCamelContextSuspending(this); LOG.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspending"); StopWatch watch = new StopWatch(); // update list of started routes to be suspended // because we only want to suspend started routes // (so when we resume we only resume the routes which actually was suspended) for (Map.Entry<string, routeservice>
+        entry : getRouteServices().entrySet()) { if (entry.getValue().getStatus().isStarted()) { suspendedRouteServices.put(entry.getKey(), entry.getValue()); } } // assemble list of startup ordering so routes can be shutdown accordingly List
+       <routestartuporder>
+         orders = new ArrayList
+        <routestartuporder>
+         (); for (Map.Entry
+         <string, routeservice>
+           entry : suspendedRouteServices.entrySet()) { Route route = entry.getValue().getRoutes().iterator().next(); Integer order = entry.getValue().getRouteDefinition().getStartupOrder(); if (order == null) { order = defaultRouteStartupOrder++; } orders.add(new DefaultRouteStartupOrder(order, route, entry.getValue())); } // suspend routes using the shutdown strategy so it can shutdown in correct order getShutdownStrategy().suspend(this, orders); watch.stop(); if (LOG.isInfoEnabled()) { LOG.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspended in " + TimeUtils.printDuration(watch.taken())); } EventHelper.notifyCamelContextSuspended(this); } finally { suspended.set(true); suspending.set(false); resuming.set(false); } } } 
+         </string,>
+        </routestartuporder>
+       </routestartuporder>
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1989</td> 
+     <td>-1422651010</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>5b7a5b5ae235ef98f6d2488f95c7d66159cd560a</td> 
+     <td>None</td> 
+     <td>suspend routes using the shutdown strategy so it can shutdown in correct order TODO: leverage shutdown strategy to let it run in suspend mode, so it can suspend routes in correct order</td> 
+     <td>SATD_ADDED</td> 
+     <td>suspend()</td> 
+     <td>public void suspend() throws Exception</td> 
+     <td> if (!suspended.get()) { if (suspending.compareAndSet(false, true)) { try { LOG.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspending"); StopWatch watch = new StopWatch(); // update list of started routes to be suspended // because we only want to suspend started routes // (so when we resume we only resume the routes which actually was suspended) for (Map.Entry<string, routeservice>
+        entry : getRouteServices().entrySet()) { if (entry.getValue().getStatus().isStarted()) { suspendedRouteServices.put(entry.getKey(), entry.getValue()); } } // suspend routes using the shutdown strategy so it can shutdown in correct order // TODO: leverage shutdown strategy to let it run in suspend mode, so it can suspend routes in correct order for (Map.Entry
+       <string, routeservice>
+         entry : suspendedRouteServices.entrySet()) { shutdownRoute(entry.getKey()); } // TODO: suspended/resumed notification events // TODO: more unit test to ensure suspend/resume with startup ordering is as expected watch.stop(); if (LOG.isInfoEnabled()) { LOG.info("Apache Camel " + getVersion() + " (CamelContext: " + getName() + ") is suspended in " + TimeUtils.printDuration(watch.taken())); } } finally { suspended.set(true); suspending.set(false); resuming.set(false); } } } 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

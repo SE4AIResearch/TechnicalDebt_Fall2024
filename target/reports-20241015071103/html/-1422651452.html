@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1155</td> <td>-1422651452</td><td>apache/camel</td><td>James Strachan</td><td>d5119910562a16b603d9ca72b57911d893fa090a</td> <td>None</td> <td>TODO replace the Form class with an injected bean?</td> <td>SATD_ADDED</td> <td>postRouteForm(UriInfo, Form)</td> <td>public Response postRouteForm(@Context UriInfo uriInfo, Form formData) throws URISyntaxException</td> <td>
+    // TODO replace the Form class with an injected bean?
+    String xml = formData.getFirst("route", String.class);
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("new XML is: " + xml);
+    }
+    if (xml == null) {
+        error = "No XML submitted!";
+    } else {
+        try {
+            JAXBContext context = JAXBContext.newInstance(Constants.JAXB_PACKAGES);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            Object value = unmarshaller.unmarshal(new StringReader(xml));
+            if (value instanceof RouteDefinition) {
+                RouteDefinition routeDefinition = (RouteDefinition) value;
+                postRoute(routeDefinition);
+                return Response.seeOther(new URI("/routes")).build();
+            } else {
+                error = "Posted XML is not a route but is of type " + ObjectHelper.className(value);
+            }
+        } catch (JAXBException e) {
+            error = "Failed to parse XML: " + e.getMessage();
+        } catch (Exception e) {
+            error = "Failed to install route: " + e.getMessage();
+        }
+    }
+    // lets re-render the form
+    return Response.ok(new Viewable("edit", this)).build();
+</td> </tr></table></body></html>

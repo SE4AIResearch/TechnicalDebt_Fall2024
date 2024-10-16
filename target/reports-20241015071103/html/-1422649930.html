@@ -1,0 +1,33 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3904</td> <td>-1422649930</td><td>apache/camel</td><td>Claus Ibsen</td><td>3b6755360d8f3a7c36db4889144dd8b3519cc144</td> <td>KarafDistributionOption.keepRuntimeFolder(),
+override the config.properties (to fix pax-exam bug)
+KarafDistributionOption.replaceConfigurationFile(\"etc/config.properties\", new File(\"src/test/resources/org/apache/camel/itest/karaf/config.properties\")),
+Update the jre.properties to export the sun.misc package</td> <td>install the features</td> <td>SATD_REMOVED</td> <td>configure(String, String...)</td> <td>public static Option[] configure(String mainFeature, String... extraFeatures)</td> <td>
+    switchPlatformEncodingToUTF8();
+    String karafVersion = getKarafVersion();
+    LOG.info("*** The karaf version is " + karafVersion + " ***");
+    List<String> list = new ArrayList<String>();
+    list.add("camel-core");
+    list.add("camel-spring");
+    list.add("camel-" + mainFeature);
+    for (String extra : extraFeatures) {
+        list.add("camel-" + extra);
+    }
+    String[] features = list.toArray(new String[list.size()]);
+    Option[] options = new Option[] { // for remote debugging
+    // org.ops4j.pax.exam.CoreOptions.vmOption("-Xdebug"),
+    // org.ops4j.pax.exam.CoreOptions.vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5008"),
+    // we need INFO logging otherwise we cannot see what happens
+    new LogLevelOption(LogLevelOption.LogLevel.INFO), // to allow rbac to connect to localhost
+    org.ops4j.pax.exam.CoreOptions.systemProperty(Constants.RMI_HOST_PROPERTY).value("localhost"), KarafDistributionOption.karafDistributionConfiguration().frameworkUrl(maven().groupId("org.apache.karaf").artifactId("apache-karaf").type("tar.gz").versionAsInProject()).karafVersion(karafVersion).name("Apache Karaf").useDeployFolder(false).unpackDirectory(new File("target/paxexam/unpack/")), // keep the folder so we can look inside when something fails
+    KarafDistributionOption.keepRuntimeFolder(), vmOption("-Dfile.encoding=UTF-8"), // install the unit test
+    getJUnitBundle(), // install the features
+    KarafDistributionOption.features(getCamelKarafFeatureUrl(), features) };
+    return options;
+</td> </tr></table></body></html>

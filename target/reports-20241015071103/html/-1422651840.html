@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>446</td> 
+     <td>-1422651840</td> 
+     <td>apache/camel</td> 
+     <td>James Strachan</td> 
+     <td>5ed93bb5ba1c84b1b5b6aeeb93ad2e3d9ec538c3</td> 
+     <td>TODO deal with the paraments that contains holders TODO deal with the fault message</td> 
+     <td>TODO deal with the fault message</td> 
+     <td>SATD_CHANGED</td> 
+     <td>invoke(Exchange, Object)</td> 
+     <td>public Object invoke(Exchange exchange, Object o)</td> 
+     <td> BindingOperationInfo bop = exchange.get(BindingOperationInfo.class); MethodDispatcher md = (MethodDispatcher) exchange.get(Service.class).get(MethodDispatcher.class.getName()); Method m = md.getMethod(bop); List<object> params = null; if (o instanceof List) { params = CastUtils.cast((List<!--?-->) o); } else if (o != null) { params = new MessageContentsList(o); } CxfEndpoint endpoint = (CxfEndpoint) cxfConsumer.getEndpoint(); CxfExchange cxfExchange = endpoint.createExchange(exchange.getInMessage()); cxfExchange.getIn().setHeader(CxfConstants.OPERATION_NAME, m.getName()); cxfExchange.getIn().setBody(params); try { cxfConsumer.getProcessor().process(cxfExchange); } catch (Exception e) { // catch the exception and send back to cxf client e.printStackTrace(); } // System.out.println(cxfExchange.getOut().getBody()); // TODO deal with the fault message Object[] result; if (cxfExchange.isFailed()) { Exception ex = (Exception) cxfExchange.getFault().getBody(); throw new Fault(ex); } else { result = (Object[]) cxfExchange.getOut().getBody(); } return result; </object></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>421</td> 
+     <td>-1422651840</td> 
+     <td>apache/camel</td> 
+     <td>Hiram R. Chirino</td> 
+     <td>64a4b6aa85a599505008fab00a8c498323469787</td> 
+     <td>TODO deal with the paraments that contains holders</td> 
+     <td>TODO deal with the paraments that contains holders TODO deal with the fault message</td> 
+     <td>SATD_CHANGED</td> 
+     <td>invoke(Exchange, Object)</td> 
+     <td>public Object invoke(Exchange exchange, Object o)</td> 
+     <td> BindingOperationInfo bop = exchange.get(BindingOperationInfo.class); MethodDispatcher md = (MethodDispatcher) exchange.get(Service.class).get(MethodDispatcher.class.getName()); Method m = md.getMethod(bop); List<object> params = null; if (o instanceof List) { params = CastUtils.cast((List<!--?-->) o); } else if (o != null) { params = new MessageContentsList(o); } CxfEndpoint endpoint = (CxfEndpoint) cxfConsumer.getEndpoint(); CxfExchange cxfExchange = endpoint.createExchange(exchange.getInMessage()); cxfExchange.getIn().setHeader(CxfConstants.OPERATION_NAME, m.getName()); cxfExchange.getIn().setBody(params); try { cxfConsumer.getProcessor().process(cxfExchange); } catch (Exception e) { // catch the exception and send back to cxf client e.printStackTrace(); } // System.out.println(cxfExchange.getOut().getBody()); // TODO deal with the paraments that contains holders // TODO deal with the fault message Object[] result = (Object[]) cxfExchange.getOut().getBody(); return result; </object></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>400</td> 
+     <td>-1422651840</td>
+     <td>apache/camel</td>
+     <td>Hiram R. Chirino</td>
+     <td>4fa04b3466706e2007b8c14cc97f7104a48d505b</td> 
+     <td>None</td> 
+     <td>TODO deal with the paraments that contains holders</td> 
+     <td>SATD_ADDED</td> 
+     <td>invoke(Exchange, Object)</td> 
+     <td>public Object invoke(Exchange exchange, Object o)</td> 
+     <td> BindingOperationInfo bop = exchange.get(BindingOperationInfo.class); MethodDispatcher md = (MethodDispatcher) exchange.get(Service.class).get(MethodDispatcher.class.getName()); Method m = md.getMethod(bop); List<object> params = null; if (o instanceof List) { params = CastUtils.cast((List<!--?-->) o); } else if (o != null) { params = new MessageContentsList(o); } final List<object> messageBody = new ArrayList<object>(params.size() + 1); messageBody.add(m.getName()); for (Object obj : params) { messageBody.add(obj); } CxfEndpoint endpoint = (CxfEndpoint) cxfConsumer.getEndpoint(); CxfExchange cxfExchange = endpoint.createExchange(exchange.getInMessage()); cxfExchange.getIn().setBody(messageBody); try { cxfConsumer.getProcessor().process(cxfExchange); } catch (Exception e) { // catch the exception and send back to cxf client e.printStackTrace(); } System.out.println(cxfExchange.getOut().getBody()); // TODO deal with the paraments that contains holders Object[] result = (Object[]) cxfExchange.getOut().getBody(); return result; </object></object></object></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

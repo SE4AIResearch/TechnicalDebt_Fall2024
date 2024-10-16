@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1292</td> 
+     <td>-1422651392</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>ac324e5c47ed220ed91a39720dd87e8a6f9a1298</td> 
+     <td>we need to fix if the interceptor should only trigger based on a predicate as the regular interceptor will prepare the route \"reverse\" we gotta move from this output to the otherwise output</td> 
+     <td>okay the intercept endpoint works a bit differently than the regular interceptors so we must fix the route definiton yet again</td> 
+     <td>SATD_REMOVED</td> 
+     <td>afterPropertiesSet()</td> 
+     <td>public void afterPropertiesSet()</td> 
+     <td> // okay the intercept endpoint works a bit differently than the regular interceptors // so we must fix the route definiton yet again if (getOutputs().size() == 0) { // no outputs return; } ProcessorDefinition first = getOutputs().get(0); if (first instanceof WhenDefinition) { WhenDefinition when = (WhenDefinition) first; // move this outputs to the when, expect the first one // as the first one is the interceptor itself for (int i = 1; i &lt; outputs.size(); i++) { ProcessorDefinition out = outputs.get(i); when.addOutput(out); } // remove the moved from the original output, by just keeping the first one ProcessorDefinition keep = outputs.get(0); clearOutput(); outputs.add(keep); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1273</td> 
+     <td>-1422651392</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>819b182c4a225db0896e01ac39da8efcff50a73d</td> 
+     <td>we need to fix if the interceptor should only trigger based on a predicate as the regular interceptor will prepare the route \"reverse\" we gotta move from this output to the otherwise output</td> 
+     <td>we need to fix if the interceptor should only trigger based on a predicate as the regular interceptor will prepare the route \"reverse\" we gotta move from this output to the otherwise output</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>afterPropertiesSet()</td> 
+     <td>public void afterPropertiesSet()</td> 
+     <td> super.afterPropertiesSet(); // okay the intercept endpoint works a bit differently than the regular interceptors // so we must fix the route definiton yet again // we need to fix if the interceptor should only trigger based on a predicate // as the regular interceptor will prepare the route "reverse" we gotta move // from this output to the otherwise output if (usePredicate != null &amp;&amp; usePredicate) { ChoiceDefinition choice = ProcessorDefinitionHelper.findFirstTypeInOutputs(outputs, ChoiceDefinition.class); if (choice != null &amp;&amp; outputs.size() &gt; 1) { // move this outputs to the otherwise, expect the first one // as the first one is the interceptor itself for (int i = 1; i &lt; outputs.size(); i++) { ProcessorDefinition out = outputs.get(i); choice.getOtherwise().addOutput(out); } // remove the moved from the original output, by just keeping the first one ProcessorDefinition keep = outputs.get(0); clearOutput(); outputs.add(keep); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1270</td> 
+     <td>-1422651392</td>
+     <td>apache/camel</td>
+     <td>Gert Vanthienen</td>
+     <td>c3351bc2f5a2b2885e72461017474b5951b384a1</td> 
+     <td>None</td> 
+     <td>we need to fix if the interceptor should only trigger based on a predicate as the regular interceptor will prepare the route \"reverse\" we gotta move from this output to the otherwise output</td> 
+     <td>SATD_ADDED</td> 
+     <td>afterPropertiesSet()</td> 
+     <td>public void afterPropertiesSet()</td> 
+     <td> super.afterPropertiesSet(); // okay the intercept endpoint works a bit differently than the regular interceptors // so we must fix the route definiton yet again // we need to fix if the interceptor should only trigger based on a predicate // as the regular interceptor will prepare the route "reverse" we gotta move // from this output to the otherwise output if (usePredicate != null &amp;&amp; usePredicate) { ChoiceDefinition choice = ProcessorDefinitionHelper.findFirstTypeInOutputs(outputs, ChoiceDefinition.class); if (choice != null &amp;&amp; outputs.size() &gt; 1) { // move this outputs to the otherwise, expect the first one // as the first one is the interceptor itself for (int i = 1; i &lt; outputs.size(); i++) { ProcessorDefinition out = outputs.get(i); choice.getOtherwise().addOutput(out); } // remove the moved from the original output, by just keeping the first one ProcessorDefinition keep = outputs.get(0); clearOutput(); outputs.add(keep); } } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

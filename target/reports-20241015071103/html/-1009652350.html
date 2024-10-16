@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>5625</td> 
+     <td>-1009652350</td> 
+     <td>apache/hadoop</td> 
+     <td>Tsz-wo Sze</td> 
+     <td>09b6f98de431628c80bc8a6faf0070eeaf72ff2a</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>isReplicaCorrupt(Block, ReplicaState, BlockInfo, BlockUCState, DatanodeDescriptor)</td> 
+     <td>private boolean isReplicaCorrupt(Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)</td> 
+     <td> switch(reportedState) { case FINALIZED: switch(ucState) { case COMPLETE: case COMMITTED: return (storedBlock.getGenerationStamp() != iblk.getGenerationStamp() || storedBlock.getNumBytes() != iblk.getNumBytes()); default: return false; } case RBW: case RWR: return storedBlock.isComplete(); // should not be reported case RUR: // should not be reported case TEMPORARY: default: FSNamesystem.LOG.warn("Unexpected replica state " + reportedState + " for block: " + storedBlock + " on " + dn.getName() + " size " + storedBlock.getNumBytes()); return true; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5618</td> 
+     <td>-1009652350</td> 
+     <td>apache/hadoop</td> 
+     <td>Tsz-wo Sze</td> 
+     <td>97b6ca4dd7d1233e8f8c90b1c01e47228c044e13</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>isReplicaCorrupt(Block, ReplicaState, BlockInfo, BlockUCState, DatanodeDescriptor)</td> 
+     <td>private boolean isReplicaCorrupt(Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)</td> 
+     <td> switch(reportedState) { case FINALIZED: switch(ucState) { case COMPLETE: case COMMITTED: return (storedBlock.getGenerationStamp() != iblk.getGenerationStamp() || storedBlock.getNumBytes() != iblk.getNumBytes()); default: return false; } case RBW: case RWR: return storedBlock.isComplete(); // should not be reported case RUR: // should not be reported case TEMPORARY: default: FSNamesystem.LOG.warn("Unexpected replica state " + reportedState + " for block: " + storedBlock + " on " + dn.getName() + " size " + storedBlock.getNumBytes()); return true; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5599</td> 
+     <td>-1009652350</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>1bcfe45e47775b98cce5541f328c4fd46e5eb13d</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>isReplicaCorrupt(Block, ReplicaState, BlockInfo, BlockUCState, DatanodeDescriptor)</td> 
+     <td>private boolean isReplicaCorrupt(Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)</td> 
+     <td> switch(reportedState) { case FINALIZED: switch(ucState) { case COMPLETE: case COMMITTED: return (storedBlock.getGenerationStamp() != iblk.getGenerationStamp() || storedBlock.getNumBytes() != iblk.getNumBytes()); default: return false; } case RBW: case RWR: return storedBlock.isComplete(); // should not be reported case RUR: // should not be reported case TEMPORARY: default: FSNamesystem.LOG.warn("Unexpected replica state " + reportedState + " for block: " + storedBlock + " on " + dn.getName() + " size " + storedBlock.getNumBytes()); return true; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5376</td> 
+     <td>-1009652350</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>None</td> 
+     <td>The next two methods test the various cases under which we must conclude the replica is corrupt, or under construction. These are laid out as switch statements, on the theory that it is easier to understand the combinatorics of reportedState and ucState that way. It should be at least as efficient as boolean expressions.</td> 
+     <td>SATD_ADDED</td> 
+     <td>isReplicaCorrupt(Block, ReplicaState, BlockInfo, BlockUCState, DatanodeDescriptor)</td> 
+     <td>private boolean isReplicaCorrupt(Block iblk, ReplicaState reportedState, BlockInfo storedBlock, BlockUCState ucState, DatanodeDescriptor dn)</td> 
+     <td> switch(reportedState) { case FINALIZED: switch(ucState) { case COMPLETE: case COMMITTED: return (storedBlock.getGenerationStamp() != iblk.getGenerationStamp() || storedBlock.getNumBytes() != iblk.getNumBytes()); default: return false; } case RBW: case RWR: return storedBlock.isComplete(); // should not be reported case RUR: // should not be reported case TEMPORARY: default: FSNamesystem.LOG.warn("Unexpected replica state " + reportedState + " for block: " + storedBlock + " on " + dn.getName() + " size " + storedBlock.getNumBytes()); return true; } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1087</td> <td>-1422651479</td><td>apache/camel</td><td>Claus Ibsen</td><td>e3cd1de6ce9d69785bd038870aff44e8a70c1aa9</td> <td>None</td> <td>TODO: We should get this late reply to work</td> <td>SATD_ADDED</td> <td>testRequetLateReply()</td> <td>public void testRequetLateReply() throws Exception</td> <td>
+    // use another thread to send the late reply to simulate that we do it later, not
+    // from the origianl route anyway
+    Thread sender = new Thread(new SendLateReply());
+    sender.start();
+    MockEndpoint result = getMockEndpoint("mock:result");
+    result.expectedMessageCount(1);
+    Exchange out = template.request("activemq:queue:hello", new Processor() {
+
+        public void process(Exchange exchange) throws Exception {
+            // we expect a response so InOut
+            exchange.setPattern(ExchangePattern.InOut);
+            exchange.getIn().setBody("Hello World");
+        }
+    });
+    result.assertIsSatisfied();
+    assertNotNull(out);
+// TODO: We should get this late reply to work
+// assertEquals("Late Reply", out.getOut().getBody());
+</td> </tr></table></body></html>

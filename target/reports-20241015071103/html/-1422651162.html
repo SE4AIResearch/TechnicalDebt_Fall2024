@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3494</td> 
+     <td>-1422651162</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testSlowReply()</td> 
+     <td>public void testSlowReply() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(1000); MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedMessageCount(1); Exchange exchange = template.request(url, null); assertMockEndpointsSatisfied(); assertNotNull(exchange); String reply = exchange.getOut().getBody(String.class); assertEquals("Bye World", reply); assertEquals(5, exchange.getOut().getHeaders().size()); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1690</td> 
+     <td>-1422651162</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>18d4500016e74d7de487af16af1e395f6cfe5ceb</td> 
+     <td>None</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>SATD_ADDED</td> 
+     <td>testSlowReply()</td> 
+     <td>public void testSlowReply() throws Exception</td> 
+     <td> // give Jetty time to startup properly Thread.sleep(1000); MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedMessageCount(1); Exchange exchange = template.request(url, null); assertMockEndpointsSatisfied(); assertNotNull(exchange); String reply = exchange.getOut().getBody(String.class); assertEquals("Bye World", reply); assertEquals(4, exchange.getOut().getHeaders().size()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,47 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5065</td> <td>-1009652537</td><td>apache/hadoop</td><td>Devaraj Das</td><td>1793e7d9094cd984ae402177c5935239059d74e8</td> <td>None</td> <td>Authorize the superuser which is doing doAs
+
+@param user ugi of the effective or proxy user which contains a real user
+@param remoteAddress the ip address of client
+@param conf configuration
+@throws AuthorizationException</td> <td>SATD_ADDED</td> <td>authorize(UserGroupInformation, String, Configuration)</td> <td>public static void authorize(UserGroupInformation user, String remoteAddress, Configuration conf) throws AuthorizationException</td> <td>
+    if (user.getRealUser() == null) {
+        return;
+    }
+    boolean groupAuthorized = false;
+    UserGroupInformation superUser = user.getRealUser();
+    Collection<String> allowedUserGroups = conf.getStringCollection(getProxySuperuserGroupConfKey(superUser.getShortUserName()));
+    if (!allowedUserGroups.isEmpty()) {
+        for (String group : user.getGroupNames()) {
+            if (allowedUserGroups.contains(group)) {
+                groupAuthorized = true;
+                break;
+            }
+        }
+    }
+    if (!groupAuthorized) {
+        throw new AuthorizationException("User: " + superUser.getUserName() + " is not allowed to impersonate " + user.getUserName());
+    }
+    Collection<String> ipList = conf.getStringCollection(getProxySuperuserIpConfKey(superUser.getShortUserName()));
+    if (!ipList.isEmpty()) {
+        for (String allowedHost : ipList) {
+            InetAddress hostAddr;
+            try {
+                hostAddr = InetAddress.getByName(allowedHost);
+            } catch (UnknownHostException e) {
+                continue;
+            }
+            if (hostAddr.getHostAddress().equals(remoteAddress)) {
+                // Authorization is successful
+                return;
+            }
+        }
+    }
+    throw new AuthorizationException("Unauthorized connection for super-user: " + superUser.getUserName() + " from IP " + remoteAddress);
+</td> </tr></table></body></html>

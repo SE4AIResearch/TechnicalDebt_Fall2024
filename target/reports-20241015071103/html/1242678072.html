@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4785</td> <td>1242678072</td><td>GerritCodeReview/gerrit</td><td>Stefan Beller</td><td>f89a959ad2736280639300ca05af4f452bc179d2</td> <td>None</td> <td>Not exact, but we cannot do any better.</td> <td>SATD_ADDED</td> <td>?> topicField(Schema<ChangeData>)</td> <td> static FieldDef<ChangeData, ?> topicField(Schema<ChangeData> schema)</td> <td>
+    if (schema == null) {
+        return ChangeField.LEGACY_TOPIC2;
+    }
+    if (schema.hasField(EXACT_TOPIC)) {
+        return schema.getFields().get(EXACT_TOPIC.getName());
+    }
+    if (schema.hasField(ChangeField.LEGACY_TOPIC2)) {
+        return schema.getFields().get(ChangeField.LEGACY_TOPIC2.getName());
+    }
+    // Not exact, but we cannot do any better.
+    return schema.getFields().get(ChangeField.LEGACY_TOPIC3.getName());
+</td> </tr></table></body></html>

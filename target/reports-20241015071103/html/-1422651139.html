@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1733</td> <td>-1422651139</td><td>apache/camel</td><td>Claus Ibsen</td><td>847b99f9d1d45a1a8bf61e85c9b38ff9eca340ad</td> <td>None</td> <td>TODO: disabled as it can fail for no apparent reason on another box</td> <td>SATD_ADDED</td> <td>xxxtestTransactionRollback()</td> <td>public void xxxtestTransactionRollback() throws Exception</td> <td>
+    template.sendBodyAndHeader("file://target/transacted/fail", "Hello World", Exchange.FILE_NAME, "fail.txt");
+    // wait for route to complete
+    Thread.sleep(3000);
+    // should not be able to process the file so we still got 1 book as we did from the start
+    int count = jdbc.queryForInt("select count(*) from books");
+    assertEquals("Number of books", 1, count);
+</td> </tr></table></body></html>

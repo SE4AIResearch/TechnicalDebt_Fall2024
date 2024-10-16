@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4243</td> 
+     <td>1242677777</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>6ee0554f276ebf05e0128fbdb6a50bd2d5346569</td> 
+     <td>Try to find the user's home directory. If we can't find it return null so the JVM's default temporary directory is used instead. This is probably /tmp or /var/tmp. </td> 
+     <td>Try to find the user's home directory. If we can't find it return null so the JVM's default temporary directory is used instead. This is probably /tmp or /var/tmp. </td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>tmproot()</td> 
+     <td>private static File tmproot()</td> 
+     <td> // Try to find the user's home directory. If we can't find it // return null so the JVM's default temporary directory is used // instead. This is probably /tmp or /var/tmp. // String userHome = System.getProperty("user.home"); if (userHome == null || "".equals(userHome)) { userHome = System.getenv("HOME"); if (userHome == null || "".equals(userHome)) { System.err.println("warning: cannot determine home directory"); System.err.println("warning: using system temporary directory instead"); return null; } } // Ensure the home directory exists. If it doesn't, try to make it. // final File home = new File(userHome); if (!home.exists()) { if (home.mkdirs()) { System.err.println("warning: created " + home.getAbsolutePath()); } else { System.err.println("warning: " + home.getAbsolutePath() + " not found"); System.err.println("warning: using system temporary directory instead"); return null; } } // Use $HOME/.gerritcodereview/tmp for our temporary file area. // final File tmp = new File(new File(home, ".gerritcodereview"), "tmp"); if (!tmp.exists() &amp;&amp; !tmp.mkdirs()) { System.err.println("warning: cannot create " + tmp.getAbsolutePath()); System.err.println("warning: using system temporary directory instead"); return null; } // Try to clean up any stale empty directories. Assume any empty // directory that is older than 7 days is one of these dead ones // that we can clean up. // final File[] tmpEntries = tmp.listFiles(); if (tmpEntries != null) { final long now = System.currentTimeMillis(); final long expired = now - MILLISECONDS.convert(7, DAYS); for (final File tmpEntry : tmpEntries) { if (tmpEntry.isDirectory() &amp;&amp; tmpEntry.lastModified() &lt; expired) { final String[] all = tmpEntry.list(); if (all == null || all.length == 0) { tmpEntry.delete(); } } } } try { return tmp.getCanonicalFile(); } catch (IOException e) { return tmp; } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4239</td> 
+     <td>1242677777</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>79860d1ddb3ee75a0bb3bcfd57565dacbaa663e6</td> 
+     <td>None</td> 
+     <td>Try to find the user's home directory. If we can't find it return null so the JVM's default temporary directory is used instead. This is probably /tmp or /var/tmp. </td> 
+     <td>SATD_ADDED</td> 
+     <td>tmproot()</td> 
+     <td>private static File tmproot()</td> 
+     <td> // Try to find the user's home directory. If we can't find it // return null so the JVM's default temporary directory is used // instead. This is probably /tmp or /var/tmp. // String userHome = System.getProperty("user.home"); if (userHome == null || "".equals(userHome)) { userHome = System.getenv("HOME"); if (userHome == null || "".equals(userHome)) { System.err.println("warning: cannot determine home directory"); System.err.println("warning: using system temporary directory instead"); return null; } } // Ensure the home directory exists. If it doesn't, try to make it. // final File home = new File(userHome); if (!home.exists()) { if (home.mkdirs()) { System.err.println("warning: created " + home.getAbsolutePath()); } else { System.err.println("warning: " + home.getAbsolutePath() + " not found"); System.err.println("warning: using system temporary directory instead"); return null; } } // Use $HOME/.gerritcodereview/tmp for our temporary file area. // final File tmp = new File(new File(home, ".gerritcodereview"), "tmp"); if (!tmp.exists() &amp;&amp; !tmp.mkdirs()) { System.err.println("warning: cannot create " + tmp.getAbsolutePath()); System.err.println("warning: using system temporary directory instead"); return null; } return tmp; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

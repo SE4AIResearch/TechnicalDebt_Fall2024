@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4489</td> 
+     <td>1242677823</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn Pearce</td> 
+     <td>201edc7204281d8f74218c7d9692d2415042d8b1</td> 
+     <td>A repository may be missing if this project existed only to store inheritable permissions. For example 'All-Projects'.</td> 
+     <td>A repository may be missing if this project existed only to store inheritable permissions. For example 'All-Projects'.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>initWildCardProject()</td> 
+     <td>private void initWildCardProject() throws IOException, ConfigInvalidException</td> 
+     <td> Repository git = null; try { git = mgr.openRepository(allProjectsName); initWildCardProject(git); } catch (RepositoryNotFoundException notFound) { // A repository may be missing if this project existed only to store // inheritable permissions. For example 'All-Projects'. try { git = mgr.createRepository(allProjectsName); initWildCardProject(git); final RefUpdate u = git.updateRef(Constants.HEAD); u.link(GitRepositoryManager.REF_CONFIG); } catch (RepositoryNotFoundException err) { final String name = allProjectsName.get(); throw new IOException("Cannot create repository " + name, err); } } finally { if (git != null) { git.close(); } } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4334</td> 
+     <td>1242677823</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>99071dd23240d121967f84759651f61f698442e0</td> 
+     <td>A repository may be missing if this project existed only to store inheritable permissions. For example '-- All Projects --'.</td> 
+     <td>A repository may be missing if this project existed only to store inheritable permissions. For example 'All-Projects'.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>initWildCardProject()</td> 
+     <td>private void initWildCardProject() throws IOException, ConfigInvalidException</td> 
+     <td> Repository git; try { git = mgr.openRepository(DEFAULT_WILD_NAME); } catch (RepositoryNotFoundException notFound) { // A repository may be missing if this project existed only to store // inheritable permissions. For example 'All-Projects'. try { git = mgr.createRepository(DEFAULT_WILD_NAME); } catch (RepositoryNotFoundException err) { final String name = DEFAULT_WILD_NAME.get(); throw new IOException("Cannot create repository " + name, err); } } try { MetaDataUpdate md = new MetaDataUpdate(new NoReplication(), DEFAULT_WILD_NAME, git); md.getCommitBuilder().setAuthor(serverUser); md.getCommitBuilder().setCommitter(serverUser); ProjectConfig config = ProjectConfig.read(md); Project p = config.getProject(); p.setDescription("Rights inherited by all other projects"); p.setUseContributorAgreements(false); AccessSection all = config.getAccessSection(AccessSection.ALL, true); AccessSection heads = config.getAccessSection(AccessSection.HEADS, true); AccessSection meta = config.getAccessSection(GitRepositoryManager.REF_CONFIG, true); PermissionRule review = rule(config, registered); review.setRange(-1, 1); heads.getPermission(Permission.LABEL + "Code-Review", true).add(review); // all.getPermission(Permission.READ, true).add(rule(config, admin)); // all.getPermission(Permission.READ, true).add(rule(config, anonymous)); // config.getAccessSection("refs/for/" + AccessSection.ALL, true).getPermission(Permission.PUSH, // true).add(rule(config, registered)); // all.getPermission(Permission.FORGE_AUTHOR, true).add(rule(config, registered)); // meta.getPermission(Permission.READ, true).add(rule(config, owners)); md.setMessage("Initialized Gerrit Code Review " + Version.getVersion()); if (!config.commit(md)) { throw new IOException("Cannot create " + DEFAULT_WILD_NAME.get()); } } finally { git.close(); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4324</td> 
+     <td>1242677823</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>a56d834d2b0ab466aff100ad4370fe8d4e830204</td> 
+     <td>None</td> 
+     <td>A repository may be missing if this project existed only to store inheritable permissions. For example '-- All Projects --'.</td> 
+     <td>SATD_ADDED</td> 
+     <td>initWildCardProject()</td> 
+     <td>private void initWildCardProject() throws IOException, ConfigInvalidException</td> 
+     <td> Repository git; try { git = mgr.openRepository(DEFAULT_WILD_NAME); } catch (RepositoryNotFoundException notFound) { // A repository may be missing if this project existed only to store // inheritable permissions. For example '-- All Projects --'. try { git = mgr.createRepository(DEFAULT_WILD_NAME); } catch (RepositoryNotFoundException err) { final String name = DEFAULT_WILD_NAME.get(); throw new IOException("Cannot create repository " + name, err); } } try { MetaDataUpdate md = new MetaDataUpdate(new NoReplication(), DEFAULT_WILD_NAME, git); md.getCommitBuilder().setAuthor(serverUser); md.getCommitBuilder().setCommitter(serverUser); ProjectConfig config = ProjectConfig.read(md); Project p = config.getProject(); p.setDescription("Rights inherited by all other projects"); p.setUseContributorAgreements(false); md.setMessage("Created project\n"); if (!config.commit(md)) { throw new IOException("Cannot create " + DEFAULT_WILD_NAME.get()); } } finally { git.close(); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

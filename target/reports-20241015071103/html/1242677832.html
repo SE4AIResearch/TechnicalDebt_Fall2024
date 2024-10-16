@@ -1,0 +1,89 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4342</td> <td>1242677832</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>02630e708c52a9403e1371ec7d7561d92496dc30</td> <td>None</td> <td>TODO Push this selection of labels down into the Prolog interpreter.
+Ideally we discover the labels the user can apply here based on doing
+a findall() over the space of labels they can apply combined against
+the submit rule, thereby skipping any mutually exclusive cases. However
+those are not common, so it might just be reasonable to take this
+simple approach.</td> <td>SATD_ADDED</td> <td>call()</td> <td>public PatchSetPublishDetail call() throws OrmException, PatchSetInfoNotAvailableException, NoSuchChangeException</td> <td>
+    final Change.Id changeId = patchSetId.getParentKey();
+    final ChangeControl control = changeControlFactory.validateFor(changeId);
+    change = control.getChange();
+    patchSetInfo = infoFactory.get(patchSetId);
+    drafts = db.patchComments().draft(patchSetId, user.getAccountId()).toList();
+    aic.want(change.getOwner());
+    PatchSetPublishDetail detail = new PatchSetPublishDetail();
+    detail.setPatchSetInfo(patchSetInfo);
+    detail.setChange(change);
+    detail.setDrafts(drafts);
+    List<PermissionRange> allowed = Collections.emptyList();
+    List<PatchSetApproval> given = Collections.emptyList();
+    if (change.getStatus().isOpen() && patchSetId.equals(change.currentPatchSetId())) {
+        // TODO Push this selection of labels down into the Prolog interpreter.
+        // Ideally we discover the labels the user can apply here based on doing
+        // a findall() over the space of labels they can apply combined against
+        // the submit rule, thereby skipping any mutually exclusive cases. However
+        // those are not common, so it might just be reasonable to take this
+        // simple approach.
+        Map<String, PermissionRange> rangeByName = new HashMap<String, PermissionRange>();
+        for (PermissionRange r : control.getLabelRanges()) {
+            if (r.isLabel()) {
+                rangeByName.put(r.getLabel(), r);
+            }
+        }
+        allowed = new ArrayList<PermissionRange>();
+        given = // 
+        db.patchSetApprovals().byPatchSetUser(patchSetId, // 
+        user.getAccountId()).toList();
+        boolean couldSubmit = false;
+        List<SubmitRecord> submitRecords = control.canSubmit(db, patchSetId);
+        for (SubmitRecord rec : submitRecords) {
+            if (rec.status == SubmitRecord.Status.OK) {
+                couldSubmit = true;
+            }
+            if (rec.labels != null) {
+                int ok = 0;
+                for (SubmitRecord.Label lbl : rec.labels) {
+                    boolean canMakeOk = false;
+                    PermissionRange range = rangeByName.get(lbl.label);
+                    if (range != null) {
+                        if (!allowed.contains(range)) {
+                            allowed.add(range);
+                        }
+                        ApprovalType at = approvalTypes.byLabel(lbl.label);
+                        if (at != null && at.getMax().getValue() == range.getMax()) {
+                            canMakeOk = true;
+                        } else if (at == null) {
+                            canMakeOk = true;
+                        }
+                    }
+                    switch(lbl.status) {
+                        case OK:
+                            ok++;
+                            break;
+                        case NEED:
+                            if (canMakeOk) {
+                                ok++;
+                            }
+                            break;
+                    }
+                }
+                if (rec.status == SubmitRecord.Status.NOT_READY && ok == rec.labels.size()) {
+                    couldSubmit = true;
+                }
+            }
+        }
+        if (couldSubmit && control.getRefControl().canSubmit()) {
+            detail.setCanSubmit(true);
+        }
+    }
+    detail.setLabels(allowed);
+    detail.setGiven(given);
+    detail.setAccounts(aic.create());
+    return detail;
+</td> </tr></table></body></html>

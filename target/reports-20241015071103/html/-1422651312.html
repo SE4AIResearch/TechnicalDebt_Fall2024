@@ -1,0 +1,40 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1441</td> <td>-1422651312</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>039b26e729721dff6d1abe831837c1bd72699ee5</td> <td>None</td> <td>3 retries + 1 last failed attempt when we give up</td> <td>SATD_ADDED</td> <td>testRetryAtMostThreeTimes()</td> <td>public void testRetryAtMostThreeTimes() throws Exception</td> <td>
+    counter = 0;
+    event = "";
+    final Exception expectedException = new Exception("Hello, I should be thrown on shutdown only!");
+    MockScheduledPollConsumer consumer = new MockScheduledPollConsumer(expectedException);
+    consumer.setPollStrategy(new PollingConsumerPollStrategy() {
+
+        public void begin(Consumer consumer, Endpoint endpoint) {
+        }
+
+        public void commit(Consumer consumer, Endpoint endpoint) {
+            event += "commit";
+        }
+
+        public boolean rollback(Consumer consumer, Endpoint endpoint, int retryCounter, Exception e) throws Exception {
+            event += "rollback";
+            counter++;
+            if (retryCounter < 3) {
+                return true;
+            }
+            return false;
+        }
+    });
+    consumer.setUseFixedDelay(true);
+    consumer.setDelay(60000);
+    consumer.start();
+    // poll that throws an exception
+    consumer.run();
+    consumer.stop();
+    // 3 retries + 1 last failed attempt when we give up
+    assertEquals(4, counter);
+    assertEquals("rollbackrollbackrollbackrollback", event);
+</td> </tr></table></body></html>

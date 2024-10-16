@@ -1,0 +1,142 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1134</td> 
+     <td>-1422651468</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>021642ef3f437f36bf6791f3776e2480decdbd09</td> 
+     <td>default strategy will move files in a .camel/ subfolder where the file was consumed</td> 
+     <td>default strategy will move files in a .camel/ subfolder where the file was consumed</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createGenericFileProcessStrategy(CamelContext, Map<string, object>
+       )
+      </string,></td> 
+     <td>public static GenericFileProcessStrategy createGenericFileProcessStrategy(CamelContext context, Map<string, object>
+        params)
+      </string,></td> 
+     <td> // We assume a value is present only if its value not null for String and 'true' for boolean boolean isNoop = params.get("noop") != null; boolean isDelete = params.get("delete") != null; Expression moveExpression = (Expression) params.get("move"); Expression preMoveExpression = (Expression) params.get("preMove"); if (isNoop) { GenericFileNoOpProcessStrategy<file>
+        strategy = new GenericFileNoOpProcessStrategy
+       <file>
+        (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); return strategy; } else if (isDelete) { GenericFileDeleteProcessStrategy
+        <file>
+          strategy = new GenericFileDeleteProcessStrategy
+         <file>
+          (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); return strategy; } else if (moveExpression != null || preMoveExpression != null) { GenericFileRenameProcessStrategy
+          <file>
+            strategy = new GenericFileRenameProcessStrategy
+           <file>
+            (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); if (moveExpression != null) { GenericFileExpressionRenamer
+            <file>
+              renamer = new GenericFileExpressionRenamer
+             <file>
+              (); renamer.setExpression(moveExpression); strategy.setCommitRenamer(renamer); } if (preMoveExpression != null) { GenericFileExpressionRenamer
+              <file>
+                renamer = new GenericFileExpressionRenamer
+               <file>
+                (); renamer.setExpression(preMoveExpression); strategy.setBeginRenamer(renamer); } return strategy; } else { // default strategy will move files in a .camel/ subfolder where the file was consumed GenericFileRenameProcessStrategy
+                <file>
+                  strategy = new GenericFileRenameProcessStrategy
+                 <file>
+                  (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); // use context to lookup language to let it be loose coupled Language language = context.resolveLanguage("file"); Expression expression = language.createExpression("${file:parent}/.camel/${file:onlyname}"); strategy.setCommitRenamer(new GenericFileExpressionRenamer
+                  <file>
+                   (expression)); return strategy; } 
+                  </file>
+                 </file>
+                </file>
+               </file>
+              </file>
+             </file>
+            </file>
+           </file>
+          </file>
+         </file>
+        </file>
+       </file>
+      </file></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1123</td> 
+     <td>-1422651468</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>00866f65fcba9bc01c07e1dde06e78942c86f534</td> 
+     <td>None</td> 
+     <td>default strategy will move files in a .camel/ subfolder where the file was consumed</td> 
+     <td>SATD_ADDED</td> 
+     <td>createGenericFileProcessStrategy(Map<string, object>
+       )
+      </string,></td> 
+     <td>public static GenericFileProcessStrategy createGenericFileProcessStrategy(Map<string, object>
+        params)
+      </string,></td> 
+     <td> // We assume a value is present only if its value not null for String and 'true' for boolean boolean isNoop = params.get("noop") != null; boolean isDelete = params.get("delete") != null; Expression moveExpression = (Expression) params.get("move"); Expression preMoveExpression = (Expression) params.get("preMove"); if (isNoop) { GenericFileNoOpProcessStrategy<file>
+        strategy = new GenericFileNoOpProcessStrategy
+       <file>
+        (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); return strategy; } else if (isDelete) { GenericFileDeleteProcessStrategy
+        <file>
+          strategy = new GenericFileDeleteProcessStrategy
+         <file>
+          (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); return strategy; } else if (moveExpression != null || preMoveExpression != null) { GenericFileRenameProcessStrategy
+          <file>
+            strategy = new GenericFileRenameProcessStrategy
+           <file>
+            (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); if (moveExpression != null) { GenericFileExpressionRenamer
+            <file>
+              renamer = new GenericFileExpressionRenamer
+             <file>
+              (); renamer.setExpression(moveExpression); strategy.setCommitRenamer(renamer); } if (preMoveExpression != null) { GenericFileExpressionRenamer
+              <file>
+                renamer = new GenericFileExpressionRenamer
+               <file>
+                (); renamer.setExpression(preMoveExpression); strategy.setBeginRenamer(renamer); } return strategy; } else { // default strategy will move files in a .camel/ subfolder where the file was consumed GenericFileRenameProcessStrategy
+                <file>
+                  strategy = new GenericFileRenameProcessStrategy
+                 <file>
+                  (); strategy.setExclusiveReadLockStrategy(getExclusiveReadLockStrategy(params)); Expression exp = FileLanguage.file("${file:parent}/.camel/${file:onlyname}"); strategy.setCommitRenamer(new GenericFileExpressionRenamer
+                  <file>
+                   (exp)); return strategy; } 
+                  </file>
+                 </file>
+                </file>
+               </file>
+              </file>
+             </file>
+            </file>
+           </file>
+          </file>
+         </file>
+        </file>
+       </file>
+      </file></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

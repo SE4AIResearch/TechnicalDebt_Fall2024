@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2375</td> <td>-1422650789</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>524affce90c190e1f663c36bd058b6d5dcd5f596</td> <td>None</td> <td>TODO: Why dont't we rethrown this exception</td> <td>SATD_ADDED</td> <td>setProperties(Map<String, Object>)</td> <td>public void setProperties(Map<String, Object> properties)</td> <td>
+    if (this.properties == null) {
+        this.properties = properties;
+    } else {
+        this.properties.putAll(properties);
+    }
+    if (getCamelContext() != null && this.properties != null) {
+        try {
+            EndpointHelper.setReferenceProperties(getCamelContext(), this, this.properties);
+            EndpointHelper.setProperties(getCamelContext(), this, this.properties);
+        } catch (Throwable e) {
+            // TODO: Why dont't we rethrown this exception
+            LOG.warn("Error setting properties. This exception will be ignored.", e);
+        }
+    }
+</td> </tr></table></body></html>

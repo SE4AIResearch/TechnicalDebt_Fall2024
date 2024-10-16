@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1823</td> <td>-1422651090</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>7007ffc09359f88a9f3eddc017cd1d38047d0a4b</td> <td>None</td> <td>TODO: Disabled due it fails</td> <td>SATD_ADDED</td> <td>xxxTestSendStreamSource()</td> <td>public void xxxTestSendStreamSource() throws Exception</td> <td>
+    MockEndpoint resultEndpoint = getMockEndpoint("mock:result");
+    resultEndpoint.expectedMessageCount(numMessages);
+    for (int c = 0; c < numMessages; c++) {
+        template.sendBody("seda:parallel", new StreamSource(getTestFileStream()));
+    }
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3520</td> 
+     <td>-1422651180</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testHttpGetWithParamsViaHeader()</td> 
+     <td>public void testHttpGetWithParamsViaHeader() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedHeaderReceived("one", "uno"); mock.expectedHeaderReceived("two", "dos"); mock.expectedHeaderReceived(Exchange.HTTP_METHOD, "GET"); // give Jetty time to startup properly Thread.sleep(1000); template.requestBodyAndHeader(serverUri, null, Exchange.HTTP_QUERY, "one=uno&amp;two=dos"); assertMockEndpointsSatisfied(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1672</td> 
+     <td>-1422651180</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>448b62d4feb24406b5a0ced6a395100c81c90190</td> 
+     <td>None</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>SATD_ADDED</td> 
+     <td>testHttpGetWithParamsViaHeader()</td> 
+     <td>public void testHttpGetWithParamsViaHeader() throws Exception</td> 
+     <td> MockEndpoint mock = getMockEndpoint("mock:result"); mock.expectedHeaderReceived("one", "uno"); mock.expectedHeaderReceived("two", "dos"); mock.expectedHeaderReceived(Exchange.HTTP_METHOD, "GET"); // give Jetty time to startup properly Thread.sleep(1000); template.requestBodyAndHeader(serverUri, null, Exchange.HTTP_QUERY, "one=uno&amp;two=dos"); assertMockEndpointsSatisfied(); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

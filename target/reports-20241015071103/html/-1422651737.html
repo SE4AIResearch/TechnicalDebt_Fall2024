@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>571</td> <td>-1422651737</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>4fd7a78440f1f1537924672ebff3bc733a1663b9</td> <td>None</td> <td>TODO get the test fixed</td> <td>SATD_ADDED</td> <td>xtestParseRouteWithInterceptorXml()</td> <td>public void xtestParseRouteWithInterceptorXml() throws Exception</td> <td>
+    RouteType route = assertOneRoute("routeWithInterceptor.xml");
+    assertFrom(route, "seda:a");
+    assertChildTo("to", route, "seda:d");
+    assertInterceptorRefs(route, "interceptor1", "interceptor2");
+</td> </tr></table></body></html>

@@ -1,0 +1,65 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4297</td> <td>1242677805</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>504dd024b88c4cb1160233f56a58086018440198</td> <td>None</td> <td>This may have been triggered by branch level access controls.
+Log what the heck is going on, as detailed as we can.
+</td> <td>SATD_ADDED</td> <td>runImpl()</td> <td>protected void runImpl() throws IOException, Failure</td> <td>
+    if (!projectControl.canRunReceivePack()) {
+        throw new Failure(1, "fatal: receive-pack not permitted on this server");
+    }
+    final ReceiveCommits receive = factory.create(projectControl, repo);
+    ReceiveCommits.Capable r = receive.canUpload();
+    if (r != ReceiveCommits.Capable.OK) {
+        throw new UnloggedFailure(1, "\nfatal: " + r.getMessage());
+    }
+    verifyProjectVisible("reviewer", reviewerId);
+    verifyProjectVisible("CC", ccId);
+    receive.addReviewers(reviewerId);
+    receive.addExtraCC(ccId);
+    final ReceivePack rp = receive.getReceivePack();
+    rp.setRefLogIdent(currentUser.newRefLogIdent());
+    rp.setTimeout(config.getTimeout());
+    try {
+        rp.receive(in, out, err);
+    } catch (InterruptedIOException err) {
+        throw new Failure(128, "fatal: client IO read/write timeout", err);
+    } catch (UnpackException badStream) {
+        // This may have been triggered by branch level access controls.
+        // Log what the heck is going on, as detailed as we can.
+        // 
+        StringBuilder msg = new StringBuilder();
+        msg.append("Unpack error on project \"" + projectControl.getProject().getName() + "\":\n");
+        msg.append("  RefFilter: " + rp.getRefFilter());
+        if (rp.getRefFilter() == RefFilter.DEFAULT) {
+            msg.append("DEFAULT");
+        } else if (rp.getRefFilter() instanceof VisibleRefFilter) {
+            msg.append("VisibleRefFilter");
+        } else {
+            msg.append(rp.getRefFilter().getClass());
+        }
+        msg.append("\n");
+        if (rp.getRefFilter() instanceof VisibleRefFilter) {
+            Map<String, Ref> adv = rp.getAdvertisedRefs();
+            msg.append("  Visible references (" + adv.size() + "):\n");
+            for (Ref ref : adv.values()) {
+                msg.append("  - " + ref.getObjectId().abbreviate(8).name() + " " + ref.getName() + "\n");
+            }
+            List<Ref> hidden = new ArrayList<Ref>();
+            for (Ref ref : rp.getRepository().getAllRefs().values()) {
+                if (!adv.containsKey(ref.getName())) {
+                    hidden.add(ref);
+                }
+            }
+            msg.append("  Hidden references (" + hidden.size() + "):\n");
+            for (Ref ref : hidden) {
+                msg.append("  - " + ref.getObjectId().abbreviate(8).name() + " " + ref.getName() + "\n");
+            }
+        }
+        IOException detail = new IOException(msg.toString(), badStream);
+        throw new Failure(128, "fatal: Unpack error, check server log", detail);
+    }
+</td> </tr></table></body></html>

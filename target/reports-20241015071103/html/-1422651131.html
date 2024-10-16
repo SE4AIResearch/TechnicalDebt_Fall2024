@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1744</td> 
+     <td>-1422651131</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>3f3768deaa025a6e6e8ca160b23ff595fde2d758</td> 
+     <td>maybe we should check completion after the aggregation</td> 
+     <td>maybe we should check completion after the aggregation</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>doAggregation(Object, Exchange)</td> 
+     <td>private synchronized Exchange doAggregation(Object key, Exchange exchange)</td> 
+     <td> // TODO: lock this based on keys so we can run in parallel groups if (LOG.isTraceEnabled()) { LOG.trace("+++ start +++ onAggregation for key " + key); } Exchange answer; Exchange oldExchange = aggregationRepository.get(key); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, 0, Integer.class); size++; } // check if we are complete boolean complete = false; if (isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, newExchange); // remove it afterwards newExchange.removeProperty(Exchange.AGGREGATED_SIZE); } // prepare the exchanges for aggregation and aggregate it ExchangeHelper.prepareAggregation(oldExchange, newExchange); answer = onAggregation(oldExchange, exchange); answer.setProperty(Exchange.AGGREGATED_SIZE, size); // maybe we should check completion after the aggregation if (!isEagerCheckCompletion()) { // put the current aggregated size on the exchange so its avail during completion check answer.setProperty(Exchange.AGGREGATED_SIZE, size); complete = isCompleted(key, answer); } // only need to update aggregation repository if we are not complete if (!complete) { if (LOG.isTraceEnabled()) { LOG.trace("In progress aggregated exchange: " + answer + " with correlation key:" + key); } aggregationRepository.add(key, answer); } if (complete) { onCompletion(key, answer, false); } if (LOG.isTraceEnabled()) { LOG.trace("+++ end +++ onAggregation for key " + key + " with size " + size); } return answer; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1743</td> 
+     <td>-1422651131</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>bd8441ecb0209060afbd432a9684df58031730c6</td> 
+     <td>None</td> 
+     <td>maybe we should check completion after the aggregation</td> 
+     <td>SATD_ADDED</td> 
+     <td>process(Exchange)</td> 
+     <td>public void process(Exchange exchange) throws Exception</td> 
+     <td> // compute correlation expression Object key = correlationExpression.evaluate(exchange, Object.class); if (ObjectHelper.isEmpty(key)) { // we have a bad correlation key if (isIgnoreBadCorrelationKeys()) { if (LOG.isDebugEnabled()) { LOG.debug("Correlation key could not be evaluated to a value. Exchange will be ignored: " + exchange); } return; } else { throw new CamelExchangeException("Correlation key could not be evaluated to a value", exchange); } } // is the correlation key closed? if (isCloseCorrelationKeyOnCompletion()) { if (closedCorrelationKeys.contains(key)) { throw new CamelExchangeException("Correlation key has been closed", exchange); } } Exchange oldExchange = aggregationRepository.get(key); Exchange newExchange = exchange; Integer size = 1; if (oldExchange != null) { size = oldExchange.getProperty(Exchange.AGGREGATED_SIZE, Integer.class); ObjectHelper.notNull(size, Exchange.AGGREGATED_SIZE + " on " + oldExchange); size++; } // check if we are complete boolean complete = false; if (isEagerCheckCompletion()) { complete = isCompleted(key, exchange, size); } // prepare the exchanges for aggregation and aggregate it ExchangeHelper.prepareAggregation(oldExchange, newExchange); newExchange = onAggregation(oldExchange, newExchange); newExchange.setProperty(Exchange.AGGREGATED_SIZE, size); // maybe we should check completion after the aggregation if (!isEagerCheckCompletion()) { // use the new aggregated exchange when testing complete = isCompleted(key, newExchange, size); } // only need to update aggregation repository if we are not complete if (!complete &amp;&amp; !newExchange.equals(oldExchange)) { if (LOG.isTraceEnabled()) { LOG.trace("Put exchange:" + newExchange + " with correlation key:" + key); } aggregationRepository.add(key, newExchange); } if (complete) { onCompletion(key, newExchange); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

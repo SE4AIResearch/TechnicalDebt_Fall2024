@@ -1,0 +1,67 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4316</td> 
+     <td>1242677783</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>05687e9ba30fc1f6428fc4fcf6443d5fb83eff38</td> 
+     <td>TODO We should alert the user to this message on the HTTP response channel, assuming Git will even report it to them. </td> 
+     <td>TODO We should alert the user to this message on the HTTP response channel, assuming Git will even report it to them. </td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>configure()</td> 
+     <td>protected void configure()</td> 
+     <td> bind(Resolver.class); bind(Upload.class); bind(Receive.class); bind(ReceiveFilter.class); install(new CacheModule() { @Override protected void configure() { TypeLiteral<cache>
+       <advertisedobjectscachekey, set<objectid>
+        &gt;&gt; cache = new TypeLiteral
+        <cache>
+         <advertisedobjectscachekey, set<objectid>
+          &gt;&gt;() { }; core(cache, ID_CACHE).memoryLimit(4096).maxAge(10, TimeUnit.MINUTES); } }); 
+         </advertisedobjectscachekey,>
+        </cache>
+       </advertisedobjectscachekey,>
+      </cache></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4250</td> 
+     <td>1242677783</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>db5fb94dc12d6ef724c417be48f76f203cacb397</td> 
+     <td>None</td> 
+     <td>TODO We should alert the user to this message on the HTTP response channel, assuming Git will even report it to them. </td> 
+     <td>SATD_ADDED</td> 
+     <td>create(HttpServletRequest, Repository)</td> 
+     <td>public ReceivePack create(HttpServletRequest req, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException</td> 
+     <td> final ProjectControl pc = getProjectControl(req); if (pc.getCurrentUser() instanceof IdentifiedUser) { final IdentifiedUser user = (IdentifiedUser) pc.getCurrentUser(); final ReceiveCommits rc = factory.create(pc, db); final ReceiveCommits.Capable s = rc.canUpload(); if (s != ReceiveCommits.Capable.OK) { // TODO We should alert the user to this message on the HTTP // response channel, assuming Git will even report it to them. // final String who = user.getUserName(); final String why = s.getMessage(); log.warn("Rejected push from " + who + ": " + why); throw new ServiceNotEnabledException(); } rc.getReceivePack().setRefLogIdent(user.newRefLogIdent()); return rc.getReceivePack(); } else { throw new ServiceNotAuthorizedException(); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

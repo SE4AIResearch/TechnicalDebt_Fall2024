@@ -1,0 +1,19 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3873</td> <td>-1422649948</td><td>apache/camel</td><td>Gregor Zurowski</td><td>d3bfca99d8dfdf51ee3e52d4622f7ecd71ed66f9</td> <td>None</td> <td>TODO: reloading all type converters when one service is removed is suboptimal...</td> <td>SATD_ADDED</td> <td>removedService(ServiceReference<TypeConverterLoader>, Object)</td> <td>public void removedService(ServiceReference<TypeConverterLoader> serviceReference, Object o)</td> <td>
+    LOG.trace("RemovedService: {}, Bundle: {}", serviceReference, serviceReference.getBundle());
+    try {
+        ServiceHelper.stopService(this.delegate);
+    } catch (Exception e) {
+        // ignore
+        LOG.debug("Error stopping service due: " + e.getMessage() + ". This exception will be ignored.", e);
+    }
+    // It can force camel to reload the type converter again
+    this.delegate = null;
+// TODO: reloading all type converters when one service is removed is suboptimal...
+</td> </tr></table></body></html>

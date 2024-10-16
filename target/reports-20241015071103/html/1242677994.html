@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4803</td> 
+     <td>1242677994</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Stefan Beller</td>
+     <td>c5993446ebe1e1627b42bb44555c4635aca3bb26</td> 
+     <td>TODO(yyonas): atomic change is not propagated.</td> 
+     <td>TODO(yyonas): atomic change is not propagated.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>setNew(ChangeNotes, ChangeMessage)</td> 
+     <td>private void setNew(ChangeNotes notes, final ChangeMessage msg) throws NoSuchChangeException, IOException</td> 
+     <td> Change c = notes.getChange(); Change change = null; ChangeUpdate update = null; try { db.changes().beginTransaction(c.getId()); try { change = db.changes().atomicUpdate(c.getId(), new AtomicUpdate<change>
+       () { @Override public Change update(Change c) { if (c.getStatus().isOpen()) { c.setStatus(Change.Status.NEW); ChangeUtil.updated(c); } return c; } }); ChangeControl control = changeControl(change); // TODO(yyonas): atomic change is not propagated. update = updateFactory.create(control, c.getLastUpdatedOn()); if (msg != null) { cmUtil.addChangeMessage(db, update, msg); } db.commit(); } finally { db.rollback(); } } catch (OrmException err) { logWarn("Cannot record merge failure message", err); } if (update != null) { update.commit(); } indexer.index(db, change); PatchSetApproval submitter = null; try { submitter = approvalsUtil.getSubmitter(db, notes, notes.getChange().currentPatchSetId()); } catch (Exception e) { logError("Cannot get submitter for change " + notes.getChangeId(), e); } if (submitter != null) { try { hooks.doMergeFailedHook(c, accountCache.get(submitter.getAccountId()).getAccount(), db.patchSets().get(c.currentPatchSetId()), msg.getMessage(), db); } catch (OrmException ex) { logError("Cannot run hook for merge failed " + c.getId(), ex); } } 
+      </change></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4649</td> 
+     <td>1242677994</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>086006ec35ef2a5bddb14a3a4ef427ad6085b01e</td> 
+     <td>None</td> 
+     <td>TODO(yyonas): atomic change is not propagated.</td> 
+     <td>SATD_ADDED</td> 
+     <td>sendMergeFail(ChangeNotes, ChangeMessage, boolean)</td> 
+     <td>private void sendMergeFail(ChangeNotes notes, final ChangeMessage msg, boolean makeNew) throws NoSuchChangeException, IOException</td> 
+     <td> PatchSetApproval submitter = null; try { submitter = approvalsUtil.getSubmitter(db, notes, notes.getChange().currentPatchSetId()); } catch (Exception e) { log.error("Cannot get submitter", e); } if (!makeNew) { RetryStatus retryStatus = getRetryStatus(submitter, msg, notes); if (retryStatus == RetryStatus.RETRY_NO_MESSAGE) { return; } else if (retryStatus == RetryStatus.UNSUBMIT) { makeNew = true; } } final boolean setStatusNew = makeNew; final Change c = notes.getChange(); Change change = null; ChangeUpdate update = null; try { db.changes().beginTransaction(c.getId()); try { change = db.changes().atomicUpdate(c.getId(), new AtomicUpdate<change>
+       () { @Override public Change update(Change c) { if (c.getStatus().isOpen()) { if (setStatusNew) { c.setStatus(Change.Status.NEW); } ChangeUtil.updated(c); } return c; } }); ChangeControl control = changeControl(change); // TODO(yyonas): atomic change is not propagated. update = updateFactory.create(control, c.getLastUpdatedOn()); cmUtil.addChangeMessage(db, update, msg); db.commit(); } finally { db.rollback(); } } catch (OrmException err) { log.warn("Cannot record merge failure message", err); } if (update != null) { update.commit(); } CheckedFuture<!--?, IOException--> indexFuture; if (change != null) { indexFuture = indexer.indexAsync(change.getId()); } else { indexFuture = null; } final PatchSetApproval from = submitter; workQueue.getDefaultQueue().submit(requestScopePropagator.wrap(new Runnable() { @Override public void run() { PatchSet patchSet; try { ReviewDb reviewDb = schemaFactory.open(); try { patchSet = reviewDb.patchSets().get(c.currentPatchSetId()); } finally { reviewDb.close(); } } catch (Exception e) { log.error("Cannot send email notifications about merge failure", e); return; } try { final MergeFailSender cm = mergeFailSenderFactory.create(c); if (from != null) { cm.setFrom(from.getAccountId()); } cm.setPatchSet(patchSet); cm.setChangeMessage(msg); cm.send(); } catch (Exception e) { log.error("Cannot send email notifications about merge failure", e); } } @Override public String toString() { return "send-email merge-failed"; } })); if (submitter != null) { try { hooks.doMergeFailedHook(c, accountCache.get(submitter.getAccountId()).getAccount(), db.patchSets().get(c.currentPatchSetId()), msg.getMessage(), db); } catch (OrmException ex) { log.error("Cannot run hook for merge failed " + c.getId(), ex); } } if (indexFuture != null) { try { indexFuture.checkedGet(); } catch (IOException e) { log.error("Failed to index new change message", e); } } 
+      </change></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

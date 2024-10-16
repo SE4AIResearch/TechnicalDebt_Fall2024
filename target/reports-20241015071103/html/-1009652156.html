@@ -1,0 +1,51 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5570</td> <td>-1009652156</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>ideally would add some offsets/shifts in here (e.g., via extra header
+data?), but...significant work to hand-generate each header, and no
+bzip2 spec for reference</td> <td>SATD_ADDED</td> <td>doMultipleBzip2BufferSizes(JobConf, boolean)</td> <td>private static void doMultipleBzip2BufferSizes(JobConf jConf, boolean useNative) throws IOException</td> <td>
+    System.out.println(COLOR_MAGENTA + "doMultipleBzip2BufferSizes() using " + "default bzip2 decompressor" + COLOR_NORMAL);
+    jConf.setBoolean("io.native.lib.available", useNative);
+    int bufferSize;
+    // ideally would add some offsets/shifts in here (e.g., via extra header
+    // data?), but...significant work to hand-generate each header, and no
+    // bzip2 spec for reference
+    for (bufferSize = 1; bufferSize < 34; ++bufferSize) {
+        jConf.setInt("io.file.buffer.size", bufferSize);
+        doSingleBzip2BufferSize(jConf);
+    }
+    bufferSize = 512;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 2 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 4 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 63 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 64 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 65 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 127 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 128 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+    bufferSize = 129 * 1024;
+    jConf.setInt("io.file.buffer.size", bufferSize);
+    doSingleBzip2BufferSize(jConf);
+</td> </tr></table></body></html>

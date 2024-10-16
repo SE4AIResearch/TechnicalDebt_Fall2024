@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4731</td> <td>1242678043</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>8e481f3c3383dcd4c47335c180d9a64c5b92acad</td> <td>None</td> <td>TODO(dborowitz): Convert all of these to Paths.</td> <td>SATD_ADDED</td> <td>resolve(String)</td> <td>public File resolve(final String path)</td> <td>
+    if (path != null && !path.isEmpty()) {
+        File loc = new File(path);
+        if (!loc.isAbsolute()) {
+            loc = new File(site_path, path);
+        }
+        try {
+            return loc.getCanonicalFile();
+        } catch (IOException e) {
+            return loc.getAbsoluteFile();
+        }
+    }
+    return null;
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1215</td> 
+     <td>-1422651422</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>d060d2ed3bc7965cabf6c9231214bca509111a28</td> 
+     <td>TODO why can't we find these from the maven pom.xml with transitive dependency?</td> 
+     <td>lets deploy the bundles we need</td> 
+     <td>SATD_REMOVED</td> 
+     <td>configure()</td> 
+     <td>public static Option[] configure()</td> 
+     <td> return options(// install log service using pax runners profile abstraction (there are more profiles, like DS) logProfile(), // this is how you set the default log level when using pax logging (logProfile) systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), // lets deploy the bundles we need mavenBundleAsInProject("org.apache.camel", "camel-core"), wrappedBundle(mavenBundleAsInProject("commons-logging", "commons-logging")), felix(), equinox()); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1211</td> 
+     <td>-1422651422</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>4672f457a77b21bfc997e1b68f291f44a16a87e9</td> 
+     <td>None</td> 
+     <td>TODO why can't we find these from the maven pom.xml with transitive dependency?</td> 
+     <td>SATD_ADDED</td> 
+     <td>configure()</td> 
+     <td>public static Option[] configure()</td> 
+     <td> return options(// install log service using pax runners profile abstraction (there are more profiles, like DS) // logProfile(), // this is how you set the default log level when using pax logging (logProfile) // systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level").value("INFO"), // TODO why can't we find these from the maven pom.xml with transitive dependency? mavenBundle().groupId("org.apache.camel").artifactId("camel-core").version("2.0-SNAPSHOT"), wrappedBundle(mavenBundle().groupId("commons-logging").artifactId("commons-logging").version("1.1.1")), felix(), equinox()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1732</td> <td>-1422651140</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>ba890175cae8a4bd3b7ac5b6ab29037ec52cb83c</td> <td>None</td> <td>appears to cause issue on some windows with loading jruby</td> <td>SATD_ADDED</td> <td>createCamelContext()</td> <td>protected CamelContext createCamelContext() throws Exception</td> <td>
+    // appears to cause issue on some windows with loading jruby
+    if (isPlatform("windows")) {
+        return super.createCamelContext();
+    }
+    CamelContext answer = super.createCamelContext();
+    RubyCamel.setCamelContext(answer);
+    // TODO make a better way to load ruby based route definitions!
+    // must clear before running script
+    RubyCamel.clearRoutes();
+    // now lets run the script
+    runScript(scriptName);
+    List<RouteBuilder> list = RubyCamel.getRoutes();
+    log.info("Found route builders: " + list);
+    for (RouteBuilder routeBuilder : list) {
+        answer.addRoutes(routeBuilder);
+    }
+    return answer;
+</td> </tr></table></body></html>

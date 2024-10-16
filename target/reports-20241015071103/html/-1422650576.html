@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2754</td> 
+     <td>-1422650576</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>b67f5f903275776f619d536c172682965e14dcd3</td> 
+     <td>TODO: Compute the method to use</td> 
+     <td>just assume GET for now, we will later change that to the actual method to use</td> 
+     <td>SATD_REMOVED</td> 
+     <td>toNettyRequest(Message, String, NettyHttpConfiguration)</td> 
+     <td>public HttpRequest toNettyRequest(Message message, String uri, NettyHttpConfiguration configuration) throws Exception</td> 
+     <td> LOG.trace("toNettyRequest: {}", message); // the message body may already be a Netty HTTP response if (message.getBody() instanceof HttpRequest) { return (HttpRequest) message.getBody(); } // just assume GET for now, we will later change that to the actual method to use HttpRequest request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri); TypeConverter tc = message.getExchange().getContext().getTypeConverter(); // append headers // must use entrySet to ensure case of keys is preserved for (Map.Entry<string, object>
+        entry : message.getHeaders().entrySet()) { String key = entry.getKey(); Object value = entry.getValue(); // use an iterator as there can be multiple values. (must not use a delimiter) final Iterator<!--?--> it = ObjectHelper.createIterator(value, null, true); while (it.hasNext()) { String headerValue = tc.convertTo(String.class, it.next()); if (headerValue != null &amp;&amp; headerFilterStrategy != null &amp;&amp; !headerFilterStrategy.applyFilterToCamelHeaders(key, headerValue, message.getExchange())) { LOG.trace("HTTP-Header: {}={}", key, headerValue); request.addHeader(key, headerValue); } } } Object body = message.getBody(); if (body != null) { // support bodies as native Netty ChannelBuffer buffer; if (body instanceof ChannelBuffer) { buffer = (ChannelBuffer) body; } else { // try to convert to buffer first buffer = message.getBody(ChannelBuffer.class); if (buffer == null) { // fallback to byte array as last resort byte[] data = message.getMandatoryBody(byte[].class); buffer = ChannelBuffers.copiedBuffer(data); } } if (buffer != null) { request.setContent(buffer); int len = buffer.readableBytes(); // set content-length request.setHeader(HttpHeaders.Names.CONTENT_LENGTH, len); LOG.trace("Content-Length: {}", len); } else { // we do not support this kind of body throw new NoTypeConversionAvailableException(body, ChannelBuffer.class); } } // update HTTP method accordingly as we know if we have a body or not HttpMethod method = NettyHttpHelper.createMethod(message, body != null); request.setMethod(method); // set the content type in the response. String contentType = MessageHelper.getContentType(message); if (contentType != null) { // set content-type request.setHeader(HttpHeaders.Names.CONTENT_TYPE, contentType); LOG.trace("Content-Type: {}", contentType); } // configure connection to accordingly to keep alive configuration // favor using the header from the message String connection = message.getHeader(HttpHeaders.Names.CONNECTION, String.class); if (connection == null) { // fallback and use the keep alive from the configuration if (configuration.isKeepAlive()) { connection = HttpHeaders.Values.KEEP_ALIVE; } else { connection = HttpHeaders.Values.CLOSE; } } request.setHeader(HttpHeaders.Names.CONNECTION, connection); LOG.trace("Connection: {}", connection); return request; 
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2746</td> 
+     <td>-1422650576</td>
+     <td>apache/camel</td>
+     <td>Babak Vahdat</td>
+     <td>ac6a8c16e797fe163984c99bb65d17b468edd1b5</td> 
+     <td>None</td> 
+     <td>TODO: Compute the method to use</td> 
+     <td>SATD_ADDED</td> 
+     <td>toNettyRequest(Message, String)</td> 
+     <td>public HttpRequest toNettyRequest(Message message, String uri) throws Exception</td> 
+     <td> LOG.trace("toNettyRequest: {}", message); // the message body may already be a Netty HTTP response if (message.getBody() instanceof HttpRequest) { return (HttpRequest) message.getBody(); } // TODO: Compute the method to use HttpRequest request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, uri); TypeConverter tc = message.getExchange().getContext().getTypeConverter(); // append headers // must use entrySet to ensure case of keys is preserved for (Map.Entry<string, object>
+        entry : message.getHeaders().entrySet()) { String key = entry.getKey(); Object value = entry.getValue(); // use an iterator as there can be multiple values. (must not use a delimiter) final Iterator<!--?--> it = ObjectHelper.createIterator(value, null); while (it.hasNext()) { String headerValue = tc.convertTo(String.class, it.next()); if (headerValue != null &amp;&amp; headerFilterStrategy != null &amp;&amp; !headerFilterStrategy.applyFilterToCamelHeaders(key, headerValue, message.getExchange())) { LOG.trace("HTTP-Header: {}={}", key, headerValue); request.addHeader(key, headerValue); } } } Object body = message.getBody(); if (body != null) { // support bodies as native Netty ChannelBuffer buffer; if (body instanceof ChannelBuffer) { buffer = (ChannelBuffer) body; } else { // try to convert to buffer first buffer = message.getBody(ChannelBuffer.class); if (buffer == null) { // fallback to byte array as last resort byte[] data = message.getMandatoryBody(byte[].class); buffer = ChannelBuffers.copiedBuffer(data); } } if (buffer != null) { request.setContent(buffer); int len = buffer.readableBytes(); // set content-length request.setHeader(HttpHeaders.Names.CONTENT_LENGTH, len); LOG.trace("Content-Length: {}", len); } } // set the content type in the response. String contentType = MessageHelper.getContentType(message); if (contentType != null) { // set content-type request.setHeader(HttpHeaders.Names.CONTENT_TYPE, contentType); LOG.trace("Content-Type: {}", contentType); } // TODO: keep alive should be something we can control String keepAlive = HttpHeaders.Values.CLOSE; request.setHeader(HttpHeaders.Names.CONNECTION, keepAlive); LOG.trace("Connection: {}", keepAlive); return request; 
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

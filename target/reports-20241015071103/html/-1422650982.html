@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2042</td> <td>-1422650982</td><td>apache/camel</td><td>Claus Ibsen</td><td>befa00e346b0cff51acdb7860401781182ccc3db</td> <td>None</td> <td>here we enrich the document by changing the incident id to another value
+you can of course do a lot more in your use-case</td> <td>SATD_ADDED</td> <td>enrich(Document)</td> <td>public Document enrich(Document doc)</td> <td>
+    Node node = doc.getElementsByTagName("incidentId").item(0);
+    String incident = node.getTextContent();
+    // here we enrich the document by changing the incident id to another value
+    // you can of course do a lot more in your use-case
+    node.setTextContent("456");
+    System.out.println("Incident was " + incident + ", changed to 456");
+    return doc;
+</td> </tr></table></body></html>

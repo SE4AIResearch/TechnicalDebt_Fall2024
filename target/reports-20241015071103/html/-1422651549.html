@@ -1,0 +1,38 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>916</td> <td>-1422651549</td><td>apache/camel</td><td>William Tam</td><td>e2e71c4ef4c749b303934c3473d77104c89a850a</td> <td>None</td> <td>TODO: move option to endpoint to get rid of consumer. prefix
+TODO: remove idempotent again, we should just use the idempotent DSL we already have</td> <td>SATD_ADDED</td> <td>poll()</td> <td>protected void poll() throws Exception</td> <td>
+    // gather list of files to process
+    List<File> files = new ArrayList<File>();
+    scanFilesToPoll(endpoint.getFile(), true, files);
+    // sort files using file comparator if provided
+    if (endpoint.getSorter() != null) {
+        Collections.sort(files, endpoint.getSorter());
+    }
+    // sort using build in sorters that is expression based
+    // first we need to convert to FileExchange objects so we can sort using expressions
+    List<FileExchange> exchanges = new ArrayList<FileExchange>(files.size());
+    for (File file : files) {
+        FileExchange exchange = endpoint.createExchange(file);
+        endpoint.configureMessage(file, exchange.getIn());
+        exchanges.add(exchange);
+    }
+    // sort files using exchange comparator if provided
+    if (endpoint.getSortBy() != null) {
+        Collections.sort(exchanges, endpoint.getSortBy());
+    }
+    // consume files one by one
+    int total = exchanges.size();
+    for (int index = 0; index < total; index++) {
+        FileExchange exchange = exchanges.get(index);
+        // add current index and total as headers
+        exchange.getIn().setHeader(FileComponent.HEADER_FILE_BATCH_INDEX, index);
+        exchange.getIn().setHeader(FileComponent.HEADER_FILE_BATCH_TOTAL, total);
+        processExchange(exchange);
+    }
+</td> </tr></table></body></html>

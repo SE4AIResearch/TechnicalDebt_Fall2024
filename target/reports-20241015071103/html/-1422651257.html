@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1551</td> <td>-1422651257</td><td>apache/camel</td><td>Claus Ibsen</td><td>2e44d8d5c4f0f75f45cd293a03c867ad50567064</td> <td>None</td> <td>TODO: requires online against jabber. Test this manually</td> <td>SATD_ADDED</td> <td>testXmppChat()</td> <td>public void testXmppChat() throws Exception</td> <td>
+    // TODO: requires online against jabber. Test this manually
+    consumerEndpoint = (MockEndpoint) context.getEndpoint("mock:out");
+    consumerEndpoint.expectedBodiesReceived(body1, body2);
+    // will send chat messages to the room
+    template.sendBody("direct:toProducer", body1);
+    template.sendBody("direct:toProducer", body2);
+    consumerEndpoint.assertIsSatisfied();
+</td> </tr></table></body></html>

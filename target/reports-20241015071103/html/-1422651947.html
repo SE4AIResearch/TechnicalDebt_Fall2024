@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>143</td> <td>-1422651947</td><td>apache/camel</td><td>James Strachan</td><td>aabfced5c4546206608cdd1699234427215e61a1</td> <td>None</td> <td>todo set the endpoint name we were received from</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder()</td> <td>
+    final Processor<Exchange> processor = new Processor<Exchange>() {
+
+        public void process(Exchange exchange) {
+            Integer number = exchange.getIn().getBody(Integer.class);
+            if (number == null) {
+                number = 0;
+            }
+            // todo set the endpoint name we were received from
+            // exchange.setProperty(exchange.get);
+            number = number + 1;
+            exchange.getOut().setBody(number);
+        }
+    };
+    return new RouteBuilder<Exchange>() {
+
+        public void configure() {
+            from("direct:a").pipeline("direct:x", "direct:y", "direct:z", "mock:result");
+            from("direct:x").process(processor);
+            from("direct:y").process(processor);
+            from("direct:z").process(processor);
+        }
+    };
+</td> </tr></table></body></html>

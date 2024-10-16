@@ -1,0 +1,71 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3128</td> 
+     <td>-1422650328</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>2e4e7f88ac2ed9329790737f28b67b626b0b7d4a</td> 
+     <td>TODO: should we support not starting rest?</td> 
+     <td>convert rests into routes so we reuse routes for runtime</td> 
+     <td>SATD_REMOVED</td> 
+     <td>addRestDefinitions(Collection<restdefinition>
+       )
+      </restdefinition></td> 
+     <td>public void addRestDefinitions(Collection<restdefinition>
+        restDefinitions) throws Exception
+      </restdefinition></td> 
+     <td> this.restDefinitions.addAll(restDefinitions); // convert rests into routes so we reuse routes for runtime List<routedefinition>
+        routes = new ArrayList
+       <routedefinition>
+        (); for (RestDefinition rest : restDefinitions) { routes.addAll(rest.asRouteDefinition(this)); } addRouteDefinitions(routes); 
+       </routedefinition>
+      </routedefinition></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3126</td> 
+     <td>-1422650328</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>3c2bff286d8d4179ff2defa460cb03e7fb22e4a1</td> 
+     <td>None</td> 
+     <td>TODO: should we support not starting rest?</td> 
+     <td>SATD_ADDED</td> 
+     <td>addRestDefinitions(Collection<restdefinition>
+       )
+      </restdefinition></td> 
+     <td>public void addRestDefinitions(Collection<restdefinition>
+        restDefinitions) throws Exception
+      </restdefinition></td> 
+     <td> this.restDefinitions.addAll(restDefinitions); // TODO: should we support not starting rest? // if (shouldStartRoutes()) { // startRouteDefinitions(routeDefinitions); // } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

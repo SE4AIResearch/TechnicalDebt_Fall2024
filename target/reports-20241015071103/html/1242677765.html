@@ -1,0 +1,49 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4229</td> <td>1242677765</td><td>GerritCodeReview/gerrit</td><td>Ulrik Sjolin</td><td>44671f5c6929a8f05223dd359182610286ceb98a</td> <td>None</td> <td>TODO Instead of opening messages by strict age, do it by \"unread\"?</td> <td>SATD_ADDED</td> <td>addComments(ChangeDetail)</td> <td>private void addComments(final ChangeDetail detail)</td> <td>
+    comments.clear();
+    final Label hdr = new Label(Util.C.changeScreenComments());
+    hdr.setStyleName("gerrit-BlockHeader");
+    comments.add(hdr);
+    final AccountInfoCache accts = detail.getAccounts();
+    final List<ChangeMessage> msgList = detail.getMessages();
+    if (msgList.size() > 1) {
+        comments.add(messagesMenuBar());
+    }
+    final long AGE = 7 * 24 * 60 * 60 * 1000L;
+    final Timestamp aged = new Timestamp(System.currentTimeMillis() - AGE);
+    for (int i = 0; i < msgList.size(); i++) {
+        final ChangeMessage msg = msgList.get(i);
+        final AccountInfo author;
+        if (msg.getAuthor() != null) {
+            author = accts.get(msg.getAuthor());
+        } else {
+            final Account gerrit = new Account(null);
+            gerrit.setFullName(Util.C.messageNoAuthor());
+            author = new AccountInfo(gerrit);
+        }
+        boolean isRecent;
+        if (i == msgList.size() - 1) {
+            isRecent = true;
+        } else {
+            // TODO Instead of opening messages by strict age, do it by "unread"?
+            isRecent = msg.getWrittenOn().after(aged);
+        }
+        final CommentPanel cp = new CommentPanel(author, msg.getWrittenOn(), msg.getMessage());
+        cp.setRecent(isRecent);
+        if (i == msgList.size() - 1) {
+            cp.addStyleName("gerrit-CommentPanel-Last");
+            cp.setOpen(true);
+        }
+        comments.add(cp);
+    }
+    if (msgList.size() > 1) {
+        comments.add(messagesMenuBar());
+    }
+    comments.setVisible(msgList.size() > 0);
+</td> </tr></table></body></html>

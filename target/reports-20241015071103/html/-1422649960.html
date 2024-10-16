@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3868</td> 
+     <td>-1422649960</td>
+     <td>apache/camel</td>
+     <td>Antonin Stefanutti</td>
+     <td>3c0bc162088ca183aa992514999a868f2b8b218d</td> 
+     <td>TODO: would be more correct to add a bean for each Camel context bean</td> 
+     <td>TODO: would be more correct to add a bean for each Camel context bean</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>afterBeanDiscovery(AfterBeanDiscovery, BeanManager)</td> 
+     <td>private void afterBeanDiscovery(@Observes AfterBeanDiscovery abd, BeanManager manager)</td> 
+     <td> // Add @ContextName Camel context beans if missing contextNames.removeAll(contextQualifiers); for (ContextName name : contextNames) { abd.addBean(camelContextBean(manager, AnyLiteral.INSTANCE, name)); } // Add a default Camel context bean if any if (contextQualifiers.isEmpty() &amp;&amp; contextNames.isEmpty()) { abd.addBean(camelContextBean(manager, AnyLiteral.INSTANCE, DefaultLiteral.INSTANCE)); } // Update @ContextName Camel context qualifiers contextQualifiers.addAll(contextNames); // Then update the Camel producer beans for (Map.Entry<method, bean<?>
+       &gt; producer : producerBeans.entrySet()) { Bean<!--?--> bean = producer.getValue(); Set
+       <annotation>
+         qualifiers = new HashSet&lt;&gt;(producerQualifiers.get(producer.getKey())); Class<!--?--> type = producer.getKey().getReturnType(); if (CdiEventEndpoint.class.equals(type)) { for (InjectionPoint ip : cdiEventEndpoints.keySet()) { qualifiers.addAll(ip.getQualifiers()); } } else { if (Endpoint.class.isAssignableFrom(type) || ProducerTemplate.class.isAssignableFrom(type)) { qualifiers.addAll(CdiSpiHelper.excludeElementOfTypes(contextQualifiers, Any.class, Default.class, Named.class)); } } // TODO: would be more correct to add a bean for each Camel context bean abd.addBean(new BeanDelegate&lt;&gt;(bean, qualifiers)); } // Add CDI event endpoint observer methods for (ObserverMethod method : cdiEventEndpoints.values()) { abd.addObserverMethod(method); } 
+       </annotation>
+      </method,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3855</td> 
+     <td>-1422649960</td>
+     <td>apache/camel</td>
+     <td>lburgazzoli</td>
+     <td>0421c24dfcf992f3296ed746469771e3800200e3</td> 
+     <td>None</td> 
+     <td>TODO: would be more correct to add a bean for each Camel context bean</td> 
+     <td>SATD_ADDED</td> 
+     <td>cdiCamelFactoryProducers(AfterBeanDiscovery)</td> 
+     <td>private void cdiCamelFactoryProducers(@Observes AfterBeanDiscovery abd)</td> 
+     <td> for (Map.Entry<method, bean<?>
+       &gt; producer : producerBeans.entrySet()) { Bean<!--?--> bean = producer.getValue(); Set
+       <annotation>
+         qualifiers = new HashSet&lt;&gt;(producerQualifiers.get(producer.getKey())); Class<!--?--> type = producer.getKey().getReturnType(); if (CdiEventEndpoint.class.equals(type)) { for (InjectionPoint ip : cdiEventEndpoints.keySet()) { qualifiers.addAll(ip.getQualifiers()); } } else { if (Endpoint.class.isAssignableFrom(type) || ProducerTemplate.class.isAssignableFrom(type)) { qualifiers.addAll(CdiSpiHelper.excludeElementOfTypes(contextQualifiers, Any.class, Default.class, Named.class)); } } // TODO: would be more correct to add a bean for each Camel context bean abd.addBean(new BeanDelegate&lt;&gt;(bean, qualifiers)); } 
+       </annotation>
+      </method,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

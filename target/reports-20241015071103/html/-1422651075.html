@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1861</td> <td>-1422651075</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>67b40f7142ea54d9d8234fd30ae82c85b3c7176c</td> <td>None</td> <td>sleep a bit so Camel will send the reply a bit later</td> <td>SATD_ADDED</td> <td>handleMessage(Destination, String, String, Exchange)</td> <td>public String handleMessage(@Header("JMSReplyTo") final Destination jmsReplyTo, @Header("JMSCorrelationID") final String id, @Body String body, Exchange exchange) throws Exception</td> <td>
+    assertNotNull(jmsReplyTo);
+    assertTrue("Should be a temp queue", jmsReplyTo.toString().startsWith("temp-queue"));
+    // we send the reply manually (notice we just use a bogus endpoint uri)
+    ProducerTemplate producer = exchange.getContext().createProducerTemplate();
+    producer.send("activemq:queue:xxx", new Processor() {
+
+        public void process(Exchange exchange) throws Exception {
+            exchange.getIn().setBody("Hello Moon");
+            // remember to set correlation id
+            exchange.getIn().setHeader("JMSCorrelationID", id);
+            // this is the real destination we send the reply to
+            exchange.getIn().setHeader(JmsConstants.JMS_DESTINATION, jmsReplyTo);
+        }
+    });
+    // stop it after use
+    producer.stop();
+    // sleep a bit so Camel will send the reply a bit later
+    Thread.sleep(1000);
+    // this will later cause a problem as the temp queue has been deleted
+    // and exceptions will be logged etc
+    return "Hello " + body;
+</td> </tr></table></body></html>

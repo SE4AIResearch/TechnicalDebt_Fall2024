@@ -1,0 +1,64 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>7</td> 
+     <td>-1422652029</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>b2c1576887865e197c22e9f3abf088d652a2d27c</td> 
+     <td>TODO we may want to cache them?</td> 
+     <td>EndpointResolvers could be more recusive in nature if we resolved the reset of the of the URI</td> 
+     <td>SATD_REMOVED</td> 
+     <td>resolve(CamelContainer, String)</td> 
+     <td>public Endpoint<e>
+        resolve(CamelContainer container, String uri)
+      </e></td> 
+     <td> String[] splitURI = ObjectHelper.splitOnCharacter(uri, ":"); if (splitURI == null) throw new IllegalArgumentException("Invalid URI, it did not contain a scheme: " + uri); EndpointResolver resolver; try { resolver = (EndpointResolver) endpointResolverFactory.newInstance(splitURI[0]); } catch (Throwable e) { throw new IllegalArgumentException("Invalid URI, no EndpointResolver registered for scheme : " + splitURI[0], e); } return resolver.resolve(container, uri); // EndpointResolvers could be more recusive in nature if we resolved the reset of the of the URI // return resolver.resolve(container, splitURI[1]); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5</td> 
+     <td>-1422652029</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>9c15e67cde9c4d17f2dfba9c9a3fc3a3dbb9d401</td> 
+     <td>TODO we may want to cache them?</td> 
+     <td>TODO we may want to cache them?</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>resolve(String)</td> 
+     <td>public Endpoint<e>
+        resolve(String uri)
+      </e></td> 
+     <td> // TODO we may want to cache them? return new SedaEndpoint<e>
+       (uri, getExchangeConverter()); 
+      </e></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

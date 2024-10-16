@@ -1,0 +1,115 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1965</td> <td>-1422651022</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>4112dcdd3de53e6dbe37cd6a42f42c76759be184</td> <td>None</td> <td>TODO: should be async</td> <td>SATD_ADDED</td> <td>processInOut(Exchange, AsyncCallback)</td> <td>protected boolean processInOut(final Exchange exchange, final AsyncCallback callback)</td> <td>
+    final org.apache.camel.Message in = exchange.getIn();
+    String destinationName = in.getHeader(JmsConstants.JMS_DESTINATION_NAME, String.class);
+    // remove the header so it wont be propagated
+    in.removeHeader(JmsConstants.JMS_DESTINATION_NAME);
+    if (destinationName == null) {
+        destinationName = endpoint.getDestinationName();
+    }
+    Destination destination = in.getHeader(JmsConstants.JMS_DESTINATION, Destination.class);
+    // remove the header so it wont be propagated
+    in.removeHeader(JmsConstants.JMS_DESTINATION);
+    if (destination == null) {
+        destination = endpoint.getDestination();
+    }
+    if (destination != null) {
+        // prefer to use destination over destination name
+        destinationName = null;
+    }
+    testAndSetRequestor();
+    // note due to JMS transaction semantics we cannot use a single transaction
+    // for sending the request and receiving the response
+    final Destination replyTo = requestor.getReplyTo();
+    if (replyTo == null) {
+        throw new RuntimeExchangeException("Failed to resolve replyTo destination", exchange);
+    }
+    final boolean msgIdAsCorrId = endpoint.getConfiguration().isUseMessageIDAsCorrelationID();
+    String correlationId = in.getHeader("JMSCorrelationID", String.class);
+    if (correlationId == null && !msgIdAsCorrId) {
+        in.setHeader("JMSCorrelationID", getUuidGenerator().generateUuid());
+    }
+    final ValueHolder<FutureTask> futureHolder = new ValueHolder<FutureTask>();
+    final DeferredMessageSentCallback jmsCallback = msgIdAsCorrId ? deferredRequestReplyMap.createDeferredMessageSentCallback() : null;
+    MessageCreator messageCreator = new MessageCreator() {
+
+        public Message createMessage(Session session) throws JMSException {
+            Message message = endpoint.getBinding().makeJmsMessage(exchange, in, session, null);
+            message.setJMSReplyTo(replyTo);
+            requestor.setReplyToSelectorHeader(in, message);
+            FutureTask future;
+            future = (!msgIdAsCorrId) ? requestor.getReceiveFuture(message.getJMSCorrelationID(), endpoint.getConfiguration().getRequestTimeout()) : requestor.getReceiveFuture(jmsCallback);
+            futureHolder.set(future);
+            return message;
+        }
+    };
+    doSend(true, destinationName, destination, messageCreator, jmsCallback);
+    // after sending then set the OUT message id to the JMSMessageID so its identical
+    setMessageId(exchange);
+    // now we should routing asynchronously to not block while waiting for the reply
+    // TODO:
+    // we need a thread pool to use for continue routing messages, just like a seda consumer
+    // and we need options to configure it as well so you can indicate how many threads to use
+    // TODO: Also consider requestTimeout
+    // lets wait and return the response
+    long requestTimeout = endpoint.getConfiguration().getRequestTimeout();
+    try {
+        Message message = null;
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Message sent, now waiting for reply at: " + replyTo.toString());
+            }
+            if (requestTimeout <= 0) {
+                message = (Message) futureHolder.get().get();
+            } else {
+                message = (Message) futureHolder.get().get(requestTimeout, TimeUnit.MILLISECONDS);
+            }
+        } catch (InterruptedException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Future interrupted: " + e, e);
+            }
+        } catch (TimeoutException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Future timed out: " + e, e);
+            }
+        }
+        if (message != null) {
+            // the response can be an exception
+            JmsMessage response = new JmsMessage(message, endpoint.getBinding());
+            Object body = response.getBody();
+            if (endpoint.isTransferException() && body instanceof Exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Reply received. Setting reply as an Exception: " + body);
+                }
+                // we got an exception back and endpoint was configured to transfer exception
+                // therefore set response as exception
+                exchange.setException((Exception) body);
+            } else {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Reply received. Setting reply as OUT message: " + body);
+                }
+                // regular response
+                exchange.setOut(response);
+            }
+            // restore correlation id in case the remote server messed with it
+            if (correlationId != null) {
+                message.setJMSCorrelationID(correlationId);
+                exchange.getOut().setHeader("JMSCorrelationID", correlationId);
+            }
+        } else {
+            // no response, so lets set a timed out exception
+            exchange.setException(new ExchangeTimedOutException(exchange, requestTimeout));
+        }
+    } catch (Exception e) {
+        exchange.setException(e);
+    }
+    // TODO: should be async
+    callback.done(true);
+    return true;
+</td> </tr></table></body></html>

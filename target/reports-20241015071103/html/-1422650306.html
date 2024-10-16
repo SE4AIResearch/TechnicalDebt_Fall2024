@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3165</td> <td>-1422650306</td><td>apache/camel</td><td>Claus Ibsen</td><td>9d23bf31b09f14d3f90e7c4f40f572c0d30ba480</td> <td>None</td> <td>TODO: revisit this</td> <td>SATD_ADDED</td> <td>cloneRestDefinition(JAXBContext, RestDefinition)</td> <td>private static RestDefinition cloneRestDefinition(JAXBContext jaxbContext, RestDefinition def) throws JAXBException</td> <td>
+    Marshaller marshal = jaxbContext.createMarshaller();
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    marshal.marshal(def, bos);
+    ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    Object clone = unmarshaller.unmarshal(bis);
+    if (clone != null && clone instanceof RestDefinition) {
+        RestDefinition def2 = (RestDefinition) clone;
+        // TODO: revisit this
+        /*
+            // need to clone the namespaces also as they are not JAXB marshalled (as they are transient)
+            Iterator<ExpressionNode> it = ProcessorDefinitionHelper.filterTypeInOutputs(def.getOutputs(), ExpressionNode.class);
+            Iterator<ExpressionNode> it2 = ProcessorDefinitionHelper.filterTypeInOutputs(def2.getOutputs(), ExpressionNode.class);
+            while (it.hasNext() && it2.hasNext()) {
+                ExpressionNode node = it.next();
+                ExpressionNode node2 = it2.next();
+
+                NamespaceAwareExpression name = null;
+                NamespaceAwareExpression name2 = null;
+                if (node.getExpression() instanceof NamespaceAwareExpression) {
+                    name = (NamespaceAwareExpression) node.getExpression();
+                }
+                if (node2.getExpression() instanceof NamespaceAwareExpression) {
+                    name2 = (NamespaceAwareExpression) node2.getExpression();
+                }
+
+                if (name != null && name2 != null && name.getNamespaces() != null && !name.getNamespaces().isEmpty()) {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.putAll(name.getNamespaces());
+                    name2.setNamespaces(map);
+                }
+            }*/
+        return def2;
+    }
+    return null;
+</td> </tr></table></body></html>

@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>856</td> <td>-1422651572</td><td>apache/camel</td><td>Jonathan Anstey</td><td>e546b09217a566c79e0a3bbe4ca80c4ac60146e1</td> <td>None</td> <td>will be reported
+eventually</td> <td>SATD_ADDED</td> <td>uncaughtException(Thread, Throwable)</td> <td>public void uncaughtException(Thread thread, Throwable throwable)</td> <td>
+    if (throwable instanceof ThreadDeath) {
+        // harmless
+        return;
+    }
+    boolean doLog = false;
+    synchronized (this) {
+        // only remember the first one
+        if (uncaughtException == null) {
+            // will be reported
+            uncaughtException = throwable;
+        // eventually
+        } else {
+            doLog = true;
+        }
+    }
+    if (doLog) {
+        getLog().warn("an additional exception was thrown", throwable);
+    }
+</td> </tr></table></body></html>

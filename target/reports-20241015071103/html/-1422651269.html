@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1525</td> <td>-1422651269</td><td>apache/camel</td><td>Claus Ibsen</td><td>e2e1364d6e7c865be0a66dae91e43452aa49a297</td> <td>None</td> <td>some OS such as Windows can have problem doing delete IO operations so we may need to
+retry a couple of times to let it work</td> <td>SATD_ADDED</td> <td>deleteFile(String)</td> <td>public boolean deleteFile(String name) throws GenericFileOperationFailedException</td> <td>
+    File file = new File(name);
+    // do not try to delete non existing files
+    if (!file.exists()) {
+        return false;
+    }
+    // some OS such as Windows can have problem doing delete IO operations so we may need to
+    // retry a couple of times to let it work
+    boolean deleted = false;
+    int count = 0;
+    while (!deleted && count < 3) {
+        deleted = file.delete();
+        if (count > 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            // ignore
+            }
+        }
+        count++;
+    }
+    return deleted;
+</td> </tr></table></body></html>

@@ -1,0 +1,96 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5545</td> <td>-1009652181</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>When step == 0, this loop starts as many map tasks it can wrt
+maxTasksPerJob
+When step == 1, this loop starts as many reduce tasks it can wrt
+maxTasksPerJob
+When step == 2, this loop starts as many map tasks it can
+When step == 3, this loop starts as many reduce tasks it can
+
+It may seem that we would improve this loop by queuing jobs we cannot
+start in steps 0 and 1 because of maxTasksPerJob, and using that queue
+in step 2 and 3.
+A first thing to notice is that the time with the current algorithm is
+logarithmic, because it is the sum of (p^k) for k from 1 to N, were
+N is the number of jobs and p is the probability for a job to not exceed
+limits The probability for the cache to be useful would be similar to
+p^N, that is 1/(e^N), whereas its size and the time spent to manage it
+would be in ln(N).
+So it is not a good idea.</td> <td>SATD_ADDED</td> <td>assignTasks(TaskTracker)</td> <td>public synchronized List<Task> assignTasks(TaskTracker taskTracker) throws IOException</td> <td>
+    TaskTrackerStatus taskTrackerStatus = taskTracker.getStatus();
+    final int numTaskTrackers = taskTrackerManager.getClusterStatus().getTaskTrackers();
+    Collection<JobInProgress> jobQueue = jobQueueJobInProgressListener.getJobQueue();
+    Task task;
+    /* Stats about the current taskTracker */
+    final int mapTasksNumber = taskTrackerStatus.countMapTasks();
+    final int reduceTasksNumber = taskTrackerStatus.countReduceTasks();
+    final int maximumMapTasksNumber = taskTrackerStatus.getMaxMapSlots();
+    final int maximumReduceTasksNumber = taskTrackerStatus.getMaxReduceSlots();
+    /*
+     * Statistics about the whole cluster. Most are approximate because of
+     * concurrency
+     */
+    final int[] maxMapAndReduceLoad = getMaxMapAndReduceLoad(maximumMapTasksNumber, maximumReduceTasksNumber);
+    final int maximumMapLoad = maxMapAndReduceLoad[0];
+    final int maximumReduceLoad = maxMapAndReduceLoad[1];
+    final int beginAtStep;
+    /*
+     * When step == 0, this loop starts as many map tasks it can wrt
+     * maxTasksPerJob
+     * When step == 1, this loop starts as many reduce tasks it can wrt
+     * maxTasksPerJob
+     * When step == 2, this loop starts as many map tasks it can
+     * When step == 3, this loop starts as many reduce tasks it can
+     *
+     * It may seem that we would improve this loop by queuing jobs we cannot
+     * start in steps 0 and 1 because of maxTasksPerJob, and using that queue
+     * in step 2 and 3.
+     * A first thing to notice is that the time with the current algorithm is
+     * logarithmic, because it is the sum of (p^k) for k from 1 to N, were
+     * N is the number of jobs and p is the probability for a job to not exceed
+     * limits The probability for the cache to be useful would be similar to
+     * p^N, that is 1/(e^N), whereas its size and the time spent to manage it
+     * would be in ln(N).
+     * So it is not a good idea.
+     */
+    if (maxTasksPerJob != Long.MAX_VALUE) {
+        beginAtStep = 0;
+    } else {
+        beginAtStep = 2;
+    }
+    List<Task> assignedTasks = new ArrayList<Task>();
+    scheduleTasks: for (int step = beginAtStep; step <= 3; ++step) {
+        /* If we reached the maximum load for this step, go to the next */
+        if ((step == 0 || step == 2) && mapTasksNumber >= maximumMapLoad || (step == 1 || step == 3) && reduceTasksNumber >= maximumReduceLoad) {
+            continue;
+        }
+        /* For each job, start its tasks */
+        synchronized (jobQueue) {
+            for (JobInProgress job : jobQueue) {
+                /* Ignore non running jobs */
+                if (job.getStatus().getRunState() != JobStatus.RUNNING) {
+                    continue;
+                }
+                /* Check that we're not exceeding the global limits */
+                if ((step == 0 || step == 1) && (job.runningMaps() + job.runningReduces() >= maxTasksPerJob)) {
+                    continue;
+                }
+                if (step == 0 || step == 2) {
+                    task = job.obtainNewMapTask(taskTrackerStatus, numTaskTrackers, taskTrackerManager.getNumberOfUniqueHosts());
+                } else {
+                    task = job.obtainNewReduceTask(taskTrackerStatus, numTaskTrackers, taskTrackerManager.getNumberOfUniqueHosts());
+                }
+                if (task != null) {
+                    assignedTasks.add(task);
+                    break scheduleTasks;
+                }
+            }
+        }
+    }
+    return assignedTasks;
+</td> </tr></table></body></html>

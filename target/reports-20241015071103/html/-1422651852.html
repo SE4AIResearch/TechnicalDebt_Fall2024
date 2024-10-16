@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>569</td> 
+     <td>-1422651852</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>4fd7a78440f1f1537924672ebff3bc733a1663b9</td> 
+     <td>TODO</td> 
+     <td>TODO Fix the test</td> 
+     <td>SATD_CHANGED</td> 
+     <td>xtestConfigureDeadLetterChannelWithCustomRedeliveryPolicy()</td> 
+     <td>public void xtestConfigureDeadLetterChannelWithCustomRedeliveryPolicy() throws Exception</td> 
+     <td> // START SNIPPET: e4 RouteBuilder builder = new RouteBuilder() { public void configure() { errorHandler(deadLetterChannel("seda:errors").maximumRedeliveries(2).useExponentialBackOff()); from("seda:a").to("seda:b"); } }; // END SNIPPET: e4 List<route>
+        list = getRouteList(builder); assertEquals("Number routes created�" + list, 1, list.size()); for (Route route : list) { Endpoint key = route.getEndpoint(); assertEquals("From endpoint", "seda:a", key.getEndpointUri()); EventDrivenConsumerRoute consumerRoute = assertIsInstanceOf(EventDrivenConsumerRoute.class, route); Processor processor = consumerRoute.getProcessor(); DeadLetterChannel deadLetterChannel = assertIsInstanceOf(DeadLetterChannel.class, processor); RedeliveryPolicy redeliveryPolicy = deadLetterChannel.getRedeliveryPolicy(); assertEquals("getMaximumRedeliveries()", 2, redeliveryPolicy.getMaximumRedeliveries()); assertEquals("isUseExponentialBackOff()", true, redeliveryPolicy.isUseExponentialBackOff()); } 
+      </route></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>379</td> 
+     <td>-1422651852</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>b7891536ba89d6105682aab7d72827567e3f3275</td> 
+     <td>None</td> 
+     <td>TODO</td> 
+     <td>SATD_ADDED</td> 
+     <td>TODO_testConfigureDeadLetterChannelWithCustomRedeliveryPolicy()</td> 
+     <td>public void TODO_testConfigureDeadLetterChannelWithCustomRedeliveryPolicy() throws Exception</td> 
+     <td> // START SNIPPET: e4 RouteBuilder builder = new RouteBuilder() { public void configure() { errorHandler(deadLetterChannel("seda:errors").maximumRedeliveries(2).useExponentialBackOff()); from("seda:a").to("seda:b"); } }; // END SNIPPET: e4 List<route>
+        list = getRouteList(builder); assertEquals("Number routes created�" + list, 1, list.size()); for (Route route : list) { Endpoint key = route.getEndpoint(); assertEquals("From endpoint", "seda:a", key.getEndpointUri()); EventDrivenConsumerRoute consumerRoute = assertIsInstanceOf(EventDrivenConsumerRoute.class, route); Processor processor = consumerRoute.getProcessor(); DeadLetterChannel deadLetterChannel = assertIsInstanceOf(DeadLetterChannel.class, processor); RedeliveryPolicy redeliveryPolicy = deadLetterChannel.getRedeliveryPolicy(); assertEquals("getMaximumRedeliveries()", 2, redeliveryPolicy.getMaximumRedeliveries()); assertEquals("isUseExponentialBackOff()", true, redeliveryPolicy.isUseExponentialBackOff()); } 
+      </route></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

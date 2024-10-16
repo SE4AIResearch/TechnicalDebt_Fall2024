@@ -1,0 +1,109 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1475</td> <td>-1422651295</td><td>apache/camel</td><td>Claus Ibsen</td><td>035e2c79a6105986f65a5f6709c9e86640cca387</td> <td>None</td> <td>TODO improve stream() support</td> <td>SATD_ADDED</td> <td>renderProcessor(StringBuilder, ProcessorDefinition)</td> <td>private static void renderProcessor(StringBuilder buffer, ProcessorDefinition processor)</td> <td>
+    if (processor instanceof AggregateDefinition) {
+        AggregateDefinitionRenderer.render(buffer, processor);
+    } else if (processor instanceof ChoiceDefinition) {
+        ChoiceDefinition choice = (ChoiceDefinition) processor;
+        buffer.append(".").append(choice.getShortName()).append("()");
+        for (WhenDefinition when : choice.getWhenClauses()) {
+            renderProcessor(buffer, when);
+        }
+        OtherwiseDefinition other = choice.getOtherwise();
+        if (other != null) {
+            renderProcessor(buffer, other);
+        }
+        buffer.append(".end()");
+        return;
+    } else if (processor instanceof ConvertBodyDefinition) {
+        ConvertBodyDefinition convertBody = (ConvertBodyDefinition) processor;
+        buffer.append(".").append(convertBody.getShortName()).append("(");
+        if (convertBody.getType().equals("[B")) {
+            buffer.append("byte[].class");
+        } else {
+            buffer.append(convertBody.getType()).append(".class");
+        }
+        if (convertBody.getCharset() != null) {
+            buffer.append(", \"").append(convertBody.getCharset()).append("\"");
+        }
+        buffer.append(")");
+    } else if (processor instanceof ExpressionNode) {
+        ExpressionNodeRenderer.render(buffer, processor);
+    } else if (processor instanceof LoadBalanceDefinition) {
+        LoadBalanceDefinition loadB = (LoadBalanceDefinition) processor;
+        // buffer.append(".").append(output.getShortName()).append("()");
+        buffer.append(".").append("loadBalance").append("()");
+        LoadBalancer lb = loadB.getLoadBalancerType().getLoadBalancer(null);
+        if (lb instanceof FailOverLoadBalancer) {
+            buffer.append(".failover(");
+            List<Class> exceptions = ((FailOverLoadBalancer) lb).getExceptions();
+            for (Class excep : exceptions) {
+                buffer.append(excep.getSimpleName()).append(".class");
+                if (excep != exceptions.get(exceptions.size() - 1)) {
+                    buffer.append(", ");
+                }
+            }
+            buffer.append(")");
+        } else if (lb instanceof RandomLoadBalancer) {
+            buffer.append(".random()");
+        } else if (lb instanceof RoundRobinLoadBalancer) {
+            buffer.append(".roundRobin()");
+        } else if (lb instanceof StickyLoadBalancer) {
+            buffer.append(".sticky(");
+            ExpressionRenderer.renderExpression(buffer, ((StickyLoadBalancer) lb).getCorrelationExpression().toString());
+            buffer.append(")");
+        } else if (lb instanceof TopicLoadBalancer) {
+            buffer.append(".topic()");
+        }
+        List<ProcessorDefinition> branches = loadB.getOutputs();
+        for (ProcessorDefinition branch : branches) {
+            renderProcessor(buffer, branch);
+        }
+        return;
+    } else if (processor instanceof OnCompletionDefinition) {
+        OnCompletionDefinitionRenderer.render(buffer, processor);
+        return;
+    } else if (processor instanceof OnExceptionDefinition) {
+        OnExceptionDefinitionRenderer.render(buffer, processor);
+        return;
+    } else if (processor instanceof OutputDefinition) {
+        OutputDefinitionRenderer.render(buffer, processor);
+    } else if (processor instanceof ResequenceDefinition) {
+        ResequenceDefinition resequence = (ResequenceDefinition) processor;
+        buffer.append(".").append(processor.getShortName()).append("(");
+        List<Expression> exps = resequence.getExpressionList();
+        for (Expression exp : exps) {
+            ExpressionRenderer.renderExpression(buffer, exp.toString());
+            if (exp != exps.get(exps.size() - 1)) {
+                buffer.append(", ");
+            }
+        }
+        buffer.append(")");
+        if (resequence.getStreamConfig() != null) {
+            // TODO improve stream() support
+            buffer.append(".stream()");
+        }
+    } else if (processor instanceof RoutingSlipDefinition) {
+        RoutingSlipDefinition routingSlip = (RoutingSlipDefinition) processor;
+        buffer.append(".").append(routingSlip.getShortName()).append("(\"").append(routingSlip.getHeaderName()).append("\", \"").append(routingSlip.getUriDelimiter()).append("\")");
+    } else if (processor instanceof SendDefinition) {
+        SendDefinitionRenderer.render(buffer, processor);
+    } else if (processor instanceof ThrottleDefinition) {
+        ThrottleDefinition throttle = (ThrottleDefinition) processor;
+        buffer.append(".").append(throttle.getShortName()).append("(").append(throttle.getMaximumRequestsPerPeriod()).append(")");
+        if (throttle.getTimePeriodMillis() != 1000) {
+            buffer.append(".timePeriodMillis(").append(throttle.getTimePeriodMillis()).append(")");
+        }
+    } else {
+        buffer.append(".").append(processor.getShortName()).append("()");
+    }
+    List<ProcessorDefinition> outputs = processor.getOutputs();
+    for (ProcessorDefinition nextProcessor : outputs) {
+        renderProcessor(buffer, nextProcessor);
+    }
+</td> </tr></table></body></html>

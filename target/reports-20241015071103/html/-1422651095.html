@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3498</td> 
+     <td>-1422651095</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>Publish the container itself for consistency with traditional embedded Jetty configurations.</td> 
+     <td>Publish the container itself for consistency with traditional embedded Jetty configurations.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>startMbContainer()</td> 
+     <td>protected void startMbContainer()</td> 
+     <td> if (mbContainer != null &amp;&amp; Server.getVersion().startsWith("8")) { // JETTY8 only try { boolean b = (boolean) mbContainer.getClass().getMethod("isStarted").invoke(mbContainer); if (b) { mbContainer.getClass().getMethod("start").invoke(mbContainer); // Publish the container itself for consistency with // traditional embedded Jetty configurations. mbContainer.getClass().getMethod("addBean", Object.class).invoke(mbContainer, mbContainer); } } catch (Throwable e) { LOG.warn("Could not start Jetty MBeanContainer. Jetty JMX extensions will remain disabled.", e); } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1815</td> 
+     <td>-1422651095</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>1f469a99fd37d9eabc5ea2e774a8aa4d6d5ae171</td> 
+     <td>None</td> 
+     <td>Publish the container itself for consistency with traditional embedded Jetty configurations.</td> 
+     <td>SATD_ADDED</td> 
+     <td>startMbContainer()</td> 
+     <td>protected void startMbContainer()</td> 
+     <td> if (mbContainer != null &amp;&amp; !mbContainer.isStarted()) { try { mbContainer.start(); // Publish the container itself for consistency with // traditional embedded Jetty configurations. mbContainer.addBean(mbContainer); } catch (Exception e) { LOG.fatal("Could not start Jetty MBeanContainer. Jetty JMX extensions will remain disabled.", e); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

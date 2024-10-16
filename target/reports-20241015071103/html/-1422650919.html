@@ -1,0 +1,62 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2221</td> 
+     <td>-1422650919</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>c0a9a7f09ec7d710029f405086681eeb1b8c597c</td> 
+     <td>base the osgi type converter on the default type converter TODO: Why is it based on the DefaultPackageScanClassResolver and not OsgiPackageScanClassResolver?</td> 
+     <td>base the osgi type converter on the default type converter</td> 
+     <td>SATD_REMOVED</td> 
+     <td>createRegistry()</td> 
+     <td>protected DefaultTypeConverter createRegistry()</td> 
+     <td> // base the osgi type converter on the default type converter DefaultTypeConverter answer = new DefaultTypeConverter(new DefaultPackageScanClassResolver() { @Override public Set<classloader>
+        getClassLoaders() { // we don't need any classloaders as we use osgi service tracker instead return Collections.emptySet(); } }, injector, factoryFinder); // load the type converters the tracker has been tracking Object[] services = this.tracker.getServices(); if (services != null) { for (Object o : services) { try { ((TypeConverterLoader) o).load(answer); } catch (Throwable t) { throw new RuntimeCamelException("Error loading type converters from service: " + o + " due: " + t.getMessage(), t); } } } try { ServiceHelper.startService(answer); } catch (Exception e) { throw new RuntimeCamelException("Error staring OSGiTypeConverter due: " + e.getMessage(), e); } LOG.trace("Created TypeConverter: {}", answer); return answer; 
+      </classloader></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2150</td> 
+     <td>-1422650919</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b9506539828dbea7c12dd4723b721de1c618874</td> 
+     <td>None</td> 
+     <td>base the osgi type converter on the default type converter TODO: Why is it based on the DefaultPackageScanClassResolver and not OsgiPackageScanClassResolver?</td> 
+     <td>SATD_ADDED</td> 
+     <td>createRegistry()</td> 
+     <td>protected DefaultTypeConverter createRegistry()</td> 
+     <td> // base the osgi type converter on the default type converter // TODO: Why is it based on the DefaultPackageScanClassResolver and not OsgiPackageScanClassResolver? DefaultTypeConverter reg = new DefaultTypeConverter(new DefaultPackageScanClassResolver() { @Override public Set<classloader>
+        getClassLoaders() { return Collections.emptySet(); } }, injector, null); Object[] services = this.tracker.getServices(); if (services != null) { for (Object o : services) { try { ((TypeConverterLoader) o).load(reg); } catch (Throwable t) { throw ObjectHelper.wrapRuntimeCamelException(t); } } } if (LOG.isTraceEnabled()) { LOG.trace("Created TypeConverter: " + reg); } return reg; 
+      </classloader></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

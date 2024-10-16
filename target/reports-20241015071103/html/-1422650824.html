@@ -1,0 +1,106 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3526</td> 
+     <td>-1422650824</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>we should not add headers for the parameters in the uri if we bridge the endpoint as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> 
+     <td>we should not add headers for the parameters in the uri if we bridge the endpoint as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>processInternal(Exchange, AsyncCallback)</td> 
+     <td>private void processInternal(Exchange exchange, AsyncCallback callback) throws Exception</td> 
+     <td> // creating the url to use takes 2-steps String url = HttpHelper.createURL(exchange, getEndpoint()); URI uri = HttpHelper.createURI(exchange, url, getEndpoint()); // get the url from the uri url = uri.toASCIIString(); // execute any custom url rewrite String rewriteUrl = HttpHelper.urlRewrite(exchange, url, getEndpoint(), this); if (rewriteUrl != null) { // update url and query string from the rewritten url url = rewriteUrl; } HttpMethods methodToUse = HttpHelper.createMethod(exchange, getEndpoint(), exchange.getIn().getBody() != null); String method = methodToUse.createMethod(url).getName(); JettyContentExchange httpExchange = getEndpoint().createContentExchange(); httpExchange.init(exchange, getBinding(), client, callback); // Url has to be set first httpExchange.setURL(url); httpExchange.setMethod(method); if (getEndpoint().getHttpClientParameters() != null) { // For jetty 9 these parameters can not be set on the client // so we need to set them on the httpExchange String timeout = (String) getEndpoint().getHttpClientParameters().get("timeout"); if (timeout != null) { httpExchange.setTimeout(new Long(timeout)); } String supportRedirect = (String) getEndpoint().getHttpClientParameters().get("supportRedirect"); if (supportRedirect != null) { httpExchange.setSupportRedirect(new Boolean(supportRedirect)); } } LOG.trace("Using URL: {} with method: {}", url, method); // if we post or put then set data if (HttpMethods.POST.equals(methodToUse) || HttpMethods.PUT.equals(methodToUse)) { String contentType = ExchangeHelper.getContentType(exchange); if (contentType != null) { httpExchange.setRequestContentType(contentType); } if (contentType != null &amp;&amp; HttpConstants.CONTENT_TYPE_JAVA_SERIALIZED_OBJECT.equals(contentType)) { // serialized java object Serializable obj = exchange.getIn().getMandatoryBody(Serializable.class); // write object to output stream ByteArrayOutputStream bos = new ByteArrayOutputStream(); try { HttpHelper.writeObjectToStream(bos, obj); httpExchange.setRequestContent(bos.toByteArray()); } finally { IOHelper.close(bos, "body", LOG); } } else { Object body = exchange.getIn().getBody(); if (body instanceof String) { String data = (String) body; // be a bit careful with String as any type can most likely be converted to String // so we only do an instanceof check and accept String if the body is really a String // do not fallback to use the default charset as it can influence the request // (for example application/x-www-form-urlencoded forms being sent) String charset = IOHelper.getCharsetName(exchange, false); httpExchange.setRequestContent(data, charset); } else { // then fallback to input stream InputStream is = exchange.getContext().getTypeConverter().mandatoryConvertTo(InputStream.class, exchange, exchange.getIn().getBody()); httpExchange.setRequestContent(is); // setup the content length if it is possible String length = exchange.getIn().getHeader(Exchange.CONTENT_LENGTH, String.class); if (ObjectHelper.isNotEmpty(length)) { httpExchange.addRequestHeader(Exchange.CONTENT_LENGTH, length); } } } } // if we bridge endpoint then we need to skip matching headers with the HTTP_QUERY to avoid sending // duplicated headers to the receiver, so use this skipRequestHeaders as the list of headers to skip Map<string, object>
+        skipRequestHeaders = null; if (getEndpoint().isBridgeEndpoint()) { exchange.setProperty(Exchange.SKIP_GZIP_ENCODING, Boolean.TRUE); String queryString = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class); if (queryString != null) { skipRequestHeaders = URISupport.parseQuery(queryString); } // Need to remove the Host key as it should be not used exchange.getIn().getHeaders().remove("host"); } // propagate headers as HTTP headers Message in = exchange.getIn(); HeaderFilterStrategy strategy = getEndpoint().getHeaderFilterStrategy(); for (Map.Entry 
+       <string, object>
+         entry : in.getHeaders().entrySet()) { String key = entry.getKey(); Object headerValue = in.getHeader(key); if (headerValue != null) { // use an iterator as there can be multiple values. (must not use a delimiter, and allow empty values) final Iterator<!--?--> it = ObjectHelper.createIterator(headerValue, null, true); // the values to add as a request header final List 
+        <string>
+          values = new ArrayList 
+         <string>
+           (); // if its a multi value then check each value if we can add it and for multi values they // should be combined into a single value while (it.hasNext()) { String value = exchange.getContext().getTypeConverter().convertTo(String.class, it.next()); // we should not add headers for the parameters in the uri if we bridge the endpoint // as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well if (skipRequestHeaders != null &amp;&amp; skipRequestHeaders.containsKey(key)) { continue; } if (value != null &amp;&amp; strategy != null &amp;&amp; !strategy.applyFilterToCamelHeaders(key, value, exchange)) { values.add(value); } } // add the value(s) as a http request header if (values.size() &gt; 0) { // use the default toString of a ArrayList to create in the form [xxx, yyy] // if multi valued, for a single value, then just output the value as is String s = values.size() &gt; 1 ? values.toString() : values.get(0); httpExchange.addRequestHeader(key, s); } } } // set the callback, which will handle all the response logic if (LOG.isDebugEnabled()) { LOG.debug("Sending HTTP request to: {}", httpExchange.getUrl()); } httpExchange.send(client); 
+         </string> 
+        </string> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3483</td> 
+     <td>-1422650824</td> 
+     <td>apache/camel</td> 
+     <td>Willem Jiang</td> 
+     <td>676bb6385c86813225e3f3cdff08aab4e606293b</td> 
+     <td>we should not add headers for the parameters in the uri if we bridge the endpoint as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> 
+     <td>we should not add headers for the parameters in the uri if we bridge the endpoint as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>createHttpExchange(Exchange, AsyncCallback)</td> 
+     <td>protected JettyContentExchange createHttpExchange(Exchange exchange, AsyncCallback callback) throws Exception</td> 
+     <td> // creating the url to use takes 2-steps String url = HttpHelper.createURL(exchange, getEndpoint()); URI uri = HttpHelper.createURI(exchange, url, getEndpoint()); // get the url from the uri url = uri.toASCIIString(); // execute any custom url rewrite String rewriteUrl = HttpHelper.urlRewrite(exchange, url, getEndpoint(), this); if (rewriteUrl != null) { // update url and query string from the rewritten url url = rewriteUrl; } HttpMethods methodToUse = HttpHelper.createMethod(exchange, getEndpoint(), exchange.getIn().getBody() != null); String method = methodToUse.createMethod(url).getName(); JettyContentExchange httpExchange = new JettyContentExchange8(exchange, getBinding(), client); // Url has to be set first httpExchange.setURL(url); httpExchange.setMethod(method); if (getEndpoint().getHttpClientParameters() != null) { String timeout = (String) getEndpoint().getHttpClientParameters().get("timeout"); if (timeout != null) { httpExchange.setTimeout(new Long(timeout)); } String supportRedirect = (String) getEndpoint().getHttpClientParameters().get("supportRedirect"); if (supportRedirect != null) { httpExchange.setSupportRedirect(new Boolean(supportRedirect)); } } LOG.trace("Using URL: {} with method: {}", url, method); // if we post or put then set data if (HttpMethods.POST.equals(methodToUse) || HttpMethods.PUT.equals(methodToUse)) { String contentType = ExchangeHelper.getContentType(exchange); if (contentType != null) { httpExchange.setRequestContentType(contentType); } if (contentType != null &amp;&amp; HttpConstants.CONTENT_TYPE_JAVA_SERIALIZED_OBJECT.equals(contentType)) { // serialized java object Serializable obj = exchange.getIn().getMandatoryBody(Serializable.class); // write object to output stream ByteArrayOutputStream bos = new ByteArrayOutputStream(); try { HttpHelper.writeObjectToStream(bos, obj); httpExchange.setRequestContent(bos.toByteArray()); } finally { IOHelper.close(bos, "body", LOG); } } else { Object body = exchange.getIn().getBody(); if (body instanceof String) { String data = (String) body; // be a bit careful with String as any type can most likely be converted to String // so we only do an instanceof check and accept String if the body is really a String // do not fallback to use the default charset as it can influence the request // (for example application/x-www-form-urlencoded forms being sent) String charset = IOHelper.getCharsetName(exchange, false); httpExchange.setRequestContent(data, charset); } else { // then fallback to input stream InputStream is = exchange.getContext().getTypeConverter().mandatoryConvertTo(InputStream.class, exchange, exchange.getIn().getBody()); httpExchange.setRequestContent(is); // setup the content length if it is possible String length = exchange.getIn().getHeader(Exchange.CONTENT_LENGTH, String.class); if (ObjectHelper.isNotEmpty(length)) { httpExchange.addRequestHeader(Exchange.CONTENT_LENGTH, length); } } } } // if we bridge endpoint then we need to skip matching headers with the HTTP_QUERY to avoid sending // duplicated headers to the receiver, so use this skipRequestHeaders as the list of headers to skip Map<string, object>
+        skipRequestHeaders = null; if (getEndpoint().isBridgeEndpoint()) { exchange.setProperty(Exchange.SKIP_GZIP_ENCODING, Boolean.TRUE); String queryString = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class); if (queryString != null) { skipRequestHeaders = URISupport.parseQuery(queryString); } // Need to remove the Host key as it should be not used exchange.getIn().getHeaders().remove("host"); } // propagate headers as HTTP headers Message in = exchange.getIn(); HeaderFilterStrategy strategy = getEndpoint().getHeaderFilterStrategy(); for (Map.Entry 
+       <string, object>
+         entry : in.getHeaders().entrySet()) { String key = entry.getKey(); Object headerValue = in.getHeader(key); if (headerValue != null) { // use an iterator as there can be multiple values. (must not use a delimiter, and allow empty values) final Iterator<!--?--> it = ObjectHelper.createIterator(headerValue, null, true); // the values to add as a request header final List 
+        <string>
+          values = new ArrayList 
+         <string>
+           (); // if its a multi value then check each value if we can add it and for multi values they // should be combined into a single value while (it.hasNext()) { String value = exchange.getContext().getTypeConverter().convertTo(String.class, it.next()); // we should not add headers for the parameters in the uri if we bridge the endpoint // as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well if (skipRequestHeaders != null &amp;&amp; skipRequestHeaders.containsKey(key)) { continue; } if (value != null &amp;&amp; strategy != null &amp;&amp; !strategy.applyFilterToCamelHeaders(key, value, exchange)) { values.add(value); } } // add the value(s) as a http request header if (values.size() &gt; 0) { // use the default toString of a ArrayList to create in the form [xxx, yyy] // if multi valued, for a single value, then just output the value as is String s = values.size() &gt; 1 ? values.toString() : values.get(0); httpExchange.addRequestHeader(key, s); } } } // set the callback, which will handle all the response logic httpExchange.setCallback(callback); return httpExchange; 
+         </string> 
+        </string> 
+       </string,> 
+      </string,></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2323</td> 
+     <td>-1422650824</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>3f905d405d32e46a4d8922ce30871d860314084c</td> 
+     <td>None</td> 
+     <td>we should not add headers for the parameters in the uri if we bridge the endpoint as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well</td> 
+     <td>SATD_ADDED</td> 
+     <td>createHttpExchange(Exchange, AsyncCallback)</td> 
+     <td>protected JettyContentExchange createHttpExchange(Exchange exchange, AsyncCallback callback) throws Exception</td> 
+     <td> String url = HttpHelper.createURL(exchange, getEndpoint()); HttpMethods methodToUse = HttpHelper.createMethod(exchange, getEndpoint(), exchange.getIn().getBody() != null); String method = methodToUse.createMethod(url).getName(); JettyContentExchange httpExchange = new JettyContentExchange(exchange, getBinding(), client); httpExchange.setMethod(method); httpExchange.setURL(url); // set query parameters doSetQueryParameters(exchange, httpExchange); // if we post then set data if (HttpMethods.POST.equals(methodToUse)) { String contentType = ExchangeHelper.getContentType(exchange); if (contentType != null) { httpExchange.setRequestContentType(contentType); } if (contentType != null &amp;&amp; HttpConstants.CONTENT_TYPE_JAVA_SERIALIZED_OBJECT.equals(contentType)) { // serialized java object Serializable obj = exchange.getIn().getMandatoryBody(Serializable.class); // write object to output stream ByteArrayOutputStream bos = new ByteArrayOutputStream(); HttpHelper.writeObjectToStream(bos, obj); httpExchange.setRequestContent(new ByteArrayBuffer(bos.toByteArray())); IOHelper.close(bos); } else { // try with String at first String data = exchange.getIn().getBody(String.class); if (data != null) { String charset = exchange.getProperty(Exchange.CHARSET_NAME, String.class); if (charset != null) { httpExchange.setRequestContent(new ByteArrayBuffer(data, charset)); } else { httpExchange.setRequestContent(new ByteArrayBuffer(data)); } } else { // then fallback to input stream InputStream is = exchange.getContext().getTypeConverter().mandatoryConvertTo(InputStream.class, exchange, exchange.getIn().getBody()); httpExchange.setRequestContentSource(is); } } } // if we bridge endpoint then we need to skip matching headers with the HTTP_QUERY to avoid sending // duplicated headers to the receiver, so use this skipRequestHeaders as the list of headers to skip Map<string, object>
+        skipRequestHeaders = null; if (getEndpoint().isBridgeEndpoint()) { exchange.setProperty(Exchange.SKIP_GZIP_ENCODING, Boolean.TRUE); String queryString = exchange.getIn().getHeader(Exchange.HTTP_QUERY, String.class); if (queryString != null) { skipRequestHeaders = URISupport.parseQuery(queryString); } } // propagate headers as HTTP headers Message in = exchange.getIn(); HeaderFilterStrategy strategy = getEndpoint().getHeaderFilterStrategy(); for (Map.Entry
+       <string, object>
+         entry : in.getHeaders().entrySet()) { String key = entry.getKey(); Object headerValue = in.getHeader(key); if (headerValue != null) { // use an iterator as there can be multiple values. (must not use a delimiter) final Iterator it = ObjectHelper.createIterator(headerValue, null); // the values to add as a request header final List
+        <string>
+          values = new ArrayList
+         <string>
+          (); // if its a multi value then check each value if we can add it and for multi values they // should be combined into a single value while (it.hasNext()) { String value = exchange.getContext().getTypeConverter().convertTo(String.class, it.next()); // we should not add headers for the parameters in the uri if we bridge the endpoint // as then we would duplicate headers on both the endpoint uri, and in HTTP headers as well if (skipRequestHeaders != null &amp;&amp; skipRequestHeaders.containsKey(key)) { Object skipValue = skipRequestHeaders.get(key); if (ObjectHelper.equal(skipValue, value)) { continue; } } if (value != null &amp;&amp; strategy != null &amp;&amp; !strategy.applyFilterToCamelHeaders(key, value, exchange)) { values.add(value); } } // add the value(s) as a http request header if (values.size() &gt; 0) { // use the default toString of a ArrayList to create in the form [xxx, yyy] // if multi valued, for a single value, then just output the value as is String s = values.size() &gt; 1 ? values.toString() : values.get(0); httpExchange.addRequestHeader(key, s); } } } // set the callback, which will handle all the response logic httpExchange.setCallback(callback); return httpExchange; 
+         </string>
+        </string>
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

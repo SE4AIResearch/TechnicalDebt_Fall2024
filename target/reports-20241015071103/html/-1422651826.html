@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>678</td> 
+     <td>-1422651826</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>cdd0d5037015aaa26954628300a4d15f62143297</td> 
+     <td>TODO we might wanna add some kinda resource caching of the template</td> 
+     <td>getResourceAsInputStream also considers the content cache</td> 
+     <td>SATD_REMOVED</td> 
+     <td>onExchange(Exchange)</td> 
+     <td>protected void onExchange(Exchange exchange) throws Exception</td> 
+     <td> Resource resource = getResource(); // getResourceAsInputStream also considers the content cache Reader reader = new InputStreamReader(getResourceAsInputStream()); StringWriter buffer = new StringWriter(); String logTag = getClass().getName(); Map variableMap = ExchangeHelper.createVariableMap(exchange); Context velocityContext = new VelocityContext(variableMap); // let velocity parse and generate the result in buffer VelocityEngine engine = getVelocityEngine(); engine.evaluate(velocityContext, buffer, logTag, reader); // now lets output the results to the exchange Message out = exchange.getOut(true); out.setBody(buffer.toString()); out.setHeader("org.apache.camel.velocity.resource", resource); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>419</td> 
+     <td>-1422651826</td>
+     <td>apache/camel</td>
+     <td>James Strachan</td>
+     <td>eef855395ba8cc7a8371bc53334d376e5c55b008</td> 
+     <td>None</td> 
+     <td>TODO we might wanna add some kinda resource caching of the template</td> 
+     <td>SATD_ADDED</td> 
+     <td>onExchange(Exchange)</td> 
+     <td>protected void onExchange(Exchange exchange) throws Exception</td> 
+     <td> // TODO we might wanna add some kinda resource caching of the template Reader reader = new InputStreamReader(getResource().getInputStream()); StringWriter buffer = new StringWriter(); String logTag = getClass().getName(); Map variableMap = ExchangeHelper.createVariableMap(exchange); Context velocityContext = new VelocityContext(variableMap); VelocityEngine engine = getVelocityEngine(); engine.evaluate(velocityContext, buffer, logTag, reader); // now lets output the results to the exchange Message out = exchange.getOut(true); out.setBody(buffer.toString()); out.setHeader("org.apache.camel.velocity.resource", getResource()); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

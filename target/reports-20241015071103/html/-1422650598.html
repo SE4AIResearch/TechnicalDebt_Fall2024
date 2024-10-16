@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2702</td> <td>-1422650598</td><td>apache/camel</td><td>Claus Ibsen</td><td>db7fec0f1cad6608468171db1924e6fe9d50d9dd</td> <td>None</td> <td>TODO should this fire the observer.onComplete()?</td> <td>SATD_ADDED</td> <td>unsubscribe()</td> <td>public void unsubscribe()</td> <td>
+    if (consumer != null) {
+        try {
+            consumer.stop();
+            // TODO should this fire the observer.onComplete()?
+            observer.onCompleted();
+        } catch (Exception e) {
+            observer.onError(e);
+        }
+    }
+</td> </tr></table></body></html>

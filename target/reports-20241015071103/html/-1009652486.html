@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>5996</td> 
+     <td>-1009652486</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>TODO: if the user wants the trash to be used but there is any problem (ie. creating the trash dir, moving the item to be deleted, etc), then the path will just be deleted because moveToTrash returns false and it falls thru to fs.delete. this doesn't seem right</td> 
+     <td>TODO: if the user wants the trash to be used but there is any problem (ie. creating the trash dir, moving the item to be deleted, etc), then the path will just be deleted because moveToTrash returns false and it falls thru to fs.delete. this doesn't seem right</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>registerCommands(CommandFactory)</td> 
+     <td>public static void registerCommands(CommandFactory factory)</td> 
+     <td> factory.addClass(Rm.class, "-rm"); factory.addClass(Rmdir.class, "-rmdir"); factory.addClass(Rmr.class, "-rmr"); factory.addClass(Expunge.class, "-expunge"); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5190</td> 
+     <td>-1009652486</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>TODO: if the user wants the trash to be used but there is any problem (ie. creating the trash dir, moving the item to be deleted, etc), then the path will just be deleted because moveToTrash returns false and it falls thru to fs.delete. this doesn't seem right</td> 
+     <td>TODO: if the user wants the trash to be used but there is any problem (ie. creating the trash dir, moving the item to be deleted, etc), then the path will just be deleted because moveToTrash returns false and it falls thru to fs.delete. this doesn't seem right</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>registerCommands(CommandFactory)</td> 
+     <td>public static void registerCommands(CommandFactory factory)</td> 
+     <td> factory.addClass(Rm.class, "-rm"); factory.addClass(Rmr.class, "-rmr"); factory.addClass(Expunge.class, "-expunge"); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5142</td> 
+     <td>-1009652486</td>
+     <td>apache/hadoop</td>
+     <td>Tsz-wo Sze</td>
+     <td>7f77fad79af0010cd22ca773d9af27110429d3a2</td> 
+     <td>None</td> 
+     <td>TODO: if the user wants the trash to be used but there is any problem (ie. creating the trash dir, moving the item to be deleted, etc), then the path will just be deleted because moveToTrash returns false and it falls thru to fs.delete. this doesn't seem right</td> 
+     <td>SATD_ADDED</td> 
+     <td>registerCommands(CommandFactory)</td> 
+     <td>public static void registerCommands(CommandFactory factory)</td> 
+     <td> factory.addClass(Rm.class, "-rm"); factory.addClass(Rmr.class, "-rmr"); factory.addClass(Expunge.class, "-expunge"); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

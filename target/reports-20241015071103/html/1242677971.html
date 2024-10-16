@@ -1,0 +1,85 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4603</td> <td>1242677971</td><td>GerritCodeReview/gerrit</td><td>David Pursehouse</td><td>bbf93f85cf4ce13cbd1a0fb030a61b966b801708</td> <td>defer attribute here is to workaround IE running immediately.
+
+</td> <td>defer attribute here is to workaround IE running immediately.
+</td> <td>SATD_CHANGED</td> <td>inject(Document)</td> <td>public void inject(Document dom)</td> <td>
+    String moduleName = selector.getModuleName();
+    StringBuilder s = new StringBuilder();
+    s.append("\n");
+    s.append("function ").append(moduleName).append("(){");
+    s.append("var s,l,t");
+    s.append(",w=window");
+    s.append(",d=document");
+    s.append(",n='").append(moduleName).append("'");
+    s.append(",f=d.createElement('iframe')");
+    s.append(";");
+    // Callback to execute the module once both s and l are true.
+    // 
+    s.append("function m(){");
+    s.append("if(s&&l){");
+    // Base path needs to be absolute. There isn't an easy way to do this
+    // other than forcing an image to load and then pulling the URL back.
+    // 
+    s.append("var b,i=d.createElement('img');");
+    s.append("i.src=n+'/clear.cache.gif';");
+    s.append("b=i.src;");
+    s.append("b=b.substring(0,b.lastIndexOf('/')+1);");
+    // allow us to GC
+    s.append(moduleName).append("=null;");
+    s.append("f.contentWindow.gwtOnLoad(undefined,n,b);");
+    s.append("}");
+    s.append("}");
+    // Set s true when the module script has finished loading. The
+    // exact name here is known to the IFrameLinker and is called by
+    // the code in the iframe.
+    // 
+    s.append(moduleName).append(".onScriptLoad=function(){");
+    s.append("s=1;m();");
+    s.append("};");
+    // Set l true when the browser has finished processing the iframe
+    // tag, and everything else on the page.
+    // 
+    s.append(moduleName).append(".r=function(){");
+    s.append("l=1;m();");
+    s.append("};");
+    // Prevents mixed mode security in IE6/7.
+    s.append("f.src=\"javascript:''\";");
+    s.append("f.id=n;");
+    s.append("f.style.cssText" + "='position:absolute;width:0;height:0;border:none';");
+    s.append("f.tabIndex=-1;");
+    s.append("d.body.appendChild(f);");
+    // The src has to be set after the iframe is attached to the DOM to avoid
+    // refresh quirks in Safari. We have to use the location.replace trick to
+    // avoid FF2 refresh quirks.
+    // 
+    s.append("f.contentWindow.location.replace(n+'/").append(cacheHTML).append("');");
+    // defer attribute here is to workaround IE running immediately.
+    // 
+    s.append("d.write('<script defer=\"defer\">").append(moduleName).append(".r()</'+'script>');");
+    s.append("}");
+    s.append(moduleName).append("();");
+    s.append("\n//");
+    final Element html = dom.getDocumentElement();
+    final Element head = (Element) html.getElementsByTagName("head").item(0);
+    final Element body = (Element) html.getElementsByTagName("body").item(0);
+    for (String css : selector.getCSS()) {
+        if (isRelativeURL(css)) {
+            css = moduleName + '/' + css;
+        }
+        final Element link = dom.createElement("link");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", css);
+        head.appendChild(link);
+    }
+    final Element script = dom.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("language", "javascript");
+    script.appendChild(dom.createComment(s.toString()));
+    body.appendChild(script);
+</td> </tr></table></body></html>

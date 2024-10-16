@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4677</td> <td>1242678013</td><td>GerritCodeReview/gerrit</td><td>Dave Borowitz</td><td>d2468d3336846cc47b6ed9275df68f7d7f16b175</td> <td>None</td> <td>TODO: The user should have create permission on the branch referred to by
+HEAD. This would have to happen on the server side.</td> <td>SATD_ADDED</td> <td>onInitUI()</td> <td>protected void onInitUI()</td> <td>
+    super.onInitUI();
+    Resources.I.style().ensureInjected();
+    saveProject = new Button(Util.C.buttonSaveChanges());
+    saveProject.addClickHandler(new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            doSave();
+        }
+    });
+    add(new ProjectDownloadPanel(getProjectKey().get(), true));
+    initDescription();
+    grid = new LabeledWidgetsGrid();
+    pluginOptionsPanel = new FlowPanel();
+    actionsGrid = new LabeledWidgetsGrid();
+    initProjectOptions();
+    initAgreements();
+    add(grid);
+    add(pluginOptionsPanel);
+    add(saveProject);
+    add(actionsGrid);
+</td> </tr></table></body></html>

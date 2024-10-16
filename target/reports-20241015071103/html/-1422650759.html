@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2418</td> <td>-1422650759</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>09e44c4c54a3050a2b221565d008358432bda527</td> <td>None</td> <td>kaboom fails and we retry it again</td> <td>SATD_ADDED</td> <td>testNonTXRollback()</td> <td>public void testNonTXRollback() throws Exception</td> <td>
+    // first create three records
+    template.sendBody("jpa://" + SendEmail.class.getName(), new SendEmail("foo@beer.org"));
+    template.sendBody("jpa://" + SendEmail.class.getName(), new SendEmail("bar@beer.org"));
+    template.sendBody("jpa://" + SendEmail.class.getName(), new SendEmail("kaboom@beer.org"));
+    // should only rollback the failed
+    getMockEndpoint("mock:start").expectedMinimumMessageCount(4);
+    // and only the 2 good messages goes here
+    getMockEndpoint("mock:result").expectedMessageCount(2);
+    // start route
+    context.startRoute("foo");
+    assertMockEndpointsSatisfied();
+    assertEquals(1, foo.intValue());
+    assertEquals(1, bar.intValue());
+    // kaboom fails and we retry it again
+    assertTrue("Should be >= 2, was: " + kaboom.intValue(), kaboom.intValue() >= 2);
+</td> </tr></table></body></html>

@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1036</td> <td>-1422651499</td><td>apache/camel</td><td>Claus Ibsen</td><td>c72ea0f9c5d19a20848a1239b4ee103f99a8e7b0</td> <td>None</td> <td>--------------------------------------------------------------------
+TODO: merge logic with that of copyResults()
+--------------------------------------------------------------------</td> <td>SATD_ADDED</td> <td>copyResultsPreservePattern(Exchange, Exchange)</td> <td>public static void copyResultsPreservePattern(Exchange result, Exchange source)</td> <td>
+    // --------------------------------------------------------------------
+    // TODO: merge logic with that of copyResults()
+    // --------------------------------------------------------------------
+    if (source == result) {
+        // no need to copy
+        return;
+    }
+    // copy in message
+    Message m = source.getIn();
+    result.getIn().copyFrom(m);
+    // copy out message
+    m = source.getOut(false);
+    if (m != null) {
+        // exchange pattern sensitive
+        getResultMessage(result).copyFrom(m);
+    }
+    // copy fault message
+    m = source.getFault(false);
+    if (m != null) {
+        result.getFault().copyFrom(m);
+    }
+    // copy exception
+    result.setException(source.getException());
+    // copy properties
+    result.getProperties().clear();
+    result.getProperties().putAll(source.getProperties());
+</td> </tr></table></body></html>

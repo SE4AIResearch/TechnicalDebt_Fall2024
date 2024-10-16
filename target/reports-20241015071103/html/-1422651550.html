@@ -1,0 +1,105 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>912</td> <td>-1422651550</td><td>apache/camel</td><td>Jonathan Anstey</td><td>697805feca4b5b570159f1e4ef08d3bfe96183c4</td> <td>None</td> <td>TODO cannot pass in callback using destination?</td> <td>SATD_ADDED</td> <td>process(Exchange)</td> <td>public void process(final Exchange exchange)</td> <td>
+    final org.apache.camel.Message in = exchange.getIn();
+    String destinationName = endpoint.getDestinationName();
+    Destination destination = endpoint.getDestination();
+    if (exchange.getPattern().isOutCapable()) {
+        testAndSetRequestor();
+        // note due to JMS transaction semantics we cannot use a single transaction
+        // for sending the request and receiving the response
+        final Destination replyTo = requestor.getReplyTo();
+        if (replyTo == null) {
+            throw new RuntimeExchangeException("Failed to resolve replyTo destination", exchange);
+        }
+        final boolean msgIdAsCorrId = endpoint.getConfiguration().isUseMessageIDAsCorrelationID();
+        String correlationId = in.getHeader("JMSCorrelationID", String.class);
+        if (correlationId == null && !msgIdAsCorrId) {
+            in.setHeader("JMSCorrelationID", getUuidGenerator().generateId());
+        }
+        final ValueHolder<FutureTask> futureHolder = new ValueHolder<FutureTask>();
+        final DeferredMessageSentCallback callback = msgIdAsCorrId ? deferredRequestReplyMap.createDeferredMessageSentCallback() : null;
+        final CamelJmsTemplate template = (CamelJmsTemplate) getInOutTemplate();
+        MessageCreator messageCreator = new MessageCreator() {
+
+            public Message createMessage(Session session) throws JMSException {
+                Message message = endpoint.getBinding().makeJmsMessage(exchange, in, session);
+                message.setJMSReplyTo(replyTo);
+                requestor.setReplyToSelectorHeader(in, message);
+                FutureTask future = null;
+                future = (!msgIdAsCorrId) ? requestor.getReceiveFuture(message.getJMSCorrelationID(), endpoint.getConfiguration().getRequestTimeout()) : requestor.getReceiveFuture(callback);
+                futureHolder.set(future);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(endpoint + " sending JMS message: " + message);
+                }
+                return message;
+            }
+        };
+        if (destinationName != null) {
+            template.send(destinationName, messageCreator, callback);
+        } else if (destination != null) {
+            // TODO cannot pass in callback using destination?
+            template.send(destination.toString(), messageCreator, callback);
+        // template.send(destination, messageCreator);
+        } else {
+            throw new IllegalArgumentException("Neither destination nor destinationName is specified on this endpoint: " + endpoint);
+        }
+        setMessageId(exchange);
+        // lets wait and return the response
+        long requestTimeout = endpoint.getConfiguration().getRequestTimeout();
+        try {
+            Message message = null;
+            try {
+                if (requestTimeout < 0) {
+                    message = (Message) futureHolder.get().get();
+                } else {
+                    message = (Message) futureHolder.get().get(requestTimeout, TimeUnit.MILLISECONDS);
+                }
+            } catch (InterruptedException e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Future interupted: " + e, e);
+                }
+            } catch (TimeoutException e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Future timed out: " + e, e);
+                }
+            }
+            if (message != null) {
+                exchange.setOut(new JmsMessage(message, endpoint.getBinding()));
+                if (correlationId != null) {
+                    message.setJMSCorrelationID(correlationId);
+                    exchange.getOut(false).setHeader("JMSCorrelationID", correlationId);
+                }
+            } else {
+                // lets set a timed out exception
+                exchange.setException(new ExchangeTimedOutException(exchange, requestTimeout));
+            }
+        } catch (Exception e) {
+            exchange.setException(e);
+        }
+    } else {
+        MessageCreator messageCreator = new MessageCreator() {
+
+            public Message createMessage(Session session) throws JMSException {
+                Message message = endpoint.getBinding().makeJmsMessage(exchange, in, session);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(endpoint + " sending JMS message: " + message);
+                }
+                return message;
+            }
+        };
+        if (destinationName != null) {
+            getInOnlyTemplate().send(destinationName, messageCreator);
+        } else if (destination != null) {
+            getInOnlyTemplate().send(destination, messageCreator);
+        } else {
+            throw new IllegalArgumentException("Neither destination nor destinationName is specified on this endpoint: " + endpoint);
+        }
+        setMessageId(exchange);
+    }
+</td> </tr></table></body></html>

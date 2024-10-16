@@ -1,0 +1,50 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4417</td> <td>1242677880</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>be91e9f2f4538e02c8d07593dce8fbd2661f10d3</td> <td>None</td> <td>Disallow processing query parameters as input body fields.
+Implementations of views should avoid duplicate naming.</td> <td>SATD_ADDED</td> <td>formToJson(Map<String, String[]>, Set<String>)</td> <td> static JsonObject formToJson(Map<String, String[]> map, Set<String> query) throws BadRequestException</td> <td>
+    JsonObject inputObject = new JsonObject();
+    for (Map.Entry<String, String[]> ent : map.entrySet()) {
+        String key = ent.getKey();
+        String[] values = ent.getValue();
+        if (query.contains(key) || values.length == 0) {
+            // Disallow processing query parameters as input body fields.
+            // Implementations of views should avoid duplicate naming.
+            continue;
+        }
+        JsonObject obj = inputObject;
+        int dot = key.indexOf('.');
+        if (0 <= dot) {
+            String property = key.substring(0, dot);
+            JsonElement e = inputObject.get(property);
+            if (e == null) {
+                obj = new JsonObject();
+                inputObject.add(property, obj);
+            } else if (e.isJsonObject()) {
+                obj = e.getAsJsonObject();
+            } else {
+                throw new BadRequestException(String.format("key %s conflicts with %s", key, property));
+            }
+            key = key.substring(dot + 1);
+        }
+        if (obj.get(key) != null) {
+            // This error should never happen. If all form values are handled
+            // together in a single pass properties are set only once. Setting
+            // again indicates something has gone very wrong.
+            throw new BadRequestException("invalid form input, use JSON instead");
+        } else if (values.length == 1) {
+            obj.addProperty(key, values[0]);
+        } else {
+            JsonArray list = new JsonArray();
+            for (String v : values) {
+                list.add(new JsonPrimitive(v));
+            }
+            obj.add(key, list);
+        }
+    }
+    return inputObject;
+</td> </tr></table></body></html>

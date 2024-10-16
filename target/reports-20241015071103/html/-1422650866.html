@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2242</td> <td>-1422650866</td><td>apache/camel</td><td>Claus Ibsen</td><td>a13ed1decde3cd619dd3d44d45fddb6bd85fc8b7</td> <td>None</td> <td>TODO: CAMEL-4022. Message should probably not go to DLC for this scenario
+We need agree on a solution and implement it. See jira for more details.</td> <td>SATD_ADDED</td> <td>testExceptionWithFatalException()</td> <td>public void testExceptionWithFatalException() throws Exception</td> <td>
+    MockEndpoint resultEndpoint = getMockEndpoint("mock:result");
+    MockEndpoint exceptionEndpoint = getMockEndpoint("mock:exception");
+    MockEndpoint fatalEndpoint = getMockEndpoint("mock:fatal");
+    MockEndpoint errorEndpoint = getMockEndpoint("mock:error");
+    fatalEndpoint.expectedMessageCount(0);
+    exceptionEndpoint.expectedMessageCount(0);
+    resultEndpoint.expectedMessageCount(0);
+    errorEndpoint.expectedMessageCount(1);
+    // TODO: CAMEL-4022. Message should probably not go to DLC for this scenario
+    // We need agree on a solution and implement it. See jira for more details.
+    errorEndpoint.expectedBodiesReceived("<some-value/>");
+    try {
+        template.sendBody("direct:start2", "<body/>");
+    } catch (Exception e) {
+    // expected
+    }
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

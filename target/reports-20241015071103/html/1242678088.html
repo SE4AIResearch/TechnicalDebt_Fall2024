@@ -1,0 +1,96 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4863</td> 
+     <td>1242678088</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>6f58dbe334eb6a6db72c4e63431b1c25b5102325</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>toJson(PGPPublicKey, CheckResult)</td> 
+     <td>public static GpgKeyInfo toJson(PGPPublicKey key, CheckResult checkResult) throws IOException</td> 
+     <td> GpgKeyInfo info = new GpgKeyInfo(); if (key != null) { info.id = PublicKeyStore.keyIdToString(key.getKeyID()); info.fingerprint = Fingerprint.toString(key.getFingerprint()); @SuppressWarnings("unchecked") Iterator<string>
+        userIds = key.getUserIDs(); info.userIds = ImmutableList.copyOf(userIds); try (ByteArrayOutputStream out = new ByteArrayOutputStream(4096); ArmoredOutputStream aout = new ArmoredOutputStream(out)) { // This is not exactly the key stored in the store, but is equivalent. In // particular, it will have a Bouncy Castle version string. The armored // stream reader in PublicKeyStore doesn't give us an easy way to extract // the original ASCII armor. key.encode(aout); info.key = new String(out.toByteArray(), UTF_8); } } info.status = checkResult.getStatus(); info.problems = checkResult.getProblems(); return info; 
+      </string></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4862</td> 
+     <td>1242678088</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>36b35b9d71360f4043ebd8d982343a7dcf24abaa</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>toJson(PGPPublicKeyRing, PublicKeyChecker, PublicKeyStore)</td> 
+     <td> static GpgKeyInfo toJson(PGPPublicKeyRing keyRing, PublicKeyChecker checker, PublicKeyStore store) throws IOException</td> 
+     <td> PGPPublicKey key = keyRing.getPublicKey(); GpgKeyInfo info = new GpgKeyInfo(); info.id = PublicKeyStore.keyIdToString(key.getKeyID()); info.fingerprint = Fingerprint.toString(key.getFingerprint()); @SuppressWarnings("unchecked") Iterator<string>
+        userIds = key.getUserIDs(); info.userIds = ImmutableList.copyOf(userIds); try (ByteArrayOutputStream out = new ByteArrayOutputStream(4096); ArmoredOutputStream aout = new ArmoredOutputStream(out)) { // This is not exactly the key stored in the store, but is equivalent. In // particular, it will have a Bouncy Castle version string. The armored // stream reader in PublicKeyStore doesn't give us an easy way to extract // the original ASCII armor. key.encode(aout); info.key = new String(out.toByteArray(), UTF_8); } CheckResult checkResult = checker.check(key, store); info.status = checkResult.getStatus(); info.problems = checkResult.getProblems(); return info; 
+      </string></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4836</td> 
+     <td>1242678088</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Dave Borowitz</td> 
+     <td>b8336f176afb28c2b7bdf193571df932ea819321</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>toJson(PGPPublicKeyRing)</td> 
+     <td> static GpgKeyInfo toJson(PGPPublicKeyRing keyRing) throws IOException</td> 
+     <td> PGPPublicKey key = keyRing.getPublicKey(); GpgKeyInfo info = new GpgKeyInfo(); info.id = PublicKeyStore.keyIdToString(key.getKeyID()); info.fingerprint = Fingerprint.toString(key.getFingerprint()); @SuppressWarnings("unchecked") Iterator<string>
+        userIds = key.getUserIDs(); info.userIds = ImmutableList.copyOf(userIds); try (ByteArrayOutputStream out = new ByteArrayOutputStream(4096); ArmoredOutputStream aout = new ArmoredOutputStream(out)) { // This is not exactly the key stored in the store, but is equivalent. In // particular, it will have a Bouncy Castle version string. The armored // stream reader in PublicKeyStore doesn't give us an easy way to extract // the original ASCII armor. key.encode(aout); info.key = new String(out.toByteArray(), UTF_8); } return info; 
+      </string></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4831</td> 
+     <td>1242678088</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>ed170f35f6bb3d8ec2e1fb4709bf119401ab1233</td> 
+     <td>None</td> 
+     <td>This is not exactly the key stored in the store, but is equivalent. In particular, it will have a Bouncy Castle version string. The armored stream reader in PublicKeyStore doesn't give us an easy way to extract the original ASCII armor.</td> 
+     <td>SATD_ADDED</td> 
+     <td>toJson(PGPPublicKeyRing)</td> 
+     <td> static GpgKeyInfo toJson(PGPPublicKeyRing keyRing) throws IOException</td> 
+     <td> PGPPublicKey key = keyRing.getPublicKey(); GpgKeyInfo info = new GpgKeyInfo(); info.id = PublicKeyStore.keyIdToString(key.getKeyID()); info.fingerprint = PublicKeyStore.fingerprintToString(key.getFingerprint()); @SuppressWarnings("unchecked") Iterator<string>
+        userIds = key.getUserIDs(); info.userIds = ImmutableList.copyOf(userIds); try (ByteArrayOutputStream out = new ByteArrayOutputStream(4096); ArmoredOutputStream aout = new ArmoredOutputStream(out)) { // This is not exactly the key stored in the store, but is equivalent. In // particular, it will have a Bouncy Castle version string. The armored // stream reader in PublicKeyStore doesn't give us an easy way to extract // the original ASCII armor. key.encode(aout); info.key = new String(out.toByteArray(), UTF_8); } return info; 
+      </string></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

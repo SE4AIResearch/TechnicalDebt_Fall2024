@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2923</td> <td>-1422650468</td><td>apache/camel</td><td>James Strachan</td><td>1efc537f8752772f54c1e2e1ff84bf733ba1d055</td> <td>None</td> <td>TODO: This should probably happen, but hitting an open transaction or flush in progress.
+Is there a thread holding onto it?</td> <td>SATD_ADDED</td> <td>doStop()</td> <td>protected void doStop() throws Exception</td> <td>
+    super.doStop();
+// TODO: This should probably happen, but hitting an open transaction or flush in progress.
+// Is there a thread holding onto it?
+// entityManager.close();
+</td> </tr></table></body></html>

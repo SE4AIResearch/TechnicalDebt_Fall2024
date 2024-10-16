@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>4610</td> 
+     <td>1242677901</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn Pearce</td>
+     <td>faef658f386123f357fdaa2a32239700ed164e3f</td> 
+     <td>Does not account for draft status as a user might want to let a reviewer see a draft.</td> 
+     <td>Does not account for draft status as a user might want to let a reviewer see a draft.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>putGroup(ChangeResource, AddReviewerInput)</td> 
+     <td>private PostResult putGroup(ChangeResource rsrc, AddReviewerInput input) throws BadRequestException, UnprocessableEntityException, OrmException, EmailException, IOException</td> 
+     <td> GroupDescription.Basic group = groupsCollection.get().parseInternal(input.reviewer); PostResult result = new PostResult(); if (!isLegalReviewerGroup(group.getGroupUUID())) { result.error = MessageFormat.format(ChangeMessages.get().groupIsNotAllowed, group.getName()); return result; } Set<identifieduser>
+        reviewers = Sets.newLinkedHashSet(); ChangeControl control = rsrc.getControl(); Set
+       <account>
+         members; try { members = groupMembersFactory.create(control.getCurrentUser()).listAccounts(group.getGroupUUID(), control.getProject().getNameKey()); } catch (NoSuchGroupException e) { throw new UnprocessableEntityException(e.getMessage()); } catch (NoSuchProjectException e) { throw new BadRequestException(e.getMessage()); } // if maxAllowed is set to 0, it is allowed to add any number of // reviewers int maxAllowed = cfg.getInt("addreviewer", "maxAllowed", DEFAULT_MAX_REVIEWERS); if (maxAllowed &gt; 0 &amp;&amp; members.size() &gt; maxAllowed) { result.error = MessageFormat.format(ChangeMessages.get().groupHasTooManyMembers, group.getName()); return result; } // if maxWithoutCheck is set to 0, we never ask for confirmation int maxWithoutConfirmation = cfg.getInt("addreviewer", "maxWithoutConfirmation", DEFAULT_MAX_REVIEWERS_WITHOUT_CHECK); if (!input.confirmed() &amp;&amp; maxWithoutConfirmation &gt; 0 &amp;&amp; members.size() &gt; maxWithoutConfirmation) { result.confirm = true; result.error = MessageFormat.format(ChangeMessages.get().groupManyMembersConfirmation, group.getName(), members.size()); return result; } for (Account member : members) { if (member.isActive()) { IdentifiedUser user = identifiedUserFactory.create(member.getId()); // Does not account for draft status as a user might want to let a // reviewer see a draft. if (control.forUser(user).isRefVisible()) { reviewers.add(user); } } } addReviewers(rsrc, result, reviewers); return result; 
+       </account>
+      </identifieduser></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>4448</td> 
+     <td>1242677901</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Dave Borowitz</td>
+     <td>675879a7331c56bd3f3013d225d9292de70f0999</td> 
+     <td>None</td> 
+     <td>Does not account for draft status as a user might want to let a reviewer see a draft.</td> 
+     <td>SATD_ADDED</td> 
+     <td>putGroup(ChangeResource, Input)</td> 
+     <td>private PostResult putGroup(ChangeResource rsrc, Input input) throws ResourceNotFoundException, AuthException, NoSuchGroupException, NoSuchProjectException, OrmException, NoSuchChangeException, EmailException</td> 
+     <td> AccountGroup group = groupCache.get(new AccountGroup.NameKey(input.reviewer)); if (group == null) { throw new ResourceNotFoundException(input.reviewer); } PostResult result = new PostResult(); if (!isLegalReviewerGroup(group.getGroupUUID())) { result.error = MessageFormat.format(ChangeMessages.get().groupIsNotAllowed, group.getName()); return result; } Set<identifieduser>
+        reviewers = Sets.newLinkedHashSet(); ChangeControl control = rsrc.getControl(); Set
+       <account>
+         members = groupMembersFactory.create(control.getCurrentUser()).listAccounts(group.getGroupUUID(), control.getProject().getNameKey()); // if maxAllowed is set to 0, it is allowed to add any number of // reviewers int maxAllowed = cfg.getInt("addreviewer", "maxAllowed", DEFAULT_MAX_REVIEWERS); if (maxAllowed &gt; 0 &amp;&amp; members.size() &gt; maxAllowed) { result.error = MessageFormat.format(ChangeMessages.get().groupHasTooManyMembers, group.getName()); return result; } // if maxWithoutCheck is set to 0, we never ask for confirmation int maxWithoutConfirmation = cfg.getInt("addreviewer", "maxWithoutConfirmation", DEFAULT_MAX_REVIEWERS_WITHOUT_CHECK); if (!input.confirmed() &amp;&amp; maxWithoutConfirmation &gt; 0 &amp;&amp; members.size() &gt; maxWithoutConfirmation) { result.confirm = true; result.error = MessageFormat.format(ChangeMessages.get().groupManyMembersConfirmation, group.getName(), members.size()); return result; } for (Account member : members) { if (member.isActive()) { IdentifiedUser user = identifiedUserFactory.create(member.getId()); // Does not account for draft status as a user might want to let a // reviewer see a draft. if (control.forUser(user).isRefVisible()) { reviewers.add(user); } } } addReviewers(rsrc, result, reviewers); return result; 
+       </account>
+      </identifieduser></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

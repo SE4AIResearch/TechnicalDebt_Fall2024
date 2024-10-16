@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1549</td> <td>-1422651259</td><td>apache/camel</td><td>Claus Ibsen</td><td>bcbfbffaaa6a455f946b2d7a8eed962513c2abcf</td> <td>None</td> <td>maybe a single oid</td> <td>SATD_ADDED</td> <td>setAsText(String)</td> <td>public void setAsText(String text) throws IllegalArgumentException</td> <td>
+    OIDList list = new OIDList();
+    if (text.indexOf(",") != -1) {
+        // seems to be a comma separated oid list
+        StringTokenizer strTok = new StringTokenizer(text, ",");
+        while (strTok.hasMoreTokens()) {
+            String tok = strTok.nextToken();
+            if (tok != null && tok.trim().length() > 0) {
+                list.add(new OID(tok.trim()));
+            } else {
+            // empty token - skip
+            }
+        }
+    } else {
+        // maybe a single oid
+        list.add(new OID(text.trim()));
+    }
+    setValue(list);
+</td> </tr></table></body></html>

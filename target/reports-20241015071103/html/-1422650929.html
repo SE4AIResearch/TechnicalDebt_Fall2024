@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2306</td> 
+     <td>-1422650929</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>d754a83363762e2fc85f803211dc2d4ebd1dfdd3</td> 
+     <td>TODO: stop timer route causes the test to fail we will revisit this in Camel 3.0 where interceptors/cross cutting concerns is applied at runtime</td> 
+     <td>should be intercepted</td> 
+     <td>SATD_REMOVED</td> 
+     <td>testErrorHandlerAdvice()</td> 
+     <td>public void testErrorHandlerAdvice() throws Exception</td> 
+     <td> RouteDefinition foo = context.getRouteDefinition("foo"); foo.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("seda:*").skipSendToOriginalEndpoint().throwException(new IllegalAccessException("Forced")); } }); RouteDefinition error = context.getRouteDefinition("error"); error.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("file:*").skipSendToOriginalEndpoint().to("mock:file"); } }); getMockEndpoint("mock:error").expectedMessageCount(1); getMockEndpoint("mock:file").expectedMessageCount(1); // should be intercepted getMockEndpoint("mock:foo").expectedMessageCount(0); context.stopRoute("timer"); template.sendBody("direct:start", "Hello World"); assertMockEndpointsSatisfied(); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>2129</td> 
+     <td>-1422650929</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>a70119fe2f2b69fb5482e0784b5efb72738f05e4</td> 
+     <td>TODO: stop timer route causes the test to fail</td> 
+     <td>TODO: stop timer route causes the test to fail we will revisit this in Camel 3.0 where interceptors/cross cutting concerns is applied at runtime</td> 
+     <td>SATD_CHANGED</td> 
+     <td>testErrorHandlerAdvice()</td> 
+     <td>public void testErrorHandlerAdvice() throws Exception</td> 
+     <td> RouteDefinition foo = context.getRouteDefinition("foo"); foo.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("seda:*").skipSendToOriginalEndpoint().throwException(new IllegalAccessException("Forced")); } }); RouteDefinition error = context.getRouteDefinition("error"); error.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("file:*").skipSendToOriginalEndpoint().to("mock:file"); } }); getMockEndpoint("mock:error").expectedMessageCount(1); getMockEndpoint("mock:file").expectedMessageCount(1); // should be intercepted getMockEndpoint("mock:foo").expectedMessageCount(0); // TODO: stop timer route causes the test to fail // we will revisit this in Camel 3.0 where interceptors/cross cutting concerns // is applied at runtime // context.stopRoute("timer"); template.sendBody("direct:start", "Hello World"); assertMockEndpointsSatisfied(); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2128</td> 
+     <td>-1422650929</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>f661d8304bf02eec424f6cd6f3371168f7bbcf7a</td> 
+     <td>None</td> 
+     <td>TODO: stop timer route causes the test to fail</td> 
+     <td>SATD_ADDED</td> 
+     <td>testErrorHandlerAdvice()</td> 
+     <td>public void testErrorHandlerAdvice() throws Exception</td> 
+     <td> RouteDefinition foo = context.getRouteDefinition("foo"); foo.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("seda:*").skipSendToOriginalEndpoint().throwException(new IllegalAccessException("Forced")); } }); RouteDefinition error = context.getRouteDefinition("error"); error.adviceWith(context, new RouteBuilder() { @Override public void configure() throws Exception { interceptSendToEndpoint("file:*").skipSendToOriginalEndpoint().to("mock:file"); } }); getMockEndpoint("mock:error").expectedMessageCount(1); getMockEndpoint("mock:file").expectedMessageCount(1); // should be intercepted getMockEndpoint("mock:foo").expectedMessageCount(0); // TODO: stop timer route causes the test to fail // context.stopRoute("timer"); template.sendBody("direct:start", "Hello World"); assertMockEndpointsSatisfied(); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

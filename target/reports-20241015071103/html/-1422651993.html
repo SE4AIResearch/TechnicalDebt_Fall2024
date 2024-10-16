@@ -1,0 +1,34 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>62</td> <td>-1422651993</td><td>apache/camel</td><td>James Strachan</td><td>30d818fcd1f76d3eab4484d75677bbcb3300ddcf</td> <td>None</td> <td>TODO temporarily disabled caching due to POJO test failure</td> <td>SATD_ADDED</td> <td>resolveEndpoint(String)</td> <td>public Endpoint resolveEndpoint(String uri)</td> <td>
+    Endpoint answer;
+    synchronized (endpoints) {
+        answer = endpoints.get(uri);
+        if (answer == null) {
+            try {
+                for (EndpointResolver resolver : resolvers) {
+                    answer = resolver.resolveEndpoint(this, uri);
+                    if (answer != null) {
+                        break;
+                    }
+                }
+                if (answer == null) {
+                    EndpointResolver er = getEndpointResolver();
+                    answer = er.resolveEndpoint(this, uri);
+                }
+                if (answer != null) {
+                // TODO temporarily disabled caching due to POJO test failure
+                // endpoints.put(uri, answer);
+                }
+            } catch (Exception e) {
+                throw new ResolveEndpointFailedException(uri, e);
+            }
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

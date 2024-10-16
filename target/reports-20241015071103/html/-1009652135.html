@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5247</td> <td>-1009652135</td><td>apache/hadoop</td><td>Eli Collins</td><td>3fd40ae8d0b45d7bf6186fe14851ca87eb9ee3ef</td> <td>None</td> <td>TODO Make this configurable
+100 ms</td> <td>SATD_ADDED</td> <td>calibrate(ResourceCalculatorPlugin, long)</td> <td>public void calibrate(ResourceCalculatorPlugin monitor, long totalCpuUsage)</td> <td>
+    long initTime = monitor.getProcResourceValues().getCumulativeCpuTime();
+    long defaultLoopSize = 0;
+    long finalTime = initTime;
+    // TODO Make this configurable
+    while (finalTime - initTime < 100) {
+        // 100 ms
+        ++defaultLoopSize;
+        // perform unit computation
+        performUnitComputation();
+        finalTime = monitor.getProcResourceValues().getCumulativeCpuTime();
+    }
+    long referenceRuntime = finalTime - initTime;
+    // time for one loop = (final-time - init-time) / total-loops
+    float timePerLoop = ((float) referenceRuntime) / defaultLoopSize;
+    // compute the 1% of the total CPU usage desired
+    // TODO Make this configurable
+    long onePercent = totalCpuUsage / 100;
+    // num-iterations for 1% = (total-desired-usage / 100) / time-for-one-loop
+    numIterations = Math.max(1, (int) ((float) onePercent / timePerLoop));
+    System.out.println("Calibration done. Basic computation runtime : " + timePerLoop + " milliseconds. Optimal number of iterations (1%): " + numIterations);
+</td> </tr></table></body></html>

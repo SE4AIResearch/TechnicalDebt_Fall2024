@@ -1,0 +1,212 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5280</td> <td>-1009652442</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>
+Now we need to generate the random numbers according to
+the above distribution.
+
+We create a lot of map tasks, each of which takes at least
+one \"line\" of the distribution.  (That is, a certain number
+X is to be generated Y number of times.)
+
+A map task emits Y key/val pairs.  The val is X.  The key
+is a randomly-generated number.
+
+The reduce task gets its input sorted by key.  That is, sorted
+in random order.  It then emits a single line of text that
+for the given values.  It does not emit the key.
+
+Because there's just one reduce task, we emit a single big
+file of random numbers.
+</td> <td>SATD_ADDED</td> <td>launch()</td> <td>public static void launch() throws Exception</td> <td>
+    // 
+    // Generate distribution of ints.  This is the answer key.
+    // 
+    int countsToGo = counts;
+    int[] dist = new int[range];
+    for (int i = 0; i < range; i++) {
+        double avgInts = (1.0 * countsToGo) / (range - i);
+        dist[i] = (int) Math.max(0, Math.round(avgInts + (Math.sqrt(avgInts) * r.nextGaussian())));
+        countsToGo -= dist[i];
+    }
+    if (countsToGo > 0) {
+        dist[dist.length - 1] += countsToGo;
+    }
+    // 
+    // Write the answer key to a file.
+    // 
+    FileSystem fs = FileSystem.get(conf);
+    Path testdir = new Path("mapred.loadtest");
+    if (!fs.mkdirs(testdir)) {
+        throw new IOException("Mkdirs failed to create directory " + testdir.toString());
+    }
+    Path randomIns = new Path(testdir, "genins");
+    if (!fs.mkdirs(randomIns)) {
+        throw new IOException("Mkdirs failed to create directory " + randomIns.toString());
+    }
+    Path answerkey = new Path(randomIns, "answer.key");
+    SequenceFile.Writer out = SequenceFile.createWriter(fs, conf, answerkey, RecInt.class, RecInt.class, CompressionType.NONE);
+    try {
+        for (int i = 0; i < range; i++) {
+            RecInt k = new RecInt();
+            RecInt v = new RecInt();
+            k.setData(i);
+            v.setData(dist[i]);
+            out.append(k, v);
+        }
+    } finally {
+        out.close();
+    }
+    // 
+    // Now we need to generate the random numbers according to
+    // the above distribution.
+    // 
+    // We create a lot of map tasks, each of which takes at least
+    // one "line" of the distribution.  (That is, a certain number
+    // X is to be generated Y number of times.)
+    // 
+    // A map task emits Y key/val pairs.  The val is X.  The key
+    // is a randomly-generated number.
+    // 
+    // The reduce task gets its input sorted by key.  That is, sorted
+    // in random order.  It then emits a single line of text that
+    // for the given values.  It does not emit the key.
+    // 
+    // Because there's just one reduce task, we emit a single big
+    // file of random numbers.
+    // 
+    Path randomOuts = new Path(testdir, "genouts");
+    fs.delete(randomOuts, true);
+    JobConf genJob = new JobConf(conf, TestRecordMR.class);
+    FileInputFormat.setInputPaths(genJob, randomIns);
+    genJob.setInputFormat(SequenceFileInputFormat.class);
+    genJob.setMapperClass(RandomGenMapper.class);
+    FileOutputFormat.setOutputPath(genJob, randomOuts);
+    genJob.setOutputKeyClass(RecInt.class);
+    genJob.setOutputValueClass(RecString.class);
+    genJob.setOutputFormat(SequenceFileOutputFormat.class);
+    genJob.setReducerClass(RandomGenReducer.class);
+    genJob.setNumReduceTasks(1);
+    JobClient.runJob(genJob);
+    // 
+    // Next, we read the big file in and regenerate the
+    // original map.  It's split into a number of parts.
+    // (That number is 'intermediateReduces'.)
+    // 
+    // We have many map tasks, each of which read at least one
+    // of the output numbers.  For each number read in, the
+    // map task emits a key/value pair where the key is the
+    // number and the value is "1".
+    // 
+    // We have a single reduce task, which receives its input
+    // sorted by the key emitted above.  For each key, there will
+    // be a certain number of "1" values.  The reduce task sums
+    // these values to compute how many times the given key was
+    // emitted.
+    // 
+    // The reduce task then emits a key/val pair where the key
+    // is the number in question, and the value is the number of
+    // times the key was emitted.  This is the same format as the
+    // original answer key (except that numbers emitted zero times
+    // will not appear in the regenerated key.)  The answer set
+    // is split into a number of pieces.  A final MapReduce job
+    // will merge them.
+    // 
+    // There's not really a need to go to 10 reduces here
+    // instead of 1.  But we want to test what happens when
+    // you have multiple reduces at once.
+    // 
+    int intermediateReduces = 10;
+    Path intermediateOuts = new Path(testdir, "intermediateouts");
+    fs.delete(intermediateOuts, true);
+    JobConf checkJob = new JobConf(conf, TestRecordMR.class);
+    FileInputFormat.setInputPaths(checkJob, randomOuts);
+    checkJob.setInputFormat(SequenceFileInputFormat.class);
+    checkJob.setMapperClass(RandomCheckMapper.class);
+    FileOutputFormat.setOutputPath(checkJob, intermediateOuts);
+    checkJob.setOutputKeyClass(RecInt.class);
+    checkJob.setOutputValueClass(RecString.class);
+    checkJob.setOutputFormat(SequenceFileOutputFormat.class);
+    checkJob.setReducerClass(RandomCheckReducer.class);
+    checkJob.setNumReduceTasks(intermediateReduces);
+    JobClient.runJob(checkJob);
+    // 
+    // OK, now we take the output from the last job and
+    // merge it down to a single file.  The map() and reduce()
+    // functions don't really do anything except reemit tuples.
+    // But by having a single reduce task here, we end up merging
+    // all the files.
+    // 
+    Path finalOuts = new Path(testdir, "finalouts");
+    fs.delete(finalOuts, true);
+    JobConf mergeJob = new JobConf(conf, TestRecordMR.class);
+    FileInputFormat.setInputPaths(mergeJob, intermediateOuts);
+    mergeJob.setInputFormat(SequenceFileInputFormat.class);
+    mergeJob.setMapperClass(MergeMapper.class);
+    FileOutputFormat.setOutputPath(mergeJob, finalOuts);
+    mergeJob.setOutputKeyClass(RecInt.class);
+    mergeJob.setOutputValueClass(RecInt.class);
+    mergeJob.setOutputFormat(SequenceFileOutputFormat.class);
+    mergeJob.setReducerClass(MergeReducer.class);
+    mergeJob.setNumReduceTasks(1);
+    JobClient.runJob(mergeJob);
+    // 
+    // Finally, we compare the reconstructed answer key with the
+    // original one.  Remember, we need to ignore zero-count items
+    // in the original key.
+    // 
+    boolean success = true;
+    Path recomputedkey = new Path(finalOuts, "part-00000");
+    SequenceFile.Reader in = new SequenceFile.Reader(fs, recomputedkey, conf);
+    int totalseen = 0;
+    try {
+        RecInt key = new RecInt();
+        RecInt val = new RecInt();
+        for (int i = 0; i < range; i++) {
+            if (dist[i] == 0) {
+                continue;
+            }
+            if (!in.next(key, val)) {
+                System.err.println("Cannot read entry " + i);
+                success = false;
+                break;
+            } else {
+                if (!((key.getData() == i) && (val.getData() == dist[i]))) {
+                    System.err.println("Mismatch!  Pos=" + key.getData() + ", i=" + i + ", val=" + val.getData() + ", dist[i]=" + dist[i]);
+                    success = false;
+                }
+                totalseen += val.getData();
+            }
+        }
+        if (success) {
+            if (in.next(key, val)) {
+                System.err.println("Unnecessary lines in recomputed key!");
+                success = false;
+            }
+        }
+    } finally {
+        in.close();
+    }
+    int originalTotal = 0;
+    for (int i = 0; i < dist.length; i++) {
+        originalTotal += dist[i];
+    }
+    System.out.println("Original sum: " + originalTotal);
+    System.out.println("Recomputed sum: " + totalseen);
+    // 
+    // Write to "results" whether the test succeeded or not.
+    // 
+    Path resultFile = new Path(testdir, "results");
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fs.create(resultFile)));
+    try {
+        bw.write("Success=" + success + "\n");
+        System.out.println("Success=" + success);
+    } finally {
+        bw.close();
+    }
+    fs.delete(testdir, true);
+</td> </tr></table></body></html>

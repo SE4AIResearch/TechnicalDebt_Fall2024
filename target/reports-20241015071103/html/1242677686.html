@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4092</td> 
+     <td>1242677686</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>67449dcaae49d48d67baa86aa93522cf44246f39</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>newChangeTo()</td> 
+     <td>private void newChangeTo() throws MessagingException</td> 
+     <td> add(RecipientType.TO, reviewers); add(RecipientType.CC, extraCC); if (patchSetInfo != null) { // Make sure the author/committer get notice of a change that // they will be blamed later on for writing. // add(RecipientType.CC, patchSetInfo.getAuthor()); add(RecipientType.CC, patchSetInfo.getCommitter()); } final ProjectCache.Entry cacheEntry = Common.getProjectCache().get(change.getDest().getParentKey()); if (cacheEntry == null) { return; } try { // Try to mark interested owners with a TO and not a BCC line. // final Set<account.id>
+        toNotBCC = new HashSet 
+       <account.id>
+         (); for (AccountGroupMember m : db.accountGroupMembers().byGroup(cacheEntry.getProject().getOwnerGroupId())) { toNotBCC.add(m.getAccountId()); } // BCC anyone who has interest in this project's changes // for (AccountProjectWatch w : db.accountProjectWatches().notifyNewChanges(cacheEntry.getProject().getId())) { if (toNotBCC.contains(w.getAccountId())) { add(RecipientType.TO, w.getAccountId()); } else { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } 
+       </account.id> 
+      </account.id></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4043</td> 
+     <td>1242677686</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>newChangeTo()</td> 
+     <td>private void newChangeTo() throws MessagingException</td> 
+     <td> add(RecipientType.TO, reviewers); add(RecipientType.CC, extraCC); if (patchSetInfo != null) { // Make sure the author/committer get notice of a change that // they will be blamed later on for writing. // add(RecipientType.CC, patchSetInfo.getAuthor()); add(RecipientType.CC, patchSetInfo.getCommitter()); } final ProjectCache.Entry cacheEntry = Common.getProjectCache().get(change.getDest().getParentKey()); if (cacheEntry == null) { return; } try { // Try to mark interested owners with a TO and not a BCC line. // final Set<account.id>
+        toNotBCC = new HashSet 
+       <account.id>
+         (); for (AccountGroupMember m : db.accountGroupMembers().byGroup(cacheEntry.getProject().getOwnerGroupId())) { toNotBCC.add(m.getAccountId()); } // BCC anyone who has interest in this project's changes // for (AccountProjectWatch w : db.accountProjectWatches().notifyNewChanges(cacheEntry.getProject().getId())) { if (toNotBCC.contains(w.getAccountId())) { add(RecipientType.TO, w.getAccountId()); } else { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } 
+       </account.id> 
+      </account.id></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4028</td> 
+     <td>1242677686</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>f87cfe9084462a044dda177e6dca0e20c35b7077</td> 
+     <td>None</td> 
+     <td>Just don't CC everyone. Better to send a partial message to those we already have queued up then to fail deliver entirely to people who have a lower interest in the change.</td> 
+     <td>SATD_ADDED</td> 
+     <td>newChangeTo()</td> 
+     <td>private void newChangeTo() throws MessagingException</td> 
+     <td> final ProjectCache.Entry cacheEntry = Common.getProjectCache().get(change.getDest().getParentKey()); if (cacheEntry == null) { return; } try { // Try to mark interested owners with a TO and not a BCC line. // final Set<account.id>
+        toNotBCC = new HashSet
+       <account.id>
+        (); for (AccountGroupMember m : db.accountGroupMembers().byGroup(cacheEntry.getProject().getOwnerGroupId())) { toNotBCC.add(m.getAccountId()); } // BCC anyone who has interest in this project's changes // for (AccountProjectWatch w : db.accountProjectWatches().notifyNewChanges(cacheEntry.getProject().getId())) { if (toNotBCC.contains(w.getAccountId())) { add(RecipientType.TO, w.getAccountId()); } else { add(RecipientType.BCC, w.getAccountId()); } } } catch (OrmException err) { // Just don't CC everyone. Better to send a partial message to those // we already have queued up then to fail deliver entirely to people // who have a lower interest in the change. } 
+       </account.id>
+      </account.id></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

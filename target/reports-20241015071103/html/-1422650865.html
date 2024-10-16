@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2243</td> <td>-1422650865</td><td>apache/camel</td><td>Claus Ibsen</td><td>a13ed1decde3cd619dd3d44d45fddb6bd85fc8b7</td> <td>None</td> <td>TODO: CAMEL-4022. Set a breakpoint here and see the body growing \"FATAl FATAL ... Exception thrown\"
+See discussion in the issue above for solution found (which will probably lead to changing this test</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder() throws Exception</td> <td>
+    final Processor exceptionThrower = new Processor() {
+
+        public void process(Exchange exchange) throws Exception {
+            String body = exchange.getIn().getBody(String.class);
+            body = body.substring(1, body.length() - 2);
+            boolean fatal = body.equals("exception") || body.indexOf(' ') != -1;
+            String message = fatal ? "FATAL " : "";
+            body = fatal ? message + body : "exception";
+            // TODO: CAMEL-4022. Set a breakpoint here and see the body growing "FATAl FATAL ... Exception thrown"
+            // See discussion in the issue above for solution found (which will probably lead to changing this test
+            exchange.getIn().setBody("<" + body + "/>");
+            throw new IllegalArgumentException(message + "Exception thrown");
+        }
+    };
+    return new RouteBuilder() {
+
+        public void configure() {
+            errorHandler(deadLetterChannel("mock:error").redeliveryDelay(0).maximumRedeliveries(3));
+            if (getName().endsWith("WithLongHandler")) {
+                log.debug("Using long exception handler");
+                onException(IllegalArgumentException.class).setBody(constant("<handled/>")).to("mock:exception");
+            } else if (getName().endsWith("WithHandler")) {
+                log.debug("Using exception handler");
+                onException(IllegalArgumentException.class).to("mock:exception");
+            } else if (getName().endsWith("WithFatalException")) {
+                log.debug("Using fatal exception");
+                onException(IllegalArgumentException.class).process(exceptionThrower).to("mock:fatal");
+            }
+            from("direct:start").process(exceptionThrower).to("mock:result");
+            from("direct:start2").to("direct:intermediate").to("mock:result");
+            from("direct:intermediate").setBody(constant("<some-value/>")).process(exceptionThrower).to("mock:result");
+        }
+    };
+</td> </tr></table></body></html>

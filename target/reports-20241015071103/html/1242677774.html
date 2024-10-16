@@ -1,0 +1,43 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4221</td> <td>1242677774</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>fa2486a39739dc103b3f57048f3f84ca8764779c</td> <td>None</td> <td>TODO Support HTTP without SSH.</td> <td>SATD_ADDED</td> <td>run()</td> <td>public int run() throws Exception</td> <td>
+    if (httpd == null) {
+        httpd = !slave;
+    }
+    if (!httpd && !sshd) {
+        throw die("No services enabled, nothing to do");
+    }
+    if (slave && httpd) {
+        throw die("Cannot combine --slave and --enable-httpd");
+    }
+    if (httpd && !sshd) {
+        // TODO Support HTTP without SSH.
+        throw die("--enable-httpd currently requires --enable-sshd");
+    }
+    dbInjector = Guice.createInjector(PRODUCTION, new DatabaseModule());
+    cfgInjector = dbInjector.createChildInjector(new GerritConfigModule());
+    sysInjector = createSysInjector();
+    manager.add(dbInjector, cfgInjector, sysInjector);
+    if (sshd) {
+        initSshd();
+    }
+    if (httpd) {
+        initHttpd();
+    }
+    manager.start();
+    log.info("Gerrit Code Review " + myVersion() + " ready");
+    RuntimeShutdown.add(new Runnable() {
+
+        public void run() {
+            log.info("caught shutdown, cleaning up");
+            manager.stop();
+        }
+    });
+    RuntimeShutdown.waitFor();
+    return 0;
+</td> </tr></table></body></html>

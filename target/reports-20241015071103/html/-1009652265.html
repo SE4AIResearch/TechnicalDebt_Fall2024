@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5461</td> <td>-1009652265</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>we first start a cluster and fill the cluster up to a certain size.
+then redistribute blocks according the required distribution.
+Afterwards a balancer is running to balance the cluster.</td> <td>SATD_ADDED</td> <td>testUnevenDistribution(Configuration, long[], long[], String[])</td> <td>private void testUnevenDistribution(Configuration conf, long[] distribution, long[] capacities, String[] racks) throws Exception</td> <td>
+    int numDatanodes = distribution.length;
+    if (capacities.length != numDatanodes || racks.length != numDatanodes) {
+        throw new IllegalArgumentException("Array length is not the same");
+    }
+    // calculate total space that need to be filled
+    final long totalUsedSpace = sum(distribution);
+    // fill the cluster
+    ExtendedBlock[] blocks = generateBlocks(conf, totalUsedSpace, (short) numDatanodes);
+    // redistribute blocks
+    Block[][] blocksDN = distributeBlocks(blocks, (short) (numDatanodes - 1), distribution);
+    // restart the cluster: do NOT format the cluster
+    conf.set(DFSConfigKeys.DFS_NAMENODE_SAFEMODE_THRESHOLD_PCT_KEY, "0.0f");
+    cluster = new MiniDFSCluster.Builder(conf).numDataNodes(numDatanodes).format(false).racks(racks).simulatedCapacities(capacities).build();
+    cluster.waitActive();
+    client = DFSClient.createNamenode(conf);
+    for (int i = 0; i < blocksDN.length; i++) cluster.injectBlocks(i, Arrays.asList(blocksDN[i]));
+    final long totalCapacity = sum(capacities);
+    runBalancer(conf, totalUsedSpace, totalCapacity);
+    cluster.shutdown();
+</td> </tr></table></body></html>

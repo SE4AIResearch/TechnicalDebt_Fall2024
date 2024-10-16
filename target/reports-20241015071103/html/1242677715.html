@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4117</td> <td>1242677715</td><td>GerritCodeReview/gerrit</td><td>Shawn O. Pearce</td><td>5fbee2951400d921fcdcf0a7b2f2f758c44afd91</td> <td>Oh well, its not a c3p0 pooled connection. Too bad its
+not standardized how \"good applications cleanup\".</td> <td>Oh well, its not a c3p0 pooled connection. Too bad its
+not standardized how \"good applications cleanup\".</td> <td>SATD_MOVED_FILE</td> <td>contextDestroyed(ServletContextEvent)</td> <td>public void contextDestroyed(final ServletContextEvent event)</td> <td>
+    try {
+        injector.getInstance(GerritSshDaemon.class).stop();
+    } catch (ConfigurationException e) {
+    // Assume it never started.
+    } catch (ProviderException e) {
+    // Assume it never started.
+    }
+    WorkQueue.terminate();
+    GerritServer.closeCacheManager();
+    try {
+        final DataSource ds = injector.getInstance(GerritServerModule.DS);
+        try {
+            final Class<?> type = Class.forName("com.mchange.v2.c3p0.DataSources");
+            if (type.isInstance(ds)) {
+                type.getMethod("destroy", DataSource.class).invoke(null, ds);
+            }
+        } catch (Throwable bad) {
+        // Oh well, its not a c3p0 pooled connection. Too bad its
+        // not standardized how "good applications cleanup".
+        }
+    } catch (ConfigurationException ce) {
+    // Assume it never started.
+    } catch (ProviderException ce) {
+    // Assume it never started.
+    }
+    super.contextDestroyed(event);
+</td> </tr></table></body></html>

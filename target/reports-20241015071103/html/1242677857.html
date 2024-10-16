@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4383</td> <td>1242677857</td><td>GerritCodeReview/gerrit</td><td>Nasser Grainawi</td><td>843032f2f9287e1df75bee1b72fce6b498eba4a7</td> <td>None</td> <td>On the AllProjects project the owner access right cannot be assigned,
+this why for the AllProjects project we allow administrators to push
+configuration changes if they have push without being project owner.</td> <td>SATD_ADDED</td> <td>canUpdate()</td> <td>public boolean canUpdate()</td> <td>
+    if (GitRepositoryManager.REF_CONFIG.equals(refName) && !projectControl.isOwner()) {
+        // Pushing requires being at least project owner, in addition to push.
+        // Pushing configuration changes modifies the access control
+        // rules. Allowing this to be done by a non-project-owner opens
+        // a security hole enabling editing of access rules, and thus
+        // granting of powers beyond pushing to the configuration.
+        // On the AllProjects project the owner access right cannot be assigned,
+        // this why for the AllProjects project we allow administrators to push
+        // configuration changes if they have push without being project owner.
+        if (!(projectControl.getProjectState().isAllProjects() && getCurrentUser().getCapabilities().canAdministrateServer())) {
+            return false;
+        }
+    }
+    return canPerform(Permission.PUSH) && canWrite();
+</td> </tr></table></body></html>

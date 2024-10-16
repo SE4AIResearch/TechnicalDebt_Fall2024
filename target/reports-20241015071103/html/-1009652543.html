@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5053</td> <td>-1009652543</td><td>apache/hadoop</td><td>Jakob Homan</td><td>929e91a08c5387c692ed3257361190b83d72f2e9</td> <td>None</td> <td>Workaround for HADOOP-6386</td> <td>SATD_ADDED</td> <td>createBaseListener(Configuration)</td> <td>protected Connector createBaseListener(Configuration conf) throws IOException</td> <td>
+    SelectChannelConnector ret = new SelectChannelConnector();
+    ret.setLowResourceMaxIdleTime(10000);
+    ret.setAcceptQueueSize(128);
+    ret.setResolveNames(false);
+    ret.setUseDirectBuffers(false);
+    return ret;
+</td> </tr></table></body></html>

@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>3401</td> 
+     <td>-1422650852</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>26fa5b7cc3f268c929673786d1a440f3ce7c49bc</td> 
+     <td>when using doTry .. doCatch .. doFinally we should always end the try definition to avoid having to use 2 x end() in the route this is counter intuitive for end users TODO (camel-3.0): this should be done inside of TryDefinition or even better in Block(s) in general, but the api needs to be revisited for that.</td> 
+     <td>when using choice .. when .. otherwise - doTry .. doCatch .. doFinally we should always end the choice/try definition to avoid having to use 2 x end() in the route this is counter intuitive for end users TODO (camel-3.0): this should be done inside of TryDefinition or even better in Block(s) in general, but the api needs to be revisited for that.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>end()</td> 
+     <td>public ProcessorDefinition<!--?--> end()</td> 
+     <td> // must do this ugly cast to avoid compiler error on AIX/HP-UX ProcessorDefinition<!--?--> defn = (ProcessorDefinition<!--?-->) this; // when using choice .. when .. otherwise - doTry .. doCatch .. doFinally we should always // end the choice/try definition to avoid having to use 2 x end() in the route // this is counter intuitive for end users // TODO (camel-3.0): this should be done inside of TryDefinition or even better // in Block(s) in general, but the api needs to be revisited for that. if (defn instanceof TryDefinition || defn instanceof ChoiceDefinition) { popBlock(); } if (blocks.isEmpty()) { if (parent == null) { return this.endParent(); } return parent.endParent(); } popBlock(); return this.endParent(); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3400</td> 
+     <td>-1422650852</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>26fa5b7cc3f268c929673786d1a440f3ce7c49bc</td> 
+     <td>when using doTry .. doCatch .. doFinally we should always end the try definition to avoid having to use 2 x end() in the route this is counter intuitive for end users TODO (camel-3.0): this should be done inside of TryDefinition or even better in Block(s) in general, but the api needs to be revisited for that.</td> 
+     <td>must do this ugly cast to avoid compiler error on AIX/HP-UX</td> 
+     <td>SATD_CHANGED</td> 
+     <td>end()</td> 
+     <td>public ProcessorDefinition<!--?--> end()</td> 
+     <td> // must do this ugly cast to avoid compiler error on AIX/HP-UX ProcessorDefinition<!--?--> defn = (ProcessorDefinition<!--?-->) this; // when using choice .. when .. otherwise - doTry .. doCatch .. doFinally we should always // end the choice/try definition to avoid having to use 2 x end() in the route // this is counter intuitive for end users // TODO (camel-3.0): this should be done inside of TryDefinition or even better // in Block(s) in general, but the api needs to be revisited for that. if (defn instanceof TryDefinition || defn instanceof ChoiceDefinition) { popBlock(); } if (blocks.isEmpty()) { if (parent == null) { return this.endParent(); } return parent.endParent(); } popBlock(); return this.endParent(); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>2264</td> 
+     <td>-1422650852</td>
+     <td>apache/camel</td>
+     <td>Richard Kettelerij</td>
+     <td>6cb9a1c2f8abce992dcb390bf6b14a1b9e8dff34</td> 
+     <td>None</td> 
+     <td>when using doTry .. doCatch .. doFinally we should always end the try definition to avoid having to use 2 x end() in the route this is counter intuitive for end users TODO (camel-3.0): this should be done inside of TryDefinition or even better in Block(s) in general, but the api needs to be revisited for that.</td> 
+     <td>SATD_ADDED</td> 
+     <td>end()</td> 
+     <td>public ProcessorDefinition end()</td> 
+     <td> // must do this ugly cast to avoid compiler error on AIX/HP-UX ProcessorDefinition defn = (ProcessorDefinition) this; // when using doTry .. doCatch .. doFinally we should always // end the try definition to avoid having to use 2 x end() in the route // this is counter intuitive for end users // TODO (camel-3.0): this should be done inside of TryDefinition or even better // in Block(s) in general, but the api needs to be revisited for that. if (defn instanceof TryDefinition || defn instanceof ChoiceDefinition) { popBlock(); } if (blocks.isEmpty()) { if (parent == null) { return this.endParent(); } return parent.endParent(); } popBlock(); return this.endParent(); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

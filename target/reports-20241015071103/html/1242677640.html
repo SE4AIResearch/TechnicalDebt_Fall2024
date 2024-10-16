@@ -1,0 +1,79 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4041</td> 
+     <td>1242677640</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>263786e2fd4ae7cf385c34d04626abc79e4305d6</td> 
+     <td>TODO Someday this should be a menu of choices.</td> 
+     <td>TODO Someday this should be a menu of choices.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>bareRevisionId(String, HttpServletRequest, HttpServletResponse)</td> 
+     <td>private boolean bareRevisionId(final String pathInfo, final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> 
+     <td> final Matcher m = REV_ID.matcher(pathInfo); if (!m.matches()) { return false; } final String rev = m.group(1).toLowerCase(); if (rev.length() &gt; RevId.LEN) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); return true; } final RevId id = new RevId(rev); final List<patchset>
+        patches; try { final ReviewDb db = Common.getSchemaFactory().open(); try { if (id.isComplete()) { patches = db.patchSets().byRevision(id).toList(); } else { patches = db.patchSets().byRevisionRange(id, id.max()).toList(); } } finally { db.close(); } } catch (OrmException e) { config.getServletContext().log("Unable to query for " + rev, e); rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); return true; } if (patches.size() == 0) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); } else if (patches.size() == 1) { final StringBuffer url = toGerrit(req); url.append('#'); url.append(Link.toChange(patches.get(0).getId().getParentKey())); rsp.sendRedirect(url.toString()); } else { // TODO Someday this should be a menu of choices. rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); } return true; 
+      </patchset></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>3965</td> 
+     <td>1242677640</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>f14a1ded658afedc4f2f98e4d25a1e065fee1d42</td> 
+     <td>TODO Someday this should be a menu of choices.</td> 
+     <td>TODO Someday this should be a menu of choices.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>bareRevisionId(String, HttpServletRequest, HttpServletResponse)</td> 
+     <td>private boolean bareRevisionId(final String pathInfo, final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> 
+     <td> final Matcher m = REV_ID.matcher(pathInfo); if (!m.matches()) { return false; } final String rev = m.group(1).toLowerCase(); if (rev.length() &gt; RevId.LEN) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); return true; } final RevId id = new RevId(rev); final List<patchset>
+        patches; try { final ReviewDb db = server.getDatabase().open(); try { if (id.isComplete()) { patches = db.patchSets().byRevision(id).toList(); } else { patches = db.patchSets().byRevisionRange(id, id.max()).toList(); } } finally { db.close(); } } catch (OrmException e) { config.getServletContext().log("Unable to query for " + rev, e); rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); return true; } if (patches.size() == 0) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); } else if (patches.size() == 1) { final StringBuffer url = toGerrit(req); url.append('#'); url.append(Link.toChange(patches.get(0).getKey().getParentKey())); rsp.sendRedirect(url.toString()); } else { // TODO Someday this should be a menu of choices. rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); } return true; 
+      </patchset></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>3941</td> 
+     <td>1242677640</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>4a970ddf8dc78ab557b04c0b2418f240f479405a</td> 
+     <td>None</td> 
+     <td>TODO Someday this should be a menu of choices.</td> 
+     <td>SATD_ADDED</td> 
+     <td>bareRevisionId(String, HttpServletRequest, HttpServletResponse)</td> 
+     <td>private boolean bareRevisionId(final String pathInfo, final HttpServletRequest req, final HttpServletResponse rsp) throws IOException</td> 
+     <td> final Matcher m = REV_ID.matcher(pathInfo); if (!m.matches()) { return false; } final String rev = m.group(1).toLowerCase(); if (rev.length() &gt; REV_ID_LEN) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); return true; } final List<patchset>
+        patches; try { final ReviewDb db = server.getDatabase().open(); try { if (rev.length() == REV_ID_LEN) { patches = db.patchSets().byRevision(rev).toList(); } else { final StringBuilder revEnd = new StringBuilder(REV_ID_LEN); revEnd.append(rev); while (revEnd.length() &lt; REV_ID_LEN) { revEnd.append('z'); } patches = db.patchSets().byRevisionRange(rev, revEnd.toString()).toList(); } } finally { db.close(); } } catch (OrmException e) { config.getServletContext().log("Unable to query for " + rev, e); rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); return true; } if (patches.size() == 0) { rsp.sendError(HttpServletResponse.SC_NOT_FOUND); } else if (patches.size() == 1) { final StringBuffer url = toGerrit(req); url.append('#'); url.append(Link.toChange(patches.get(0).getKey().getParentKey())); rsp.sendRedirect(url.toString()); } else { // TODO Someday this should be a menu of choices. rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); } return true; 
+      </patchset></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

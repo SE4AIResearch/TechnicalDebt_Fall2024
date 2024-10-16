@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>1428</td> 
+     <td>-1422651344</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>03cd924f46f0f8e6a62471e58cda294ef98b363f</td> 
+     <td>TODO copy the message header into the inMessage</td> 
+     <td>Copy the CXF message header into the Camel inMessage</td> 
+     <td>SATD_REMOVED</td> 
+     <td>populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange, Exchange, Method, Object[])</td> 
+     <td>public void populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange cxfExchange, Exchange camelExchange, Method method, Object[] paramArray)</td> 
+     <td> Message camelMessage = camelExchange.getIn(); // Copy the CXF message header into the Camel inMessage org.apache.cxf.message.Message cxfMessage = cxfExchange.getInMessage(); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.REQUEST_URI, Exchange.HTTP_URI); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.HTTP_REQUEST_METHOD, Exchange.HTTP_METHOD); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.PATH_INFO, Exchange.HTTP_PATH); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.CONTENT_TYPE, Exchange.CONTENT_TYPE); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.ENCODING, Exchange.HTTP_CHARACTER_ENCODING); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.QUERY_STRING, Exchange.HTTP_QUERY); copyMessageHeader(cxfMessage, camelMessage, org.apache.cxf.message.Message.ACCEPT_CONTENT_TYPE, Exchange.ACCEPT_CONTENT_TYPE); camelMessage.setHeader(CxfConstants.OPERATION_NAME, method.getName()); camelMessage.setBody(paramArray); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>1377</td> 
+     <td>-1422651344</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>d08530f915eda017e7cb33efdeffb79bbaa65688</td> 
+     <td>None</td> 
+     <td>TODO copy the message header into the inMessage</td> 
+     <td>SATD_ADDED</td> 
+     <td>populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange, Exchange, Method, Object[])</td> 
+     <td>public void populateExchangeFromCxfRsRequest(org.apache.cxf.message.Exchange cxfExchange, Exchange camelExchange, Method method, Object[] paramArray)</td> 
+     <td> Message inMessage = camelExchange.getIn(); // TODO copy the message header into the inMessage inMessage.setHeader(CxfConstants.OPERATION_NAME, method.getName()); inMessage.setBody(paramArray); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

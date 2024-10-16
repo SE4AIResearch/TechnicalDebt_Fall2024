@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>5974</td> 
+     <td>-1009652388</td>
+     <td>apache/hadoop</td>
+     <td>Steve Loughran</td>
+     <td>28e6a4e44a3e920dcaf858f9a74a6358226b3a63</td> 
+     <td> Poll the Namenode (once every 5 minutes) to find the size of the pending edit log. 5 minutes</td> 
+     <td> Poll the Namenode (once every checkpointCheckPeriod seconds) to find the number of transactions in the edit log that haven't yet been checkpointed. </td> 
+     <td>SATD_REMOVED</td> 
+     <td>toString()</td> 
+     <td>public String toString()</td> 
+     <td> return getClass().getSimpleName() + " Status" + "\nName Node Address : " + nameNodeAddr + "\nStart Time : " + new Date(starttime) + "\nLast Checkpoint Time : " + (lastCheckpointTime == 0 ? "--" : new Date(lastCheckpointTime)) + "\nCheckpoint Period : " + checkpointPeriod + " seconds" + "\nCheckpoint Size : " + StringUtils.byteDesc(checkpointTxnCount) + " (= " + checkpointTxnCount + " bytes)" + "\nCheckpoint Dirs : " + checkpointDirs + "\nCheckpoint Edits Dirs: " + checkpointEditsDirs; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5334</td> 
+     <td>-1009652388</td>
+     <td>apache/hadoop</td>
+     <td>Eli Collins</td>
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>None</td> 
+     <td> Poll the Namenode (once every 5 minutes) to find the size of the pending edit log. 5 minutes</td> 
+     <td>SATD_ADDED</td> 
+     <td>doWork()</td> 
+     <td>public void doWork()</td> 
+     <td> // // Poll the Namenode (once every 5 minutes) to find the size of the // pending edit log. // // 5 minutes long period = 5 * 60; if (checkpointPeriod &lt; period) { period = checkpointPeriod; } while (shouldRun) { try { Thread.sleep(1000 * period); } catch (InterruptedException ie) { // do nothing } if (!shouldRun) { break; } try { // We may have lost our ticket since last checkpoint, log in again, just in case if (UserGroupInformation.isSecurityEnabled()) UserGroupInformation.getCurrentUser().reloginFromKeytab(); long now = System.currentTimeMillis(); long size = namenode.getEditLogSize(); if (size &gt;= checkpointSize || now &gt;= lastCheckpointTime + 1000 * checkpointPeriod) { doCheckpoint(); lastCheckpointTime = now; } } catch (IOException e) { LOG.error("Exception in doCheckpoint: "); LOG.error(StringUtils.stringifyException(e)); e.printStackTrace(); checkpointImage.getStorage().imageDigest = null; } catch (Throwable e) { LOG.error("Throwable Exception in doCheckpoint: "); LOG.error(StringUtils.stringifyException(e)); e.printStackTrace(); Runtime.getRuntime().exit(-1); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>6031</td> 
+     <td>-1009652500</td> 
+     <td>apache/hadoop</td> 
+     <td>Arun Murthy</td> 
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>The implementors of RawLocalFileSystem were trying to be very smart. They implement FileStatus#getOwener lazily -- the object returned is really a RawLocalFileSystem that expect the FileStatus#getPath to be unchanged so that it can get owner when needed. Hence we need to interpose a new ViewFsFileStatus that works around.</td> 
+     <td>The implementors of RawLocalFileSystem were trying to be very smart. They implement FileStatus#getOwener lazily -- the object returned is really a RawLocalFileSystem that expect the FileStatus#getPath to be unchanged so that it can get owner when needed. Hence we need to interpose a new ViewFsFileStatus that works around.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>readOnlyMountTable(String, String)</td> 
+     <td> static AccessControlException readOnlyMountTable(final String operation, final String p)</td> 
+     <td> return new AccessControlException("InternalDir of ViewFileSystem is readonly; operation=" + operation + "Path=" + p); </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>5234</td> 
+     <td>-1009652500</td> 
+     <td>apache/hadoop</td> 
+     <td>Eli Collins</td> 
+     <td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> 
+     <td>The implementors of RawLocalFileSystem were trying to be very smart. They implement FileStatus#getOwener lazily -- the object returned is really a RawLocalFileSystem that expect the FileStatus#getPath to be unchanged so that it can get owner when needed. Hence we need to interpose a new ViewFsFileStatus that works around.</td> 
+     <td>The implementors of RawLocalFileSystem were trying to be very smart. They implement FileStatus#getOwener lazily -- the object returned is really a RawLocalFileSystem that expect the FileStatus#getPath to be unchanged so that it can get owner when needed. Hence we need to interpose a new ViewFsFileStatus that works around.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>readOnlyMountTable(String, String)</td> 
+     <td> static AccessControlException readOnlyMountTable(final String operation, final String p)</td> 
+     <td> return new AccessControlException("InternalDir of ViewFileSystem is readonly; operation=" + operation + "Path=" + p); </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>5120</td> 
+     <td>-1009652500</td>
+     <td>apache/hadoop</td>
+     <td>Tsz-wo Sze</td>
+     <td>f1c74df922058e88791ed6971bbb96b53f6770f1</td> 
+     <td>None</td> 
+     <td>The implementors of RawLocalFileSystem were trying to be very smart. They implement FileStatus#getOwener lazily -- the object returned is really a RawLocalFileSystem that expect the FileStatus#getPath to be unchanged so that it can get owner when needed. Hence we need to interpose a new ViewFsFileStatus that works around.</td> 
+     <td>SATD_ADDED</td> 
+     <td>readOnlyMountTable(String, String)</td> 
+     <td> static AccessControlException readOnlyMountTable(final String operation, final String p)</td> 
+     <td> return new AccessControlException("InternalDir of ViewFileSystem is readonly; operation=" + operation + "Path=" + p); </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

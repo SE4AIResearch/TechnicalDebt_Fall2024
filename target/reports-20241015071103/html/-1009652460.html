@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5262</td> <td>-1009652460</td><td>apache/hadoop</td><td>Eli Collins</td><td>a196766ea07775f18ded69bd9e8d239f8cfd3ccc</td> <td>None</td> <td>move over ')'</td> <td>SATD_ADDED</td> <td>getBlock(String, char, char, IntWritable)</td> <td>private static String getBlock(String str, char open, char close, IntWritable index) throws ParseException</td> <td>
+    StringBuilder split = new StringBuilder();
+    int next = StringUtils.findNext(str, open, StringUtils.ESCAPE_CHAR, index.get(), split);
+    // clear the buffer
+    split.setLength(0);
+    if (next >= 0) {
+        // move over '('
+        ++next;
+        next = StringUtils.findNext(str, close, StringUtils.ESCAPE_CHAR, next, split);
+        if (next >= 0) {
+            // move over ')'
+            ++next;
+            index.set(next);
+            // found a block
+            return split.toString();
+        } else {
+            throw new ParseException("Unexpected end of block", next);
+        }
+    }
+    // found nothing
+    return null;
+</td> </tr></table></body></html>

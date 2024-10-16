@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2135</td> <td>-1422650926</td><td>apache/camel</td><td>Claus Ibsen</td><td>faef1afc1c487b4f7b5b8ce29e5f1b7c84f978b3</td> <td>None</td> <td>TODO: correct not to validate?</td> <td>SATD_ADDED</td> <td>createExpression(CamelContext)</td> <td>public Expression createExpression(CamelContext camelContext)</td> <td>
+    Expression answer;
+    if (beanType != null) {
+        instance = ObjectHelper.newInstance(beanType);
+        // TODO: correct not to validate?
+        // answer = new BeanExpression(instance, getMethod(), parameterType);
+        return new BeanExpression(instance, getMethod(), parameterType);
+    } else if (instance != null) {
+        // TODO: correct not to validate?
+        // answer = new BeanExpression(instance, getMethod(), parameterType);
+        return new BeanExpression(instance, getMethod(), parameterType);
+    } else {
+        String ref = beanName();
+        // if its a ref then check that the ref exists
+        BeanHolder holder = new RegistryBean(camelContext, ref);
+        // get the bean which will check that it exists
+        instance = holder.getBean();
+        answer = new BeanExpression(ref, getMethod(), parameterType);
+    }
+    // validate method
+    validateHasMethod(camelContext, instance, getMethod(), parameterType);
+    return answer;
+</td> </tr></table></body></html>

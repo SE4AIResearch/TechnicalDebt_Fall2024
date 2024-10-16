@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1235</td> <td>-1422651415</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>a4e7f76960b87983d3522afc1a322dd6958f002f</td> <td>None</td> <td>TODO: Routes are temporary disabled until the code in InstrumentationLifecycleStrategy is fixed</td> <td>SATD_ADDED</td> <td>testCounters()</td> <td>public void testCounters() throws Exception</td> <td>
+    CustomEndpoint resultEndpoint = resolveMandatoryEndpoint("custom:end", CustomEndpoint.class);
+    resultEndpoint.expectedBodiesReceived("<hello>world!</hello>");
+    sendBody("direct:start", "<hello>world!</hello>");
+    resultEndpoint.assertIsSatisfied();
+    // TODO: Routes are temporary disabled until the code in InstrumentationLifecycleStrategy is fixed
+    // verifyCounter(mbsc, new ObjectName(domainName + ":type=routes,*"));
+    verifyCounter(mbsc, new ObjectName(domainName + ":type=processors,*"));
+</td> </tr></table></body></html>

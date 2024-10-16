@@ -1,0 +1,63 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2454</td> 
+     <td>-1422650936</td>
+     <td>apache/camel</td>
+     <td>Christian Mueller</td>
+     <td>9b08ccf026f4152db8187df43611a597677db0a8</td> 
+     <td>TODO: convert to acceptable value</td> 
+     <td>TODO: convert to acceptable value</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>?&gt; getProperties(Exchange)</td> 
+     <td>protected Dictionary<!--?, ?--> getProperties(Exchange exchange)</td> 
+     <td> Message in = exchange.getIn(); CamelContext context = endpoint.getCamelContext(); Map<!--?, ?--> map = context.getTypeConverter().convertTo(Map.class, exchange, in.getBody()); Dictionary<string, object>
+        dict = new Hashtable
+       <string, object>
+        (); for (Entry<!--?, ?--> entry : map.entrySet()) { String keyString = CamelContextHelper.convertTo(context, String.class, entry.getKey()); if (keyString != null) { Object val = entry.getValue(); // TODO: convert to acceptable value dict.put(keyString, val); } } return dict; 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2106</td> 
+     <td>-1422650936</td>
+     <td>apache/camel</td>
+     <td>Guillaume Nodet</td>
+     <td>41f98579a98bb7fde89f6c3c8a57189127b2d6db</td> 
+     <td>None</td> 
+     <td>TODO: convert to acceptable value</td> 
+     <td>SATD_ADDED</td> 
+     <td>getProperties(Exchange)</td> 
+     <td>protected Dictionary getProperties(Exchange exchange)</td> 
+     <td> Message in = exchange.getIn(); CamelContext context = endpoint.getCamelContext(); Map map = context.getTypeConverter().convertTo(Map.class, exchange, in.getBody()); Dictionary dict = new Hashtable(); for (Object key : map.keySet()) { String keyString = CamelContextHelper.convertTo(context, String.class, key); if (keyString != null) { Object val = map.get(key); // TODO: convert to acceptable value dict.put(keyString, val); } } return dict; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

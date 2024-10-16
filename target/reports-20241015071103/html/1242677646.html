@@ -1,0 +1,110 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3967</td> 
+     <td>1242677646</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>f14a1ded658afedc4f2f98e4d25a1e065fee1d42</td> 
+     <td>TODO Mark self-approved, self-verified if permitted.</td> 
+     <td>TODO Mark self-approved, self-verified if permitted.</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>load(ReviewDb, AccountInfoCacheFactory, Change)</td> 
+     <td>public void load(final ReviewDb db, final AccountInfoCacheFactory acc, final Change c) throws OrmException</td> 
+     <td> change = c; acc.want(change.getOwner()); patchSets = db.patchSets().byChange(change.getKey()).toList(); messages = db.changeMessages().byChange(change.getKey()).toList(); for (final ChangeMessage m : messages) { acc.want(m.getAuthor()); } final HashMap<account.id, approvaldetail>
+        ad = new HashMap
+       <account.id, approvaldetail>
+        (); { final ApprovalDetail d = new ApprovalDetail(change.getOwner()); d.sortOrder = ApprovalDetail.EG_0; // TODO Mark self-approved, self-verified if permitted. ad.put(d.getAccount(), d); } for (ChangeApproval ca : db.changeApprovals().byChange(change.getKey())) { ApprovalDetail d = ad.get(ca.getAccountId()); if (d == null) { d = new ApprovalDetail(ca.getAccountId()); ad.put(d.getAccount(), d); } d.add(ca); } acc.want(ad.keySet()); approvals = new ArrayList
+        <approvaldetail>
+         (ad.values()); Collections.sort(approvals, new Comparator
+         <approvaldetail>
+          () { public int compare(final ApprovalDetail o1, final ApprovalDetail o2) { return o2.sortOrder.compareTo(o1.sortOrder); } }); currentPatchSetId = change.currentPatchSetId(); if (currentPatchSetId != null) { currentDetail = new PatchSetDetail(); currentDetail.load(db, getCurrentPatchSet()); final HashSet
+          <change.id>
+            changesToGet = new HashSet
+           <change.id>
+            (); final List
+            <change.id>
+              ancestorOrder = new ArrayList
+             <change.id>
+              (); for (final PatchSetAncestor a : db.patchSetAncestors().ancestorsOf(currentPatchSetId).toList()) { for (PatchSet p : db.patchSets().byRevision(a.getAncestorRevision())) { final Change.Id ck = p.getKey().getParentKey(); if (changesToGet.add(ck)) { ancestorOrder.add(ck); } } } final RevId cprev = getCurrentPatchSet().getRevision(); final List
+              <patchsetancestor>
+                descendants = cprev != null ? db.patchSetAncestors().descendantsOf(cprev).toList() : Collections.
+               <patchsetancestor>
+                emptyList(); for (final PatchSetAncestor a : descendants) { changesToGet.add(a.getPatchSet().getParentKey()); } final Map
+                <change.id, change>
+                  m = db.changes().toMap(db.changes().get(changesToGet)); dependsOn = new ArrayList
+                 <changeinfo>
+                  (); for (final Change.Id a : ancestorOrder) { final Change ac = m.get(a); if (ac != null) { dependsOn.add(new ChangeInfo(ac, acc)); } } neededBy = new ArrayList
+                  <changeinfo>
+                   (); for (final PatchSetAncestor a : descendants) { final Change ac = m.get(a.getPatchSet().getParentKey()); if (ac != null) { neededBy.add(new ChangeInfo(ac, acc)); } } Collections.sort(neededBy, new Comparator
+                   <changeinfo>
+                    () { public int compare(final ChangeInfo o1, final ChangeInfo o2) { // TODO sort neededBy by something more reasonable than Id return o1.getId().get() - o2.getId().get(); } }); } accounts = acc.create(); 
+                   </changeinfo>
+                  </changeinfo>
+                 </changeinfo>
+                </change.id,>
+               </patchsetancestor>
+              </patchsetancestor>
+             </change.id>
+            </change.id>
+           </change.id>
+          </change.id>
+         </approvaldetail>
+        </approvaldetail>
+       </account.id,>
+      </account.id,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3948</td> 
+     <td>1242677646</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>24566e4b5881ea6a501f3821e8ce6f8c63e5ed46</td> 
+     <td>None</td> 
+     <td>TODO Mark self-approved, self-verified if permitted.</td> 
+     <td>SATD_ADDED</td> 
+     <td>load(ReviewDb, AccountInfoCacheFactory, Change)</td> 
+     <td>public void load(final ReviewDb db, final AccountInfoCacheFactory acc, final Change c) throws OrmException</td> 
+     <td> change = c; acc.want(change.getOwner()); patchSets = db.patchSets().byChange(change.getKey()).toList(); messages = db.changeMessages().byChange(change.getKey()).toList(); for (final ChangeMessage m : messages) { acc.want(m.getAuthor()); } final HashMap<account.id, approvaldetail>
+        ad = new HashMap
+       <account.id, approvaldetail>
+        (); { final ApprovalDetail d = new ApprovalDetail(change.getOwner()); d.sortOrder = ApprovalDetail.EG_0; // TODO Mark self-approved, self-verified if permitted. ad.put(d.getAccount(), d); } for (ChangeApproval ca : db.changeApprovals().byChange(change.getKey())) { ApprovalDetail d = ad.get(ca.getAccountId()); if (d == null) { d = new ApprovalDetail(ca.getAccountId()); ad.put(d.getAccount(), d); } d.add(ca); } acc.want(ad.keySet()); approvals = new ArrayList
+        <approvaldetail>
+         (ad.values()); Collections.sort(approvals, new Comparator
+         <approvaldetail>
+          () { public int compare(final ApprovalDetail o1, final ApprovalDetail o2) { return o2.sortOrder.compareTo(o1.sortOrder); } }); currentPatchSetId = change.currentPatchSetId(); if (currentPatchSetId != null) { currentDetail = new PatchSetDetail(); currentDetail.load(db, getCurrentPatchSet()); } accounts = acc.create(); 
+         </approvaldetail>
+        </approvaldetail>
+       </account.id,>
+      </account.id,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

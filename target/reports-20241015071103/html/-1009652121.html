@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>6071</td> 
+     <td>-1009652121</td>
+     <td>apache/hadoop</td>
+     <td>Arun Murthy</td>
+     <td>0f6dfeeacbab65a31a33927a4eb84871d371fe52</td> 
+     <td>For some reason even with an MBeanException available to them Runtime exceptionscan still find their way through, so treat them the same as MBeanException</td> 
+     <td>For some reason even with an MBeanException available to them Runtime exceptionscan still find their way through, so treat them the same as MBeanException</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>listBeans(JsonGenerator, ObjectName, String, HttpServletResponse)</td> 
+     <td>private void listBeans(JsonGenerator jg, ObjectName qry, String attribute, HttpServletResponse response) throws IOException</td> 
+     <td> LOG.debug("Listing beans for " + qry); Set<objectname>
+        names = null; names = mBeanServer.queryNames(qry, null); jg.writeArrayFieldStart("beans"); Iterator
+       <objectname>
+         it = names.iterator(); while (it.hasNext()) { ObjectName oname = it.next(); MBeanInfo minfo; String code = ""; Object attributeinfo = null; try { minfo = mBeanServer.getMBeanInfo(oname); code = minfo.getClassName(); String prs = ""; try { if ("org.apache.commons.modeler.BaseModelMBean".equals(code)) { prs = "modelerType"; code = (String) mBeanServer.getAttribute(oname, prs); } if (attribute != null) { prs = attribute; attributeinfo = mBeanServer.getAttribute(oname, prs); } } catch (AttributeNotFoundException e) { // If the modelerType attribute was not found, the class name is used // instead. LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (MBeanException e) { // The code inside the attribute getter threw an exception so log it, // and fall back on the class name LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (RuntimeException e) { // For some reason even with an MBeanException available to them // Runtime exceptionscan still find their way through, so treat them // the same as MBeanException LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (ReflectionException e) { // This happens when the code inside the JMX bean (setter?? from the // java docs) threw an exception, so log it and fall back on the // class name LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } } catch (InstanceNotFoundException e) { // Ignored for some reason the bean was not found so don't output it continue; } catch (IntrospectionException e) { // This is an internal error, something odd happened with reflection so // log it and don't output the bean. LOG.error("Problem while trying to process JMX query: " + qry + " with MBean " + oname, e); continue; } catch (ReflectionException e) { // This happens when the code inside the JMX bean threw an exception, so // log it and don't output the bean. LOG.error("Problem while trying to process JMX query: " + qry + " with MBean " + oname, e); continue; } jg.writeStartObject(); jg.writeStringField("name", oname.toString()); jg.writeStringField("modelerType", code); if ((attribute != null) &amp;&amp; (attributeinfo == null)) { jg.writeStringField("result", "ERROR"); jg.writeStringField("message", "No attribute with name " + attribute + " was found."); jg.writeEndObject(); jg.writeEndArray(); jg.close(); response.setStatus(HttpServletResponse.SC_NOT_FOUND); return; } if (attribute != null) { writeAttribute(jg, attribute, attributeinfo); } else { MBeanAttributeInfo[] attrs = minfo.getAttributes(); for (int i = 0; i &lt; attrs.length; i++) { writeAttribute(jg, oname, attrs[i]); } } jg.writeEndObject(); } jg.writeEndArray(); 
+       </objectname>
+      </objectname></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>5594</td> 
+     <td>-1009652121</td>
+     <td>apache/hadoop</td>
+     <td>Aaron Myers</td>
+     <td>9c83d16c81df608d8fa1075906a7a0b989faef80</td> 
+     <td>None</td> 
+     <td>For some reason even with an MBeanException available to them Runtime exceptionscan still find their way through, so treat them the same as MBeanException</td> 
+     <td>SATD_ADDED</td> 
+     <td>listBeans(JsonGenerator, ObjectName, String, HttpServletResponse)</td> 
+     <td>private void listBeans(JsonGenerator jg, ObjectName qry, String attribute, HttpServletResponse response) throws IOException</td> 
+     <td> LOG.debug("Listing beans for " + qry); Set<objectname>
+        names = null; names = mBeanServer.queryNames(qry, null); jg.writeArrayFieldStart("beans"); Iterator
+       <objectname>
+         it = names.iterator(); while (it.hasNext()) { ObjectName oname = it.next(); MBeanInfo minfo; String code = ""; Object attributeinfo = null; try { minfo = mBeanServer.getMBeanInfo(oname); code = minfo.getClassName(); String prs = ""; try { if ("org.apache.commons.modeler.BaseModelMBean".equals(code)) { prs = "modelerType"; code = (String) mBeanServer.getAttribute(oname, prs); } if (attribute != null) { prs = attribute; attributeinfo = mBeanServer.getAttribute(oname, prs); } } catch (AttributeNotFoundException e) { // If the modelerType attribute was not found, the class name is used // instead. LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (MBeanException e) { // The code inside the attribute getter threw an exception so log it, // and fall back on the class name LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (RuntimeException e) { // For some reason even with an MBeanException available to them // Runtime exceptionscan still find their way through, so treat them // the same as MBeanException LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } catch (ReflectionException e) { // This happens when the code inside the JMX bean (setter?? from the // java docs) threw an exception, so log it and fall back on the // class name LOG.error("getting attribute " + prs + " of " + oname + " threw an exception", e); } } catch (InstanceNotFoundException e) { // Ignored for some reason the bean was not found so don't output it continue; } catch (IntrospectionException e) { // This is an internal error, something odd happened with reflection so // log it and don't output the bean. LOG.error("Problem while trying to process JMX query: " + qry + " with MBean " + oname, e); continue; } catch (ReflectionException e) { // This happens when the code inside the JMX bean threw an exception, so // log it and don't output the bean. LOG.error("Problem while trying to process JMX query: " + qry + " with MBean " + oname, e); continue; } jg.writeStartObject(); jg.writeStringField("name", oname.toString()); jg.writeStringField("modelerType", code); if ((attribute != null) &amp;&amp; (attributeinfo == null)) { jg.writeStringField("result", "ERROR"); jg.writeStringField("message", "No attribute with name " + attribute + " was found."); jg.writeEndObject(); jg.writeEndArray(); jg.close(); response.setStatus(HttpServletResponse.SC_NOT_FOUND); return; } if (attribute != null) { writeAttribute(jg, attribute, attributeinfo); } else { MBeanAttributeInfo[] attrs = minfo.getAttributes(); for (int i = 0; i &lt; attrs.length; i++) { writeAttribute(jg, oname, attrs[i]); } } jg.writeEndObject(); } jg.writeEndArray(); 
+       </objectname>
+      </objectname></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2453</td> <td>-1422650735</td><td>apache/camel</td><td>Ioannis Canellos</td><td>a819cf79686eed5c7455d6c999266024a70bffb6</td> <td>None</td> <td>TODO: We should have a JMX test of this as well</td> <td>SATD_ADDED</td> <td>testAutoStartupFalseContextStart()</td> <td>public void testAutoStartupFalseContextStart() throws Exception</td> <td>
+    DefaultCamelContext camel = new DefaultCamelContext(new SimpleRegistry());
+    camel.disableJMX();
+    camel.setAutoStartup(false);
+    camel.addRoutes(new RouteBuilder() {
+
+        @Override
+        public void configure() throws Exception {
+            from("direct:start").routeId("foo").to("mock:result");
+        }
+    });
+    camel.start();
+    assertEquals(true, camel.isStarted());
+    assertEquals(1, camel.getRoutes().size());
+    assertEquals(true, camel.getRouteStatus("foo").isStopped());
+    // now start camel again, to get it to start the routes
+    camel.start();
+    assertEquals(true, camel.getRouteStatus("foo").isStarted());
+    // and now its started we can test that it works by sending in a message to the route
+    MockEndpoint mock = camel.getEndpoint("mock:result", MockEndpoint.class);
+    mock.expectedMessageCount(1);
+    camel.createProducerTemplate().sendBody("direct:start", "Hello World");
+    mock.assertIsSatisfied();
+    camel.stop();
+</td> </tr></table></body></html>

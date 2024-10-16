@@ -1,0 +1,30 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2763</td> <td>-1422650566</td><td>apache/camel</td><td>Claus Ibsen</td><td>50e9162b4561c9ce255561da025d9ed56a93b007</td> <td>None</td> <td>we're done so let's properly close the application contexts</td> <td>SATD_ADDED</td> <td>testCustomerService()</td> <td>public void testCustomerService() throws Exception</td> <td>
+    ClassPathXmlApplicationContext serverContext = null;
+    ClassPathXmlApplicationContext clientContext = null;
+    try {
+        serverContext = new ClassPathXmlApplicationContext(new String[] { "spring-config/server-applicationContext.xml" });
+        Object server = serverContext.getBean("org.apache.camel.itest.customerrelations.CustomerServiceV1");
+        assertNotNull("We should get server here", server);
+        // add an interceptor to verify headers
+        EndpointImpl.class.cast(server).getServer().getEndpoint().getInInterceptors().add(new HeaderChecker(Phase.READ));
+        clientContext = new ClassPathXmlApplicationContext(new String[] { "spring-config/client-applicationContext.xml" });
+        CustomerServiceV1 customerService = clientContext.getBean("org.apache.camel.itest.customerrelations.CustomerServiceV1", CustomerServiceV1.class);
+        // CXF 2.1.2 only apply the SOAPAction for the request message (in SoapPreProtocolOutInterceptor)
+        // After went through the SOAP 1.1 specification, I got that the SOAPAction is only for the request message
+        // So I comment out this HeaderChecker Interceptor setting up code
+        /*JaxWsClientProxy.class.cast(Proxy.getInvocationHandler(customerService))
+                .getClient().getInInterceptors().add(new HeaderChecker(Phase.READ));*/
+        Customer customer = customerService.getCustomer("12345");
+        assertNotNull("We should get Customer here", customer);
+    } finally {
+        // we're done so let's properly close the application contexts
+        IOHelper.close(clientContext, serverContext);
+    }
+</td> </tr></table></body></html>

@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>840</td> <td>-1422651582</td><td>apache/camel</td><td>Claus Ibsen</td><td>9ec50b98e961b853e100d8a732744efaacc904d9</td> <td>None</td> <td>move according to the expression</td> <td>SATD_ADDED</td> <td>getMoveFileName(String, Exchange)</td> <td>protected String getMoveFileName(String name, Exchange exchange)</td> <td>
+    // move according to the expression
+    if (endpoint.getConfiguration().getExpression() != null) {
+        Object result = endpoint.getConfiguration().getExpression().evaluate(exchange);
+        return exchange.getContext().getTypeConverter().convertTo(String.class, result);
+    }
+    // move according to the pre and postfix
+    StringBuffer buffer = new StringBuffer();
+    if (moveNamePrefix != null) {
+        buffer.append(moveNamePrefix);
+    }
+    buffer.append(name);
+    if (moveNamePostfix != null) {
+        buffer.append(moveNamePostfix);
+    }
+    return buffer.toString();
+</td> </tr></table></body></html>

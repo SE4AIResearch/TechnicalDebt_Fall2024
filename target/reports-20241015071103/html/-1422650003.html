@@ -1,0 +1,13 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3805</td> <td>-1422650003</td><td>apache/camel</td><td>gautric</td><td>e8b00192394cc395bfd48ff3070ffc9fb3abf1bf</td> <td>None</td> <td>TODO provide parameter values for cancelRelease</td> <td>SATD_ADDED</td> <td>testCancelRelease()</td> <td>public void testCancelRelease() throws Exception</td> <td>
+    // using String message body for single parameter "id"
+    final com.braintreegateway.Result result = requestBody("direct://CANCELRELEASE", null);
+    assertNotNull("cancelRelease result", result);
+    LOG.debug("cancelRelease: " + result);
+</td> </tr></table></body></html>

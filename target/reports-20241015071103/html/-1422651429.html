@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1199</td> <td>-1422651429</td><td>apache/camel</td><td>Claus Ibsen</td><td>31d336dbaea12436973d440216ca5e951450246d</td> <td>None</td> <td>TODO: Order the strategies, eg using Comparable so we can have Tracer near the real processor</td> <td>SATD_ADDED</td> <td>wrapProcessorInInterceptors(RouteContext, Processor)</td> <td>protected Processor wrapProcessorInInterceptors(RouteContext routeContext, Processor target) throws Exception</td> <td>
+    ObjectHelper.notNull(target, "target", this);
+    List<InterceptStrategy> strategies = new ArrayList<InterceptStrategy>();
+    CamelContext camelContext = routeContext.getCamelContext();
+    strategies.addAll(camelContext.getInterceptStrategies());
+    strategies.addAll(routeContext.getInterceptStrategies());
+    // TODO: Order the strategies, eg using Comparable so we can have Tracer near the real processor
+    for (InterceptStrategy strategy : strategies) {
+        if (strategy != null) {
+            target = strategy.wrapProcessorInInterceptors(this, target);
+        }
+    }
+    List<AbstractInterceptorDefinition> list = routeContext.getRoute().getInterceptors();
+    if (interceptors != null) {
+        list.addAll(interceptors);
+    }
+    // lets reverse the list so we apply the inner interceptors first
+    Collections.reverse(list);
+    Set<Processor> interceptors = new HashSet<Processor>();
+    interceptors.add(target);
+    for (AbstractInterceptorDefinition interceptorType : list) {
+        DelegateProcessor interceptor = interceptorType.createInterceptor(routeContext);
+        if (!interceptors.contains(interceptor)) {
+            interceptors.add(interceptor);
+            if (interceptor.getProcessor() != null) {
+                LOG.warn("Interceptor " + interceptor + " currently wraps target " + interceptor.getProcessor() + " is attempting to change target " + target + " new wrapping has been denied.");
+            } else {
+                interceptor.setProcessor(target);
+                target = interceptor;
+            }
+        }
+    }
+    return target;
+</td> </tr></table></body></html>

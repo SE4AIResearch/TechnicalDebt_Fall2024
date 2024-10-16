@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1017</td> <td>-1422651505</td><td>apache/camel</td><td>Jonathan Anstey</td><td>0da795df9a7a4f24d0d99d5c2d01315bd9f8498d</td> <td>None</td> <td>TODO have not implemented passing exchange to processor.</td> <td>SATD_ADDED</td> <td>configure()</td> <td>public void configure() throws Exception</td> <td>
+    from("cxf-jaxrs://http://localhost:9000?resourceClassnames=#resourceClasses").process(new Processor() {
+
+        public void process(Exchange exchange) throws Exception {
+        // TODO have not implemented passing exchange to processor.
+        }
+    });
+</td> </tr></table></body></html>

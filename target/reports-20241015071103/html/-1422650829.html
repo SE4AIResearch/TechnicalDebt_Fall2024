@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3503</td> 
+     <td>-1422650829</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testTwoParametersWithSameKey()</td> 
+     <td>public void testTwoParametersWithSameKey() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(1000); Exchange out = template.request("jetty:http://localhost:{{port}}/myapp?from=me&amp;to=foo&amp;to=bar", null); assertNotNull(out); assertFalse("Should not fail", out.isFailed()); assertEquals("OK", out.getOut().getBody(String.class)); assertEquals("yes", out.getOut().getHeader("bar")); List<!--?--> foo = out.getOut().getHeader("foo", List.class); assertEquals(2, foo.size()); assertEquals("123", foo.get(0)); assertEquals("456", foo.get(1)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2314</td> 
+     <td>-1422650829</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>4efddb3ff393a30159a291d8266df6a9fdd6c39f</td> 
+     <td>None</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>SATD_ADDED</td> 
+     <td>testTwoParametersWithSameKey()</td> 
+     <td>public void testTwoParametersWithSameKey() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(1000); Exchange a = template.request("jetty:http://localhost:{{port}}/myapp?from=me&amp;to=foo&amp;to=bar", null); assertNotNull(a); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

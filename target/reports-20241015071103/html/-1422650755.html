@@ -1,0 +1,68 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2424</td> <td>-1422650755</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>ba92200adeb90169ff112539b2c4e72c5a3c17b9</td> <td>None</td> <td>The FTPSClient tries to manage the following SSLSocket related configuration options
+on its own based on internal configuration options.  FTPSClient does not lend itself
+to subclassing for the purpose of overriding this behavior (private methods, fields, etc.).
+As such, we create a socket (preconfigured by SSLContextParameters) from the context
+we gave to FTPSClient and then setup FTPSClient to reuse the already configured configuration
+from the socket for all future sockets it creates.  Not sexy and a little brittle, but it works.</td> <td>SATD_ADDED</td> <td>createFtpClient()</td> <td>protected FTPClient createFtpClient() throws Exception</td> <td>
+    FTPSClient client = null;
+    if (sslContextParameters != null) {
+        SSLContext context = sslContextParameters.createSSLContext();
+        client = new FTPSClient(getFtpsConfiguration().isImplicit(), context);
+        // The FTPSClient tries to manage the following SSLSocket related configuration options
+        // on its own based on internal configuration options.  FTPSClient does not lend itself
+        // to subclassing for the purpose of overriding this behavior (private methods, fields, etc.).
+        // As such, we create a socket (preconfigured by SSLContextParameters) from the context
+        // we gave to FTPSClient and then setup FTPSClient to reuse the already configured configuration
+        // from the socket for all future sockets it creates.  Not sexy and a little brittle, but it works.
+        SSLSocket socket = (SSLSocket) context.getSocketFactory().createSocket();
+        client.setEnabledCipherSuites(socket.getEnabledCipherSuites());
+        client.setEnabledProtocols(socket.getEnabledProtocols());
+        client.setNeedClientAuth(socket.getNeedClientAuth());
+        client.setWantClientAuth(socket.getWantClientAuth());
+        client.setEnabledSessionCreation(socket.getEnableSessionCreation());
+    } else {
+        client = new FTPSClient(getFtpsConfiguration().getSecurityProtocol(), getFtpsConfiguration().isImplicit());
+        if (ftpClientKeyStoreParameters != null) {
+            String type = (ftpClientKeyStoreParameters.containsKey("type")) ? (String) ftpClientKeyStoreParameters.get("type") : KeyStore.getDefaultType();
+            String file = (String) ftpClientKeyStoreParameters.get("file");
+            String password = (String) ftpClientKeyStoreParameters.get("password");
+            String algorithm = (ftpClientKeyStoreParameters.containsKey("algorithm")) ? (String) ftpClientKeyStoreParameters.get("algorithm") : KeyManagerFactory.getDefaultAlgorithm();
+            String keyPassword = (String) ftpClientKeyStoreParameters.get("keyPassword");
+            KeyStore keyStore = KeyStore.getInstance(type);
+            FileInputStream keyStoreFileInputStream = new FileInputStream(new File(file));
+            try {
+                keyStore.load(keyStoreFileInputStream, password.toCharArray());
+            } finally {
+                IOHelper.close(keyStoreFileInputStream, "keyStore", log);
+            }
+            KeyManagerFactory keyMgrFactory = KeyManagerFactory.getInstance(algorithm);
+            keyMgrFactory.init(keyStore, keyPassword.toCharArray());
+            client.setNeedClientAuth(true);
+            client.setKeyManager(keyMgrFactory.getKeyManagers()[0]);
+        }
+        if (ftpClientTrustStoreParameters != null) {
+            String type = (ftpClientTrustStoreParameters.containsKey("type")) ? (String) ftpClientTrustStoreParameters.get("type") : KeyStore.getDefaultType();
+            String file = (String) ftpClientTrustStoreParameters.get("file");
+            String password = (String) ftpClientTrustStoreParameters.get("password");
+            String algorithm = (ftpClientTrustStoreParameters.containsKey("algorithm")) ? (String) ftpClientTrustStoreParameters.get("algorithm") : TrustManagerFactory.getDefaultAlgorithm();
+            KeyStore trustStore = KeyStore.getInstance(type);
+            FileInputStream trustStoreFileInputStream = new FileInputStream(new File(file));
+            try {
+                trustStore.load(trustStoreFileInputStream, password.toCharArray());
+            } finally {
+                IOHelper.close(trustStoreFileInputStream, "trustStore", log);
+            }
+            TrustManagerFactory trustMgrFactory = TrustManagerFactory.getInstance(algorithm);
+            trustMgrFactory.init(trustStore);
+            client.setTrustManager(trustMgrFactory.getTrustManagers()[0]);
+        }
+    }
+    return client;
+</td> </tr></table></body></html>

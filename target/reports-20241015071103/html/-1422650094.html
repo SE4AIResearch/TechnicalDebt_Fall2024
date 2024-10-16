@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3637</td> <td>-1422650094</td><td>apache/camel</td><td>Claus Ibsen</td><td>f9948173a021cff8ced3de638ce82982ddb3f21e</td> <td>None</td> <td>TODO: add unit test should use dynamic port number, see camel-jetty9 for example</td> <td>SATD_ADDED</td> <td>testHttp500Error()</td> <td>public void testHttp500Error() throws Exception</td> <td>
+    getMockEndpoint("mock:input").expectedBodiesReceived("Hello World");
+    try {
+        template.requestBody("http://localhost:8888/foo", "Hello World", String.class);
+        fail("Should have failed");
+    } catch (CamelExecutionException e) {
+    }
+    assertMockEndpointsSatisfied();
+</td> </tr></table></body></html>

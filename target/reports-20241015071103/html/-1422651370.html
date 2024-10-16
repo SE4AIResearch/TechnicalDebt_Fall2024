@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1314</td> <td>-1422651370</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>6fab045b0fb1805ff6fac5e67d1c29c8829dda4d</td> <td>None</td> <td>TODO: move this to InterceptSendToEndpoint so its a special builder method on it only</td> <td>SATD_ADDED</td> <td>skip()</td> <td>public Type skip()</td> <td>
+    // TODO: move this to InterceptSendToEndpoint so its a special builder method on it only
+    ProcessorDefinition currentProcessor = this;
+    if (currentProcessor instanceof InterceptSendToEndpointDefinition) {
+        ((InterceptSendToEndpointDefinition) currentProcessor).skipSendToOriginalEndpoint();
+    } else {
+        ProcessorDefinition node;
+        for (node = parent; node != null; node = node.getParent()) {
+            if (node instanceof InterceptSendToEndpointDefinition) {
+                ((InterceptSendToEndpointDefinition) node).skipSendToOriginalEndpoint();
+                break;
+            }
+        }
+        if (node == null) {
+            throw new IllegalArgumentException("Cannot use skip() without being within an interceptSendToEndpoint() block");
+        }
+    }
+    return (Type) this;
+</td> </tr></table></body></html>

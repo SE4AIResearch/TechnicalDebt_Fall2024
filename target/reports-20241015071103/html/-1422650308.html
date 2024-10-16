@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>3160</td> <td>-1422650308</td><td>apache/camel</td><td>Claus Ibsen</td><td>36d64201745e3b4e73104f8ccb5a56860f0786bd</td> <td>None</td> <td>TODO: a better and faster rest pattern matcher, without the .split as they may be slower</td> <td>SATD_ADDED</td> <td>resolve(HttpServletRequest, Map<String, HttpConsumer>)</td> <td>public HttpConsumer resolve(HttpServletRequest request, Map<String, HttpConsumer> consumers)</td> <td>
+    HttpConsumer answer = super.resolve(request, consumers);
+    if (answer == null) {
+        String path = request.getPathInfo();
+        if (path == null) {
+            return null;
+        }
+        for (String key : consumers.keySet()) {
+            String consumerPath = normalizePath(key);
+            String requestPath = normalizePath(path);
+            if (matchPaths(requestPath, consumerPath)) {
+                answer = consumers.get(key);
+                break;
+            }
+        }
+    }
+    return answer;
+</td> </tr></table></body></html>

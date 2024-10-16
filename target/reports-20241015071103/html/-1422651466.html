@@ -1,0 +1,44 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1125</td> <td>-1422651466</td><td>apache/camel</td><td>Claus Ibsen</td><td>cca5b39910490902fb20c0f9d49211bdef646bff</td> <td>None</td> <td>TODO: Should be TRACE</td> <td>SATD_ADDED</td> <td>changeFileName(String)</td> <td>public void changeFileName(String newName)</td> <td>
+    // TODO: Should be TRACE
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Changing name to: " + newName);
+    }
+    // use java.io.File to help us with computing name changes
+    File file = new File(newName);
+    boolean nameChangeOnly = newName.indexOf(getFileSeparator()) == -1;
+    boolean absolute = file.isAbsolute();
+    // store the file name only
+    setFileNameOnly(file.getName());
+    setFileName(file.getName());
+    // relative name is a bit more complex
+    if (nameChangeOnly) {
+        setRelativeFilePath(changeNameOnly(getRelativeFilePath(), file.getName()));
+        setFileName(changeNameOnly(getFileName(), file.getName()));
+    } else {
+        if (file.getParent() != null) {
+            setRelativeFilePath(file.getParent() + getFileSeparator() + file.getName());
+        } else {
+            setRelativeFilePath(file.getName());
+        }
+    }
+    // absolute vs relative
+    if (absolute) {
+        setAbsolute(true);
+        setAbsoluteFilePath(file.getAbsolutePath());
+    } else {
+        setAbsolute(false);
+        // construct a pseudo absolute filename that the file operations uses
+        setAbsoluteFilePath(endpointPath + getFileSeparator() + getRelativeFilePath());
+    }
+    // TODO: Should be TRACE
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Name changed: " + this);
+    }
+</td> </tr></table></body></html>

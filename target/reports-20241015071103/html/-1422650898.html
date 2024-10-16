@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2231</td> 
+     <td>-1422650898</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>a81ef1607d165847b16e54630beece9fa1c21f60</td> 
+     <td>remove this hack after http://code.google.com/p/jsmpp/issues/detail?id=93 is fixed</td> 
+     <td>remove this hack after http://code.google.com/p/jsmpp/issues/detail?id=93 is fixed</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>closeSession()</td> 
+     <td>private void closeSession()</td> 
+     <td> if (session != null) { session.removeSessionStateListener(this.sessionStateListener); // remove this hack after http://code.google.com/p/jsmpp/issues/detail?id=93 is fixed try { Thread.sleep(1000); session.unbindAndClose(); } catch (Exception e) { LOG.warn("Could not close session " + session); } session = null; } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2186</td> 
+     <td>-1422650898</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>57ee2ed303e6fa5f30ff8b06ec376e1a45169664</td> 
+     <td>None</td> 
+     <td>remove this hack after http://code.google.com/p/jsmpp/issues/detail?id=93 is fixed</td> 
+     <td>SATD_ADDED</td> 
+     <td>closeSession(SMPPSession)</td> 
+     <td>private void closeSession(SMPPSession session)</td> 
+     <td> if (session != null) { session.removeSessionStateListener(this.sessionStateListener); // remove this hack after http://code.google.com/p/jsmpp/issues/detail?id=93 is fixed try { Thread.sleep(1000); session.unbindAndClose(); } catch (Exception e) { LOG.warn("Could not close session " + session); } session = null; } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

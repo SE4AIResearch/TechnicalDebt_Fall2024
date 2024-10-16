@@ -1,0 +1,50 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>2099</td> <td>-1422650943</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>29adef99798049bc0bc496c69d001b80534d2e75</td> <td>None</td> <td>convert the list of objects to CxfPayload any way you like</td> <td>SATD_ADDED</td> <td>createRouteBuilder()</td> <td>protected RouteBuilder createRouteBuilder()</td> <td>
+    return new RouteBuilder() {
+
+        public void configure() {
+            errorHandler(noErrorHandler());
+            from(routerEndpointURI).process(new Processor() {
+
+                // convert request message
+                public void process(Exchange exchange) throws Exception {
+                    CxfPayload<?> message = exchange.getIn().getBody(CxfPayload.class);
+                    List<String> params = new ArrayList<String>();
+                    if (message != null) {
+                        // convert CxfPayload to list of objects any way you like
+                        Element element = message.getBody().get(0);
+                        params.add(element.getFirstChild().getTextContent());
+                    }
+                    // replace the body
+                    exchange.getIn().setBody(params);
+                // if you need to change the operation name
+                // exchange.getIn().setHeader(CxfConstants.OPERATION_NAME, GREET_ME_OPERATION);
+                }
+            }).to(serviceEndpointURI).process(new Processor() {
+
+                // convert response to CxfPayload
+                public void process(Exchange exchange) throws Exception {
+                    List<?> list = exchange.getIn().getBody(List.class);
+                    CxfPayload<SoapHeader> message = null;
+                    if (list != null) {
+                        // convert the list of objects to CxfPayload any way you like
+                        String s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<ns1:echoResponse xmlns:ns1=\"http://cxf.component.camel.apache.org/\">" + "<return xmlns=\"http://cxf.component.camel.apache.org/\">" + list.get(0) + "</return></ns1:echoResponse>";
+                        List<Element> body = new ArrayList<Element>();
+                        body.add(XMLUtils.parse(s).getDocumentElement());
+                        message = new CxfPayload<SoapHeader>(new ArrayList<SoapHeader>(), body);
+                    }
+                    exchange.getIn().setBody(message);
+                    // we probably should be smarter in detecting data format based on message body
+                    // but for now we need to explicitly reset the mode (see CAMEL-3420)
+                    exchange.setProperty(CxfConstants.DATA_FORMAT_PROPERTY, DataFormat.PAYLOAD);
+                }
+            });
+        }
+    };
+</td> </tr></table></body></html>

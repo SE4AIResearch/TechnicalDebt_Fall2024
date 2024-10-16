@@ -1,0 +1,20 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1776</td> <td>-1422651116</td><td>apache/camel</td><td>Willem Ning Jiang</td><td>c2c711c7a23d9497b0d2721f23333e0756d4cda1</td> <td>None</td> <td>TODO: if possible used regexp to parse if its valid/invalid</td> <td>SATD_ADDED</td> <td>isValidOgnlExpression(String)</td> <td>public static boolean isValidOgnlExpression(String expression)</td> <td>
+    if (ObjectHelper.isEmpty(expression)) {
+        return false;
+    }
+    // TODO: if possible used regexp to parse if its valid/invalid
+    // the brackets should come in pair
+    int bracketBegin = StringHelper.countChar(expression, '[');
+    int bracketEnd = StringHelper.countChar(expression, ']');
+    if (bracketBegin > 0 && bracketEnd > 0) {
+        return bracketBegin == bracketEnd;
+    }
+    return expression.contains(".");
+</td> </tr></table></body></html>

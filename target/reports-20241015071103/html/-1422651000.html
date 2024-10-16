@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3501</td> 
+     <td>-1422651000</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>8b2a8877ace847e734a636851f880a52983767e4</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>testSynchronous()</td> 
+     <td>public void testSynchronous() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(1000); getMockEndpoint("mock:result").expectedMessageCount(1); template.sendBody("direct:start", null); assertMockEndpointsSatisfied(); assertFalse("Should use different threads", beforeThreadName.equalsIgnoreCase(afterThreadName)); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2008</td> 
+     <td>-1422651000</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>dc8d85ed744b5ed12925836e864895db824cf718</td> 
+     <td>None</td> 
+     <td>give Jetty time to startup properly</td> 
+     <td>SATD_ADDED</td> 
+     <td>testSynchronous()</td> 
+     <td>public void testSynchronous() throws Exception</td> 
+     <td> // these tests does not run well on Windows if (isPlatform("windows")) { return; } // give Jetty time to startup properly Thread.sleep(1000); getMockEndpoint("mock:result").expectedMessageCount(1); template.sendBody("direct:start", null); assertMockEndpointsSatisfied(); assertFalse("Should use different threads", beforeThreadName.equalsIgnoreCase(afterThreadName)); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

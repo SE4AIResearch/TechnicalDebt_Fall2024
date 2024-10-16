@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>1397</td> <td>-1422651335</td><td>apache/camel</td><td>Hadrian Zbarcea</td><td>e34c6f71ef2d397c46308f121f0848b2a5a2a814</td> <td>None</td> <td>the navigate API is a bit simple at this time of writing so it does take a little
+bit of ugly code to find the correct processor in the runtime route</td> <td>SATD_ADDED</td> <td>testRouteIsCorrectAtRuntime()</td> <td>public void testRouteIsCorrectAtRuntime() throws Exception</td> <td>
+    // use navigate to find that the end works as expected
+    Navigate<Processor> nav = context.getRoutes().get(0).navigate();
+    List<Processor> node = nav.next();
+    node = ((Navigate) node.get(0)).next();
+    // there should be 4 outputs as the end in the otherwise should
+    // ensure that the transform and last send is not within the choice
+    assertEquals(4, node.size());
+    // the navigate API is a bit simple at this time of writing so it does take a little
+    // bit of ugly code to find the correct processor in the runtime route
+    assertIsInstanceOf(SendProcessor.class, unwrapChannel(node.get(0)).getNextProcessor());
+    assertIsInstanceOf(Splitter.class, unwrapChannel(node.get(1)).getNextProcessor());
+    assertIsInstanceOf(TransformProcessor.class, unwrapChannel(node.get(2)).getNextProcessor());
+    assertIsInstanceOf(SendProcessor.class, unwrapChannel(node.get(3)).getNextProcessor());
+</td> </tr></table></body></html>

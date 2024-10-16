@@ -1,0 +1,103 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>2455</td> 
+     <td>-1422651232</td> 
+     <td>apache/camel</td> 
+     <td>Christian Mueller</td> 
+     <td>8bae6ad3deab395a0d33bef25739f6c1235d7cfb</td> 
+     <td>must do this ugly cast to avoid compiler error on AIX/HP-UX</td> 
+     <td>must do this ugly cast to avoid compiler error on AIX/HP-UX</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>wrapChannel(RouteContext, Processor, ProcessorDefinition)</td> 
+     <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor, ProcessorDefinition child) throws Exception</td> 
+     <td> // put a channel in between this and each output to control the route flow logic ModelChannel channel = createChannel(routeContext); channel.setNextProcessor(processor); // add interceptor strategies to the channel must be in this order: camel context, route context, local addInterceptStrategies(routeContext, channel, routeContext.getCamelContext().getInterceptStrategies()); addInterceptStrategies(routeContext, channel, routeContext.getInterceptStrategies()); addInterceptStrategies(routeContext, channel, this.getInterceptStrategies()); // must do this ugly cast to avoid compiler error on AIX/HP-UX ProcessorDefinition defn = (ProcessorDefinition) this; // set the child before init the channel channel.setChildDefinition(child); channel.initChannel(defn, routeContext); // set the error handler, must be done after init as we can set the error handler as first in the chain if (defn instanceof TryDefinition || defn instanceof CatchDefinition || defn instanceof FinallyDefinition) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself log.trace("{} is part of doTry .. doCatch .. doFinally so no error handler is applied", defn); } else if (ProcessorDefinitionHelper.isParentOfType(TryDefinition.class, defn, true) || ProcessorDefinitionHelper.isParentOfType(CatchDefinition.class, defn, true) || ProcessorDefinitionHelper.isParentOfType(FinallyDefinition.class, defn, true)) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself // by checking that any of our parent(s) is not a try .. catch or finally type log.trace("{} is part of doTry .. doCatch .. doFinally so no error handler is applied", defn); } else if (defn instanceof OnExceptionDefinition || ProcessorDefinitionHelper.isParentOfType(OnExceptionDefinition.class, defn, true)) { log.trace("{} is part of OnException so no error handler is applied", defn); // do not use error handler for onExceptions blocks as it will handle errors itself } else if (defn instanceof MulticastDefinition) { // do not use error handler for multicast as it offers fine grained error handlers for its outputs // however if share unit of work is enabled, we need to wrap an error handler on the multicast parent MulticastDefinition def = (MulticastDefinition) defn; if (def.isShareUnitOfWork() &amp;&amp; child == null) { // only wrap the parent (not the children of the multicast) wrapChannelInErrorHandler(channel, routeContext); } else { log.trace("{} is part of multicast/recipientList which have special error handling so no error handler is applied", defn); } } else if (defn instanceof RecipientListDefinition) { // do not use error handler for recipient list as it offers fine grained error handlers for its outputs // however if share unit of work is enabled, we need to wrap an error handler on the recipient list parent RecipientListDefinition def = (RecipientListDefinition) defn; if (def.isShareUnitOfWork()) { // note a recipient list cannot have children so no need for a child == null check wrapChannelInErrorHandler(channel, routeContext); } else { log.trace("{} is part of multicast/recipientList which have special error handling so no error handler is applied", defn); } } else { // use error handler by default or if configured to do so wrapChannelInErrorHandler(channel, routeContext); } // do post init at the end channel.postInitChannel(defn, routeContext); log.trace("{} wrapped in Channel: {}", defn, channel); return channel; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1874</td> 
+     <td>-1422651232</td> 
+     <td>apache/camel</td> 
+     <td>Guillaume Nodet</td> 
+     <td>325ac569a3f9b3725e1fa3a521a55be403db47b4</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>must do this ugly cast to avoid compiler error on AIX/HP-UX</td> 
+     <td>SATD_CHANGED</td> 
+     <td>wrapChannel(RouteContext, Processor, ProcessorDefinition)</td> 
+     <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor, ProcessorDefinition child) throws Exception</td> 
+     <td> // put a channel in between this and each output to control the route flow logic Channel channel = createChannel(routeContext); channel.setNextProcessor(processor); // add interceptor strategies to the channel must be in this order: camel context, route context, local addInterceptStrategies(routeContext, channel, routeContext.getCamelContext().getInterceptStrategies()); addInterceptStrategies(routeContext, channel, routeContext.getInterceptStrategies()); if (routeContext.getManagedInterceptStrategy() != null) { channel.addInterceptStrategy(routeContext.getManagedInterceptStrategy()); } addInterceptStrategies(routeContext, channel, this.getInterceptStrategies()); // must do this ugly cast to avoid compiler error on AIX/HP-UX ProcessorDefinition defn = (ProcessorDefinition) this; // set the child before init the channel channel.setChildDefinition(child); channel.initChannel(defn, routeContext); // set the error handler, must be done after init as we can set the error handler as first in the chain if (defn instanceof TryDefinition || defn instanceof CatchDefinition || defn instanceof FinallyDefinition) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself } else if (ProcessorDefinitionHelper.isParentOfType(TryDefinition.class, defn, true) || ProcessorDefinitionHelper.isParentOfType(CatchDefinition.class, defn, true) || ProcessorDefinitionHelper.isParentOfType(FinallyDefinition.class, defn, true)) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself // by checking that any of our parent(s) is not a try .. catch or finally type } else if (defn instanceof MulticastDefinition || defn instanceof RecipientListDefinition) { // do not use error handler for multicast or recipient list based as it offers fine grained error handlers for its outputs } else { if (inheritErrorHandler) { if (log.isTraceEnabled()) { log.trace(defn + " is configured to inheritErrorHandler"); } // only add error handler if we are configured to do so // regular definition so add the error handler Processor output = channel.getOutput(); Processor errorHandler = wrapInErrorHandler(routeContext, getErrorHandlerBuilder(), output); // set error handler on channel channel.setErrorHandler(errorHandler); } else { if (log.isDebugEnabled()) { log.debug(defn + " is configured to not inheritErrorHandler."); } } } if (log.isTraceEnabled()) { log.trace(defn + " wrapped in Channel: " + channel); } return channel; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1657</td> 
+     <td>-1422651232</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>5fb6338d24640822d128be9eac7af94ce980fce5</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>wrapChannel(RouteContext, Processor, ProcessorDefinition<!--?-->)</td> 
+     <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor, ProcessorDefinition<!--?--> child) throws Exception</td> 
+     <td> // put a channel in between this and each output to control the route flow logic Channel channel = createChannel(routeContext); channel.setNextProcessor(processor); // add interceptor strategies to the channel must be in this order: camel context, route context, local addInterceptStrategies(routeContext, channel, routeContext.getCamelContext().getInterceptStrategies()); addInterceptStrategies(routeContext, channel, routeContext.getInterceptStrategies()); if (routeContext.getManagedInterceptStrategy() != null) { channel.addInterceptStrategy(routeContext.getManagedInterceptStrategy()); } addInterceptStrategies(routeContext, channel, this.getInterceptStrategies()); // must do this ugly cast to avoid compiler error on HP-UX ProcessorDefinition<!--?--> defn = (ProcessorDefinition<!--?-->) this; // set the child before init the channel channel.setChildDefinition(child); channel.initChannel(defn, routeContext); // set the error handler, must be done after init as we can set the error handler as first in the chain if (defn instanceof TryDefinition || defn instanceof CatchDefinition || defn instanceof FinallyDefinition) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself return channel; } else { // regular definition so add the error handler Processor output = channel.getOutput(); // create error handler ErrorHandlerBuilder builder = getErrorHandlerBuilder(); Processor errorHandler = builder.createErrorHandler(routeContext, output); // set error handler on channel channel.setErrorHandler(errorHandler); // invoke lifecycles so we can manage this error handler builder for (LifecycleStrategy strategy : routeContext.getCamelContext().getLifecycleStrategies()) { strategy.onErrorHandlerAdd(routeContext, errorHandler, builder); } return channel; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1642</td> 
+     <td>-1422651232</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>a3b8bbb956f700264da57c7e9d8f95d1f5625d3c</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>wrapChannel(RouteContext, Processor, ProcessorDefinition<!--?-->)</td> 
+     <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor, ProcessorDefinition<!--?--> child) throws Exception</td> 
+     <td> // put a channel in between this and each output to control the route flow logic Channel channel = createChannel(routeContext); channel.setNextProcessor(processor); // add interceptor strategies to the channel must be in this order: camel context, route context, local addInterceptStrategies(routeContext, channel, routeContext.getCamelContext().getInterceptStrategies()); addInterceptStrategies(routeContext, channel, routeContext.getInterceptStrategies()); if (routeContext.getManagedInterceptStrategy() != null) { channel.addInterceptStrategy(routeContext.getManagedInterceptStrategy()); } addInterceptStrategies(routeContext, channel, this.getInterceptStrategies()); // must do this ugly cast to avoid compiler error on HP-UX ProcessorDefinition defn = (ProcessorDefinition) this; // set the child before init the channel channel.setChildDefinition(child); channel.initChannel(defn, routeContext); // set the error handler, must be done after init as we can set the error handler as first in the chain if (defn instanceof TryDefinition || defn instanceof CatchDefinition || defn instanceof FinallyDefinition) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself return channel; } else { // regular definition so add the error handler Processor output = channel.getOutput(); // create error handler ErrorHandlerBuilder builder = getErrorHandlerBuilder(); Processor errorHandler = builder.createErrorHandler(routeContext, output); // set error handler on channel channel.setErrorHandler(errorHandler); // invoke lifecycles so we can manage this error handler builder for (LifecycleStrategy strategy : routeContext.getCamelContext().getLifecycleStrategies()) { strategy.onErrorHandlerAdd(routeContext, errorHandler, builder); } return channel; } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>1583</td> 
+     <td>-1422651232</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>e34e434028eece8dc2302ded7d999447da20cfb5</td> 
+     <td>None</td> 
+     <td>must do this ugly cast to avoid compiler error on HP-UX</td> 
+     <td>SATD_ADDED</td> 
+     <td>wrapChannel(RouteContext, Processor)</td> 
+     <td>protected Processor wrapChannel(RouteContext routeContext, Processor processor) throws Exception</td> 
+     <td> // put a channel in between this and each output to control the route flow logic Channel channel = createChannel(routeContext); channel.setNextProcessor(processor); // add interceptor strategies to the channel must be in this order: camel context, route context, local addInterceptStrategies(routeContext, channel, routeContext.getCamelContext().getInterceptStrategies()); addInterceptStrategies(routeContext, channel, routeContext.getInterceptStrategies()); if (routeContext.getManagedInterceptStrategy() != null) { channel.addInterceptStrategy(routeContext.getManagedInterceptStrategy()); } addInterceptStrategies(routeContext, channel, this.getInterceptStrategies()); // init the channel channel.initChannel(this, routeContext); // must do this ugly cast to avoid compiler error on HP-UX ProcessorDefinition defn = (ProcessorDefinition) this; // set the error handler, must be done after init as we can set the error handler as first in the chain if (defn instanceof TryDefinition || defn instanceof CatchDefinition || defn instanceof FinallyDefinition) { // do not use error handler for try .. catch .. finally blocks as it will handle errors itself return channel; } else { // regular definition so add the error handler Processor output = channel.getOutput(); // create error handler ErrorHandlerBuilder builder = getErrorHandlerBuilder(); Processor errorHandler = builder.createErrorHandler(routeContext, output); // set error handler on channel channel.setErrorHandler(errorHandler); // invoke lifecycles so we can manage this error handler builder for (LifecycleStrategy strategy : routeContext.getCamelContext().getLifecycleStrategies()) { strategy.onErrorHandlerAdd(routeContext, errorHandler, builder); } return channel; } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

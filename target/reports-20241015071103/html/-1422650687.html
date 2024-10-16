@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>2997</td> 
+     <td>-1422650687</td>
+     <td>apache/camel</td>
+     <td>Grzegorz Grzybek</td>
+     <td>0b9b3531e4a4bfe82492e3037eb36381ad0b1865</td> 
+     <td>TODO need to find a way to override the test prob bundle</td> 
+     <td>using the features to install the camel components</td> 
+     <td>SATD_REMOVED</td> 
+     <td>configure()</td> 
+     <td>public static Option[] configure() throws Exception</td> 
+     <td> Option[] options = combine(getDefaultCamelKarafOptions(), // using the features to install the camel components scanFeatures(getCamelKarafFeatureUrl(), "camel-hdfs2")); return options; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2542</td> 
+     <td>-1422650687</td>
+     <td>apache/camel</td>
+     <td>Willem Ning Jiang</td>
+     <td>6e6e056e242545c4fc019f45b81871f3f60fcd8a</td> 
+     <td>None</td> 
+     <td>TODO need to find a way to override the test prob bundle</td> 
+     <td>SATD_ADDED</td> 
+     <td>configure()</td> 
+     <td>public static Option[] configure() throws Exception</td> 
+     <td> Option[] options = combine(getDefaultCamelKarafOptions(), // using the features to install the camel components scanFeatures(getCamelKarafFeatureUrl(), "camel-hdfs"), // TODO need to find a way to override the test prob bundle provision(newBundle().add("core-default.xml", HdfsRouteTest.class.getResource("/core-default.xml")).set(Constants.BUNDLE_SYMBOLICNAME, "CamelHdfsTestBundle").set(Constants.DYNAMICIMPORT_PACKAGE, "*").build())); return options; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

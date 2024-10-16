@@ -1,0 +1,115 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>4134</td> 
+     <td>1242677720</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>ff41128455e435afd440f33a7d12329e3f353f38</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>call()</td> 
+     <td>public PatchSetDetail call() throws OrmException, NoSuchEntityException, PatchSetInfoNotAvailableException</td> 
+     <td> if (patchSet == null) { patchSet = db.patchSets().get(psId); if (patchSet == null) { throw new NoSuchEntityException(); } } detail = new PatchSetDetail(); detail.setPatchSet(patchSet); detail.setInfo(infoFactory.get(psId)); detail.setPatches(db.patches().byPatchSet(psId).toList()); final Account.Id me = Common.getAccountId(); if (me != null) { // If we are signed in, compute the number of draft comments by the // current user on each of these patch files. This way they can more // quickly locate where they have pending drafts, and review them. // final List<patchlinecomment>
+        comments = db.patchComments().draft(psId, me).toList(); if (!comments.isEmpty()) { final Map 
+       <patch.key, patch>
+         byKey = db.patches().toMap(detail.getPatches()); for (final PatchLineComment c : comments) { final Patch p = byKey.get(c.getKey().getParentKey()); if (p != null) { p.setDraftCount(p.getDraftCount() + 1); } } } // Get all the reviewed patches in one query ResultSet 
+        <accountpatchreview>
+          reviews = db.accountPatchReviews().byReviewer(me, psId); HashSet 
+         <patch.key>
+           reviewedPatches = new HashSet 
+          <patch.key>
+            (); for (AccountPatchReview review : reviews) { reviewedPatches.add(review.getKey().getPatchKey()); } // Initialize the reviewed status of each patch for (Patch p : detail.getPatches()) { if (reviewedPatches.contains(p.getKey())) { p.setReviewedByCurrentUser(true); } } } return detail; 
+          </patch.key> 
+         </patch.key> 
+        </accountpatchreview> 
+       </patch.key,> 
+      </patchlinecomment></td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>4133</td> 
+     <td>1242677720</td> 
+     <td>GerritCodeReview/gerrit</td> 
+     <td>Shawn O. Pearce</td> 
+     <td>30e2c69fc29e27ca5b842ee9322e31a2ccff0697</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>call()</td> 
+     <td>public PatchSetDetail call() throws OrmException, NoSuchEntityException, PatchSetInfoNotAvailableException</td> 
+     <td> if (patchSet == null) { patchSet = db.patchSets().get(psId); if (patchSet == null) { throw new NoSuchEntityException(); } } detail = new PatchSetDetail(); detail.setPatchSet(patchSet); detail.setInfo(infoFactory.get(psId)); detail.setPatches(db.patches().byPatchSet(psId).toList()); final Account.Id me = Common.getAccountId(); if (me != null) { // If we are signed in, compute the number of draft comments by the // current user on each of these patch files. This way they can more // quickly locate where they have pending drafts, and review them. // final List<patchlinecomment>
+        comments = db.patchComments().draft(psId, me).toList(); if (!comments.isEmpty()) { final Map 
+       <patch.key, patch>
+         byKey = db.patches().toMap(detail.getPatches()); for (final PatchLineComment c : comments) { final Patch p = byKey.get(c.getKey().getParentKey()); if (p != null) { p.setDraftCount(p.getDraftCount() + 1); } } } // Get all the reviewed patches in one query ResultSet 
+        <accountpatchreview>
+          reviews = db.accountPatchReviews().byReviewer(me, psId); HashSet 
+         <patch.key>
+           reviewedPatches = new HashSet 
+          <patch.key>
+            (); for (AccountPatchReview review : reviews) { reviewedPatches.add(review.getKey().getPatchKey()); } // Initialize the reviewed status of each patch for (Patch p : detail.getPatches()) { if (reviewedPatches.contains(p.getKey())) { p.setReviewedByCurrentUser(true); } } } return detail; 
+          </patch.key> 
+         </patch.key> 
+        </accountpatchreview> 
+       </patch.key,> 
+      </patchlinecomment></td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>4131</td> 
+     <td>1242677720</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>e1ae25ae3abfe2dbdc391e9e56802a5fe010ad50</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>Get all the reviewed patches in one query</td> 
+     <td>SATD_MOVED_FILE</td> 
+     <td>run(ReviewDb)</td> 
+     <td>public PatchSetDetail run(final ReviewDb db) throws OrmException, Failure</td> 
+     <td> if (patchSet == null) { patchSet = db.patchSets().get(psId); if (patchSet == null) { throw new Failure(new NoSuchEntityException()); } } detail = new PatchSetDetail(); detail.setPatchSet(patchSet); try { detail.setInfo(infoFactory.get(psId)); } catch (PatchSetInfoNotAvailableException e) { throw new Failure(e); } detail.setPatches(db.patches().byPatchSet(psId).toList()); final Account.Id me = Common.getAccountId(); if (me != null) { // If we are signed in, compute the number of draft comments by the // current user on each of these patch files. This way they can more // quickly locate where they have pending drafts, and review them. // final List<patchlinecomment>
+        comments = db.patchComments().draft(psId, me).toList(); if (!comments.isEmpty()) { final Map
+       <patch.key, patch>
+         byKey = db.patches().toMap(detail.getPatches()); for (final PatchLineComment c : comments) { final Patch p = byKey.get(c.getKey().getParentKey()); if (p != null) { p.setDraftCount(p.getDraftCount() + 1); } } } // Get all the reviewed patches in one query ResultSet
+        <accountpatchreview>
+          reviews = db.accountPatchReviews().byReviewer(me, psId); HashSet
+         <patch.key>
+           reviewedPatches = new HashSet
+          <patch.key>
+           (); for (AccountPatchReview review : reviews) { reviewedPatches.add(review.getKey().getPatchKey()); } // Initialize the reviewed status of each patch for (Patch p : detail.getPatches()) { if (reviewedPatches.contains(p.getKey())) { p.setReviewedByCurrentUser(true); } } } return detail; 
+          </patch.key>
+         </patch.key>
+        </accountpatchreview>
+       </patch.key,>
+      </patchlinecomment></td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

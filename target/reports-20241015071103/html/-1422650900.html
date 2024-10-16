@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3611</td> 
+     <td>-1422650900</td>
+     <td>apache/camel</td>
+     <td>Andrea Cosentino</td>
+     <td>59b0a721d50dc8e2b94b1aec7f54917a544c2308</td> 
+     <td>TODO: this operation is currently not supported by hazelcast removes the element at the specified position</td> 
+     <td>removes the element at the specified position</td> 
+     <td>SATD_REMOVED</td> 
+     <td>remove(Integer, Exchange)</td> 
+     <td>private void remove(Integer pos, Exchange exchange)</td> 
+     <td> if (null == pos) { // removes the first occurrence in the list final Object body = exchange.getIn().getBody(); list.remove(body); } else { // removes the element at the specified position int position = pos; list.remove(position); } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>2184</td> 
+     <td>-1422650900</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>78a88adca9373f81ee812c2ac03277a6aa120b12</td> 
+     <td>None</td> 
+     <td>TODO: this operation is currently not supported by hazelcast removes the element at the specified position</td> 
+     <td>SATD_ADDED</td> 
+     <td>remove(Integer, Exchange)</td> 
+     <td>private void remove(Integer pos, Exchange exchange)</td> 
+     <td> if (null == pos) { // removes the first occurrence in the list final Object body = exchange.getIn().getBody(); list.remove(body); } else { // TODO: this operation is currently not supported by hazelcast // removes the element at the specified position int position = pos; list.remove(position); } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>3959</td> 
+     <td>1242677638</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>f14a1ded658afedc4f2f98e4d25a1e065fee1d42</td> 
+     <td>TODO We shouldn't hard-code the XRDS discovery result. </td> 
+     <td>TODO We shouldn't hard-code the XRDS discovery result. </td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>discover(String, OpenIdContext)</td> 
+     <td>public OpenIdUser discover(final String claimedId, final OpenIdContext context) throws Exception</td> 
+     <td> if (GOOGLE_ACCOUNT.equals(claimedId)) { // TODO We shouldn't hard-code the XRDS discovery result. // final Map<string, string>
+        m = new HashMap
+       <string, string>
+        (); m.put("ci", claimedId); m.put("os", "https://www.google.com/accounts/o8/ud"); final OpenIdUser u = new OpenIdUser(); u.fromJSON(m); return u; } return base.discover(claimedId, context); 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3938</td> 
+     <td>1242677638</td>
+     <td>GerritCodeReview/gerrit</td>
+     <td>Shawn O. Pearce</td>
+     <td>49a7115213a7889705c7f345c25e7af4f654c502</td> 
+     <td>None</td> 
+     <td>TODO We shouldn't hard-code the XRDS discovery result. </td> 
+     <td>SATD_ADDED</td> 
+     <td>discover(String, OpenIdContext)</td> 
+     <td>public OpenIdUser discover(final String claimedId, final OpenIdContext context) throws Exception</td> 
+     <td> if (GOOGLE_ACCOUNT.equals(claimedId)) { // TODO We shouldn't hard-code the XRDS discovery result. // final Map<string, string>
+        m = new HashMap
+       <string, string>
+        (); m.put("ci", claimedId); m.put("os", "https://www.google.com/accounts/o8/ud"); final OpenIdUser u = new OpenIdUser(); u.fromJSON(m); return u; } return base.discover(claimedId, context); 
+       </string,>
+      </string,></td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>4972</td> <td>1242678154</td><td>GerritCodeReview/gerrit</td><td>Urs Wolfer</td><td>0e8077dc8d69acaf80a8ee9c7a920c9603d9228a</td> <td>None</td> <td>TODO(dborowitz): share manager across changes.</td> <td>SATD_ADDED</td> <td>rebuildAsync(Change, ListeningExecutorService, Repository)</td> <td>public ListenableFuture<?> rebuildAsync(final Change change, ListeningExecutorService executor, final Repository changeRepo)</td> <td>
+    return executor.submit(new Callable<Void>() {
+
+        @Override
+        public Void call() throws Exception {
+            rebuild(change, changeRepo);
+            return null;
+        }
+    });
+</td> </tr></table></body></html>

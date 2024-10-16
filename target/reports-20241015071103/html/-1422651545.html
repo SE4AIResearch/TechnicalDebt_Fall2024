@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>1612</td> 
+     <td>-1422651545</td> 
+     <td>apache/camel</td> 
+     <td>Willem Ning Jiang</td> 
+     <td>68956852bd41a7a788962856d821fa6ee1ea5adb</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>maybe the full directory already exists</td> 
+     <td>SATD_CHANGED</td> 
+     <td>buildDirectory(String, boolean)</td> 
+     <td>public boolean buildDirectory(String directory, boolean absolute) throws GenericFileOperationFailedException</td> 
+     <td> // ignore absolute as all dirs are relative with FTP boolean success = false; String originalDirectory = getCurrentDirectory(); try { // maybe the full directory already exists try { channel.cd(directory); success = true; } catch (SftpException e) { // ignore, we could not change directory so try to create it instead } if (!success) { if (LOG.isDebugEnabled()) { LOG.debug("Trying to build remote directory: " + directory); } try { channel.mkdir(directory); success = true; } catch (SftpException e) { // we are here if the server side doesn't create intermediate folders // so create the folder one by one success = buildDirectoryChunks(directory); } } } catch (IOException e) { throw new GenericFileOperationFailedException("Cannot build directory: " + directory, e); } catch (SftpException e) { throw new GenericFileOperationFailedException("Cannot build directory: " + directory, e); } finally { // change back to original directory if (originalDirectory != null) { changeCurrentDirectory(originalDirectory); } } return success; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>1013</td> 
+     <td>-1422651545</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>ebf4bcc537cc667d5f810a9587640a5acd4dfb1a</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>buildDirectory(String, boolean)</td> 
+     <td>public boolean buildDirectory(String directory, boolean absolute) throws GenericFileOperationFailedException</td> 
+     <td> // ignore absolute as all dirs are relative with FTP boolean success = false; String originalDirectory = getCurrentDirectory(); try { // maybe the full directory already exsits try { channel.cd(directory); success = true; } catch (SftpException e) { // ignore, we could not change directory so try to create it instead } if (!success) { if (LOG.isDebugEnabled()) { LOG.debug("Trying to build remote directory: " + directory); } try { channel.mkdir(directory); success = true; } catch (SftpException e) { // we are here if the server side doesn't create intermediate folders // so create the folder one by one success = buildDirectoryChunks(directory); } } } catch (IOException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + directory, e); } catch (SftpException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + directory, e); } finally { // change back to original directory if (originalDirectory != null) { changeCurrentDirectory(originalDirectory); } } return success; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>994</td> 
+     <td>-1422651545</td> 
+     <td>apache/camel</td> 
+     <td>Claus Ibsen</td> 
+     <td>7f70df09b02c5a95b53bb9351c67ba1c750bbc15</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>buildDirectory(String, boolean)</td> 
+     <td>public boolean buildDirectory(String directory, boolean absolute) throws GenericFileOperationFailedException</td> 
+     <td> // ignore absolute as all dirs are relative with FTP boolean success = false; String originalDirectory = getCurrentDirectory(); try { // maybe the full directory already exsits try { channel.cd(directory); success = true; } catch (SftpException e) { // ignore, we could not change directory so try to create it instead } if (!success) { if (LOG.isDebugEnabled()) { LOG.debug("Trying to build remote directory: " + directory); } try { channel.mkdir(directory); success = true; } catch (SftpException e) { // we are here if the server side doesn't create intermediate folders // so create the folder one by one success = buildDirectoryChunks(directory); } } } catch (IOException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + directory, e); } catch (SftpException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + directory, e); } finally { // change back to original directory if (originalDirectory != null) { changeCurrentDirectory(originalDirectory); } } return success; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>938</td> 
+     <td>-1422651545</td>
+     <td>apache/camel</td>
+     <td>Claus Ibsen</td>
+     <td>d3a2c771d8d0ee8c4cf9ed9060c8479bf5ed8597</td> 
+     <td>None</td> 
+     <td>maybe the full directory already exsits</td> 
+     <td>SATD_ADDED</td> 
+     <td>buildDirectory(String)</td> 
+     <td>public boolean buildDirectory(String dirName) throws RemoteFileOperationFailedException</td> 
+     <td> boolean success = false; String originalDirectory = getCurrentDirectory(); try { // maybe the full directory already exsits try { channel.cd(dirName); success = true; } catch (SftpException e) { // ignore, we could not change directory so try to create it instead } if (!success) { if (LOG.isDebugEnabled()) { LOG.debug("Trying to build remote directory: " + dirName); } try { channel.mkdir(dirName); success = true; } catch (SftpException e) { // we are here if the server side doesn't create intermediate folders // so create the folder one by one success = buildDirectoryChunks(dirName); } } } catch (IOException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + dirName, e); } catch (SftpException e) { throw new RemoteFileOperationFailedException("Cannot build directory " + dirName, e); } finally { // change back to original directory if (originalDirectory != null) { changeCurrentDirectory(originalDirectory); } } return success; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>
