@@ -74,6 +74,47 @@ public class csvhtml_creator {
 
         ResultSet commentsResults = comments.executeQuery();
 
+        // Step 1: Create the temporary table to store duplicates.
+        PreparedStatement createTempTable = conn.prepareStatement(
+                "CREATE TEMPORARY TABLE DuplicateRows AS " +
+                        "SELECT satd_id " +
+                        "FROM ( " +
+                        "    SELECT SATD.satd_id, " +
+                        "           ROW_NUMBER() OVER ( " +
+                        "               PARTITION BY v1_comment, v2_comment, resolution, v2_method, " +
+                        "               method_declaration, method_body " +
+                        "               ORDER BY satd_id DESC " +
+                        "           ) AS RowNum " +
+                        "    FROM satd.SATD " +
+                        "    INNER JOIN satd.SATDInFile AS FirstFile ON SATD.first_file = FirstFile.f_id " +
+                        "    INNER JOIN satd.SATDInFile AS SecondFile ON SATD.second_file = SecondFile.f_id " +
+                        "    INNER JOIN satd.Commits AS FirstCommit ON SATD.first_commit = FirstCommit.commit_hash " +
+                        "      AND SATD.p_id = FirstCommit.p_id " +
+                        "    INNER JOIN satd.Commits AS SecondCommit ON SATD.second_commit = SecondCommit.commit_hash " +
+                        "      AND SATD.p_id = SecondCommit.p_id " +
+                        "    INNER JOIN satd.Projects ON SATD.p_id = Projects.p_id " +
+                        ") AS CTE " +
+                        "WHERE RowNum > 1;"
+        );
+        createTempTable.executeUpdate();
+        createTempTable.close();
+
+// Step 2: Delete duplicates based on the temporary table.
+        PreparedStatement deleteDuplicates = conn.prepareStatement(
+                "DELETE FROM satd.SATD " +
+                        "WHERE satd_id IN (SELECT satd_id FROM DuplicateRows);"
+        );
+        deleteDuplicates.executeUpdate();
+        deleteDuplicates.close();
+
+// Step 3: Drop the temporary table after deletion.
+        PreparedStatement dropTempTable = conn.prepareStatement(
+                "DROP TEMPORARY TABLE DuplicateRows;"
+        );
+        dropTempTable.executeUpdate();
+        dropTempTable.close();
+
+
         CSVPrinter csvPrinter = csvInitializer();
 
         while (commentsResults.next()) {
