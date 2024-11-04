@@ -76,7 +76,7 @@ public class csvhtml_creator {
 
         // Step 1: Create the temporary table to store duplicates.
         PreparedStatement createTempTable = conn.prepareStatement(
-                "CREATE TEMPORARY TABLE DuplicateRows AS " +
+                    "CREATE TEMPORARY TABLE DuplicateRows AS " +
                         "SELECT satd_id " +
                         "FROM ( " +
                         "    SELECT SATD.satd_id, " +
