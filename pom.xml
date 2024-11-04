@@ -46,6 +46,15 @@
     </build>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.36.0.3</version>
+        </dependency>
+
+        
+        
         <!-- Local SATD Detector Implementation from jar -->
         <dependency>
             <groupId>satd_detector</groupId>
@@ -128,7 +137,7 @@
         <dependency>
             <groupId>com.github.tsantalis</groupId>
             <artifactId>refactoring-miner</artifactId>
-            <version>3.0.7</version>
+            <version>2.0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
