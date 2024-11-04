@@ -75,27 +75,20 @@ public class csvhtml_creator {
         ResultSet commentsResults = comments.executeQuery();
 
         // Step 1: Create the temporary table to store duplicates.
-        PreparedStatement createTempTable = conn.prepareStatement(
-                    "CREATE TEMPORARY TABLE DuplicateRows AS " +
-                        "SELECT satd_id " +
-                        "FROM ( " +
-                        "    SELECT SATD.satd_id, " +
-                        "           ROW_NUMBER() OVER ( " +
-                        "               PARTITION BY v1_comment, v2_comment, resolution, v2_method, " +
-                        "               method_declaration, method_body " +
-                        "               ORDER BY satd_id DESC " +
-                        "           ) AS RowNum " +
-                        "    FROM satd.SATD " +
-                        "    INNER JOIN satd.SATDInFile AS FirstFile ON SATD.first_file = FirstFile.f_id " +
-                        "    INNER JOIN satd.SATDInFile AS SecondFile ON SATD.second_file = SecondFile.f_id " +
-                        "    INNER JOIN satd.Commits AS FirstCommit ON SATD.first_commit = FirstCommit.commit_hash " +
-                        "      AND SATD.p_id = FirstCommit.p_id " +
-                        "    INNER JOIN satd.Commits AS SecondCommit ON SATD.second_commit = SecondCommit.commit_hash " +
-                        "      AND SATD.p_id = SecondCommit.p_id " +
-                        "    INNER JOIN satd.Projects ON SATD.p_id = Projects.p_id " +
-                        ") AS CTE " +
-                        "WHERE RowNum > 1;"
-        );
+        PreparedStatement createTempTable = conn.prepareStatement("WITH CTE AS (\n" +
+                "    SELECT v1_comment, v2_comment, resolution, v2_method,method_declaration, method_body,\n" +
+                "           ROW_NUMBER() OVER (\n" +
+                "               PARTITION BY v1_comment, v2_comment, resolution, v2_method,method_declaration, method_body\n" +
+                "               ORDER BY v1_comment, v2_comment, resolution, v2_method,method_declaration, method_body DESC\n" +
+                "           ) AS RowNum\n" +
+                "    FROM satd.SATD\n" +
+                ")\n" +
+                "DELETE FROM satd.SATD\n" +
+                "WHERE (v1_comment, v2_comment, resolution, v2_method,method_declaration, method_body) IN (\n" +
+                "    SELECT v1_comment, v2_comment, resolution, v2_method,method_declaration, method_body\n" +
+                "    FROM CTE\n" +
+                "    WHERE RowNum > 1\n" +
+                ");");
         createTempTable.executeUpdate();
         createTempTable.close();
 
