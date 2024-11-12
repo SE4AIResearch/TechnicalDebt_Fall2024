@@ -7,7 +7,7 @@ import edu.rit.se.satd.refactoring.RefactoringMiner;
 import edu.rit.se.satd.comment.IgnorableWords;
 import edu.rit.se.satd.detector.SATDDetectorImpl;
 import edu.rit.se.satd.mining.diff.CommitToCommitDiff;
-import edu.rit.se.satd.writer.MySQLOutputWriter;
+import edu.rit.se.satd.writer.SQLiteOutputWriter;
 import edu.rit.se.satd.writer.OutputWriter;
 import edu.rit.se.util.SimilarityUtil;
 import org.apache.commons.cli.*;
@@ -99,7 +99,7 @@ public class Main {
                     if (cmd.hasOption(ARG_NAME_GH_PASSWORD)) {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
-                    OutputWriter writer = new MySQLOutputWriter(dbPropsFile);
+                    OutputWriter writer = new SQLiteOutputWriter();
 
 
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
