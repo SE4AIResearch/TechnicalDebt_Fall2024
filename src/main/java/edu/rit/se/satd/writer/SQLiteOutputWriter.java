@@ -27,7 +27,7 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     public SQLiteOutputWriter() throws IOException {
 
-        this.dbURI = "jdbc:sqlite:/edu/rit/se/db";
+        this.dbURI = "jdbc:sqlite:satd.db";
 
         this.finalWriteExecutor = new ScheduledThreadPoolExecutor( Math.max(1, 150));
 
@@ -37,8 +37,11 @@ public class SQLiteOutputWriter implements OutputWriter {
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }
+
     }
 
+
+    
 
     @Override
     public void writeDiff(SATDDifference diff) throws IOException {
