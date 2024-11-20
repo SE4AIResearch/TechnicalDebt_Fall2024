@@ -40,9 +40,6 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     }
 
-
-    
-
     @Override
     public void writeDiff(SATDDifference diff) throws IOException {
         Connection conn = null;
