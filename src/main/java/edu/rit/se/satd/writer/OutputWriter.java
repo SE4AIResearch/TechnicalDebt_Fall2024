@@ -12,6 +12,7 @@ import java.util.Map;
 
 public interface OutputWriter {
 
+
     /**
      * Writes the SATD diff instance to an output format
      * @param diff an SATDDifference object from a comparison between two project tags

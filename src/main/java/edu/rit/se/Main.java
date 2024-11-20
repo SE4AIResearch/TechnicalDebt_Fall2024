@@ -106,7 +106,10 @@ public class Main {
                   
                     //AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
-                  
+
+                    if (writer instanceof SQLiteOutputWriter) {
+                        ((SQLiteOutputWriter) writer).removeDuplicates("jdbc:sqlite:satd.db");
+                    }
 
                     writer.close();
                     miner.cleanRepo();

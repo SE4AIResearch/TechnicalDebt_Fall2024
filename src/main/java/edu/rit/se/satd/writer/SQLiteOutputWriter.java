@@ -40,6 +40,47 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     }
 
+    public static void removeDuplicates(String dbURIString) throws IOException {
+        Connection conn = null;
+        try {
+            // System.out.println("Current working directory: " + System.getProperty("user.dir"));
+
+            conn = DriverManager.getConnection(dbURIString);
+            
+            String sl = "select * from SATDInFile";
+            String deleteDuplicates = "WITH CTE AS ( "
+                    + "SELECT f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type, "
+                    + "ROW_NUMBER() OVER ( "
+                    + "PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type "
+                    + "ORDER BY f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type DESC "
+                    + ") AS RowNum "
+                    + "FROM SATDInFile "
+                    + ") "
+                    + "DELETE FROM SATDInFile "
+                    + "WHERE (f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type) IN ( "
+                    + "SELECT f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type "
+                    + "FROM CTE "
+                    + "WHERE RowNum > 1);";
+
+            try (Statement stmt = conn.createStatement()) {
+                // stmt.executeUpdate(sl);
+                stmt.executeUpdate(deleteDuplicates);
+            }
+
+        } catch (SQLException e) {
+            // Wrap SQLException into IOException to maintain interface consistency
+            throw new IOException("Error while removing duplicates", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing SQL connection");
+                }
+            }
+        }
+    }
+
     @Override
     public void writeDiff(SATDDifference diff) throws IOException {
         Connection conn = null;
