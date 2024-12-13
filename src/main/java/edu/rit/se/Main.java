@@ -12,13 +12,14 @@ import edu.rit.se.satd.writer.OutputWriter;
 import edu.rit.se.util.SimilarityUtil;
 import org.apache.commons.cli.*;
 import org.eclipse.jgit.diff.DiffAlgorithm;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.*;
 
 
 public class Main {
-    private static final String ARG_NAME_DB_PROPS = "d";
+    private static final String ARG_NAME_DB_FILE = "d";
     private static final String ARG_NAME_REPOS_FILE = "r";
     private static final String ARG_NAME_GH_USERNAME = "u";
     private static final String ARG_NAME_GH_PASSWORD = "p";
@@ -44,7 +45,9 @@ public class Main {
             CommandLine cmd = parser.parse(options, args);
 
             final String reposFile = cmd.getOptionValue(ARG_NAME_REPOS_FILE);
-            final String dbPropsFile = cmd.getOptionValue(ARG_NAME_DB_PROPS);
+            final String dbFile = cmd.getOptionValue(ARG_NAME_DB_FILE);
+
+
 
             if( cmd.hasOption(ARG_NAME_IGNORE_WORDS) ) {
                 populateIgnoredWordsFile(cmd.getOptionValue(ARG_NAME_IGNORE_WORDS));
@@ -99,16 +102,30 @@ public class Main {
                     if (cmd.hasOption(ARG_NAME_GH_PASSWORD)) {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
-                    OutputWriter writer = new SQLiteOutputWriter();
+
+//                    System.out.println(dbFile);
+//                    System.out.println("Here: " + FilenameUtils.getExtension(dbFile));
+//                    if(FilenameUtils.getExtension(dbFile).strip() != "db")
+//                    {
+//                        throw new Error("DB file not provided in -d flag");
+//                    }
+
+                    int slashIndex = dbFile.lastIndexOf("/");
+                    int dbIndex = dbFile.length() - 3;
+
+                    String dbLink = dbFile.substring(slashIndex, dbIndex);
+                    dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
+
+                    OutputWriter writer = new SQLiteOutputWriter(dbLink);
 
 
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
-                  
+
                     //AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
 
                     if (writer instanceof SQLiteOutputWriter) {
-                        ((SQLiteOutputWriter) writer).removeDuplicates("jdbc:sqlite:satd.db");
+                        ((SQLiteOutputWriter) writer).removeDuplicates(dbLink);
                     }
 
                     writer.close();
@@ -116,7 +133,7 @@ public class Main {
 
                 }
 
-                csvhtml_creator csvHtmlCreater= new csvhtml_creator(dbPropsFile);
+                csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbFile);
 
             }
         } catch (ParseException e) {
@@ -130,11 +147,11 @@ public class Main {
     private static Options getOptions() {
         // CLI Logic
         return new Options()
-                .addOption(Option.builder(ARG_NAME_DB_PROPS)
-                        .longOpt("db-props")
+                .addOption(Option.builder(ARG_NAME_DB_FILE)
+                        .longOpt("db-file")
                         .hasArg()
                         .argName("FILE")
-                        .desc(".properties file containing database properties")
+                        .desc(".data base file")
                         .required()
                         .build())
                 .addOption(Option.builder(ARG_NAME_REPOS_FILE)

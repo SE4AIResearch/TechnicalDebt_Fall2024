@@ -25,9 +25,9 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     private final ScheduledThreadPoolExecutor finalWriteExecutor;
 
-    public SQLiteOutputWriter() throws IOException {
+    public SQLiteOutputWriter(String dbURI) throws IOException {
 
-        this.dbURI = "jdbc:sqlite:satd.db";
+        this.dbURI = dbURI;
 
         this.finalWriteExecutor = new ScheduledThreadPoolExecutor( Math.max(1, 150));
 
