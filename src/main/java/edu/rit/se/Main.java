@@ -31,6 +31,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Options options = getOptions();
+        String dbLink = "";
 
         try {
 
@@ -47,6 +48,10 @@ public class Main {
             final String reposFile = cmd.getOptionValue(ARG_NAME_REPOS_FILE);
             final String dbFile = cmd.getOptionValue(ARG_NAME_DB_FILE);
 
+//                    int slashIndex = dbFile.lastIndexOf("/") + 1;
+//                    int dbIndex = dbFile.length() - 3;
+//
+            dbLink = String.format("jdbc:sqlite:%s", dbFile);
 
 
             if( cmd.hasOption(ARG_NAME_IGNORE_WORDS) ) {
@@ -110,14 +115,9 @@ public class Main {
 //                        throw new Error("DB file not provided in -d flag");
 //                    }
 
-                    int slashIndex = dbFile.lastIndexOf("/");
-                    int dbIndex = dbFile.length() - 3;
 
-                    String dbLink = dbFile.substring(slashIndex, dbIndex);
-                    dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
 
                     OutputWriter writer = new SQLiteOutputWriter(dbLink);
-
 
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
 
@@ -133,8 +133,12 @@ public class Main {
 
                 }
 
-                csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbFile);
-
+                if(!dbLink.isEmpty()) {
+                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink);
+                }
+                else{
+                    throw new Error("db file not specified");
+                }
             }
         } catch (ParseException e) {
             System.err.println(e.getLocalizedMessage());

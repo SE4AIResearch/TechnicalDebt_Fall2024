@@ -40,6 +40,11 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     }
 
+    public String getDbURI()
+    {
+        return this.dbURI;
+    }
+
     public static void removeDuplicates(String dbURIString) throws IOException {
         Connection conn = null;
         try {

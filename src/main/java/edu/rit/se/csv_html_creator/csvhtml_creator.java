@@ -15,10 +15,9 @@ import java.sql.*;
 import java.util.Properties;
 
 public class csvhtml_creator {
-    private final String dbURI;
     private String folderName = "";
 
-    public csvhtml_creator(String propertiesPath) throws IOException, SQLException {
+    public csvhtml_creator(String dbLink) throws IOException, SQLException {
         System.out.println("Create csv file report...");
 
         Date currentDate = new Date();
@@ -43,8 +42,8 @@ public class csvhtml_creator {
         String method_declaration;
 
 
-        dbURI = "jdbc:sqlite:satd.db";
-        Connection conn = DriverManager.getConnection(dbURI);
+
+        Connection conn = DriverManager.getConnection(dbLink);
         
 
 

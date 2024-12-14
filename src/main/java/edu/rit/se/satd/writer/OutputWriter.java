@@ -59,5 +59,5 @@ public interface OutputWriter {
     void writeAfterRefHistory(ArrayList<RefactoringHistory> afterHistory, int refactoringID) throws SQLException;
 
 
-
+    //String getDbURI();
 }

@@ -12,6 +12,7 @@ import edu.rit.se.satd.model.SATDDifference;
 import edu.rit.se.satd.model.SATDInstance;
 import edu.rit.se.satd.model.SATDInstanceInFile;
 import edu.rit.se.satd.writer.OutputWriter;
+import edu.rit.se.satd.writer.SQLiteOutputWriter;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -132,6 +133,12 @@ public class SATDMiner {
                     } catch (IOException e) {
                         this.status.addErrorEncountered();
                         System.err.println("Error writing diff: " + e.getLocalizedMessage());
+
+                        if (writer instanceof SQLiteOutputWriter) {
+                            System.out.println("HERE: " + ((SQLiteOutputWriter) writer).getDbURI());
+                        }
+
+                        //System.err.println(writer.getDbURI());
                     }
                 });
 
