@@ -52,24 +52,30 @@ public class SQLiteOutputWriter implements OutputWriter {
 
             conn = DriverManager.getConnection(dbURIString);
             
-            String sl = "select * from SATDInFile";
-            String deleteDuplicates = "WITH CTE AS ( "
-                    + "SELECT f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type, "
-                    + "ROW_NUMBER() OVER ( "
-                    + "PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type "
-                    + "ORDER BY f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type DESC "
-                    + ") AS RowNum "
-                    + "FROM SATDInFile "
-                    + ") "
-                    + "DELETE FROM SATDInFile "
-                    + "WHERE (f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type) IN ( "
-                    + "SELECT f_comment, f_comment_type, f_path, start_line, end_line, containing_class, containing_method, method_declaration, method_body, type "
-                    + "FROM CTE "
-                    + "WHERE RowNum > 1);";
+            // String sl = "select * from SATDInFile";
+            String createTableAndInsert =
+                    "DROP TABLE IF EXISTS SATDnoDups;" +
+                            "CREATE TABLE SATDnoDups AS " +
+                            "WITH CTE AS ( " +
+                            "    SELECT f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "           containing_class, containing_method, method_declaration, method_body, type, " +
+                            "           ROW_NUMBER() OVER ( " +
+                            "               PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "               containing_class, containing_method, method_declaration, method_body, type " +
+                            "               ORDER BY f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "                        containing_class, containing_method, method_declaration, method_body, type DESC " +
+                            "           ) AS RowNum " +
+                            "    FROM SATDInFile " +
+                            ") " +
+                            "SELECT f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "       containing_class, containing_method, method_declaration, method_body, type " +
+                            "FROM CTE " +
+                            "WHERE RowNum = 1;";
 
             try (Statement stmt = conn.createStatement()) {
                 // stmt.executeUpdate(sl);
-                stmt.executeUpdate(deleteDuplicates);
+                stmt.executeUpdate(createTableAndInsert);
+                System.out.println("Table SATDnoDups created and populated with unique entries.");
             }
 
         } catch (SQLException e) {
