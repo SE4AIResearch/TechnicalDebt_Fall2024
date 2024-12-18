@@ -54,20 +54,19 @@ public class SQLiteOutputWriter implements OutputWriter {
             
             // String sl = "select * from SATDInFile";
             String createTableAndInsert =
-                    "DROP TABLE IF EXISTS SATDnoDups;" +
+                    "DROP TABLE IF EXISTS SATDnoDups; " +
                             "CREATE TABLE SATDnoDups AS " +
                             "WITH CTE AS ( " +
-                            "    SELECT f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "    SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
                             "           containing_class, containing_method, method_declaration, method_body, type, " +
                             "           ROW_NUMBER() OVER ( " +
                             "               PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, " +
-                            "               containing_class, containing_method, method_declaration, method_body, type " +
-                            "               ORDER BY f_comment, f_comment_type, f_path, start_line, end_line, " +
-                            "                        containing_class, containing_method, method_declaration, method_body, type DESC " +
+                            "                            containing_class, containing_method, method_declaration, method_body, type " +
+                            "               ORDER BY f_id DESC " +
                             "           ) AS RowNum " +
                             "    FROM SATDInFile " +
                             ") " +
-                            "SELECT f_comment, f_comment_type, f_path, start_line, end_line, " +
+                            "SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
                             "       containing_class, containing_method, method_declaration, method_body, type " +
                             "FROM CTE " +
                             "WHERE RowNum = 1;";
