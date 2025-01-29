@@ -124,9 +124,9 @@ public class Main {
                     //AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
 
-                    if (writer instanceof SQLiteOutputWriter) {
+                    /*if (writer instanceof SQLiteOutputWriter) {
                         ((SQLiteOutputWriter) writer).removeDuplicates(dbLink);
-                    }
+                    }*/
 
                     writer.close();
                     miner.cleanRepo();

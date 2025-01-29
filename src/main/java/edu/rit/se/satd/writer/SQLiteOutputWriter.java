@@ -45,51 +45,51 @@ public class SQLiteOutputWriter implements OutputWriter {
         return this.dbURI;
     }
 
-    public static void removeDuplicates(String dbURIString) throws IOException {
-        Connection conn = null;
-        try {
-            // System.out.println("Current working directory: " + System.getProperty("user.dir"));
-
-            conn = DriverManager.getConnection(dbURIString);
-            
-            // String sl = "select * from SATDInFile";
-            String createTableAndInsert =
-                    "DROP TABLE IF EXISTS SATDnoDups; " +
-                            "CREATE TABLE SATDnoDups AS " +
-                            "WITH CTE AS ( " +
-                            "    SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
-                            "           containing_class, containing_method, method_declaration, method_body, type, " +
-                            "           ROW_NUMBER() OVER ( " +
-                            "               PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, " +
-                            "                            containing_class, containing_method, method_declaration, method_body, type " +
-                            "               ORDER BY f_id DESC " +
-                            "           ) AS RowNum " +
-                            "    FROM SATDInFile " +
-                            ") " +
-                            "SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
-                            "       containing_class, containing_method, method_declaration, method_body, type " +
-                            "FROM CTE " +
-                            "WHERE RowNum = 1;";
-
-            try (Statement stmt = conn.createStatement()) {
-                // stmt.executeUpdate(sl);
-                stmt.executeUpdate(createTableAndInsert);
-                System.out.println("Table SATDnoDups created and populated with unique entries.");
-            }
-
-        } catch (SQLException e) {
-            // Wrap SQLException into IOException to maintain interface consistency
-            throw new IOException("Error while removing duplicates", e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    System.err.println("Error closing SQL connection");
-                }
-            }
-        }
-    }
+//    public static void removeDuplicates(String dbURIString) throws IOException {
+//        Connection conn = null;
+//        try {
+//            // System.out.println("Current working directory: " + System.getProperty("user.dir"));
+//
+//            conn = DriverManager.getConnection(dbURIString);
+//
+//            // String sl = "select * from SATDInFile";
+//            String createTableAndInsert =
+//                    "DROP TABLE IF EXISTS SATDnoDups; " +
+//                            "CREATE TABLE SATDnoDups AS " +
+//                            "WITH CTE AS ( " +
+//                            "    SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
+//                            "           containing_class, containing_method, method_declaration, method_body, type, " +
+//                            "           ROW_NUMBER() OVER ( " +
+//                            "               PARTITION BY f_comment, f_comment_type, f_path, start_line, end_line, " +
+//                            "                            containing_class, containing_method, method_declaration, method_body, type " +
+//                            "               ORDER BY f_id DESC " +
+//                            "           ) AS RowNum " +
+//                            "    FROM SATDInFile " +
+//                            ") " +
+//                            "SELECT f_id, f_comment, f_comment_type, f_path, start_line, end_line, " +
+//                            "       containing_class, containing_method, method_declaration, method_body, type " +
+//                            "FROM CTE " +
+//                            "WHERE RowNum = 1;";
+//
+//            try (Statement stmt = conn.createStatement()) {
+//                // stmt.executeUpdate(sl);
+//                stmt.executeUpdate(createTableAndInsert);
+//                System.out.println("Table SATDnoDups created and populated with unique entries.");
+//            }
+//
+//        } catch (SQLException e) {
+//            // Wrap SQLException into IOException to maintain interface consistency
+//            throw new IOException("Error while removing duplicates", e);
+//        } finally {
+//            if (conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    System.err.println("Error closing SQL connection");
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void writeDiff(SATDDifference diff) throws IOException {
