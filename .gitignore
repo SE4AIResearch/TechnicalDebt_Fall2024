@@ -1,0 +1,13 @@
+.idea/
+lib/
+repos/
+target/
+satd_analyzer.iml
+*out*/
+repos.txt
+*.txt
+sql/*.cs
+satd-analyzer.iml
+mySQL_personal.properties
+.DS_Store
+/reports
