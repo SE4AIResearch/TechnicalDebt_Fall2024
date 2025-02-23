@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>53</td> <td>-1413930522</td><td>apache/log4j</td><td>Mark Dwayne Womack</td><td>f59c1dac5a8fd750e009fcf27059690adb5c4dc9</td> <td>None</td> <td>when deprecated fireAddAppenderEvent(Category,Appender) is removed,
+so should this block</td> <td>SATD_ADDED</td> <td>fireAddAppenderEvent(Logger, Appender)</td> <td>public void fireAddAppenderEvent(Logger logger, Appender appender)</td> <td>
+    // when deprecated fireAddAppenderEvent(Category,Appender) is removed,
+    // so should this block
+    if (listeners != null) {
+        int size = listeners.size();
+        HierarchyEventListener listener;
+        for (int i = 0; i < size; i++) {
+            listener = (HierarchyEventListener) listeners.elementAt(i);
+            listener.addAppenderEvent(logger, appender);
+        }
+    }
+    if (loggerEventListeners != null) {
+        int size = loggerEventListeners.size();
+        LoggerEventListener listener;
+        for (int i = 0; i < size; i++) {
+            listener = (LoggerEventListener) loggerEventListeners.elementAt(i);
+            listener.appenderAddedEvent(logger, appender);
+        }
+    }
+</td> </tr></table></body></html>

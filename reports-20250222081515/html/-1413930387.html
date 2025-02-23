@@ -1,0 +1,31 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>255</td> <td>-1413930387</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>305263f69ff0b6fe1597f662207f30d396b7da62</td> <td>None</td> <td>subsequent calls within one minute are optimized to reuse previous
+formatted value. make a couple of nearly spaced calls
+(Note: 'Z' is JDK 1.4, using 'z' instead.)</td> <td>SATD_ADDED</td> <td>test4()</td> <td>public void test4()</td> <td>
+    // subsequent calls within one minute are optimized to reuse previous
+    // formatted value. make a couple of nearly spaced calls
+    // (Note: 'Z' is JDK 1.4, using 'z' instead.)
+    SimpleDateFormat baseFormat = new SimpleDateFormat("EEE, MMM dd, HH:mm:ss.SSS z", Locale.ENGLISH);
+    DateFormat cachedFormat = new CachedDateFormat(baseFormat, 1000);
+    // 
+    // use a date in 2000 to attempt to confuse the millisecond locator
+    long ticks = 11141L * 86400000L;
+    Date jul1 = new Date(ticks);
+    assertEquals(baseFormat.format(jul1), cachedFormat.format(jul1));
+    Date plus8ms = new Date(ticks + 8);
+    String base = baseFormat.format(plus8ms);
+    String cached = cachedFormat.format(plus8ms);
+    assertEquals(baseFormat.format(plus8ms), cachedFormat.format(plus8ms));
+    Date plus17ms = new Date(ticks + 17);
+    assertEquals(baseFormat.format(plus17ms), cachedFormat.format(plus17ms));
+    Date plus237ms = new Date(ticks + 237);
+    assertEquals(baseFormat.format(plus237ms), cachedFormat.format(plus237ms));
+    Date plus1415ms = new Date(ticks + 1415);
+    assertEquals(baseFormat.format(plus1415ms), cachedFormat.format(plus1415ms));
+</td> </tr></table></body></html>

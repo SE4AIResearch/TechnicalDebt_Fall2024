@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>82</td> <td>-1413930504</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>e932b0f81efea5a6372513e317a4e753c8335ed2</td> <td>None</td> <td>TODO think of some mnemonics and HotKeys for this action</td> <td>SATD_ADDED</td> <td>createUndockAction()</td> <td>private Action createUndockAction()</td> <td>
+    Action action = new AbstractAction("Undock", ChainsawIcons.ICON_UNDOCK) {
+
+        public void actionPerformed(ActionEvent arg0) {
+            LogUI.LogPanel logPanel = logui.getCurrentLogPanel();
+            if (logPanel != null) {
+                logPanel.undock();
+            }
+        }
+    };
+    action.putValue(Action.SHORT_DESCRIPTION, "Undocks the current Log panel into it's own window");
+    // TODO think of some mnemonics and HotKeys for this action
+    return action;
+</td> </tr></table></body></html>

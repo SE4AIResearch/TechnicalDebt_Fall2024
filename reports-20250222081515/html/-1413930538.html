@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>27</td> 
+     <td>-1413930538</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>7c3ce808d30a9c5fd8d4043bba50db95b2568c83</td> 
+     <td>If the helper is null, we'll inspect the System property \"java.version\" and figure out which version of the VM we're running on. Version strings are: [major version].[minor version].[bug fix revision] So JDK 1.2: 1.2.0 JDK 1.1: 1.1.0</td> 
+     <td>Inspect the System property \"java.version\" and figure out which version of the VM we're running on. Version strings are: [major version].[minor version].[bug fix revision] So JDK 1.2: 1.2.0 JDK 1.1: 1.1.0</td> 
+     <td>SATD_REMOVED</td> 
+     <td>getInstance()</td> 
+     <td>public static VersionHelper getInstance()</td> 
+     <td> if (helper == null) { /* Inspect the System property "java.version" and figure out which version of the VM we're running on. Version strings are: [major version].[minor version].[bug fix revision] So JDK 1.2: 1.2.0 JDK 1.1: 1.1.0 */ String prop = System.getProperty(VERSION_PROPERTY); boolean java1 = true; if (prop != null) { int i = prop.indexOf('.'); if (i != -1) { if (prop.charAt(i + 1) != '1') java1 = false; } } if (java1) { helper = new VersionHelper11(); } else { helper = new VersionHelper20(); } } return helper; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>21</td> 
+     <td>-1413930538</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>55e92153783df533add97435d96567765e5ccf38</td> 
+     <td>None</td> 
+     <td>If the helper is null, we'll inspect the System property \"java.version\" and figure out which version of the VM we're running on. Version strings are: [major version].[minor version].[bug fix revision] So JDK 1.2: 1.2.0 JDK 1.1: 1.1.0</td> 
+     <td>SATD_ADDED</td> 
+     <td>getInstance()</td> 
+     <td>public static VersionHelper getInstance()</td> 
+     <td> if (helper == null) { /* If the helper is null, we'll inspect the System property "java.version" and figure out which version of the VM we're running on. Version strings are: [major version].[minor version].[bug fix revision] So JDK 1.2: 1.2.0 JDK 1.1: 1.1.0 */ String prop = System.getProperty(VERSION_PROPERTY); StringTokenizer st = new StringTokenizer(prop, "."); // Ignore the initial 1 st.nextToken(); String version = st.nextToken(); try { /* Here we'll parse the number and decide which version helper to use */ switch(Integer.parseInt(version)) { case 0: case 1: helper = new VersionHelper11(); break; default: helper = new VersionHelper20(); break; } } catch (NumberFormatException oops) { helper = new VersionHelper11(); } } return helper; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

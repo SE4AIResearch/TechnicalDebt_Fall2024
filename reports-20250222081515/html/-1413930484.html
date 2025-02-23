@@ -1,0 +1,26 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>107</td> <td>-1413930484</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>0911f32d76f0c1e9bcb752a9a67dc3c6afb18155</td> <td>None</td> <td>TODO output the Level filter details</td> <td>SATD_ADDED</td> <td>getToolTipText(MouseEvent)</td> <td>public String getToolTipText(MouseEvent ev)</td> <td>
+    if (ev == null) {
+        return null;
+    }
+    TreePath path = logTree.getPathForLocation(ev.getX(), ev.getY());
+    if (path != null) {
+        Object[] objects = path.getPath();
+        StringBuffer buf = new StringBuffer();
+        for (int i = 1; i < objects.length; i++) {
+            buf.append(objects[i].toString());
+            if (i < (objects.length - 1)) {
+                buf.append(".");
+            }
+        }
+        // TODO output the Level filter details
+        return buf.toString();
+    }
+    return null;
+</td> </tr></table></body></html>

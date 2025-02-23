@@ -1,0 +1,67 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>16</td> <td>-1413930543</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>20d6d037a8b0788b221b86baf18c9a79c618702f</td> <td>None</td> <td>Try to cast directly Object to JDBCIDHandler</td> <td>SATD_ADDED</td> <td>setLogType(String, int, Object)</td> <td>public void setLogType(String _name, int _logtype, Object _value) throws Exception</td> <td>
+    if (!isconfigured)
+        throw new Exception("JDBCLogger::setLogType(), Not configured !");
+    // setLogType() makes only sense for further configuration of configureTable()
+    if (sql != null)
+        return;
+    _name = _name.toUpperCase();
+    if (_name == null || !(_name.trim().length() > 0))
+        throw new Exception("JDBCLogger::setLogType(), Missing argument name !");
+    if (!LogType.isLogType(_logtype))
+        throw new Exception("JDBCLogger::setLogType(), Invalid logtype '" + _logtype + "' !");
+    if ((_logtype != LogType.MSG && _logtype != LogType.EMPTY) && _value == null)
+        throw new Exception("JDBCLogger::setLogType(), Missing argument value !");
+    LogColumn logcol;
+    for (int i = 0; i < num; i++) {
+        logcol = (LogColumn) logcols.get(i);
+        if (logcol.name.equals(_name)) {
+            if (!logcol.isWritable)
+                throw new Exception("JDBCLogger::setLogType(), Column " + _name + " is not writeable !");
+            // Column gets the message
+            if (_logtype == LogType.MSG) {
+                logcol.logtype = _logtype;
+                return;
+            } else // Column will be provided by JDBCIDHandler::getID()
+            if (_logtype == LogType.ID) {
+                logcol.logtype = _logtype;
+                try {
+                    // Try to cast directly Object to JDBCIDHandler
+                    logcol.idhandler = (JDBCIDHandler) _value;
+                } catch (Exception e) {
+                    try {
+                        // Assuming _value is of class string which contains the classname of a JDBCIDHandler
+                        logcol.idhandler = (JDBCIDHandler) (Class.forName((String) _value).newInstance());
+                    } catch (Exception e2) {
+                        throw new Exception("JDBCLogger::setLogType(), Cannot cast value of class " + _value.getClass() + " to class JDBCIDHandler !");
+                    }
+                }
+                return;
+            } else // Column will be statically defined with Object _value
+            if (_logtype == LogType.STATIC) {
+                logcol.logtype = _logtype;
+                logcol.value = _value;
+                return;
+            } else // Column will be provided with a actually timestamp
+            if (_logtype == LogType.TIMESTAMP) {
+                logcol.logtype = _logtype;
+                return;
+            } else // Column will be fully ignored during process.
+            // If this column is not nullable, the column has to be filled by a database trigger,
+            // else a database error occurs !
+            // Columns which are not nullable, but should be not filled, must be explicit assigned with LogType.EMPTY,
+            // else a value is required !
+            if (_logtype == LogType.EMPTY) {
+                logcol.logtype = _logtype;
+                logcol.ignore = true;
+                return;
+            }
+        }
+    }
+</td> </tr></table></body></html>

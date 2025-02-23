@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>115</td> <td>-1413930477</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>c554e534361610b689c2cb81c5492901e948c964</td> <td>None</td> <td>TODO change when filtering refactor done.</td> <td>SATD_ADDED</td> <td>run()</td> <td>public void run()</td> <td>
+    synchronized (syncLock) {
+        // TODO change when filtering refactor done.
+        if (displayFilter != null) {
+            filteredList.clear();
+            Vector v2 = null;
+            Iterator iter = unfilteredList.iterator();
+            while (iter.hasNext()) {
+                v2 = (Vector) iter.next();
+                if (displayFilter.isDisplayed(v2)) {
+                    filteredList.add(v2);
+                }
+            }
+        }
+        if (sortEnabled) {
+            sort();
+        }
+    }
+    fireTableDataChanged();
+    notifyCountListeners();
+</td> </tr></table></body></html>

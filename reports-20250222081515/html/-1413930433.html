@@ -1,0 +1,63 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>184</td> <td>-1413930433</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>dfef5e8d6b2f78dd78c24965b08356ce8d028d92</td> <td>None</td> <td>so, resource is not a URL:
+attempt to get the resource from the class loader path
+please read the javadocs for Loader.getResource for the exact
+algorithm.</td> <td>SATD_ADDED</td> <td>getLoggerRepository()</td> <td>public LoggerRepository getLoggerRepository()</td> <td>
+    String loggingContextName = null;
+    Context ctx = null;
+    try {
+        ctx = new InitialContext();
+        loggingContextName = (String) ctx.lookup(JNDI_CONTEXT_NAME);
+    } catch (NamingException ne) {
+        // we can't log here
+        // debug minor issue in Tomcat5 where, after the first webapp install,
+        // the second webapp first fails the JNDI lookup and Log4j reports that
+        // "no appenders could be found".  Subsequent webapp installs report the
+        // same except with no "no appenders could be found" message.  However,
+        // the appender do indeed work so I'm not sure why it is reported that
+        // they don't?  No issues like this in Tomcat4.
+        // System.out.println("failed to look up logging context!");
+        ;
+    }
+    if (loggingContextName == null) {
+        return defaultRepository;
+    } else {
+        Hierarchy hierarchy = (Hierarchy) hierMap.get(loggingContextName);
+        if (hierarchy == null) {
+            // create new hierarchy
+            hierarchy = new Hierarchy(new RootCategory(Level.DEBUG));
+            hierMap.put(loggingContextName, hierarchy);
+            // configure it
+            try {
+                String configResourceStr = (String) ctx.lookup(JNDI_CONFIGURATION_RESOURCE);
+                URL url;
+                try {
+                    url = new URL(configResourceStr);
+                } catch (MalformedURLException ex) {
+                    // so, resource is not a URL:
+                    // attempt to get the resource from the class loader path
+                    // please read the javadocs for Loader.getResource for the exact
+                    // algorithm.
+                    url = Loader.getResource(configResourceStr);
+                }
+                // If we have a non-null url, then delegate the rest of the
+                // configuration to the OptionConverter.selectAndConfigure
+                // method.
+                if (url != null) {
+                    LogLog.debug("Using URL [" + url + "] for automatic log4j configuration.");
+                    OptionConverter.selectAndConfigure(url, null, hierarchy);
+                } else {
+                    LogLog.debug("Could not find resources to perform automatic configuration.");
+                }
+            } catch (NamingException ne) {
+            }
+        }
+        return hierarchy;
+    }
+</td> </tr></table></body></html>

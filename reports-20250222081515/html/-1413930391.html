@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>251</td> <td>-1413930391</td><td>apache/log4j</td><td>Curtis William Arnold</td><td>17fa629e45d0dcd55b81edb34286e8c675a0bfd4</td> <td>None</td> <td>
+TODO: why is this returning ,120 ... , 120
+</td> <td>SATD_ADDED</td> <td>test17()</td> <td>public void test17()</td> <td>
+    Date jul2 = new Date(12602L * 86400000L);
+    String badPattern = "HH:mm:ss,SSS HH:mm:ss,SSS";
+    SimpleDateFormat simpleFormat = new SimpleDateFormat(badPattern);
+    simpleFormat.setTimeZone(GMT);
+    DateFormat cachedFormat = new CachedDateFormat(simpleFormat, 1000);
+    String s = cachedFormat.format(jul2);
+    assertEquals("00:00:00,000 00:00:00,000", s);
+    jul2.setTime(jul2.getTime() + 120);
+    assertEquals("00:00:00,120 00:00:00,120", simpleFormat.format(jul2));
+    s = cachedFormat.format(jul2);
+    // 
+    // TODO: why is this returning ,120 ... , 120
+    // 
+    // assertEquals("00:00:00,120 00:00:00,000", s) ;
+    int maxValid = CachedDateFormat.getMaximumCacheValidity(badPattern);
+    assertEquals(1, maxValid);
+</td> </tr></table></body></html>

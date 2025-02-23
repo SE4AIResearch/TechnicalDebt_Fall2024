@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>52</td> <td>-1413930523</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>594e06562e8546287574c84f92eb1d62b413d085</td> <td>None</td> <td>first let us use the addXXX method</td> <td>SATD_ADDED</td> <td>addComponent(String, Object)</td> <td>public void addComponent(String name, Object childComponent)</td> <td>
+    Class ccc = childComponent.getClass();
+    name = capitalizeFirstLetter(name);
+    Method method = getMethod("add" + name);
+    // first let us use the addXXX method
+    if (method != null) {
+        Class[] params = method.getParameterTypes();
+        if (params.length == 1) {
+            if (params[0].isAssignableFrom(childComponent.getClass())) {
+                try {
+                    method.invoke(this.obj, new Object[] { childComponent });
+                } catch (Exception e) {
+                    logger.error("Could not invoke method " + method.getName() + " in class " + obj.getClass().getName() + " with parameter of type " + ccc.getName(), e);
+                }
+            } else {
+                logger.error("A \"" + ccc.getName() + "\" object is not assignable to a \"" + params[0].getName() + "\" variable.");
+                logger.error("The class \"" + params[0].getName() + "\" was loaded by ");
+                logger.error("[" + params[0].getClassLoader() + "] whereas object of type ");
+                logger.error("\"" + ccc.getName() + "\" was loaded by [" + ccc.getClassLoader() + "].");
+            }
+        }
+    } else {
+        logger.error("Could not find method [" + "add" + name + "] in class [" + objClass.getName() + "].");
+    }
+</td> </tr></table></body></html>

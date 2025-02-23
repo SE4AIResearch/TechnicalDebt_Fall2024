@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>18</td> <td>-1413930541</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>fac773b99729bfd6a966aaa4a6d109363569b7d9</td> <td>None</td> <td>XXX: Properties encode value.toString()</td> <td>SATD_ADDED</td> <td>foundProperty(Object, String, String, Object)</td> <td>public void foundProperty(Object obj, String prefix, String name, Object value)</td> <td>
+    // XXX: Properties encode value.toString()
+    if (obj instanceof Appender && "name".equals(name)) {
+        return;
+    }
+    if (doCapitalize) {
+        name = capitalize(name);
+    }
+    out.println(prefix + name + "=" + value.toString());
+</td> </tr></table></body></html>

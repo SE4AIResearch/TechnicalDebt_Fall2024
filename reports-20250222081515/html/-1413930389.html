@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>253</td> <td>-1413930389</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>f64dc00b4caf5b8043f9ebbd568ac5fd990dbfd1</td> <td>None</td> <td>at this point, the probability of the two events being equal is
+extremely high. The next few test is optimized to take advantage of
+this knowlege. (We only compare string lengths instead of invoking
+string.equals which is much slower when the two string are equal.</td> <td>SATD_ADDED</td> <td>equals(Object)</td> <td>public boolean equals(Object rObject)</td> <td>
+    if (this == rObject) {
+        return true;
+    }
+    if (!(rObject instanceof LoggingEvent)) {
+        return false;
+    }
+    LoggingEvent rEvent = (LoggingEvent) rObject;
+    if (timeStamp != rEvent.timeStamp) {
+        return false;
+    }
+    if (sequenceNumber != rEvent.sequenceNumber) {
+        return false;
+    }
+    // at this point, the probability of the two events being equal is
+    // extremely high. The next few test is optimized to take advantage of
+    // this knowlege. (We only compare string lengths instead of invoking
+    // string.equals which is much slower when the two string are equal.
+    if (categoryName != null && rEvent.categoryName != null) {
+        if (categoryName.length() != rEvent.categoryName.length()) {
+            return false;
+        }
+    } else if (categoryName != rEvent.categoryName) {
+        // of categoryNames is null while the other is not, they can't possibly
+        // be equal
+        return false;
+    }
+    // If timestamp, sequenceNumber and categoryName length are equal than the
+    // events are assumed to be equal.
+    return true;
+</td> </tr></table></body></html>

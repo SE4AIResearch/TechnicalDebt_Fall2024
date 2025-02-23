@@ -1,0 +1,36 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>212</td> <td>-1413930415</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>ce1a5b525e7b67ab216b383b66e3f32372cc0f69</td> <td>None</td> <td>TODO CG better errorHandling code here
+no point in continuing</td> <td>SATD_ADDED</td> <td>fillEventIDArray(Connection, Statement)</td> <td> void fillEventIDArray(Connection connection, Statement insertStatement) throws SQLException</td> <td>
+    // if (connectionSource.supportsGetGeneratedKeys()) {
+    if (true) {
+        ResultSet keyRS = insertStatement.getGeneratedKeys();
+        ResultSetMetaData rsmd = keyRS.getMetaData();
+        LogLog.info(" numberOfColumns = " + rsmd.getColumnCount());
+        int i = 0;
+        while (keyRS.next()) {
+            int id = keyRS.getInt(1);
+            LogLog.info("**filling id =" + id);
+            eventIDArray[i++] = id;
+            ;
+        }
+        if (i != eventsBuffer.size()) {
+            LogLog.error("Number of inserted objects do not match.");
+            // TODO CG better errorHandling code here
+            // no point in continuing
+            LogLog.error("number of found events: " + i + " bufferSize=" + eventsBuffer.size());
+        // throw new IllegalStateException("Programming error. Number of inserted objects do not match.");
+        }
+    } else {
+        Statement idStatement = connection.createStatement();
+        idStatement.setMaxRows(1);
+        ResultSet rs = idStatement.executeQuery(sqlDialect.getSelectInsertId());
+        rs.first();
+        eventIDArray[0] = rs.getInt(1);
+    }
+</td> </tr></table></body></html>

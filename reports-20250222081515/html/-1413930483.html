@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>108</td> <td>-1413930483</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>0911f32d76f0c1e9bcb752a9a67dc3c6afb18155</td> <td>None</td> <td>TODO decide if Multi-selection is useful, and how it would work</td> <td>SATD_ADDED</td> <td>setupListeners()</td> <td>private void setupListeners()</td> <td>
+    /**
+     * Enable the actions depending on state of the tree selection
+     */
+    logTree.addTreeSelectionListener(new TreeSelectionListener() {
+
+        public void valueChanged(TreeSelectionEvent e) {
+            TreePath path = e.getNewLeadSelectionPath();
+            expandAction.setEnabled(path != null);
+        }
+    });
+    /**
+     * Now add a MouseListener that fires the expansion
+     * action if CTRL + DBL CLICK is done.
+     */
+    logTree.addMouseListener(new MouseAdapter() {
+
+        public void mouseClicked(MouseEvent e) {
+            super.mouseClicked(e);
+            if ((e.getClickCount() > 1) && ((e.getModifiers() & InputEvent.CTRL_MASK) > 0) && ((e.getModifiers() & InputEvent.BUTTON1_MASK) > 0)) {
+                expandCurrentlySelectedNode();
+            }
+        }
+    });
+</td> </tr></table></body></html>

@@ -1,0 +1,29 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>196</td> <td>-1413930427</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>d9e80a3a2136205e71d99ab93a27d8a83aa9b006</td> <td>None</td> <td>TODO CG Remove these commented out lines
+/**
+Alternate constructor to allow a string array to be passed in as the throwable.
+/
+public LoggingEvent(String fqnOfCategoryClass, Logger logger, long timeStamp, Level level, String threadName,</td> <td>SATD_ADDED</td> <td>equals(Object)</td> <td>public boolean equals(Object rObject)</td> <td>
+    if (this == rObject) {
+        return true;
+    }
+    if (!(rObject instanceof LoggingEvent)) {
+        return false;
+    }
+    LoggingEvent rEvent = (LoggingEvent) rObject;
+    if (timeStamp != rEvent.timeStamp) {
+        return false;
+    }
+    if (sequenceNumber != rEvent.sequenceNumber) {
+        return false;
+    }
+    // If both the timestamp and the sequenceNumber are equal than the objects
+    // are assumed to be equal.
+    return true;
+</td> </tr></table></body></html>

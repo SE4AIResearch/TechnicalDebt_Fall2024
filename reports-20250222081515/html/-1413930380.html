@@ -1,0 +1,22 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>271</td> <td>-1413930380</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>c6d8b7375cfcf4a4cc5dfc975c7abf2289cf825d</td> <td>None</td> <td>the following test cannot be run because of a bug in the way
+java.io.StreamTokenizer incorrectly interprets the '\' character within quotes</td> <td>SATD_ADDED</td> <td>testRegexMessage()</td> <td>public void testRegexMessage() throws Exception, ScanError</td> <td>
+    evaluator = new LBELEventEvaluator("message ~ 'hello'");
+    assertTrue(evaluator.evaluate(event));
+    evaluator = new LBELEventEvaluator("message ~ 'h[a-z]* world'");
+    assertTrue(evaluator.evaluate(event));
+    // the following test cannot be run because of a bug in the way
+    // java.io.StreamTokenizer incorrectly interprets the '\' character within quotes
+    // evaluator = new LBELEventEvaluator("message ~ 'h\\w* world'");
+    // assertTrue(evaluator.evaluate(event));
+    LBELEventEvaluator evaluator = new LBELEventEvaluator("message !~ 'x'");
+    assertTrue(evaluator.evaluate(event));
+    evaluator = new LBELEventEvaluator("message !~ 'x[a-z]* world'");
+    assertTrue(evaluator.evaluate(event));
+</td> </tr></table></body></html>

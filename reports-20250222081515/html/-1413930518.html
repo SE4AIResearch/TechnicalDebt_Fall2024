@@ -1,0 +1,25 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>59</td> <td>-1413930518</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>0a2cd5d393fcd730ea5791503fa945f66906adc9</td> <td>None</td> <td>if(c instanceof  ProvisionNode)</td> <td>SATD_ADDED</td> <td>main(String[])</td> <td>public static void main(String[] args)</td> <td>
+    LENGTH = args.length;
+    if (LENGTH == 0) {
+        System.err.println("Usage: java " + StressCategory.class.getName() + " name1 ... nameN\n.");
+        System.exit(1);
+    }
+    if (LENGTH >= 7) {
+        System.err.println("This stress test suffers from combinatorial explosion.\n" + "Invoking with seven arguments takes about 90 minutes even on fast machines");
+    }
+    names = new String[LENGTH];
+    for (int i = 0; i < LENGTH; i++) {
+        names[i] = args[i];
+    }
+    cat = new Category[LENGTH];
+    ct = new CT[LENGTH];
+    permute(0);
+// If did not exit, then passed all tests.
+</td> </tr></table></body></html>

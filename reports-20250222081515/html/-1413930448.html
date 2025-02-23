@@ -1,0 +1,63 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>157</td> <td>-1413930448</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>b89b60ad7d80a4c800f31f9b4088ebe81b699394</td> <td>None</td> <td>TODO: handle exception</td> <td>SATD_ADDED</td> <td>actionPerformed(ActionEvent)</td> <td>public void actionPerformed(ActionEvent e)</td> <td>
+    String name = "";
+    URL url = null;
+    if (!remoteURL) {
+        if (chooser == null) {
+            chooser = new JFileChooser();
+        }
+        chooser.setDialogTitle("Load Events from XML file...");
+        chooser.setAcceptAllFileFilterUsed(true);
+        chooser.setFileFilter(new FileFilter() {
+
+            public boolean accept(File f) {
+                return (f.getName().toLowerCase().endsWith(".xml") || f.isDirectory());
+            }
+
+            public String getDescription() {
+                return "XML files (*.xml)";
+            }
+        });
+        chooser.showOpenDialog(parent);
+        File selectedFile = chooser.getSelectedFile();
+        try {
+            url = selectedFile.toURL();
+            name = "localhost:" + selectedFile.getName();
+        } catch (Exception ex) {
+        // TODO: handle exception
+        }
+    } else {
+        String urltext = JOptionPane.showInputDialog(parent, "<html>Please type in the <b>complete</b> URL to the remote XML source.</html>", "file://");
+        if (urltext != null) {
+            try {
+                url = new URL(urltext);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(parent, "'" + urltext + "' is not a valid URL.");
+            }
+        }
+    }
+    if (url != null) {
+        Map additionalProperties = new HashMap();
+        additionalProperties.put(ChainsawConstants.LOG4J_MACHINE_KEY, name);
+        decoder.setAdditionalProperties(additionalProperties);
+        final URL urlToUse = url;
+        new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    Vector events = decoder.decode(urlToUse);
+                    parent.handler.appendBatch(events);
+                } catch (IOException e1) {
+                    // TODO Handle the error with a nice msg
+                    LOG.error(e1);
+                }
+            }
+        }).start();
+    }
+</td> </tr></table></body></html>

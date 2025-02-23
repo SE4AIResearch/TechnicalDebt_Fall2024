@@ -1,0 +1,23 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>325</td> <td>-1413930368</td><td>apache/log4j</td><td>Curtis William Arnold</td><td>abbd9d3d8b7b16aa02f45679753c1e20886bc49f</td> <td>None</td> <td>
+could potentially return a LoggerRepository property value
+when there is not an MDC property value
+but the negative consequences should be minimal.</td> <td>SATD_ADDED</td> <td>getMDC(String)</td> <td>public Object getMDC(final String key)</td> <td>
+    // 
+    // could potentially return a LoggerRepository property value
+    // when there is not an MDC property value
+    // but the negative consequences should be minimal.
+    if (properties != null) {
+        Object r = properties.get(key);
+        if (r != null) {
+            return r;
+        }
+    }
+    return MDC.get(key);
+</td> </tr></table></body></html>

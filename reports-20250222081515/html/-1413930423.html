@@ -1,0 +1,17 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>200</td> <td>-1413930423</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>064c29a9f0666a465b3ca89808365d2d9aa86ed1</td> <td>None</td> <td>TODO feedback to the user about the error...</td> <td>SATD_ADDED</td> <td>lookForChildren(JTree, DefaultMutableTreeNode)</td> <td> static void lookForChildren(final JTree tree, final DefaultMutableTreeNode node)</td> <td>
+    Object object = node.getUserObject();
+    if (!(object instanceof VFSNode)) {
+        return;
+    }
+    final VFSNode vfsNode = (VFSNode) object;
+    Thread thread = new Thread(new BackgroundChildFileObjectPopulator(tree, node, vfsNode));
+    thread.setPriority(Thread.MIN_PRIORITY);
+    thread.start();
+</td> </tr></table></body></html>

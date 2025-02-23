@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>218</td> 
+     <td>-1413930496</td>
+     <td>apache/log4j</td>
+     <td>Yoav Shapira</td>
+     <td>d8530a7ba0a823db98022edabcc018e5864ab2a5</td> 
+     <td>TODO Handle the error with a nice msg</td> 
+     <td>TODO Handle the error with a nice msg</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>importURL(ChainsawAppenderHandler, Decoder, String, URL)</td> 
+     <td>public static void importURL(final ChainsawAppenderHandler handler, final Decoder decoder, String name, URL url)</td> 
+     <td> Map additionalProperties = new HashMap(); additionalProperties.put(Constants.HOSTNAME_KEY, "file"); additionalProperties.put(Constants.APPLICATION_KEY, name); decoder.setAdditionalProperties(additionalProperties); final URL urlToUse = url; new Thread(new Runnable() { public void run() { try { Vector events = decoder.decode(urlToUse); Iterator iter = events.iterator(); while (iter.hasNext()) { handler.append((LoggingEvent) iter.next()); } } catch (IOException e1) { // TODO Handle the error with a nice msg LOG.error(e1); } } }).start(); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>91</td> 
+     <td>-1413930496</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>e932b0f81efea5a6372513e317a4e753c8335ed2</td> 
+     <td>None</td> 
+     <td>TODO Handle the error with a nice msg</td> 
+     <td>SATD_ADDED</td> 
+     <td>actionPerformed(ActionEvent)</td> 
+     <td>public void actionPerformed(ActionEvent e)</td> 
+     <td> if (chooser == null) { chooser = new JFileChooser(); } chooser.setDialogTitle("Load Events from XML file..."); chooser.setAcceptAllFileFilterUsed(true); chooser.setFileFilter(new FileFilter() { public boolean accept(File f) { return f.getName().toLowerCase().endsWith(".xml"); } public String getDescription() { return "XML files (*.xml)"; } }); chooser.showOpenDialog(parent); File selectedFile = chooser.getSelectedFile(); if (selectedFile != null) { Map additionalProperties = new HashMap(); additionalProperties.put(ChainsawConstants.LOG4J_MACHINE_KEY, "localhost:" + selectedFile.getName()); decoder.setAdditionalProperties(additionalProperties); try { Vector events = decoder.decode(selectedFile); parent.handler.appendBatch(events); } catch (IOException e1) { // TODO Handle the error with a nice msg e1.printStackTrace(); } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

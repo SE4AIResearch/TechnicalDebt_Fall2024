@@ -1,0 +1,34 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>5</td> <td>-1413930552</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>947517357402f5ff3800d18c8106c52533c91e09</td> <td>None</td> <td>Print Stacktrace
+Quick Hack maybe there is a better/faster way?</td> <td>SATD_ADDED</td> <td>append(LoggingEvent)</td> <td>public void append(LoggingEvent event)</td> <td>
+    String text = this.layout.format(event);
+    String trace = "";
+    // Print Stacktrace
+    // Quick Hack maybe there is a better/faster way?
+    if (event.throwable != null) {
+        event.throwable.printStackTrace(tp);
+        for (int i = 0; i < sw.getBuffer().length(); i++) {
+            if (sw.getBuffer().charAt(i) == '\t')
+                sw.getBuffer().replace(i, i + 1, "        ");
+        }
+        trace = sw.toString();
+        sw.getBuffer().delete(0, sw.getBuffer().length());
+    }
+    try {
+        if (fancy) {
+            textpane.setEditable(true);
+            textpane.insertIcon((ImageIcon) icons.get(event.priority));
+            textpane.setEditable(false);
+        }
+        doc.insertString(doc.getLength(), text + trace, (MutableAttributeSet) attributes.get(event.priority));
+    } catch (BadLocationException badex) {
+        System.err.println(badex);
+    }
+    textpane.setCaretPosition(doc.getLength());
+</td> </tr></table></body></html>

@@ -1,0 +1,27 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>221</td> <td>-1413930409</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>89a43cf272908b3c94312ed074568039c7121f30</td> <td>None</td> <td>io exception - probably shut down</td> <td>SATD_ADDED</td> <td>activateOptions()</td> <td>public void activateOptions()</td> <td>
+    new Thread(new Runnable() {
+
+        public void run() {
+            initialize();
+            try {
+                reader = new InputStreamReader(new URL(getFileURL()).openStream());
+            } catch (IOException ioe) {
+                LogLog.debug("exception", ioe);
+                return;
+            }
+            try {
+                process(reader);
+            } catch (IOException ioe) {
+                // io exception - probably shut down
+                LogLog.debug("stream closed");
+            }
+        }
+    }).start();
+</td> </tr></table></body></html>

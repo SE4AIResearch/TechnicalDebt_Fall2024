@@ -1,0 +1,73 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>31</td> 
+     <td>-1413930547</td> 
+     <td>apache/log4j</td> 
+     <td>Ceki Gulcu</td> 
+     <td>60eb91adb2ac2602d73b5055d577d7627ab4d71e</td> 
+     <td>writing directly the Class object would be nicer, except that serialized a Class object can not be read back by JDK 1.1.x. We have to resort to this hack instead.</td> 
+     <td>writing directly the Class object would be nicer, except that serialized a Class object can not be read back by JDK 1.1.x. We have to resort to this hack instead.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>writePriority(ObjectOutputStream)</td> 
+     <td>private void writePriority(ObjectOutputStream oos) throws java.io.IOException</td> 
+     <td> oos.writeInt(priority.toInt()); Class clazz = priority.getClass(); if (clazz == Priority.class) { oos.writeObject(null); } else { // writing directly the Class object would be nicer, except that // serialized a Class object can not be read back by JDK // 1.1.x. We have to resort to this hack instead. oos.writeObject(clazz.getName()); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>12</td> 
+     <td>-1413930547</td> 
+     <td>apache/log4j</td> 
+     <td>Ceki Gulcu</td> 
+     <td>2586dda3d3d2d78414119dd9c49a734ce1b5a8d2</td> 
+     <td>writing the Class would be nicer, except that serialized classed can not be read back by JDK 1.1.x. We have to resort to this hack instead.</td> 
+     <td>writing directly the Class object would be nicer, except that serialized a Class object can not be read back by JDK 1.1.x. We have to resort to this hack instead.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>writePriority(ObjectOutputStream)</td> 
+     <td>private void writePriority(ObjectOutputStream oos) throws java.io.IOException</td> 
+     <td> oos.writeInt(priority.toInt()); Class clazz = priority.getClass(); if (clazz == Priority.class) { oos.writeObject(null); } else { // writing directly the Class object would be nicer, except that // serialized a Class object can not be read back by JDK // 1.1.x. We have to resort to this hack instead. oos.writeObject(clazz.getName()); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>11</td> 
+     <td>-1413930547</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>b702f7145d3f660ac350ec862df9e8e913c1fffa</td> 
+     <td>None</td> 
+     <td>writing the Class would be nicer, except that serialized classed can not be read back by JDK 1.1.x. We have to resort to this hack instead.</td> 
+     <td>SATD_ADDED</td> 
+     <td>writePriority(ObjectOutputStream)</td> 
+     <td>private void writePriority(ObjectOutputStream oos) throws java.io.IOException</td> 
+     <td> oos.writeInt(priority.toInt()); Class clazz = priority.getClass(); if (clazz == Priority.class) { oos.writeObject(null); } else { // writing the Class would be nicer, except that serialized // classed can not be read back by JDK 1.1.x. We have to resort // to this hack instead. oos.writeObject(clazz.getName()); } </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

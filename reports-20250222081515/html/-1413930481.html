@@ -1,0 +1,57 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>110</td> <td>-1413930481</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>7bb51aa12cb6f6db2b152a5c83783aba4048d64b</td> <td>None</td> <td>TODO add accelerator to this action</td> <td>SATD_ADDED</td> <td>createToolbar()</td> <td>private void createToolbar()</td> <td>
+    Insets buttonMargins = new Insets(1, 1, 1, 1);
+    FileMenu fileMenu = (FileMenu) menuBar.getMenu(0);
+    JButton fileOpenButton = new SmallButton(fileMenu.getLog4JFileOpenAction());
+    fileOpenButton.setMargin(buttonMargins);
+    JButton fileSaveButton = new SmallButton(fileMenu.getFileSaveAction());
+    fileSaveButton.setMargin(buttonMargins);
+    fileOpenButton.setText("");
+    fileSaveButton.setText("");
+    toolbar.add(fileOpenButton);
+    toolbar.add(fileSaveButton);
+    toolbar.addSeparator();
+    pauseButton.setAction(pauseAction);
+    pauseButton.setText("");
+    // pauseButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F12"),pauseAction.getValue(Action.NAME) );
+    pauseButton.getActionMap().put(pauseAction.getValue(Action.NAME), pauseAction);
+    detailPaneButton.setAction(toggleDetailPaneAction);
+    detailPaneButton.setText("");
+    detailPaneButton.getActionMap().put(toggleDetailPaneAction.getValue(Action.NAME), toggleDetailPaneAction);
+    detailPaneButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK), toggleDetailPaneAction.getValue(Action.NAME));
+    logTreePaneButton.setAction(toggleLogTreeAction);
+    // logTreePaneButton.setText(null);
+    // TODO add accelerator to this action
+    SmallButton prefsButton = new SmallButton(showPreferencesAction);
+    SmallButton undockButton = new SmallButton(undockAction);
+    undockButton.setText("");
+    toolbar.add(undockButton);
+    toolbar.add(pauseButton);
+    toolbar.add(detailPaneButton);
+    toolbar.add(logTreePaneButton);
+    toolbar.add(prefsButton);
+    toolbar.addSeparator();
+    toolbar.add(clearButton);
+    clearButton.setAction(clearAction);
+    clearButton.setText("");
+    toolbar.addSeparator();
+    JButton findNextButton = new SmallButton(findNextAction);
+    findNextButton.setText("");
+    findNextButton.getActionMap().put(findNextAction.getValue(Action.NAME), findNextAction);
+    findNextButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke) findNextAction.getValue(Action.ACCELERATOR_KEY), findNextAction.getValue(Action.NAME));
+    toolbar.add(findNextButton);
+    Box findBox = Box.createHorizontalBox();
+    findBox.add(findTextField);
+    toolbar.add(findBox);
+    toolbar.addSeparator();
+    toolbar.add(showReceiversButton);
+    toolbar.add(Box.createHorizontalGlue());
+    toolbar.setMargin(buttonMargins);
+    toolbar.setFloatable(false);
+</td> </tr></table></body></html>

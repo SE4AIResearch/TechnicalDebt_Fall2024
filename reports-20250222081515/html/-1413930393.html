@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>246</td> 
+     <td>-1413930393</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>e267766d610de35b2d96fdba6b5aa55ceeac3f4a</td> 
+     <td> calling ourself should be safe and faster but why risk it</td> 
+     <td> calling ourself should be safe and faster but why risk it</td> 
+     <td>FILE_PATH_CHANGED</td> 
+     <td>format(Date, StringBuffer, FieldPosition)</td> 
+     <td>public StringBuffer format(Date date, StringBuffer sbuf, FieldPosition fieldPosition)</td> 
+     <td> if (millisecondStart == UNRECOGNIZED_MILLISECOND_PATTERN) { return formatter.format(date, sbuf, fieldPosition); } long now = date.getTime(); if (now &lt; previousTime + 1000L &amp;&amp; now &gt;= previousTime) { if (millisecondStart &gt;= 0) { cache.delete(millisecondStart, millisecondStart + 3); int millis = (int) (now - previousTime); int cacheLength = cache.length(); // // append milliseconds to the end of the cache numberFormat.format(millis, cache, fieldPosition); int milliLength = cache.length() - cacheLength; // // if it didn't belong at the end, then move it if (cacheLength != millisecondStart) { String milli = cache.substring(cacheLength); cache.setLength(cacheLength); cache.insert(millisecondStart, milli); } for (int i = milliLength; i &lt; 3; i++) { cache.insert(millisecondStart, "0"); } } sbuf.append(cache); } else { previousTime = (now / 1000L) * 1000L; // // if earlier than 1970 and rounded toward 1970 // then move back one second if (now - previousTime &lt; 0) { previousTime -= 1000; } cache.setLength(0); formatter.format(new Date(previousTime), cache, fieldPosition); millisecondStart = findMillisecondStart(previousTime, cache.toString(), formatter); // // calling ourself should be safe and faster // but why risk it formatter.format(date, sbuf, fieldPosition); } return sbuf; </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>244</td> 
+     <td>-1413930393</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>86dcb54ec6afeb2ed8e3332e243db749a0d44b2b</td> 
+     <td>None</td> 
+     <td> calling ourself should be safe and faster but why risk it</td> 
+     <td>SATD_ADDED</td> 
+     <td>format(Date, StringBuffer, FieldPosition)</td> 
+     <td>public StringBuffer format(Date date, StringBuffer sbuf, FieldPosition fieldPosition)</td> 
+     <td> if (millisecondStart == UNRECOGNIZED_MILLISECOND_PATTERN) { return formatter.format(date, sbuf, fieldPosition); } long now = date.getTime(); if (now &lt; previousTime + 1000L &amp;&amp; now &gt;= previousTime) { if (millisecondStart &gt;= 0) { cache.delete(millisecondStart, millisecondStart + 3); int millis = (int) (now - previousTime); int cacheLength = cache.length(); // // append milliseconds to the end of the cache numberFormat.format(millis, cache, fieldPosition); int milliLength = cache.length() - cacheLength; // // if it didn't belong at the end, then move it if (cacheLength != millisecondStart) { String milli = cache.substring(cacheLength); cache.setLength(cacheLength); cache.insert(millisecondStart, milli); } for (int i = milliLength; i &lt; 3; i++) { cache.insert(millisecondStart, "0"); } } sbuf.append(cache); } else { previousTime = (now / 1000L) * 1000L; // // if earlier than 1970 and rounded toward 1970 // then move back one second if (now - previousTime &lt; 0) { previousTime -= 1000; } cache.setLength(0); formatter.format(new Date(previousTime), cache, fieldPosition); millisecondStart = findMillisecondStart(previousTime, cache.toString(), formatter); // // calling ourself should be safe and faster // but why risk it formatter.format(date, sbuf, fieldPosition); } return sbuf; </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

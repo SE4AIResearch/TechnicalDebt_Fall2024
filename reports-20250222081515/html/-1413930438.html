@@ -1,0 +1,18 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>178</td> <td>-1413930438</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>0d1bc03ceaf04880c70dfe06ede90da7603f683c</td> <td>None</td> <td>TODO Create a resource not found url</td> <td>SATD_ADDED</td> <td>showHelpForClass(Class)</td> <td>public void showHelpForClass(Class c)</td> <td>
+    String name = c.getName();
+    name = name.replace('.', '/');
+    URL url = helpLocator.findResource(name);
+    if (url != null) {
+        setHelpURL(url);
+    } else {
+        // TODO Create a resource not found url
+        setHelpURL(ChainsawConstants.WELCOME_URL);
+    }
+</td> </tr></table></body></html>

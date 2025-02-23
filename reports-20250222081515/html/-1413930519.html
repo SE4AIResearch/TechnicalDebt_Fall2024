@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>58</td> <td>-1413930519</td><td>apache/log4j</td><td>Mark Dwayne Womack</td><td>62cb0c5f0dc4869fc65f99f12258010da8e6aed7</td> <td>None</td> <td>either ignore the exception or log the fact that the setting of this
+custom repository selector failed because another had been set previously
+and maybe we should set \"initialized\" to \"true\" in here so this exception doesn't
+occur again in this class</td> <td>SATD_ADDED</td> <td>doIdempotentInitialization()</td> <td>public static void doIdempotentInitialization()</td> <td>
+    if (!initialized) {
+        try {
+            Object guard = new Object();
+            LogManager.setRepositorySelector(singleton, guard);
+            initialized = true;
+        } catch (IllegalArgumentException iae) {
+        // either ignore the exception or log the fact that the setting of this
+        // custom repository selector failed because another had been set previously
+        // and maybe we should set "initialized" to "true" in here so this exception doesn't
+        // occur again in this class
+        }
+    }
+</td> </tr></table></body></html>

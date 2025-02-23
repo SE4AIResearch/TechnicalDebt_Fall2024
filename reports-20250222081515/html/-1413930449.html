@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>156</td> <td>-1413930449</td><td>apache/log4j</td><td>Scott Deboy</td><td>d2794a0aad70a514bae5e610777e99a027147780</td> <td>None</td> <td>TODO think of good mnemonics and HotKey for this action</td> <td>SATD_ADDED</td> <td>createShowColorPanelAction()</td> <td>private Action createShowColorPanelAction()</td> <td>
+    Action showColorPanel = new AbstractAction("", ChainsawIcons.ICON_PREFERENCES) {
+
+        public void actionPerformed(ActionEvent arg0) {
+            LogPanel logPanel = logui.getCurrentLogPanel();
+            if (logPanel != null) {
+                logPanel.showColorPanel();
+            }
+        }
+    };
+    showColorPanel.putValue(Action.SHORT_DESCRIPTION, "LogPanel Color Filter...");
+    // TODO think of good mnemonics and HotKey for this action
+    return showColorPanel;
+</td> </tr></table></body></html>

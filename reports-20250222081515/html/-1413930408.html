@@ -1,0 +1,15 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>222</td> <td>-1413930408</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>2fefbb9bbeb0a094d22ae551e317e3ab425efed4</td> <td>None</td> <td>TODO we need a test that tests when the MDC value is null/not found</td> <td>SATD_ADDED</td> <td>testcreateMDCAndDailyRollingAppenderFactory()</td> <td>public void testcreateMDCAndDailyRollingAppenderFactory()</td> <td>
+    AppenderFactory factory = AppenderFactoryUtils.createMDCAndDailyRollingAppenderFactory("output/standardMDC", "User", new PatternLayout("%m%n"));
+    MDC.put("User", "Bob");
+    LoggingEvent e = new LoggingEvent();
+    RollingFileAppender appender = (RollingFileAppender) factory.create(e);
+    assertEquals(appender.getTriggeringPolicy().getClass(), TimeBasedRollingPolicy.class);
+// TimeBasedRollingPolicy policy =(TimeBasedRollingPolicy) appender.getTriggeringPolicy();
+</td> </tr></table></body></html>

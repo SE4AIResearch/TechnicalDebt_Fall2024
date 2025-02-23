@@ -1,0 +1,37 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>232</td> <td>-1413930402</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>441ce6010640df7248bc0df2a40ca41cd02cf9de</td> <td>FIXME: What happens if the users wanted to set the additivity flag
+for \"org.apahce.log4j\" to false in the config file? We are now
+potentially overriding her wishes but I don't see any other way.</td> <td>FIXME: What happens if the users wanted to set the additivity flag
+for \"org.apahce.log4j\" to false in the config file? We are now
+potentially overriding her wishes but I don't see any other way.</td> <td>SATD_MOVED_FILE</td> <td>detachListAppender(LoggerRepository)</td> <td>protected void detachListAppender(LoggerRepository repository)</td> <td>
+    Logger ll = repository.getLogger(Constants.LOG4J_PACKAGE_NAME);
+    // FIXME: What happens if the users wanted to set the additivity flag
+    // for "org.apahce.log4j" to false in the config file? We are now
+    // potentially overriding her wishes but I don't see any other way.
+    ll.setAdditivity(true);
+    ListAppender listAppender = (ListAppender) ll.getAppender(Constants.TEMP_LIST_APPENDER_NAME);
+    if (listAppender == null) {
+        String errMsg = "Could not find appender " + Constants.TEMP_LIST_APPENDER_NAME;
+        getLogger(repository).error(errMsg);
+        addError(new ErrorItem(errMsg));
+        return;
+    }
+    List eventList = listAppender.getList();
+    int size = eventList.size();
+    for (int i = 0; i < size; i++) {
+        LoggingEvent event = (LoggingEvent) eventList.get(i);
+        Logger xLogger = event.getLogger();
+        if (event.getLevel().isGreaterOrEqual(xLogger.getEffectiveLevel())) {
+            xLogger.callAppenders(event);
+        }
+    }
+    listAppender.clearModel();
+    listAppender.close();
+    ll.removeAppender(listAppender);
+</td> </tr></table></body></html>

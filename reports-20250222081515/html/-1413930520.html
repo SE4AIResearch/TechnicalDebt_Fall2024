@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>56</td> <td>-1413930520</td><td>apache/log4j</td><td>Mark Dwayne Womack</td><td>0f307ca72c7a349ad7b7b516c72b9dd520b6c4c2</td> <td>None</td> <td>This should only ever be called once in this class' entire existence.
+The only way to override it is to pass in the exact same guard object
+that we set here...which is next to impossible unless we store a
+reference to it.  We will not do that unless it becomes a requirement
+in the future.</td> <td>SATD_ADDED</td> <td>getHierarchy(ClassLoader)</td> <td>public static Hierarchy getHierarchy(ClassLoader cl)</td> <td>
+    return (Hierarchy) hierMap.get(cl);
+</td> </tr></table></body></html>

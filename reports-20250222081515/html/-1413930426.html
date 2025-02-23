@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>197</td> <td>-1413930426</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>e7a45e09af8c6312a340f607b1425453e5284d7d</td> <td>None</td> <td>TODO This seems really lame to have to do this, but there you go...</td> <td>SATD_ADDED</td> <td>determineSupportedFileSystems()</td> <td>private void determineSupportedFileSystems()</td> <td>
+    // TODO This seems really lame to have to do this, but there you go...
+    String[] schemes = new String[] { "file", "zip", "jar", "sftp", "http", "https", "ftp", "CIFS" };
+    for (int i = 0; i < schemes.length; i++) {
+        String scheme = schemes[i];
+        try {
+            if (fileSystemManager.hasProvider(scheme)) {
+                supportedSchemes.add(scheme);
+                LogLog.info("VFS scheme '" + scheme + "' supported");
+            } else {
+                LogLog.error("VFS scheme '" + scheme + "' NOT supported");
+            }
+        } catch (Exception e) {
+            LogLog.error("Failed test for VFS scheme '" + scheme + "'", e);
+        }
+    }
+</td> </tr></table></body></html>

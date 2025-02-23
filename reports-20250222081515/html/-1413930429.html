@@ -1,0 +1,79 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>192</td> <td>-1413930429</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>a1d858e57403bd741f7283451551370685f0aebc</td> <td>None</td> <td>TODO: the rest of the tests could be skipped and we could just return true.</td> <td>SATD_ADDED</td> <td>equals(Object)</td> <td>public boolean equals(Object rObject)</td> <td>
+    if (this == rObject) {
+        return true;
+    }
+    if (!(rObject instanceof LoggingEvent)) {
+        return false;
+    }
+    LoggingEvent rEvent = (LoggingEvent) rObject;
+    if (timeStamp != rEvent.timeStamp) {
+        return false;
+    }
+    if (sequenceNumber != rEvent.sequenceNumber) {
+        return false;
+    }
+    // TODO: the rest of the tests could be skipped and we could just return true.
+    // level cannot be null
+    if (level != rEvent.level) {
+        return false;
+    }
+    // threadName can be null after all
+    if (threadName == null) {
+        if (rEvent.threadName != null) {
+            return false;
+        }
+    } else if (!threadName.equals(rEvent.threadName)) {
+        return false;
+    }
+    if (message == null) {
+        if (rEvent.message != null) {
+            return false;
+        }
+    } else if (!message.equals(rEvent.message)) {
+        return false;
+    }
+    if (properties == null) {
+        if (rEvent.message != null) {
+            return false;
+        }
+    } else if (!properties.equals(rEvent.properties)) {
+        return false;
+    }
+    if (mdcCopy == null) {
+        if (rEvent.mdcCopy != null) {
+            return false;
+        }
+    } else if (!mdcCopy.equals(rEvent.mdcCopy)) {
+        return false;
+    }
+    if (ndc == null) {
+        if (rEvent.ndc != null) {
+            return false;
+        }
+    } else if (!ndc.equals(rEvent.ndc)) {
+        return false;
+    }
+    if (throwableInfo == null) {
+        if (rEvent.throwableInfo != null) {
+            return false;
+        }
+    } else if (!throwableInfo.equals(rEvent.throwableInfo)) {
+        return false;
+    }
+    if (locationInfo == null) {
+        if (rEvent.locationInfo != null) {
+            return false;
+        }
+    } else if (!locationInfo.equals(rEvent.locationInfo)) {
+        return false;
+    }
+    // we can now safely assume that the two events are equal.
+    return true;
+</td> </tr></table></body></html>

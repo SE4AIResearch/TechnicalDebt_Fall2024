@@ -1,0 +1,28 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>214</td> <td>-1413930413</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>e7ec8973dc4c7618cd9dab379e2a5426a1292e40</td> <td>None</td> <td>TODO UDPAppender throws NullPointerException if the layout is not set</td> <td>SATD_ADDED</td> <td>activateOptions()</td> <td>public void activateOptions()</td> <td>
+    try {
+        hostname = InetAddress.getLocalHost().getHostName();
+    } catch (UnknownHostException uhe) {
+        try {
+            hostname = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException uhe2) {
+            hostname = "unknown";
+        }
+    }
+    // allow system property of application to be primary
+    if (application == null) {
+        application = System.getProperty(Constants.APPLICATION_KEY);
+    } else {
+        if (System.getProperty(Constants.APPLICATION_KEY) != null) {
+            application = application + "-" + System.getProperty(Constants.APPLICATION_KEY);
+        }
+    }
+    // if not passed in, allow null app (app property won't be set)
+    connect(address, port);
+</td> </tr></table></body></html>

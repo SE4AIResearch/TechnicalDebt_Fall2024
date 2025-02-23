@@ -104,7 +104,7 @@ public class Main {
 
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
                   
-                    AzureModel.classiffySATD(writer, repoEntry[0] );
+                    //AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
                   
 

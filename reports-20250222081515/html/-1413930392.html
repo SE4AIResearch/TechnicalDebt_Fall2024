@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>249</td> <td>-1413930392</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>a4780f399cbdd589a8b1ace5d00792c2e1f762e0</td> <td>None</td> <td>if we can cache, so much the better</td> <td>SATD_ADDED</td> <td>setOptions(List)</td> <td>public void setOptions(List optionList)</td> <td>
+    String patternOption;
+    if (optionList == null || optionList.size() == 0) {
+        // the branch could be optimized, but here we are making explicit
+        // that null values for patternOption are allowed.
+        patternOption = null;
+    } else {
+        patternOption = (String) optionList.get(0);
+    }
+    String pattern;
+    if (patternOption == null) {
+        pattern = "yyyy-MM-dd HH:mm:ss,SSS";
+    } else if (patternOption.equalsIgnoreCase(AbsoluteTimeDateFormat.ISO8601_DATE_FORMAT)) {
+        pattern = "yyyy-MM-dd HH:mm:ss,SSS";
+    } else if (patternOption.equalsIgnoreCase(AbsoluteTimeDateFormat.ABS_TIME_DATE_FORMAT)) {
+        pattern = "HH:mm:ss,SSS";
+    } else if (patternOption.equalsIgnoreCase(AbsoluteTimeDateFormat.DATE_AND_TIME_DATE_FORMAT)) {
+        pattern = "dd MMM yyyy HH:mm:ss,SSS";
+    } else {
+        pattern = patternOption;
+    }
+    try {
+        df = new SimpleDateFormat(pattern);
+    } catch (IllegalArgumentException e) {
+        logger.warn("Could not instantiate SimpleDateFormat with pattern " + patternOption, e);
+        // detault for the ISO8601 format
+        pattern = "yyyy-MM-dd HH:mm:ss,SSS";
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS");
+    }
+    // if the option list contains a TZ option, then set it.
+    if (optionList != null && optionList.size() > 1) {
+        TimeZone tz = TimeZone.getTimeZone((String) optionList.get(1));
+        df.setTimeZone(tz);
+    }
+    // if we can cache, so much the better
+    if (CacheUtil.isPatternSafeForCaching(pattern)) {
+        df = new CachedDateFormat(df);
+    }
+</td> </tr></table></body></html>

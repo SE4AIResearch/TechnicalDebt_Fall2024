@@ -1,0 +1,50 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>195</td> <td>-1413930428</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>42f1290ae7de2687560d1f850fd8dc21eb09d7f2</td> <td>None</td> <td>TODO CG The conversion of levelStr should be more general</td> <td>SATD_ADDED</td> <td>execute()</td> <td>public void execute()</td> <td>
+    LogLog.info("in DBReceiverJob.execute()");
+    try {
+        Logger logger;
+        LoggerRepository loggerRepository = getLoggerRepository();
+        Connection connection = connectionSource.getConnection();
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT sequence_number, timestamp, rendered_message, ");
+        sql.append("logger_name, level_string, ndc, thread_name, ");
+        sql.append("reference_flag, id from logging_event");
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sql.toString());
+        rs.first();
+        while (rs.next()) {
+            LoggingEvent event = new LoggingEvent();
+            long id;
+            event.setSequenceNumber(rs.getLong(1));
+            event.setTimeStamp(rs.getLong(2));
+            event.setRenderedMessage(rs.getString(3));
+            event.setLoggerName(rs.getString(4));
+            String levelStr = rs.getString(5);
+            // TODO CG The conversion of levelStr should be more general
+            Level level = Level.toLevel(levelStr);
+            event.setLevel(level);
+            event.setNDC(rs.getString(6));
+            event.setThreadName(rs.getString(7));
+            short mask = rs.getShort(8);
+            id = rs.getLong(9);
+            // event.setProperty("id", Long.toString(id));
+            if ((mask & DBHelper.PROPERTIES_EXIST) != 0) {
+                getProperties(connection, id, event);
+            }
+            if ((mask & DBHelper.EXCEPTION_EXISTS) != 0) {
+                getException(connection, id, event);
+            }
+            if (!DBReceiver.this.isPaused()) {
+                DBReceiver.this.doPost(event);
+            }
+        }
+    } catch (SQLException sqle) {
+        LogLog.error("Problem receiving events", sqle);
+    }
+</td> </tr></table></body></html>

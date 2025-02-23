@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>188</td> <td>-1413930431</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>2b1f10e3f71151e3dd89ef9e09abffc2b8928114</td> <td>None</td> <td>TODO think of good mnemonics and HotKey for this action</td> <td>SATD_ADDED</td> <td>createCustomExpressionPanelAction()</td> <td>private Action createCustomExpressionPanelAction()</td> <td>
+    final JDialog dialog = new JDialog(logui, "Define tab", true);
+    dialog.getContentPane().add(getCustomExpressionPanel());
+    dialog.pack();
+    Action createExpressionPanel = new AbstractAction("", ChainsawIcons.ICON_HELP) {
+
+        public void actionPerformed(ActionEvent arg0) {
+            dialog.setVisible(true);
+        }
+    };
+    createExpressionPanel.putValue(Action.SHORT_DESCRIPTION, "Create custom expression LogPanel...");
+    // TODO think of good mnemonics and HotKey for this action
+    return createExpressionPanel;
+</td> </tr></table></body></html>

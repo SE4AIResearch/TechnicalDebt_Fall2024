@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>8</td> 
+     <td>-1413930554</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>722c517ddfca251f478f2ced576ca18b11a58f6c</td> 
+     <td>Yes, it's ugly. But all of these exceptions point to the same problem: we can't create an Appender</td> 
+     <td>Yes, it's ugly. But all of these exceptions point to the same problem: we can't create an Appender</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>parseAppender(Element)</td> 
+     <td>protected Appender parseAppender(Element appenderElement)</td> 
+     <td> String className = appenderElement.getAttribute(CLASS_ATTR); LogLog.debug("Class name: [" + className + ']'); try { Object instance = Class.forName(className).newInstance(); Appender appender = (Appender) instance; appender.setName(appenderElement.getAttribute(NAME_ATTR)); NodeList children = appenderElement.getChildNodes(); final int length = children.getLength(); for (int loop = 0; loop &lt; length; loop++) { Node currentNode = children.item(loop); /* We're only interested in Elements */ if (currentNode.getNodeType() == Node.ELEMENT_NODE) { Element currentElement = (Element) currentNode; // Parse appender parameters if (currentElement.getTagName().equals(PARAM_TAG)) { if (appender instanceof OptionHandler) { parseParameters(currentElement, (OptionHandler) appender); } } else // Set appender layout if (currentElement.getTagName().equals(LAYOUT_TAG)) { appender.setLayout(parseLayout(currentElement)); } else // Add filters if (currentElement.getTagName().equals(FILTER_TAG)) { parseFilters(currentElement, appender); } else if (currentElement.getTagName().equals(ERROR_HANDLER_TAG)) { parseErrorHandler(currentElement, appender); } else if (currentElement.getTagName().equals(APPENDER_REF_TAG)) { String refName = currentElement.getAttribute(REF_ATTR); if (appender instanceof AppenderAttachable) { AppenderAttachable aa = (AppenderAttachable) appender; LogLog.debug("Attaching appender named [" + refName + "] to appender named [" + appender.getName() + "]."); aa.addAppender(findAppenderByReference(currentElement)); } else { LogLog.error("Requesting attachment of appender named [" + refName + "] to appender named [" + appender.getName() + "] which does not implement org.log4j.spi.AppenderAttachable."); } } } } if (appender instanceof OptionHandler) { ((OptionHandler) appender).activateOptions(); } return appender; }/* Yes, it's ugly. But all of these exceptions point to the same problem: we can't create an Appender */ catch (Exception oops) { LogLog.error("Could not create an Appender. Reported error follows.", oops); return null; } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>3</td> 
+     <td>-1413930554</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>4e7121c85b7353a8dff17f7669c270ad963763a6</td> 
+     <td>None</td> 
+     <td>Yes, it's ugly. But all of these exceptions point to the same problem: we can't create an Appender</td> 
+     <td>SATD_ADDED</td> 
+     <td>parseAppender(Element)</td> 
+     <td>protected Appender parseAppender(Element appenderElement)</td> 
+     <td> String className = appenderElement.getAttribute(CLASS_ATTR); LogLog.debug("Class name: [" + className + ']'); try { Object instance = Class.forName(className).newInstance(); Appender appender = (Appender) instance; appender.setName(appenderElement.getAttribute(NAME_ATTR)); NodeList children = appenderElement.getChildNodes(); final int length = children.getLength(); for (int loop = 0; loop &lt; length; loop++) { Node currentNode = children.item(loop); /* We're only interested in Elements */ if (currentNode.getNodeType() == Node.ELEMENT_NODE) { Element currentElement = (Element) currentNode; // Parse appender parameters if (currentElement.getTagName().equals(PARAM_TAG)) { if (appender instanceof OptionHandler) { parseParameters(currentElement, (OptionHandler) appender); } } else // Set appender layout if (currentElement.getTagName().equals(LAYOUT_TAG)) { appender.setLayout(parseLayout(currentElement)); } else // Add filters if (currentElement.getTagName().equals(FILTER_TAG)) { parseFilters(currentElement, appender); } else if (currentElement.getTagName().equals(ERROR_HANDLER_TAG)) { parseErrorHandler(currentElement, appender); } else if (currentElement.getTagName().equals(APPENDER_REF_TAG)) { String refName = currentElement.getAttribute(REF_ATTR); if (appender instanceof AppenderAttachable) { AppenderAttachable aa = (AppenderAttachable) appender; LogLog.debug("Attaching appender named [" + refName + "] to appender named [" + appender.getName() + "]."); aa.addAppender(findAppenderByReference(currentElement)); } else { LogLog.error("Requesting attachment of appender named [" + refName + "] to appender named [" + appender.getName() + "] which does not implement org.log4j.spi.AppenderAttachable."); } } } } if (appender instanceof OptionHandler) { ((OptionHandler) appender).activateOptions(); } return appender; }/* Yes, it's ugly. But all of these exceptions point to the same problem: we can't create an Appender */ catch (Exception oops) { LogLog.error("Could not create an Appender. Reported error follows.", oops); return null; } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

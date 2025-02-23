@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>81</td> <td>-1413930505</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>e932b0f81efea5a6372513e317a4e753c8335ed2</td> <td>None</td> <td>TODO think of good mnemonics and HotKey for this action</td> <td>SATD_ADDED</td> <td>createShowPreferencesAction()</td> <td>private Action createShowPreferencesAction()</td> <td>
+    Action showPreferences = new AbstractAction("", ChainsawIcons.ICON_PREFERENCES) {
+
+        public void actionPerformed(ActionEvent arg0) {
+            LogUI.LogPanel logPanel = logui.getCurrentLogPanel();
+            if (logPanel != null) {
+                logPanel.showPreferences();
+            }
+        }
+    };
+    showPreferences.putValue(Action.SHORT_DESCRIPTION, "Define display and color filters...");
+    // TODO think of good mnemonics and HotKey for this action
+    return showPreferences;
+</td> </tr></table></body></html>

@@ -1,0 +1,88 @@
+<html> 
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body> 
+  <h1>SATD</h1> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr> 
+    <tr> 
+     <td>168</td> 
+     <td>-1413930480</td> 
+     <td>apache/log4j</td> 
+     <td>Paul Jeffrey Smith</td> 
+     <td>d0b8b519f203349fb9a7cf9bee71e6499c05256e</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>evaluate(LoggingEvent)</td> 
+     <td>public boolean evaluate(LoggingEvent e)</td> 
+     <td> return true; </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>162</td> 
+     <td>-1413930480</td> 
+     <td>apache/log4j</td> 
+     <td>Paul Jeffrey Smith</td> 
+     <td>80a8f7cb4b321a762f0a292b9b49dbc30ac11c89</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>mouseMoved(MouseEvent)</td> 
+     <td>public void mouseMoved(MouseEvent e)</td> 
+     <td> // LogLog.debug(e.toString()); if ((e.getModifiers() &amp; InputEvent.CTRL_MASK) &gt; 0 &amp;&amp; (e.getModifiers() &amp; InputEvent.SHIFT_MASK) &gt; 0) { logTree.setCursor(ignoreCursor); } else if ((e.getModifiers() &amp; InputEvent.CTRL_MASK) &gt; 0) { logTree.setCursor(focusOnCursor); } else { logTree.setCursor(Cursor.getDefaultCursor()); } </td> 
+    </tr> 
+   </tbody> 
+   <tbody> 
+    <tr> 
+     <td>155</td> 
+     <td>-1413930480</td> 
+     <td>apache/log4j</td> 
+     <td>Paul Jeffrey Smith</td> 
+     <td>d5acfe6eac395e6aef8dc2ef6d115f55d3b67526</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>evaluate(LoggingEvent)</td> 
+     <td>public boolean evaluate(LoggingEvent e)</td> 
+     <td> return true; </td> 
+    </tr> 
+   </tbody> 
+   <tbody>
+    <tr>
+     <td>112</td> 
+     <td>-1413930480</td>
+     <td>apache/log4j</td>
+     <td>Paul Jeffrey Smith</td>
+     <td>6a9f2bdf4e3c8882aea9ddbbbb3ba60b6c825d05</td> 
+     <td>None</td> 
+     <td>TODO enable this when it's ready.</td> 
+     <td>SATD_ADDED</td> 
+     <td>getToolTipText(MouseEvent)</td> 
+     <td>public String getToolTipText(MouseEvent ev)</td> 
+     <td> if (ev == null) { return null; } TreePath path = logTree.getPathForLocation(ev.getX(), ev.getY()); if (path != null) { Object[] objects = path.getPath(); StringBuffer buf = new StringBuffer(); for (int i = 1; i &lt; objects.length; i++) { buf.append(objects[i].toString()); if (i &lt; (objects.length - 1)) { buf.append("."); } } // TODO output the Level filter details return buf.toString(); } return null; </td> 
+    </tr>
+   </tbody>
+  </table>  
+ </body>
+</html>

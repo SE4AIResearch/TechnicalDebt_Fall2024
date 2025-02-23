@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>35</td> 
+     <td>-1413930548</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>5a6c96b28838873ab88af17be2de9f0186e55e7d</td> 
+     <td>Hack finished.</td> 
+     <td>Hack finished.</td> 
+     <td>CLASS_OR_METHOD_CHANGED</td> 
+     <td>findAppenderByName(Document, String)</td> 
+     <td>protected Appender findAppenderByName(Document doc, String appenderName)</td> 
+     <td> Appender appender = (Appender) appenderBag.get(appenderName); if (appender != null) { return appender; } else { // Doesn't work on DOM Level 1 : // Element element = doc.getElementById(appenderName); // Endre's hack: Element element = null; NodeList list = doc.getElementsByTagName("appender"); for (int t = 0; t &lt; list.getLength(); t++) { Node node = list.item(t); NamedNodeMap map = node.getAttributes(); Node attrNode = map.getNamedItem("name"); if (appenderName.equals(attrNode.getNodeValue())) { element = (Element) node; break; } } // Hack finished. if (element == null) { LogLog.error("No appender named [" + appenderName + "] could be found."); return null; } else { appender = parseAppender(element); appenderBag.put(appenderName, appender); return appender; } } </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>10</td> 
+     <td>-1413930548</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>d5d9779ebba5f8bb25a2d1cf1df0312153e1f955</td> 
+     <td>None</td> 
+     <td>Hack finished.</td> 
+     <td>SATD_ADDED</td> 
+     <td>findAppenderByReference(Element)</td> 
+     <td>protected Appender findAppenderByReference(Element appenderRef)</td> 
+     <td> String appenderName = appenderRef.getAttribute(REF_ATTR); Appender appender = (Appender) appenderBag.get(appenderName); if (appender != null) { return appender; } else { Document doc = appenderRef.getOwnerDocument(); // DOESN'T WORK!! : // Element element = doc.getElementById(appenderName); // Endre's hack: Element element = null; NodeList list = doc.getElementsByTagName("appender"); for (int t = 0; t &lt; list.getLength(); t++) { Node node = list.item(t); NamedNodeMap map = node.getAttributes(); Node attrNode = map.getNamedItem("name"); if (appenderName.equals(attrNode.getNodeValue())) { element = (Element) node; break; } } // Hack finished. if (element == null) { LogLog.error("No appender named [" + appenderName + "] could be found."); return null; } else { appender = parseAppender(element); appenderBag.put(appenderName, appender); return appender; } } </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

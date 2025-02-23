@@ -1,0 +1,41 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>216</td> <td>-1413930412</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>a18b74108260ddfa7ca6e13ce8400dcbfe29b68a</td> <td>None</td> <td>TODO UDPAppender throws NullPointerException if the layout is not set</td> <td>SATD_ADDED</td> <td>append(LoggingEvent)</td> <td>public void append(LoggingEvent event)</td> <td>
+    if (inError) {
+        return;
+    }
+    if (event == null) {
+        return;
+    }
+    if (address == null) {
+        errorHandler.error("No remote host is set for UDPAppender named \"" + this.name + "\".");
+        return;
+    }
+    if (outSocket != null) {
+        // if the values already exist, don't set (useful when forwarding from a simplesocketserver
+        if ((overrideProperties != null) && overrideProperties.equalsIgnoreCase("true")) {
+            event.setProperty(Constants.HOSTNAME_KEY, hostname);
+            if (application != null) {
+                event.setProperty(Constants.APPLICATION_KEY, application);
+            }
+        }
+        try {
+            // TODO UDPAppender throws NullPointerException if the layout is not set
+            StringBuffer buf = new StringBuffer(layout.format(event));
+            // the implementation of string.getBytes accepts a null encoding and uses the system charset
+            DatagramPacket dp = new DatagramPacket(buf.toString().getBytes(encoding), buf.length(), address, port);
+            outSocket.send(dp);
+            // remove these properties, in case other appenders need to set them to different values
+            event.setProperty(Constants.HOSTNAME_KEY, null);
+            event.setProperty(Constants.APPLICATION_KEY, null);
+        } catch (IOException e) {
+            outSocket = null;
+            LogLog.warn("Detected problem with UDP connection: " + e);
+        }
+    }
+</td> </tr></table></body></html>

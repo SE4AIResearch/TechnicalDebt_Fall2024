@@ -1,0 +1,24 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>260</td> <td>-1413930385</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>6e636eebbcc46431fe15821866d2518f3ca9840d</td> <td>None</td> <td>if repository is set but logger is not an instance of Logger, we
+could reset the logger, as in the line below. However, we chose not to
+do so in order to make the bigger problem more apparent.</td> <td>SATD_ADDED</td> <td>getLogger()</td> <td>protected ULogger getLogger()</td> <td>
+    if (logger == null) {
+        if (repository != null) {
+            logger = repository.getLogger(this.getClass().getName());
+        } else {
+            logger = LogManager.SIMPLE_LOGGER_FA.getLogger(this.getClass().getName());
+        }
+    } else if (repository != null && !(logger instanceof org.apache.log4j.Logger)) {
+    // if repository is set but logger is not an instance of Logger, we
+    // could reset the logger, as in the line below. However, we chose not to
+    // do so in order to make the bigger problem more apparent.
+    // logger = repository.getLogger(this.getClass().getName());
+    }
+    return logger;
+</td> </tr></table></body></html>

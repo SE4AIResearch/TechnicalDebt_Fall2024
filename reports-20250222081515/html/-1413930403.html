@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>231</td> 
+     <td>-1413930403</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>5ce8c4d34da5f4ff1dff4092589833e8fa6c56a9</td> 
+     <td>FIXME: What happens if the users wanted to set the additivity flag to false in the config file? We are now potentially overriding her wishes but I don't see any other way.</td> 
+     <td>FIXME: What happens if the users wanted to set the additivity flag for \"org.apahce.log4j\" to false in the config file? We are now potentially overriding her wishes but I don't see any other way.</td> 
+     <td>SATD_CHANGED</td> 
+     <td>detachListAppender(LoggerRepository)</td> 
+     <td>protected void detachListAppender(LoggerRepository repository)</td> 
+     <td> ExecutionContext ec = joranInterpreter.getExecutionContext(); Logger ll = repository.getLogger(Constants.LOG4J_PACKAGE_NAME); // FIXME: What happens if the users wanted to set the additivity flag // for "org.apahce.log4j" to false in the config file? We are now // potentially overriding her wishes but I don't see any other way. ll.setAdditivity(true); ListAppender listAppender = (ListAppender) ll.getAppender(Constants.TEMP_LIST_APPENDER_NAME); if (listAppender == null) { String errMsg = "Could not find appender " + Constants.TEMP_LIST_APPENDER_NAME; getLogger().error(errMsg); ec.addError(new ErrorItem(errMsg)); return; } List eventList = listAppender.getList(); int size = eventList.size(); for (int i = 0; i &lt; size; i++) { LoggingEvent event = (LoggingEvent) eventList.get(i); Logger xLogger = event.getLogger(); if (event.getLevel().isGreaterOrEqual(xLogger.getEffectiveLevel())) { xLogger.callAppenders(event); } } listAppender.clearModel(); listAppender.close(); ll.removeAppender(listAppender); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>230</td> 
+     <td>-1413930403</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>3605f1464cd0ddde0bca8aa270fbe6e6e63edaaa</td> 
+     <td>None</td> 
+     <td>FIXME: What happens if the users wanted to set the additivity flag to false in the config file? We are now potentially overriding her wishes but I don't see any other way.</td> 
+     <td>SATD_ADDED</td> 
+     <td>detachListAppender(LoggerRepository)</td> 
+     <td>protected void detachListAppender(LoggerRepository repository)</td> 
+     <td> ExecutionContext ec = joranInterpreter.getExecutionContext(); Logger ll = repository.getLogger(Constants.LOG4J_PACKAGE_NAME); // FIXME: What happens if the users wanted to set the additivity flag // to false in the config file? We are now potentially overriding her // wishes but I don't see any other way. ll.setAdditivity(true); ListAppender listAppender = (ListAppender) ll.getAppender(Constants.TEMP_LIST_APPENDER_NAME); if (listAppender == null) { String errMsg = "Could not find appender " + Constants.TEMP_LIST_APPENDER_NAME; getLogger().error(errMsg); ec.addError(new ErrorItem(errMsg)); return; } List eventList = listAppender.getList(); int size = eventList.size(); for (int i = 0; i &lt; size; i++) { LoggingEvent event = (LoggingEvent) eventList.get(i); Logger xLogger = event.getLogger(); if (event.getLevel().isGreaterOrEqual(xLogger.getEffectiveLevel())) { xLogger.callAppenders(event); } } listAppender.clearModel(); listAppender.close(); ll.removeAppender(listAppender); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

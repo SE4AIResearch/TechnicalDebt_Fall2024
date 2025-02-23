@@ -1,0 +1,14 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>220</td> <td>-1413930410</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>31836fb3952ef3022b72bf346adea8164473c5e3</td> <td>None</td> <td>this should work, shouldn't it?</td> <td>SATD_ADDED</td> <td>setClassName(LocationInfo, Object)</td> <td> static void setClassName(LocationInfo li, Object location)</td> <td>
+    try {
+        li.className = (String) getClassName.invoke(location, nullArgs);
+    } catch (Throwable e) {
+    }
+// this should work, shouldn't it?
+</td> </tr></table></body></html>

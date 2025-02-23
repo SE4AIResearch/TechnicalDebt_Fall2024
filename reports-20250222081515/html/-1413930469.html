@@ -1,0 +1,52 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>123</td> <td>-1413930469</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>d41228cc95ab66bc19e91207f2093bd6cbfd09dc</td> <td>None</td> <td>TODO not everything catered for here yet...</td> <td>SATD_ADDED</td> <td>compare(Object, Object)</td> <td>public int compare(Object o1, Object o2)</td> <td>
+    int sort = 1;
+    if (o1 instanceof LoggingEvent && o2 instanceof LoggingEvent) {
+        // TODO not everything catered for here yet...
+        LoggingEvent e1 = (LoggingEvent) o1;
+        LoggingEvent e2 = (LoggingEvent) o2;
+        switch(index + 1) {
+            case ChainsawColumns.INDEX_LEVEL_COL_NAME:
+                sort = e1.getLevel().isGreaterOrEqual(e2.getLevel()) ? 1 : (-1);
+                break;
+            case ChainsawColumns.INDEX_LOGGER_COL_NAME:
+                sort = e1.getLoggerName().compareToIgnoreCase(e2.getLoggerName());
+                break;
+            case ChainsawColumns.INDEX_MESSAGE_COL_NAME:
+                sort = e1.getMessage().toString().compareToIgnoreCase(e2.getMessage().toString());
+                break;
+            case ChainsawColumns.INDEX_METHOD_COL_NAME:
+                if ((e1.getLocationInformation() != null) & (e2.getLocationInformation() != null)) {
+                    sort = e1.getLocationInformation().getMethodName().compareToIgnoreCase(e2.getLocationInformation().getMethodName());
+                }
+                break;
+            case ChainsawColumns.INDEX_CLASS_COL_NAME:
+                if ((e1.getLocationInformation() != null) & (e2.getLocationInformation() != null)) {
+                    sort = e1.getLocationInformation().getClassName().compareToIgnoreCase(e2.getLocationInformation().getClassName());
+                }
+                break;
+            case ChainsawColumns.INDEX_FILE_COL_NAME:
+                if ((e1.getLocationInformation() != null) & (e2.getLocationInformation() != null)) {
+                    sort = e1.getLocationInformation().getFileName().compareToIgnoreCase(e2.getLocationInformation().getFileName());
+                }
+                break;
+            case ChainsawColumns.INDEX_TIMESTAMP_COL_NAME:
+                sort = (e1.timeStamp < e2.timeStamp ? -1 : (e1.timeStamp == e2.timeStamp ? 0 : 1));
+                break;
+            case ChainsawColumns.INDEX_THREAD_COL_NAME:
+                sort = e1.getThreadName().compareToIgnoreCase(e2.getThreadName());
+                break;
+        }
+    }
+    sort = (sort == 0) ? 0 : ((sort < 0) ? (-1) : 1);
+    if (!ascending && (sort != 0)) {
+        sort = (sort < 0) ? 1 : (-1);
+    }
+    return sort;
+</td> </tr></table></body></html>

@@ -1,0 +1,58 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>43</td> <td>-1413930530</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>2ad9566455a98c15a8884b1462b29dae5c20a3dc</td> <td>None</td> <td>REMOVE This code branching for Alexander Cerna's request</td> <td>SATD_ADDED</td> <td>rollOverSize()</td> <td>protected void rollOverSize()</td> <td>
+    File file;
+    // keep windows happy.
+    this.closeFile();
+    LogLog.debug("rolling over count=" + ((CountingQuietWriter) qw).getCount());
+    LogLog.debug("maxSizeRollBackups = " + maxSizeRollBackups);
+    LogLog.debug("curSizeRollBackups = " + curSizeRollBackups);
+    LogLog.debug("countDirection = " + countDirection);
+    // If maxBackups <= 0, then there is no file renaming to be done.
+    if (maxSizeRollBackups != 0) {
+        if (countDirection < 0) {
+            // Delete the oldest file, to keep Windows happy.
+            if (curSizeRollBackups == maxSizeRollBackups) {
+                deleteFile(fileName + '.' + maxSizeRollBackups);
+                curSizeRollBackups--;
+            }
+            // Map {(maxBackupIndex - 1), ..., 2, 1} to {maxBackupIndex, ..., 3, 2}
+            for (int i = curSizeRollBackups; i >= 1; i--) {
+                rollFile((fileName + "." + i), (fileName + '.' + (i + 1)));
+            }
+            curSizeRollBackups++;
+            // Rename fileName to fileName.1
+            rollFile(fileName, fileName + ".1");
+        } else // REMOVE This code branching for Alexander Cerna's request
+        if (countDirection == 0) {
+            // rollFile based on date pattern
+            curSizeRollBackups++;
+            now.setTime(System.currentTimeMillis());
+            scheduledFilename = fileName + sdf.format(now);
+            rollFile(fileName, scheduledFilename);
+        } else {
+            // countDirection > 0
+            if (curSizeRollBackups >= maxSizeRollBackups && maxSizeRollBackups > 0) {
+                // delete the first and keep counting up.
+                int oldestFileIndex = curSizeRollBackups - maxSizeRollBackups + 1;
+                deleteFile(fileName + '.' + oldestFileIndex);
+            }
+            if (staticLogFileName) {
+                curSizeRollBackups++;
+                rollFile(fileName, fileName + '.' + curSizeRollBackups);
+            }
+        }
+    }
+    try {
+        // This will also close the file. This is OK since multiple
+        // close operations are safe.
+        this.setFile(baseFileName, false);
+    } catch (IOException e) {
+        LogLog.error("setFile(" + fileName + ", false) call failed.", e);
+    }
+</td> </tr></table></body></html>

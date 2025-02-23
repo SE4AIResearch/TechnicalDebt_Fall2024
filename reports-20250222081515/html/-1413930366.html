@@ -1,0 +1,69 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>327</td> <td>-1413930366</td><td>apache/log4j</td><td>Curtis William Arnold</td><td>c4dfd0d7ef22210c16f2ec7197e5909e52b907c4</td> <td>None</td> <td>move the bad config file into place</td> <td>SATD_ADDED</td> <td>testJoranConfigurationError()</td> <td>public void testJoranConfigurationError() throws Exception</td> <td>
+    LogManager.getLoggerRepository().resetConfiguration();
+    logger.setLevel(Level.DEBUG);
+    File outFile = new File(getOutputFile("test3"));
+    if (outFile.exists()) {
+        assertTrue(outFile.delete());
+    }
+    // set up the needed file references
+    File sourceFile1 = new File(getSourceXMLConfigFile("test3", 1));
+    File sourceFile2 = new File(getSourceXMLConfigFile("test1", 2));
+    assertTrue(sourceFile1.exists());
+    assertTrue(sourceFile2.exists());
+    // config file should not exist yet
+    File configFile = new File(getXMLConfigFile("test3"));
+    assertFalse(configFile.exists());
+    // now watch the nonexistent file for changes
+    FileWatchdog watchdog = new FileWatchdog();
+    watchdog.setName("test3");
+    watchdog.setFile(configFile.getAbsolutePath());
+    watchdog.setInterval(1000);
+    watchdog.setConfigurator(JoranConfigurator.class.getName());
+    ((LoggerRepositoryEx) LogManager.getLoggerRepository()).getPluginRegistry().addPlugin(watchdog);
+    watchdog.activateOptions();
+    testLogger.debug("watchdog activated");
+    // the file does not exist, so the modification time should never change
+    long modTime = watchdog.getLastModTime();
+    for (int count = 0; count < 5; count++) {
+        if (modTime != watchdog.getLastModTime()) {
+            assertTrue("watchdog mod time changed when no file", false);
+        }
+        Thread.sleep(500);
+    }
+    testLogger.debug("no file, mod time not changed: " + modTime);
+    // move the bad config file into place
+    copyFile(sourceFile1, configFile);
+    assertTrue(configFile.exists());
+    testLogger.debug("bad config file put into place");
+    // the file is "bad", so the modification time should never change
+    for (int count = 0; count < 7; count++) {
+        if (modTime != watchdog.getLastModTime()) {
+            assertTrue("watchdog mod time changed for bad file", false);
+        }
+        Thread.sleep(500);
+    }
+    testLogger.debug("bad file, mod time not changed: " + modTime);
+    // move the good config file into place
+    copyFile(sourceFile2, configFile);
+    assertTrue(configFile.exists());
+    testLogger.debug("moved good config file into place");
+    // the file is good, so the modification time and level should change
+    for (int count = 0; count < 7; count++) {
+        if (modTime != watchdog.getLastModTime()) {
+            assertTrue(logger.getLevel() == Level.INFO);
+            break;
+        }
+        if (count == 6) {
+            assertTrue("mod time for good file never changed", false);
+        }
+        Thread.sleep(500);
+    }
+    testLogger.debug("good file, modTime changed: " + modTime);
+</td> </tr></table></body></html>

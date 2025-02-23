@@ -1,0 +1,21 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>109</td> <td>-1413930482</td><td>apache/log4j</td><td>Paul Jeffrey Smith</td><td>7bb51aa12cb6f6db2b152a5c83783aba4048d64b</td> <td>None</td> <td>TODO find an icon</td> <td>SATD_ADDED</td> <td>createToggleLogTreeAction()</td> <td>private Action createToggleLogTreeAction()</td> <td>
+    Action action = new AbstractAction() {
+
+        public void actionPerformed(ActionEvent e) {
+            if (logui.getCurrentLogPanel() != null) {
+                logui.getCurrentLogPanel().toggleLogTreePanel();
+            }
+        }
+    };
+    action.putValue(Action.NAME, "Logger Tree");
+    action.putValue(Action.SHORT_DESCRIPTION, "Toggles the Log Tree panel");
+    // TODO find an icon
+    return action;
+</td> </tr></table></body></html>

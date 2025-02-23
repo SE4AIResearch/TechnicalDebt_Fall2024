@@ -1,0 +1,58 @@
+<html>
+ <head> 
+  <style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style> 
+ </head> 
+ <body>
+  <h1>SATD</h1>
+  <table>
+   <tbody>
+    <tr>
+     <th>satd id</th> 
+     <th>satd instance id</th> 
+     <th>project</th> 
+     <th>committer name </th> 
+     <th> Commit Hash</th> 
+     <th>old comment</th> 
+     <th>New Comment</th> 
+     <th>resolution</th> 
+     <th>Method Signature</th> 
+     <th>Method Declaration</th> 
+     <th>Method Body</th> 
+    </tr>
+    <tr>
+     <td>262</td> 
+     <td>-1413930397</td>
+     <td>apache/log4j</td>
+     <td>Ceki Gulcu</td>
+     <td>0db46c49dc1c195b50feb9e3db59ae26fec623cc</td> 
+     <td>If the systemId is not for us to handle, we delegate to our super class, at leasts that's the basic idea. However, the code below needs to be more complicated.</td> 
+     <td>If the systemId is not for us to handle, we delegate to our super class, at leasts that's the basic idea. However, the code below needs to be more complicated. Due to inexplicable voodoo, the original resolveEntity method in org.xml.sax.helpers.DefaultHandler declares throwing an IOException, whereas the org.xml.sax.helpers.DefaultHandler class included in JDK 1.4 masks this exception. In JDK 1.5, the IOException has been put back... In order to compile under JDK 1.4, we are forced to mask the IOException as well. Since its signatures varies, we cannot call our super class' resolveEntity method. We are forced to implement the default behavior ourselves, which in this case, is just returning null.</td> 
+     <td>SATD_REMOVED</td> 
+     <td>error(SAXParseException)</td> 
+     <td>public void error(final SAXParseException spe)</td> 
+     <td> errorReport(spe); </td> 
+    </tr>
+   </tbody>
+   <tbody>
+    <tr>
+     <td>240</td> 
+     <td>-1413930397</td>
+     <td>apache/log4j</td>
+     <td>Paul Jeffrey Smith</td>
+     <td>feb4cbb673ca53f72ccb05b07a96f66d53a84897</td> 
+     <td>None</td> 
+     <td>If the systemId is not for us to handle, we delegate to our super class, at leasts that's the basic idea. However, the code below needs to be more complicated.</td> 
+     <td>SATD_ADDED</td> 
+     <td>error(SAXParseException)</td> 
+     <td>public void error(final SAXParseException spe)</td> 
+     <td> errorReport(spe); </td> 
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>

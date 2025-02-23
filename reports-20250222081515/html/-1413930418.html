@@ -1,0 +1,82 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>209</td> <td>-1413930418</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>130b3181d10b8f89ee785ff0a0e608b9c3001ca3</td> <td>TODO CG The conversion of levelStr should be more general</td> <td>TODO CG The conversion of levelStr should be more general</td> <td>SATD_MOVED_FILE</td> <td>execute()</td> <td>public void execute()</td> <td>
+    LogLog.info("DBReceiverJob.execute() called");
+    Connection connection = null;
+    try {
+        Logger logger;
+        LoggerRepository loggerRepository = parentDBReceiver.getLoggerRepository();
+        connection = parentDBReceiver.connectionSource.getConnection();
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("sequence_number, ");
+        sql.append("timestamp, ");
+        sql.append("rendered_message, ");
+        sql.append("logger_name, ");
+        sql.append("level_string, ");
+        sql.append("ndc, ");
+        sql.append("thread_name, ");
+        sql.append("reference_flag, ");
+        sql.append("caller_filename, ");
+        sql.append("caller_class, ");
+        sql.append("caller_method, ");
+        sql.append("caller_line, ");
+        sql.append("event_id ");
+        sql.append("FROM logging_event ");
+        // have subsequent SELECTs start from we left off last time
+        sql.append(" WHERE event_id > " + lastId);
+        sql.append(" ORDER BY event_id ASC");
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sql.toString());
+        rs.beforeFirst();
+        while (rs.next()) {
+            LoggingEvent event = new LoggingEvent();
+            long id;
+            event.setSequenceNumber(rs.getLong(1));
+            event.setTimeStamp(rs.getLong(2));
+            event.setRenderedMessage(rs.getString(3));
+            event.setLoggerName(rs.getString(4));
+            String levelStr = rs.getString(5);
+            // TODO CG The conversion of levelStr should be more general
+            Level level = Level.toLevel(levelStr);
+            event.setLevel(level);
+            event.setNDC(rs.getString(6));
+            event.setThreadName(rs.getString(7));
+            short mask = rs.getShort(8);
+            String fileName = rs.getString(9);
+            String className = rs.getString(10);
+            String methodName = rs.getString(11);
+            String lineNumber = rs.getString(12).trim();
+            if (fileName.equals(LocationInfo.NA)) {
+                event.setLocationInformation(LocationInfo.NA_LOCATION_INFO);
+            } else {
+                event.setLocationInformation(new LocationInfo(fileName, className, methodName, lineNumber));
+            }
+            id = rs.getLong(13);
+            lastId = id;
+            // Scott asked for this info to be
+            event.setProperty(Constants.LOG4J_ID_KEY, Long.toString(id));
+            if ((mask & DBHelper.PROPERTIES_EXIST) != 0) {
+                getProperties(connection, id, event);
+            }
+            if ((mask & DBHelper.EXCEPTION_EXISTS) != 0) {
+                getException(connection, id, event);
+            }
+            if (!parentDBReceiver.isPaused()) {
+                parentDBReceiver.doPost(event);
+            }
+        }
+        // while
+        statement.close();
+        statement = null;
+    } catch (SQLException sqle) {
+        LogLog.error("Problem receiving events", sqle);
+    } finally {
+        closeConnection(connection);
+    }
+</td> </tr></table></body></html>

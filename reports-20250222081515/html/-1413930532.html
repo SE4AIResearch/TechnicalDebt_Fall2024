@@ -1,0 +1,16 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>41</td> <td>-1413930532</td><td>apache/log4j</td><td>oburn</td><td>587e14ed6c4ffd37b73773e1abfdce5a2c75fe7e</td> <td>None</td> <td>hack - but only thing I care about</td> <td>SATD_ADDED</td> <td>endElement(String, String, String)</td> <td>public void endElement(String aNamespaceURI, String aLocalName, String aQName)</td> <td>
+    if (TAG_EVENT.equals(aQName)) {
+        addEvent();
+        resetData();
+    } else if (mCurrentElement != TAG_EVENT) {
+        // hack - but only thing I care about
+        mCurrentElement = TAG_EVENT;
+    }
+</td> </tr></table></body></html>

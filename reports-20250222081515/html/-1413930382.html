@@ -1,0 +1,46 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>269</td> <td>-1413930382</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>25517ae23def94e51e9c3b77ff3d0089c9279f8e</td> <td>None</td> <td>FIXME: We should not flood other appenders but at the same time
+should output something meaningful (only once though).
+Logging not allowed:
+getLogger().error(</td> <td>SATD_ADDED</td> <td>doAppend(LoggingEvent)</td> <td>public synchronized void doAppend(LoggingEvent event)</td> <td>
+    // WARNING: The guard check MUST be the first statement in the
+    // doAppend() method.
+    // prevent re-entry.
+    if (guard) {
+        return;
+    }
+    try {
+        guard = true;
+        if (closed) {
+            // FIXME: We should not flood other appenders but at the same time
+            // should output something meaningful (only once though).
+            // Logging not allowed:
+            // getLogger().error(
+            // "Attempted to append to closed appender named [{}].", name);
+            return;
+        }
+        if (!isAsSevereAsThreshold(event.getLevel())) {
+            return;
+        }
+        Filter f = this.headFilter;
+        FILTER_LOOP: while (f != null) {
+            switch(f.decide(event)) {
+                case Filter.DENY:
+                    return;
+                case Filter.ACCEPT:
+                    break FILTER_LOOP;
+                case Filter.NEUTRAL:
+                    f = f.getNext();
+            }
+        }
+        this.append(event);
+    } finally {
+        guard = false;
+    }
+</td> </tr></table></body></html>

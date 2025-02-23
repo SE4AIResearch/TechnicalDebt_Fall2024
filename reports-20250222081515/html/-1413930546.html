@@ -1,0 +1,32 @@
+<html><head>
+<style> table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}th {
+  background: lightblue;
+}</style>
+</head> <body><h1>SATD</h1><table><tr><th>satd id</th> <th>satd instance id</th>  <th>project</th> <th>committer name </th> <th> Commit Hash</th> <th>old comment</th> <th>New Comment</th> <th>resolution</th> <th>Method Signature</th> <th>Method Declaration</th> <th>Method Body</th> </tr><tr><td>13</td> <td>-1413930546</td><td>apache/log4j</td><td>Ceki Gulcu</td><td>5095ca00abeb4c0dc66967f3baa1563734ea4d94</td> <td>None</td> <td>convert to specified encoding - which may be sequence of
+8-bit chars, or multi-byte encodings like UTF-8 or UTF-16.
+The receiving end had better be expecting whatever encoding
+is used here on the sending end!</td> <td>SATD_ADDED</td> <td>write(String)</td> <td>public void write(String string) throws IOException</td> <td>
+    if (prefix != null) {
+        string = prefix + string;
+    }
+    byte[] rawData;
+    if (this.encoding == null) {
+        // convert to byte sequence using platform's default encoding
+        rawData = string.getBytes();
+    } else {
+        // convert to specified encoding - which may be sequence of
+        // 8-bit chars, or multi-byte encodings like UTF-8 or UTF-16.
+        // The receiving end had better be expecting whatever encoding
+        // is used here on the sending end!
+        rawData = string.getBytes(encoding);
+    }
+    DatagramPacket packet = new DatagramPacket(rawData, rawData.length, address, port);
+    if (this.ds != null) {
+        ds.send(packet);
+    } else {
+        LogLog.error("write: failed to create DatagramPacket");
+    }
+</td> </tr></table></body></html>
