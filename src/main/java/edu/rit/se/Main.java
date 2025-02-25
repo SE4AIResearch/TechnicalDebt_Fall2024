@@ -46,8 +46,10 @@ public class Main {
             final String reposFile = cmd.getOptionValue(ARG_NAME_REPOS_FILE);
             final String dbFile = cmd.getOptionValue(ARG_NAME_DB_FILE);
 
+            int dbIndex = dbFile.length() - 3;
             dbLink = String.format("jdbc:sqlite:%s", dbFile);
 
+            String dbDir = dbFile.substring(0, dbIndex);
 
             if( cmd.hasOption(ARG_NAME_IGNORE_WORDS) ) {
                 populateIgnoredWordsFile(cmd.getOptionValue(ARG_NAME_IGNORE_WORDS));
@@ -117,7 +119,7 @@ public class Main {
 
                 }
                 if(!dbLink.isEmpty()) {
-                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink);
+                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink, dbDir);
                 }
                 else{
                     throw new Error("db file not specified");
