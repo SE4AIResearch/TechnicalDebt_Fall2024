@@ -1,5 +1,20 @@
 package edu.rit.se.csv_html_creator;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -7,24 +22,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.awt.*;
-import java.io.*;
-import java.sql.*;
-import java.util.Properties;
-
 public class csvhtml_creator {
-//    private final String dbURI;
     private String folderName = "";
 
-    public csvhtml_creator(String dbLink) throws IOException, SQLException {
+    public csvhtml_creator(String dbLink, String dbDir) throws IOException, SQLException {
         System.out.println("Create csv file report...");
 
         Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
         String creationDate = formatter.format(currentDate);
-        setFolderName("reports-" + creationDate);
+        setFolderName(dbDir + '_' + "reports-" + creationDate);
 
         boolean success = (new File(folderName)).mkdirs();
         boolean His = (new File(folderName + "/html")).mkdirs();
@@ -43,7 +50,7 @@ public class csvhtml_creator {
         String method_declaration;
 
 
-//        dbURI = "jdbc:sqlite:satd.db";
+
         Connection conn = DriverManager.getConnection(dbLink);
         
 
