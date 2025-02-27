@@ -187,8 +187,8 @@ public class SQLiteOutputWriter implements OutputWriter {
             //Write info for each refactoring related to this comment
             for(RefInstance refactoring : refactoringList){
                 final PreparedStatement sqlQuery = conn.prepareStatement(
-                        "INSERT INTO RefactoringsRmv\n" +
-                                "VALUES (default,?,?,?,?);",
+                        "INSERT INTO RefactoringsRmv " +
+                                "VALUES (NULL,?,?,?,?);",
                         Statement.RETURN_GENERATED_KEYS);
                 sqlQuery.setString(1,  refactoring.getCommitID());
 
@@ -449,9 +449,6 @@ public class SQLiteOutputWriter implements OutputWriter {
             updateStmt.setInt(7, projectId); // p_id
             updateStmt.setInt(8, satdInstance.getParentId()); // parent_instance_id
             updateStmt.executeUpdate();
-
-
-
 
             final ResultSet updateRes = updateStmt.getGeneratedKeys();
             if (updateRes.next()) {

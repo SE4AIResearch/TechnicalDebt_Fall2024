@@ -49,32 +49,32 @@ public class csvhtml_creator {
 
 
         PreparedStatement comments = conn.prepareStatement(
-    "SELECT SATD.satd_id, " +
-        "Projects.p_name AS project_name, " +
-        "SATD.satd_instance_id, " +
-        "SATD.resolution, " +
-        "SecondCommit.commit_hash AS resolution_commit, " +
-        "FirstCommit.author_name, " +
-        "FirstFile.f_path AS v1_path, " +
-        "FirstFile.containing_class AS v1_class, " +
-        "FirstFile.containing_method AS v1_method, " +
-        "FirstFile.f_comment AS v1_comment, " +
-        "SecondCommit.commit_hash AS v2_commit, " +
-        "SecondCommit.commit_date AS v2_commit_date, " +
-        "SecondCommit.author_date AS v2_author_date, " +
-        "SecondFile.f_path AS v2_path, " +
-        "SecondFile.containing_class AS v2_class, " +
-        "SecondFile.containing_method AS v2_method, " +
-        "SecondFile.method_declaration AS method_declaration, " +
-        "SecondFile.method_body AS method_body, " +
-        "SecondFile.f_comment AS v2_comment " +
-    "FROM SATD " +  
-        "INNER JOIN SATDInFile AS FirstFile ON SATD.first_file = FirstFile.f_id " + 
-        "INNER JOIN SATDInFile AS SecondFile ON SATD.second_file = SecondFile.f_id " +
-        "INNER JOIN Commits AS FirstCommit ON SATD.first_commit = FirstCommit.commit_hash " +
-        "INNER JOIN Commits AS SecondCommit ON SATD.second_commit = SecondCommit.commit_hash " +
-        "INNER JOIN Projects ON SATD.p_id = Projects.p_id " +
-    "ORDER BY satd_id DESC;"
+"SELECT SATD.satd_id, " +
+    "Projects.p_name AS project_name, " +
+    "SATD.satd_instance_id, " +
+    "SATD.resolution, " +
+    "SecondCommit.commit_hash AS resolution_commit, " +
+    "FirstCommit.author_name, " +
+    "FirstFile.f_path AS v1_path, " +
+    "FirstFile.containing_class AS v1_class, " +
+    "FirstFile.containing_method AS v1_method, " +
+    "FirstFile.f_comment AS v1_comment, " +
+    "SecondCommit.commit_hash AS v2_commit, " +
+    "SecondCommit.commit_date AS v2_commit_date, " +
+    "SecondCommit.author_date AS v2_author_date, " +
+    "SecondFile.f_path AS v2_path, " +
+    "SecondFile.containing_class AS v2_class, " +
+    "SecondFile.containing_method AS v2_method, " +
+    "SecondFile.method_declaration AS method_declaration, " +
+    "SecondFile.method_body AS method_body, " +
+    "SecondFile.f_comment AS v2_comment " +
+"FROM SATD " +  
+    "INNER JOIN SATDInFile AS FirstFile ON SATD.first_file = FirstFile.f_id " + 
+    "INNER JOIN SATDInFile AS SecondFile ON SATD.second_file = SecondFile.f_id " +
+    "INNER JOIN Commits AS FirstCommit ON SATD.first_commit = FirstCommit.commit_hash " +
+    "INNER JOIN Commits AS SecondCommit ON SATD.second_commit = SecondCommit.commit_hash " +
+    "INNER JOIN Projects ON SATD.p_id = Projects.p_id " +
+"ORDER BY satd_id DESC;"
 );
 
 

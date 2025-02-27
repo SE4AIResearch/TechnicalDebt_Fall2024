@@ -13,7 +13,11 @@ import edu.rit.se.util.SimilarityUtil;
 import org.apache.commons.cli.*;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;
 import java.util.*;
 
 
@@ -103,6 +107,11 @@ public class Main {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
                     dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
+                    //Connection conn = null;
+                    //conn = DriverManager.getConnection(dbLink);
+                    //executeSQLFile(conn, "sql/create_tables.sql");
+                    
+
                     OutputWriter writer = new SQLiteOutputWriter(dbLink);
 
 
@@ -229,5 +238,28 @@ public class Main {
         }
         IgnorableWords.populateIgnorableWords(words);
         r.close();
+    }
+
+
+    public static void executeSQLFile(Connection connection, String filePath) throws IOException, SQLException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder sqlStatement = new StringBuilder();
+            String line;
+
+            try (Statement statement = connection.createStatement()) {
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("--") || line.startsWith("#")) {
+                        continue; // Skip comments and empty lines
+                    }
+                    sqlStatement.append(line).append(" ");
+                    // Execute when we reach the end of a statement
+                    if (line.endsWith(";")) {
+                        statement.execute(sqlStatement.toString());
+                        sqlStatement.setLength(0); // Clear buffer
+                    }
+                }
+            }
+        }
     }
 }
