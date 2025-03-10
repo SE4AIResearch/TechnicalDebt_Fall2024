@@ -114,10 +114,10 @@ public class Main {
 
                     OutputWriter writer = new SQLiteOutputWriter(dbLink);
 
-
+                    writer.makeTables();
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
                   
-                    //AzureModel.classiffySATD(writer, repoEntry[0] );
+                    AzureModel.classiffySATD(writer, repoEntry[0] );
                     RefactoringMiner.mineRemovalRefactorings(writer, repoEntry[0] );
                   
 
@@ -126,7 +126,7 @@ public class Main {
 
                 }
                 if(!dbLink.isEmpty()) {
-                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink);
+                    //csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink);
                 }
                 else{
                     throw new Error("db file not specified");
@@ -241,25 +241,5 @@ public class Main {
     }
 
 
-    public static void executeSQLFile(Connection connection, String filePath) throws IOException, SQLException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            StringBuilder sqlStatement = new StringBuilder();
-            String line;
-
-            try (Statement statement = connection.createStatement()) {
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    if (line.isEmpty() || line.startsWith("--") || line.startsWith("#")) {
-                        continue; // Skip comments and empty lines
-                    }
-                    sqlStatement.append(line).append(" ");
-                    // Execute when we reach the end of a statement
-                    if (line.endsWith(";")) {
-                        statement.execute(sqlStatement.toString());
-                        sqlStatement.setLength(0); // Clear buffer
-                    }
-                }
-            }
-        }
-    }
+    
 }

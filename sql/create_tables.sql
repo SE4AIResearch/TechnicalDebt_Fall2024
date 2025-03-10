@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS SATDInFile (
     end_line INT,
     containing_class TEXT(512),
     containing_method TEXT(512),
-    method_declaration longtext,
-    method_body longtext,
-    `type` TEXT(45) DEFAULT NULL,
+    method_declaration TEXT,
+    method_body TEXT,
+    `type` TEXT(45),
     PRIMARY KEY (f_id)
 );
 
@@ -29,13 +29,13 @@ CREATE TABLE IF NOT EXISTS Commits(
     committer_name TEXT(256),
     committer_email TEXT(256),
     commit_date TEXT,
-    PRIMARY KEY (p_id, commit_hash),
+    PRIMARY KEY (p_id, commit_hash)
     FOREIGN KEY (p_id) REFERENCES Projects(p_id)
 );
 
 CREATE TABLE IF NOT EXISTS SATD (
 	satd_id INTEGER,
-    satd_instance_id INT, -- Not a key value, used only to associate SATD Instances
+    satd_instance_id INT, 
     parent_instance_id INT,
     p_id INT,
 	first_commit TEXT(256),
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS SATD (
     resolution TEXT(64),
     PRIMARY KEY (satd_id),
     FOREIGN KEY (p_id) REFERENCES Projects(p_id),
-    FOREIGN KEY (p_id, first_commit) REFERENCES Commits(p_id, commit_hash),
-    FOREIGN KEY (p_id, second_commit) REFERENCES Commits(p_id, commit_hash),
+    FOREIGN KEY (first_commit) REFERENCES Commits(commit_hash),
+    FOREIGN KEY (second_commit) REFERENCES Commits(commit_hash),
     FOREIGN KEY (first_file) REFERENCES SATDInFile(f_id),
     FOREIGN KEY (second_file) REFERENCES SATDInFile(f_id)
 ); 
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS SATD (
 CREATE TABLE IF NOT EXISTS RefactoringsRmv (
     refactoringID INTEGER NOT NULL,
     commit_hash TEXT NOT NULL,
-    projectID INTEGER DEFAULT NULL,
-    type TEXT DEFAULT NULL,
+    projectID INTEGER,
+    type TEXT,
     description TEXT,
     PRIMARY KEY (refactoringID),
     UNIQUE (refactoringID)
@@ -70,10 +70,10 @@ CREATE TABLE IF NOT EXISTS AfterRefactoring (
     afterID INTEGER NOT NULL,
     refID INTEGER NOT NULL,
     filePath TEXT,
-    startLine INTEGER DEFAULT NULL,
-    endLine INTEGER DEFAULT NULL,
-    startColumn INTEGER DEFAULT NULL,
-    endColumn INTEGER DEFAULT NULL,
+    startLine INTEGER,
+    endLine INTEGER,
+    startColumn INTEGER,
+    endColumn INTEGER,
     description TEXT,
     codeElement TEXT,
     PRIMARY KEY (afterID),
@@ -85,15 +85,15 @@ CREATE TABLE IF NOT EXISTS AfterRefactoring (
 CREATE INDEX IF NOT EXISTS idRefactorings_idx ON AfterRefactoring (refID);
 
 
-CREATE TABLE IF NOT EXISTS  BeforeRefactoring (
-  `beforeID` INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS BeforeRefactoring (
+  `beforeID` INTEGER PRIMARY KEY AUTOINCREMENT,
   `refactoringID` INTEGER NOT NULL,
-  `filePath` mediumtext,
-  `startLine` INTEGER DEFAULT NULL,
-  `endLine` INTEGER DEFAULT NULL,
-  `startColumn` INTEGER DEFAULT NULL,
-  `endColumn` INTEGER DEFAULT NULL,
-  `description` mediumtext,
-  `codeElement` mediumtext,
-  PRIMARY KEY (`beforeID`)
+  `filePath` TEXT,
+  `startLine` INTEGER,
+  `endLine` INTEGER,
+  `startColumn` INTEGER,
+  `endColumn` INTEGER,
+  `description` TEXT,
+  `codeElement` TEXT,
+  FOREIGN KEY (`refactoringID`) REFERENCES RefactoringsRmv(`refactoringID`) ON DELETE CASCADE
 );

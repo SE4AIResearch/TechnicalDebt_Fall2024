@@ -155,7 +155,7 @@ public class SQLiteOutputWriter implements OutputWriter {
                    "SELECT DISTINCT SATD.first_commit, SATD.second_commit, SATDInFile.f_id\n" +
                            "FROM SATDInFile\n" +
                            "INNER JOIN SATD ON (SATDInFile.f_id = SATD.first_file)\n" +
-                           "WHERE SATDInFile.type = 'DESIGN' AND SATD.p_id = ?;");
+                           "WHERE SATD.p_id = ?;");
            queryStmt.setInt(1, projectID);
            //Execute query
            final ResultSet res = queryStmt.executeQuery();
@@ -187,15 +187,11 @@ public class SQLiteOutputWriter implements OutputWriter {
             //Write info for each refactoring related to this comment
             for(RefInstance refactoring : refactoringList){
                 final PreparedStatement sqlQuery = conn.prepareStatement(
-                        "INSERT INTO RefactoringsRmv " +
-                                "VALUES (NULL,?,?,?,?);",
+                        "INSERT INTO RefactoringsRmv (commit_hash, projectID, type, description) VALUES (?,?,?,?);",
                         Statement.RETURN_GENERATED_KEYS);
                 sqlQuery.setString(1,  refactoring.getCommitID());
-
-                //project id
-                refactoring.setProjectID(projectID);
+                refactoring.setProjectID(projectID); 
                 sqlQuery.setInt(2, projectID);
-
                 sqlQuery.setString(3, refactoring.getRefactoringType());
                 sqlQuery.setString(4, refactoring.getRefactoringDescription());
                 sqlQuery.executeUpdate();
@@ -228,7 +224,7 @@ public class SQLiteOutputWriter implements OutputWriter {
             for(RefactoringHistory prior: priorHistory){
                 final PreparedStatement sqlQuery = conn.prepareStatement(
                         "INSERT INTO BeforeRefactoring\n" +
-                                "VALUES (default,?, ?, ?,?,?,?,?,?);",
+                                "VALUES (NULL,?, ?, ?,?,?,?,?,?);",
                         Statement.RETURN_GENERATED_KEYS);
                 sqlQuery.setInt(1, refactoringID);
                 sqlQuery.setString(2, prior.getFilePath());
@@ -264,7 +260,7 @@ public class SQLiteOutputWriter implements OutputWriter {
             for(RefactoringHistory prior: afterHistory){
                 final PreparedStatement sqlQuery = conn.prepareStatement(
                         "INSERT INTO AfterRefactoring\n" +
-                                "VALUES (default,?, ?, ?,?,?,?,?,?);",
+                                "VALUES (NULL,?, ?, ?,?,?,?,?,?);",
                         Statement.RETURN_GENERATED_KEYS);
                 sqlQuery.setInt(1, refactoringID);
                 sqlQuery.setString(2, prior.getFilePath());
@@ -513,6 +509,151 @@ public class SQLiteOutputWriter implements OutputWriter {
     public void close() {
         // Shutdown the executor and then run each remaining task
         this.finalWriteExecutor.shutdownNow().forEach(Runnable::run);
+    }
+
+
+    public void makeTables() throws IOException, SQLException {
+        Connection conn = null;
+        try {
+            //Connect to db
+            conn = DriverManager.getConnection(this.dbURI);
+            PreparedStatement stmt; 
+
+            stmt = conn.prepareStatement("DROP TABLE IF EXISTS Commits;");
+            stmt.executeUpdate();
+            stmt = conn.prepareStatement("DROP TABLE IF EXISTS SATD;");
+            stmt.executeUpdate();
+            stmt = conn.prepareStatement("DROP TABLE IF EXISTS SATDInFile;");
+            stmt.executeUpdate();
+            stmt = conn.prepareStatement("DROP TABLE IF EXISTS Projects;");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Projects (" +
+                    "p_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "p_name TEXT NOT NULL UNIQUE, " +
+                    "p_url TEXT NOT NULL UNIQUE, " +
+                    "PRIMARY KEY (p_id)" +
+                    ");");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS SATDInFile (" +
+                    "f_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "f_comment TEXT NOT NULL, " +
+                    "f_comment_type TEXT, " +
+                    "f_path TEXT NOT NULL, " +
+                    "start_line INTEGER NOT NULL, " +
+                    "end_line INTEGER NOT NULL, " +
+                    "containing_class TEXT, " +
+                    "containing_method TEXT, " +
+                    "method_declaration TEXT, " +
+                    "method_body TEXT, " +
+                    "\"type\" TEXT, " +
+                    "PRIMARY KEY (f_id)" +
+                    ");");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Commits (" +
+                    "commit_hash TEXT NOT NULL, " +
+                    "p_id INTEGER NOT NULL, " +
+                    "author_name TEXT, " +
+                    "author_email TEXT, " +
+                    "author_date TEXT, " +
+                    "committer_name TEXT, " +
+                    "committer_email TEXT, " +
+                    "commit_date TEXT, " +
+
+                    "FOREIGN KEY (p_id) REFERENCES Projects(p_id), " +
+                    "PRIMARY KEY (p_id, commit_hash)" +
+                    ");");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS SATD (" +
+                    "satd_id INTEGER NOT NULL, " +
+                    "satd_instance_id INTEGER NOT NULL, " +
+                    "parent_instance_id INTEGER, " +
+                    "p_id INTEGER NOT NULL, " +
+                    "first_commit TEXT NOT NULL, " +
+                    "second_commit TEXT NOT NULL, " +
+                    "first_file INTEGER NOT NULL, " +
+                    "second_file INTEGER NOT NULL, " +
+                    "resolution TEXT NOT NULL, " +
+                    "PRIMARY KEY (satd_id)," +
+                    "FOREIGN KEY (p_id) REFERENCES Projects(p_id)," +
+                    "FOREIGN KEY (p_id, first_commit) REFERENCES Commits(p_id, commit_hash)," +
+                    "FOREIGN KEY (p_id, second_commit) REFERENCES Commits(p_id, commit_hash)," +
+                    "FOREIGN KEY (first_file) REFERENCES SATDInFile(f_id)," +
+                    "FOREIGN KEY (second_file) REFERENCES SATDInFile(f_id)" +
+                    ");");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS RefactoringsRmv (" +
+                    "refactoringID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "commit_hash TEXT NOT NULL, " +
+                    "projectID INTEGER NOT NULL, " +
+                    "type TEXT, " +
+                    "description TEXT NOT NULL, " +
+                    "PRIMARY KEY (refactoringID)," +
+                    "UNIQUE (refactoringID)" +
+                    ");");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE INDEX IF NOT EXISTS commit_hash_idx ON RefactoringsRmv (commit_hash);");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE INDEX IF NOT EXISTS commit_hash_projectID_idx ON RefactoringsRmv (commit_hash, projectID);");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS AfterRefactoring (" +
+                    "afterID INTEGER NOT NULL, " +
+                    "refID INTEGER NOT NULL, " +
+                    "filePath TEXT NOT NULL, " +
+                    "startLine INTEGER NOT NULL, " +
+                    "endLine INTEGER NOT NULL, " +
+                    "startColumn INTEGER NOT NULL, " +
+                    "endColumn INTEGER NOT NULL, " +
+                    "description TEXT NOT NULL, " +
+                    "codeElement TEXT NOT NULL, " +
+                    "PRIMARY KEY (afterID)," +
+                    "FOREIGN KEY (refID) REFERENCES RefactoringsRmv(refactoringID)" +
+                    "ON DELETE CASCADE " +
+                    "ON UPDATE CASCADE " +
+                    ");");
+            stmt.executeUpdate();
+
+
+            stmt = conn.prepareStatement("CREATE INDEX IF NOT EXISTS idRefactorings_idx ON AfterRefactoring (refID);");
+            stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS BeforeRefactoring (" +
+                    "beforeID INTEGER NOT NULL, " +
+                    "refactoringID INTEGER NOT NULL, " +
+                    "filePath TEXT NOT NULL, " +
+                    "startLine INTEGER NOT NULL, " +
+                    "endLine INTEGER NOT NULL, " +
+                    "startColumn INTEGER NOT NULL, " +
+                    "endColumn INTEGER NOT NULL, " +
+                    "description TEXT NOT NULL, " +
+                    "codeElement TEXT NOT NULL, " +
+                    "PRIMARY KEY (beforeID)" +
+                    ");");
+            stmt.executeUpdate();
+
+
+
+
+
+            
+        } catch(SQLException e){
+            System.err.println("SQL Error encountered while saving satd type classification");
+            throw e;
+        }finally{
+            try{
+                conn.close();
+            }catch(SQLException e){
+                System.err.println("Error closing SQL connection");
+                throw e;
+            }
+        }
     }
 
 

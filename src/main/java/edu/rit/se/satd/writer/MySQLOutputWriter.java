@@ -532,5 +532,5 @@ public class MySQLOutputWriter implements OutputWriter {
         this.finalWriteExecutor.shutdownNow().forEach(Runnable::run);
     }
 
-
+    public  void makeTables() throws IOException, SQLException {}
 }
