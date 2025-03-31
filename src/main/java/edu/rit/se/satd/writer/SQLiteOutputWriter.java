@@ -27,7 +27,8 @@ public class SQLiteOutputWriter implements OutputWriter {
 
     public SQLiteOutputWriter(String dbLink) throws IOException {
 
-        this.dbURI = "jdbc:sqlite:satd.db";
+        this.dbURI = dbLink;
+
 
         this.finalWriteExecutor = new ScheduledThreadPoolExecutor( Math.max(1, 150));
 
@@ -529,20 +530,20 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Projects (" +
-                    "p_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "p_name TEXT NOT NULL UNIQUE, " +
-                    "p_url TEXT NOT NULL UNIQUE, " +
+                    "p_id INTEGER, " +
+                    "p_name TEXT UNIQUE, " +
+                    "p_url TEXT UNIQUE, " +
                     "PRIMARY KEY (p_id)" +
                     ");");
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS SATDInFile (" +
-                    "f_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "f_comment TEXT NOT NULL, " +
+                    "f_id INTEGER, " +
+                    "f_comment TEXT, " +
                     "f_comment_type TEXT, " +
-                    "f_path TEXT NOT NULL, " +
-                    "start_line INTEGER NOT NULL, " +
-                    "end_line INTEGER NOT NULL, " +
+                    "f_path TEXT, " +
+                    "start_line INTEGER, " +
+                    "end_line INTEGER, " +
                     "containing_class TEXT, " +
                     "containing_method TEXT, " +
                     "method_declaration TEXT, " +
@@ -553,8 +554,8 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Commits (" +
-                    "commit_hash TEXT NOT NULL, " +
-                    "p_id INTEGER NOT NULL, " +
+                    "commit_hash TEXT, " +
+                    "p_id INTEGER, " +
                     "author_name TEXT, " +
                     "author_email TEXT, " +
                     "author_date TEXT, " +
@@ -568,15 +569,15 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS SATD (" +
-                    "satd_id INTEGER NOT NULL, " +
-                    "satd_instance_id INTEGER NOT NULL, " +
+                    "satd_id INTEGER, " +
+                    "satd_instance_id INTEGER, " +
                     "parent_instance_id INTEGER, " +
-                    "p_id INTEGER NOT NULL, " +
-                    "first_commit TEXT NOT NULL, " +
-                    "second_commit TEXT NOT NULL, " +
-                    "first_file INTEGER NOT NULL, " +
-                    "second_file INTEGER NOT NULL, " +
-                    "resolution TEXT NOT NULL, " +
+                    "p_id INTEGER, " +
+                    "first_commit TEXT, " +
+                    "second_commit TEXT, " +
+                    "first_file INTEGER, " +
+                    "second_file INTEGER, " +
+                    "resolution TEXT, " +
                     "PRIMARY KEY (satd_id)," +
                     "FOREIGN KEY (p_id) REFERENCES Projects(p_id)," +
                     "FOREIGN KEY (p_id, first_commit) REFERENCES Commits(p_id, commit_hash)," +
@@ -587,11 +588,11 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS RefactoringsRmv (" +
-                    "refactoringID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "commit_hash TEXT NOT NULL, " +
-                    "projectID INTEGER NOT NULL, " +
+                    "refactoringID INTEGER, " +
+                    "commit_hash TEXT, " +
+                    "projectID INTEGER, " +
                     "type TEXT, " +
-                    "description TEXT NOT NULL, " +
+                    "description TEXT, " +
                     "PRIMARY KEY (refactoringID)," +
                     "UNIQUE (refactoringID)" +
                     ");");
@@ -604,15 +605,15 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS AfterRefactoring (" +
-                    "afterID INTEGER NOT NULL, " +
-                    "refID INTEGER NOT NULL, " +
-                    "filePath TEXT NOT NULL, " +
-                    "startLine INTEGER NOT NULL, " +
-                    "endLine INTEGER NOT NULL, " +
-                    "startColumn INTEGER NOT NULL, " +
-                    "endColumn INTEGER NOT NULL, " +
-                    "description TEXT NOT NULL, " +
-                    "codeElement TEXT NOT NULL, " +
+                    "afterID INTEGER, " +
+                    "refID INTEGER, " +
+                    "filePath TEXT, " +
+                    "startLine INTEGER, " +
+                    "endLine INTEGER, " +
+                    "startColumn INTEGER, " +
+                    "endColumn INTEGER, " +
+                    "description TEXT, " +
+                    "codeElement TEXT, " +
                     "PRIMARY KEY (afterID)," +
                     "FOREIGN KEY (refID) REFERENCES RefactoringsRmv(refactoringID)" +
                     "ON DELETE CASCADE " +
@@ -625,15 +626,15 @@ public class SQLiteOutputWriter implements OutputWriter {
             stmt.executeUpdate();
 
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS BeforeRefactoring (" +
-                    "beforeID INTEGER NOT NULL, " +
-                    "refactoringID INTEGER NOT NULL, " +
-                    "filePath TEXT NOT NULL, " +
-                    "startLine INTEGER NOT NULL, " +
-                    "endLine INTEGER NOT NULL, " +
-                    "startColumn INTEGER NOT NULL, " +
-                    "endColumn INTEGER NOT NULL, " +
-                    "description TEXT NOT NULL, " +
-                    "codeElement TEXT NOT NULL, " +
+                    "beforeID INTEGER, " +
+                    "refactoringID INTEGER, " +
+                    "filePath TEXT, " +
+                    "startLine INTEGER, " +
+                    "endLine INTEGER, " +
+                    "startColumn INTEGER, " +
+                    "endColumn INTEGER, " +
+                    "description TEXT, " +
+                    "codeElement TEXT, " +
                     "PRIMARY KEY (beforeID)" +
                     ");");
             stmt.executeUpdate();

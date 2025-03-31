@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS SATDInFile (
     containing_method TEXT,
     method_declaration TEXT,
     method_body TEXT,
-    "type" TEXT DEFAULT NULL,
+    "type" TEXT,
     PRIMARY KEY (f_id)
 );
 
@@ -59,8 +59,8 @@ CREATE TABLE IF NOT EXISTS SATD (
 CREATE TABLE IF NOT EXISTS RefactoringsRmv (
     refactoringID INTEGER NOT NULL,
     commit_hash TEXT NOT NULL,
-    projectID INTEGER DEFAULT NULL,
-    type TEXT DEFAULT NULL,
+    projectID INTEGER,
+    type TEXT,
     description TEXT,
     PRIMARY KEY (refactoringID),
     UNIQUE (refactoringID)
@@ -75,10 +75,10 @@ CREATE TABLE IF NOT EXISTS AfterRefactoring (
     afterID INTEGER NOT NULL,
     refID INTEGER NOT NULL,
     filePath TEXT,
-    startLine INTEGER DEFAULT NULL,
-    endLine INTEGER DEFAULT NULL,
-    startColumn INTEGER DEFAULT NULL,
-    endColumn INTEGER DEFAULT NULL,
+    startLine INTEGER,
+    endLine INTEGER,
+    startColumn INTEGER,
+    endColumn INTEGER,
     description TEXT,
     codeElement TEXT,
     PRIMARY KEY (afterID),
@@ -94,10 +94,10 @@ CREATE TABLE IF NOT EXISTS  BeforeRefactoring (
   "beforeID" INTEGER NOT NULL,
   "refactoringID" INTEGER NOT NULL,
   "filePath" mediumtext,
-  "startLine" INTEGER DEFAULT NULL,
-  "endLine" INTEGER DEFAULT NULL,
-  "startColumn" INTEGER DEFAULT NULL,
-  "endColumn" INTEGER DEFAULT NULL,
+  "startLine" INTEGER,
+  "endLine" INTEGER,
+  "startColumn" INTEGER,
+  "endColumn" INTEGER,
   "description" mediumtext,
   "codeElement" mediumtext,
   PRIMARY KEY ("beforeID")

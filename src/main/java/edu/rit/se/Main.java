@@ -106,10 +106,7 @@ public class Main {
                     if (cmd.hasOption(ARG_NAME_GH_PASSWORD)) {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
-                    dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
-                    //Connection conn = null;
-                    //conn = DriverManager.getConnection(dbLink);
-                    //executeSQLFile(conn, "sql/create_tables.sql");
+                    //dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
                     
 
                     OutputWriter writer = new SQLiteOutputWriter(dbLink);
