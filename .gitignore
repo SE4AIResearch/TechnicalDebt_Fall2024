@@ -11,3 +11,4 @@ satd-analyzer.iml
 mySQL_personal.properties
 .DS_Store
 /reports
+.env
