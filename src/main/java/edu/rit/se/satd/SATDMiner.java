@@ -36,9 +36,9 @@ public class SATDMiner {
     private SATDDetector satdDetector;
 
     @Setter
-    private String githubUsername = null;
+    private String githubUsername = "bc2026";
     @Setter
-    private String githubPassword = null;
+    private String githubPassword = "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";
 
     // A reference to the repository initializes. Stored so it can be cleaned
     // once mining has completed
