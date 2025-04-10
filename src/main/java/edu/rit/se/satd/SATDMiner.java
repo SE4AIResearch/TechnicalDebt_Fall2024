@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * A class which contains high-level logic for mining SATD Instances from a git repository.
