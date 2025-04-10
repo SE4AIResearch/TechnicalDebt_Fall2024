@@ -36,9 +36,10 @@ public class SATDMiner {
     private SATDDetector satdDetector;
 
     @Setter
-    private String githubUsername = "bc2026";
+    private String githubUsername = dotenv.get("GITHUB_USERNAME");
+
     @Setter
-    private String githubPassword = "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";
+    private String githubPassword = dotenv.get("GITHUB_PASSWORD");
 
     // A reference to the repository initializes. Stored so it can be cleaned
     // once mining has completed
