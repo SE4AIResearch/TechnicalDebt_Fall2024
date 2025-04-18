@@ -128,6 +128,7 @@ public class SATDMiner {
                 .map(this::mapInstancesInDiffToPriorInstances)
                 .forEach(diff -> {
                     try {
+
                         writer.writeDiff(diff);
                         this.status.fulfilDiffPromise();
                     } catch (IOException e) {

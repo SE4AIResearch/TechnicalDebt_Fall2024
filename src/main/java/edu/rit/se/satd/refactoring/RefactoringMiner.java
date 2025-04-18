@@ -11,6 +11,7 @@ import org.refactoringminer.api.*;
 import org.refactoringminer.rm1.*;
 import org.eclipse.jgit.lib.Repository;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -46,9 +47,29 @@ public class RefactoringMiner {
         try {
             GitService gitService = new GitServiceImpl();
             GitHistoryRefactoringMiner miners = new GitHistoryRefactoringMinerImpl();
+
+            String homePath = System.getProperty("user.home");
+            File reposDir = new File(homePath + "/.technical_debt/repos/");
+
+            if (!reposDir.exists()) {
+                boolean created = reposDir.mkdirs(); // creates parent dirs too
+                if (created) {
+                    System.out.println("Directory created: " + reposDir.getAbsolutePath());
+                } else {
+                    System.out.println("Failed to create directory.");
+                }
+            } else {
+                System.out.println("Directory already exists: " + reposDir.getAbsolutePath());
+            }
+
+
+            File cloneToPath = new File(reposDir.toString(), projectName);
+            System.out.println("Clone to path: " + cloneToPath.getAbsolutePath());
             Repository repo = gitService.cloneIfNotExists(
-                    "repos/"+projectName,
-                    projectUrl+".git");
+                    cloneToPath.toString(),
+                    projectUrl);
+
+
             miners.detectBetweenCommits(repo,
                     leftHash, rightHash,
                     new RefactoringHandler() {

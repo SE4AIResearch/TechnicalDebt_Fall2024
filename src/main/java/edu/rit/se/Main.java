@@ -14,6 +14,8 @@ import org.apache.commons.cli.*;
 import org.eclipse.jgit.diff.DiffAlgorithm;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -32,24 +34,30 @@ public class Main {
         Options options = getOptions();
         String dbLink = "";
         try {
-
-            // Check for help option
-            // This is done first to allow both an optional help option and required args
-            if( checkForHelpOption(args) ) {
-                return; // Only need to print the help options so we are done here
+// Check for help option
+// This is done first to allow both an optional help option and required args
+            if (checkForHelpOption(args)) {
+                return; // Only need to print the help options, so we are done here
             }
 
-            // Parse from command line
+// Parse from command line
             CommandLineParser parser = new DefaultParser();
             CommandLine cmd = parser.parse(options, args);
 
             final String reposFile = cmd.getOptionValue(ARG_NAME_REPOS_FILE);
             final String dbFile = cmd.getOptionValue(ARG_NAME_DB_FILE);
 
-            int dbIndex = dbFile.length() - 3;
+
+            if (dbFile == null || dbFile.length() < 4 || !dbFile.endsWith(".db")) {
+                throw new IllegalArgumentException("Invalid database file path: must end with '.db'");
+            }
+
+            Path dbPath = Paths.get(dbFile);
+            String dbDirPath = dbPath.getParent() != null ? dbPath.getParent().toString() : "";
+            String dbFilePath = dbPath.getFileName().toString();
+
             dbLink = String.format("jdbc:sqlite:%s", dbFile);
 
-            String dbDir = dbFile.substring(0, dbIndex);
 
             if( cmd.hasOption(ARG_NAME_IGNORE_WORDS) ) {
                 populateIgnoredWordsFile(cmd.getOptionValue(ARG_NAME_IGNORE_WORDS));
@@ -104,10 +112,12 @@ public class Main {
                     if (cmd.hasOption(ARG_NAME_GH_PASSWORD)) {
                         miner.setGithubPassword(cmd.getOptionValue(ARG_NAME_GH_PASSWORD));
                     }
-                    dbLink = String.format("jdbc:sqlite:%s.db", dbLink);
-                    OutputWriter writer = new SQLiteOutputWriter(dbLink);
 
-
+                    SQLiteOutputWriter writer = new SQLiteOutputWriter(dbLink);
+                    File dbCheck = new File(dbFile);
+                    if (!dbCheck.exists()) {
+                        writer.makeTables();
+                    }
                     miner.writeRepoSATD(miner.getBaseCommit(headCommit), writer);
                   
                     //AzureModel.classiffySATD(writer, repoEntry[0] );
@@ -118,12 +128,12 @@ public class Main {
                     miner.cleanRepo();
 
                 }
-                if(!dbLink.isEmpty()) {
-                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink, dbDir);
-                }
-                else{
-                    throw new Error("db file not specified");
-                }
+//                if(!dbLink.isEmpty()) {
+//                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink, dbDirPath);
+//                }
+//                else{
+//                    throw new Error("db file not specified");
+//                }
 
             }
         } catch (ParseException e) {
