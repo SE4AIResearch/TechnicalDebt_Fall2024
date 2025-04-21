@@ -45,6 +45,8 @@ public class RepositoryInitializer {
                 System.out.println("Created repos directory at: " + reposBaseDir.getAbsolutePath());
             }
         }
+
+
         this.repoDir = new File(reposBaseDir, baseName).getAbsolutePath();
         this.gitURI = uri;
         this.gitUsername = gitUsername;

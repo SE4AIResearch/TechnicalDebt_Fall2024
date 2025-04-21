@@ -16,6 +16,7 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathSuffixFilter;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,22 @@ public class GitUtil {
      * @return a parsed URI, like "bbchristians/SATDMiner"
      */
     public static String getRepoNameFromGithubURI(String githubURI) {
-        return githubURI.split(".com/")[1].replace(".git", "");
+        try {
+            URL url = new URL(githubURI);
+            String path = url.getPath(); // e.g., /apache/log4j or /apache/log4j.git
+            String[] parts = path.split("/");
+            if (parts.length >= 3) {
+                return parts[2].replace(".git", "");
+            } else if (parts.length == 2) {
+                return parts[1].replace(".git", "");
+            }
+        } catch (Exception e) {
+            System.err.println("Invalid GitHub URI: " + githubURI);
+            e.printStackTrace();
+        }
+        return "unknown_repo";
     }
+
 
     /**
      * @return a TreeWalk instance for the repository at the given diff

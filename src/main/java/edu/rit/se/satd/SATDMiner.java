@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,9 +142,9 @@ public class SATDMiner {
 
     private boolean initializeRepo(String username, String password) {
         this.repo = ( username != null && password != null ) ?
-                new RepositoryInitializer(this.repositoryURI, GitUtil.getRepoNameFromGithubURI(this.repositoryURI),
+                new RepositoryInitializer(this.repositoryURI, Paths.get(GitUtil.getRepoNameFromGithubURI(this.repositoryURI)).getFileName().toString(),
                         username, password):
-                new RepositoryInitializer(this.repositoryURI, GitUtil.getRepoNameFromGithubURI(this.repositoryURI));
+                new RepositoryInitializer(this.repositoryURI, Paths.get(GitUtil.getRepoNameFromGithubURI(this.repositoryURI)).getFileName().toString());
         return this.repo.initRepo();
     }
 
