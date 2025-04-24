@@ -331,28 +331,25 @@ public class SQLiteOutputWriter implements OutputWriter {
      *  obtaining the project's ID
      */
     private int getProjectId(Connection conn, String projectName, String projectUrl) throws SQLException {
-        // Make query if Project exists
+        // Try to insert first with INSERT OR IGNORE
+        final PreparedStatement insertStmt = conn.prepareStatement(
+                "INSERT OR IGNORE INTO Projects(p_name, p_url) VALUES (?, ?);");
+        insertStmt.setString(1, projectName);
+        insertStmt.setString(2, projectUrl);
+        insertStmt.executeUpdate();
+
+        // Then query for the ID (either the one that was just inserted or the existing one)
         final PreparedStatement queryStmt = conn.prepareStatement(
-                "SELECT Projects.p_id FROM Projects WHERE Projects.p_name=?;");
-        queryStmt.setString(1, projectName); // p_name
+                "SELECT Projects.p_id FROM Projects WHERE Projects.p_name=? OR Projects.p_url=?;");
+        queryStmt.setString(1, projectName);
+        queryStmt.setString(2, projectUrl);
         final ResultSet res = queryStmt.executeQuery();
-        if( res.next() ) {
-            // Return the result if one was found
+
+        if (res.next()) {
             return res.getInt(1);
-        } else {
-            // Otherwise, add it and then return the newly generated key
-            final PreparedStatement updateStmt = conn.prepareStatement(
-                    "INSERT INTO Projects(p_name, p_url) VALUES (?, ?);",
-                    Statement.RETURN_GENERATED_KEYS);
-            updateStmt.setString(1, projectName); // p_name
-            updateStmt.setString(2, projectUrl); // p_url
-            updateStmt.executeUpdate();
-            final ResultSet updateRes = updateStmt.getGeneratedKeys();
-            if (updateRes.next()) {
-                return updateRes.getInt(1);
-            }
         }
-        // Some unpredicted issue was encountered, so just throw a new exception
+
+        // Some unpredicted issue was encountered
         throw new SQLException("Could not obtain the project ID.");
     }
 
