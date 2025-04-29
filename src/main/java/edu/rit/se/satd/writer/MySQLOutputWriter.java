@@ -348,30 +348,42 @@ public class MySQLOutputWriter implements OutputWriter {
      *  obtaining the project's ID
      */
     private int getProjectId(Connection conn, String projectName, String projectUrl) throws SQLException {
-        // Make query if Project exists
-        final PreparedStatement queryStmt = conn.prepareStatement(
-                "SELECT Projects.p_id FROM Projects WHERE Projects.p_name=?;");
-        queryStmt.setString(1, projectName); // p_name
-        final ResultSet res = queryStmt.executeQuery();
-        if( res.next() ) {
-            // Return the result if one was found
-            return res.getInt(1);
-        } else {
-            // Otherwise, add it and then return the newly generated key
-            final PreparedStatement updateStmt = conn.prepareStatement(
-                    "INSERT INTO Projects(p_name, p_url) VALUES (?, ?);",
-                    Statement.RETURN_GENERATED_KEYS);
-            updateStmt.setString(1, projectName); // p_name
-            updateStmt.setString(2, projectUrl); // p_url
-            updateStmt.executeUpdate();
-            final ResultSet updateRes = updateStmt.getGeneratedKeys();
-            if (updateRes.next()) {
-                return updateRes.getInt(1);
-            }
+        // First try by *URL* because that's the unique constraint
+        final PreparedStatement queryByUrlStmt = conn.prepareStatement(
+                "SELECT Projects.p_id FROM Projects WHERE Projects.p_url=?;"
+        );
+        queryByUrlStmt.setString(1, projectUrl);
+        final ResultSet resByUrl = queryByUrlStmt.executeQuery();
+        if (resByUrl.next()) {
+            return resByUrl.getInt(1);
         }
-        // Some unpredicted issue was encountered, so just throw a new exception
-        throw new SQLException("Could not obtain the project ID.");
+
+        // Then try by *name* as a backup (optional, depends on your requirements)
+        final PreparedStatement queryByNameStmt = conn.prepareStatement(
+                "SELECT Projects.p_id FROM Projects WHERE Projects.p_name=?;"
+        );
+        queryByNameStmt.setString(1, projectName);
+        final ResultSet resByName = queryByNameStmt.executeQuery();
+        if (resByName.next()) {
+            return resByName.getInt(1);
+        }
+
+        // Not found — insert
+        final PreparedStatement insertStmt = conn.prepareStatement(
+                "INSERT INTO Projects(p_name, p_url) VALUES (?, ?);",
+                Statement.RETURN_GENERATED_KEYS
+        );
+        insertStmt.setString(1, projectName);
+        insertStmt.setString(2, projectUrl);
+        insertStmt.executeUpdate();
+        final ResultSet insertedRes = insertStmt.getGeneratedKeys();
+        if (insertedRes.next()) {
+            return insertedRes.getInt(1);
+        }
+
+        throw new SQLException("Could not obtain or insert the project ID.");
     }
+
 
     /**
      * Gets the ID for the SATD file instance, and inserts it into the appropriate table
