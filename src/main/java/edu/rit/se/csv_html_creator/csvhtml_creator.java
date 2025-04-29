@@ -28,13 +28,40 @@ public class csvhtml_creator {
     public csvhtml_creator(String dbLink, String dbDir) throws IOException, SQLException {
         System.out.println("Create csv file report...");
 
-        Date currentDate = new Date();
+        /*Date currentDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddhhmmss");
         String creationDate = formatter.format(currentDate);
-        setFolderName(dbDir + '_' + "reports-" + creationDate);
+        setFolderName(dbDir + '_' + "reports-" + creationDate);*/
 
-        boolean success = (new File(folderName)).mkdirs();
-        boolean His = (new File(folderName + "/html")).mkdirs();
+
+        File reportsDir = new File(System.getProperty("user.home"), ".technical_debt/reports");
+        if (!reportsDir.exists()) {
+            reportsDir.mkdirs();
+        }
+
+        String dbNameWithoutExtension = new File(dbDir).getName();
+        if (dbNameWithoutExtension.endsWith(".db")) {
+            dbNameWithoutExtension = dbNameWithoutExtension.substring(0, dbNameWithoutExtension.length() - 3);
+        }
+
+        setFolderName(new File(reportsDir, dbNameWithoutExtension + "_report").getAbsolutePath());
+
+
+        File reportFolder = new File(folderName);
+        if (!reportFolder.exists()){
+            boolean created = reportFolder.mkdirs();
+            if (!created){
+                throw new IOException("Failed " + reportFolder.getAbsolutePath());
+            }
+        }
+
+        File htmlFolder = new File(folderName, "html");
+        if (!htmlFolder.exists()){
+            htmlFolder.mkdirs();
+        }
+
+        /*boolean success = (new File(folderName)).mkdirs();
+        boolean His = (new File(folderName + "/html")).mkdirs();*/
 
 
         String old_comment;
@@ -114,7 +141,7 @@ public class csvhtml_creator {
                         project, author_name,commit_hash,old_comment, new_comment, resolution, containing_method, method_declaration, method_body);
                 csvPrinter.flush();
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
 
@@ -128,13 +155,14 @@ public class csvhtml_creator {
     public static boolean isMethodDeclaration(String rawDeclaration, String methodSignature) {
         String lowerCaseDeclaration = rawDeclaration.toLowerCase().trim();
 
+
         return lowerCaseDeclaration.startsWith("public ")
                 || lowerCaseDeclaration.startsWith("protected ")
                 || lowerCaseDeclaration.startsWith("private ")
                 || lowerCaseDeclaration.startsWith("static ")
                 || lowerCaseDeclaration.startsWith("void ")
                 // In case no access modifier is being used.
-                || (!methodSignature.isEmpty() && rawDeclaration.startsWith(methodSignature.trim().substring(0, methodSignature.trim().indexOf("("))));
+                || (!methodSignature.isEmpty() && methodSignature.contains("(") && rawDeclaration.startsWith(methodSignature.trim().substring(0, methodSignature.trim().indexOf("("))));
     }
 
     private CSVPrinter csvInitializer() throws IOException {
