@@ -32,8 +32,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Options options = getOptions();
-        String dbLink = "";
         try {
+
 // Check for help option
 // This is done first to allow both an optional help option and required args
             if (checkForHelpOption(args)) {
@@ -53,10 +53,14 @@ public class Main {
             }
 
             Path dbPath = Paths.get(dbFile);
-            String dbDirPath = dbPath.getParent() != null ? dbPath.getParent().toString() : "";
+            String dbDirPath = (dbPath.getParent() != null) ? dbPath.getParent().toString() : ".";
             String dbFilePath = dbPath.getFileName().toString();
+            System.out.println(dbDirPath);
+            System.out.println(dbFilePath);
 
-            dbLink = String.format("jdbc:sqlite:%s", dbFile);
+            String dbLink = String.format("jdbc:sqlite:%s", dbFile);
+            System.out.println("Connecting to database: " + dbLink);
+
 
 
             if( cmd.hasOption(ARG_NAME_IGNORE_WORDS) ) {
@@ -128,12 +132,10 @@ public class Main {
                     miner.cleanRepo();
 
                 }
-//                if(!dbLink.isEmpty()) {
-//                    csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink, dbDirPath);
-//                }
-//                else{
-//                    throw new Error("db file not specified");
-//                }
+                System.out.println("PRINTING TO CSV+____________________+DA_WA+D_WA+_D+WA_D");
+
+                csvhtml_creator csvHtmlCreater = new csvhtml_creator(dbLink, dbFilePath);
+
 
             }
         } catch (ParseException e) {
